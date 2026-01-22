@@ -4,38 +4,20 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance
-    {
-        get;
-        private set;
-    }
-
-    public double timer = 10;
+    public double bombTimer = 10;
     public bool isGameOver = false;
-
-    public bool isLoading = false;
-
-    public enum GameState { Menu, Playing, GameOver }
-    public GameState currentState = GameState.Menu;
-
-
-    private void Awake()
+    public enum GameState
     {
-        // Singleton Logic: If an instance already exists, destroy this one
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        Menu,
+        Playing,
+        GameOver
     }
+    public GameState currentState = GameState.Menu;
 
     public void Update()
     {
-        timer -= Time.deltaTime;
-        if (timer <= 0 && currentState != GameState.GameOver)
+        bombTimer -= Time.deltaTime;
+        if (bombTimer <= 0 && currentState != GameState.GameOver)
         {
             EndGame();
         }
