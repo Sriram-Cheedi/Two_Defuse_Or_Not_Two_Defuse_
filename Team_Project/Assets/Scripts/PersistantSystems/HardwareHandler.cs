@@ -7,7 +7,7 @@ public class HardwareHandler : MonoBehaviour
 
     void Update()
     {
-        float currentRotation = 0.05f; // This will connect to Hardware API instead of raw float
+        float currentRotation = 0.001f; // This will connect to Hardware API instead of raw float
 
         OnGyroRotationUpdated?.Invoke(currentRotation);
     }
