@@ -3,8 +3,9 @@ using UnityEngine;
 public class FPSCameraLook : MonoBehaviour
 {
     public Transform playerBody; 
-    public float mouseSensitivity = 100f; 
+    public float mouseSensitivity = 300f; 
     float xRotation = 0f;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
