@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9390aa4e94764171b015e3680785a7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelHandler
-  level: {fileID: 1567558681}
+  player: {fileID: 180727282}
 --- !u!1 &180727282
 GameObject:
   m_ObjectHideFlags: 0
