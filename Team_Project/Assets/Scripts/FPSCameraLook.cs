@@ -1,25 +1,32 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class FPSCameraLook : MonoBehaviour
 {
-    public Transform playerBody; 
-    public float mouseSensitivity = 300f; 
+    [SerializeField]private Transform playerBody; 
+    [SerializeField]private Transform cameraPivot; 
+    [SerializeField]private float mouseSensitivity = 20f; 
     float xRotation = 0f;
+    private Vector2 lookInput;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
-
+    public  void OnLook(InputValue value)
+    {
+        lookInput = value.Get<Vector2>();
+    }
     // Update is called once per frame
     void Update()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        float mouseX = lookInput.x * mouseSensitivity * Time.deltaTime;
+        float mouseY = lookInput.y * mouseSensitivity * Time.deltaTime;
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        cameraPivot.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         playerBody.Rotate(Vector3.up * mouseX);
     }
 }

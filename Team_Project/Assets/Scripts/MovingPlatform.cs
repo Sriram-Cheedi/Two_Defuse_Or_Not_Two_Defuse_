@@ -3,10 +3,13 @@ using System.Collections;
 
 public class MovingPlatform : MonoBehaviour
 {
+    [Header("Way Points")]
     [SerializeField] private Transform pointA;
     [SerializeField] private Transform pointB;
+    [Header("Movement")]
     [SerializeField] float speed = 10f;
     [SerializeField] float delay = 0.5f;
+    
     [SerializeField] private Transform platform;
     private Vector3 targetPosition;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
