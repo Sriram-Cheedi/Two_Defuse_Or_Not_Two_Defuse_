@@ -10,6 +10,8 @@ public class LevelHandler : MonoBehaviour
     private void RotateLevel(float rotationValue)
     {
         Debug.Log("Rotating: " + rotationValue);
+
+        // This will smoothly interpolate 
         player.transform.Rotate(0, 0, rotationValue);
     }
 }

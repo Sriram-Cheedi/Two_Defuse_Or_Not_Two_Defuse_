@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
         Playing,
         GameOver
     }
-    public GameState currentState = GameState.Menu;
+    public static GameState currentState = GameState.Menu;
 
     public void Update()
     {
