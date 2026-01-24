@@ -5,11 +5,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] public GameObject respawnPoint;
 
-    private void OnTriggerEnter(Collider other)
+    public void Respawn()
     {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            player.transform.position = respawnPoint.transform.position;
-        }
+        player.transform.position = respawnPoint.transform.position;
     }
 }
