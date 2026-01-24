@@ -15,7 +15,7 @@ public class FPSCameraLook : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
-    public  void OnLook(InputValue value)
+    public void OnLook(InputValue value)
     {
         lookInput = value.Get<Vector2>();
     }
