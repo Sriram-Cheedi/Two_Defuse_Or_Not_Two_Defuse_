@@ -31,4 +31,5 @@ Syncronous minigames will give hardware level access to unity through the follow
 | Command        | Code       | Values                        | Response    |
 |----------------|------------|-------------------------------|-------------|
 | Status Request | $X:status# | X: Code of hardware component | $X:status y |
+| Set Value      | $X:set y#  | X: Code of hardware component, y: value to be set to | $X:status y |
 | Reset          | $X:reset#  | X: Code of hardware component | $X:status y |
