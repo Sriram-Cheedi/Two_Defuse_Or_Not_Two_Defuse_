@@ -20,9 +20,9 @@ Asyncronous minigames' logic will be onboard. Status of the minigame can be quer
 
 | Command        | Code       | Values              | Response    |
 |----------------|------------|---------------------|-------------|
-| Status Request | $X,status# | X: Code of minigame | $X,status y |
-| Set Status     | $X,set y#  | X: Code of minigame | $X,status y |
-| Reset          | $X,reset#  | X: Code of minigame | $X,status y |
+| Status Request | $X:status# | X: Code of minigame | $X:status y |
+| Set Status     | $X:set y#  | X: Code of minigame | $X:status y |
+| Reset          | $X:reset#  | X: Code of minigame | $X:status y |
 
 ## Synchronous Minigames
 
@@ -30,5 +30,5 @@ Syncronous minigames will give hardware level access to unity through the follow
 
 | Command        | Code       | Values                        | Response    |
 |----------------|------------|-------------------------------|-------------|
-| Status Request | $X,status# | X: Code of hardware component | $X,status y |
-| Reset          | $X,reset#  | X: Code of hardware component | $X,status y |
+| Status Request | $X:status# | X: Code of hardware component | $X:status y |
+| Reset          | $X:reset#  | X: Code of hardware component | $X:status y |
