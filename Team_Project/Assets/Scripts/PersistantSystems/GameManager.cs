@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
         if (currentState == GameState.Playing) return;
 
         currentState = GameState.Playing;
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("StartLevel");
     }
 
     public void EndGame()

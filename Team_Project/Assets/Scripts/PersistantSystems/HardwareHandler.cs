@@ -19,6 +19,7 @@ public class HardwareHandler : MonoBehaviour
 
         if (Mathf.Abs(delta + acc_rotation) >= step_size && GameManager.currentState == GameManager.GameState.Playing)
         {
+            Debug.Log("TE");
             float combinedMovement = delta + acc_rotation;
             int steps = (int)(combinedMovement / step_size);
             float totalStepMovement = steps * step_size;
