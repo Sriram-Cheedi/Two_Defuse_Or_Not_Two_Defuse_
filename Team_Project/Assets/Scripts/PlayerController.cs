@@ -5,50 +5,99 @@ using Vector3 = UnityEngine.Vector3;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movement")]
-    [SerializeField]private float speed = 12f;
-    [SerializeField]private float slideSpeed = 12f;
+    [Header("Character Controller")] [SerializeField]
+    private float defaultHeight;
+    [SerializeField] private float defaultCenterY;
+    
+    [Header("Movement")] [SerializeField] private float speed;
+    [SerializeField] private float slideSpeed = 12f;
     [SerializeField] private float terminalVelocity = -30f;
-    
-    [Header("Jump")]
-    [SerializeField]private float jumpHeight = 3f;
-    [SerializeField]private float gravity = -20f;
-    
-    [Header("Ground Check")]
-    [SerializeField]private Transform groundCheck;
-    [SerializeField]private float groundCastRadius = 0.2f;
-    [SerializeField]private float groundDistance = 0.2f;
+    [SerializeField] private float defaultSpeed = 12f;
+
+    [Header("Jump")] 
+    [SerializeField] private float jumpHeight = 3f;
+    [SerializeField] private float gravity = -20f;
+
+    [Header("crouch")] [SerializeField] private bool isCrouching;
+    [SerializeField] private float crouchHeight;
+    [SerializeField] private float crouchSpeed;
+
+    [Header("Ground Check")] [SerializeField]
+    private Transform groundCheck;
+
+    [SerializeField] private float groundCastRadius = 0.2f;
+    [SerializeField] private float groundDistance = 0.2f;
     public LayerMask groundMask;
-    
+
     Vector3 velocity;
-    [SerializeField]private CharacterController controller;
+    [SerializeField] private CharacterController controller;
     bool isGrounded;
     private Vector2 moveInput;
+
     private bool jumpQueued;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
+        defaultHeight = controller.height;
+        defaultCenterY = controller.center.y;
+        crouchHeight = controller.height / 2f;
+        crouchSpeed = defaultSpeed / 2f;
+        speed = defaultSpeed;
     }
 
-    private void OnMove(InputValue value)
+    public void OnMove(InputAction.CallbackContext ctx)
     {
-        moveInput = value.Get<Vector2>();
+        moveInput = ctx.ReadValue<Vector2>();
     }
 
-    public void OnJump(InputValue value)
+    public void OnJump(InputAction.CallbackContext ctx)
     {
-        if (value.isPressed)
+        if (ctx.performed)
         {
             jumpQueued = true;
         }
     }
+
+    private void SetCrouch(bool isCrouch)
+    {
+        float bottomLocal = defaultCenterY - (defaultHeight * 0.5f);
+        float newCenterY;
+        if (isCrouch)
+        {
+            newCenterY = bottomLocal + crouchHeight / 2f;
+            controller.height = crouchHeight;
+            controller.center = new Vector3(controller.center.x, newCenterY, controller.center.z);
+            speed = crouchSpeed;
+        }
+        else
+        {
+            newCenterY = bottomLocal + defaultHeight / 2f;
+            controller.height = defaultHeight;
+            controller.center = new Vector3(controller.center.x, newCenterY, controller.center.z);
+            speed = defaultSpeed;
+        }
+    }
+
+    public void OnCrouch(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            isCrouching = true;
+        }
+        else if (ctx.canceled)
+        {
+            isCrouching = false;
+        }
+        SetCrouch(isCrouching);
+    }
+
     private bool OnSlop(bool grounded, RaycastHit hit)
     {
         if (grounded)
         {
             float slopeAngle = Vector3.Angle(hit.normal, Vector3.up);
-            Debug.Log($"Hit: {hit.collider.name}, angle: {slopeAngle}, limit: {controller.slopeLimit}");
             return slopeAngle > controller.slopeLimit;
         }
         return false;
@@ -91,7 +140,5 @@ public class PlayerController : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         velocity.y = Mathf.Max(velocity.y, terminalVelocity);
         controller.Move(velocity * Time.deltaTime);
-        Debug.Log($"flags={controller.collisionFlags}");
-
     }
 }

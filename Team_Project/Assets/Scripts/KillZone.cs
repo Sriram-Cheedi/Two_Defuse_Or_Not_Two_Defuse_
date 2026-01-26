@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class KillZone : MonoBehaviour
 {
-    private SpawnManager spawnManager;
+    [SerializeField] private SpawnManager spawnManager;
 
     void Awake()
     {
