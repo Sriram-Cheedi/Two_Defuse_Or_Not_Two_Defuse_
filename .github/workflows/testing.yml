@@ -66,6 +66,7 @@ jobs:
         with:
           projectPath: Team_Project
           targetPlatform: StandaloneWindows64
+          allowDirtyBuild: true
 
       # Output
       - uses: actions/upload-artifact@v4
