@@ -50,6 +50,7 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
+          projectPath: Team_Project
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
       # Build
@@ -60,7 +61,8 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          targetPlatform: WebGL
+          projectPath: Team_Project
+          targetPlatform: StandaloneWindows64
 
       # Output
       - uses: actions/upload-artifact@v4
