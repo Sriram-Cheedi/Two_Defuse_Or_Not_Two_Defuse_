@@ -1,6 +1,9 @@
 name: Test project
 
 on:
+  push:
+    branches:
+      - main 
   pull_request:
     types: [opened, reopened, ready_for_review]
 
