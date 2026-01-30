@@ -4,11 +4,12 @@
 #include "timerModule.h"
 #include "component.h"
 #include "serialController.h"
-
+#include "imu.h"
 
 SerialController serialController = SerialController();
 
 timerModule timer = timerModule("TMR", 23, 24, 25, serialController);
+imu gyro = imu("imu", serialController);
 
 std::vector<std::unique_ptr<Component>> components;
 
@@ -24,6 +25,8 @@ std::vector<std::string> split(const std::string& s) {
 }
 
 void parseCommand(std::string command){
+
+  if(command == "") return;
 
   std::string name = command.substr(0, command.find(':'));
 
@@ -42,6 +45,7 @@ void parseCommand(std::string command){
 
 void setup() {
   components.push_back(std::make_unique<timerModule>(timer));
+  components.push_back(std::make_unique<imu>(gyro));
   
   timer.set({"500"});
 }
@@ -51,4 +55,5 @@ void loop() {
   parseCommand(serialController.serialRecieve());
 
   timer.updateDisplay();
+  gyro.update();
 }

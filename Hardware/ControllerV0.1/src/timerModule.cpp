@@ -8,12 +8,13 @@ timerModule::timerModule(std::string name, int dataPin, int clockPin, int latchP
 
 void timerModule::set(std::vector<std::string> args){
     if(args.size() == 1){
-        int secondsLeft = stoi(args[0]);
+        
+        seconds = stoi(args[0]);
 
-        int seconds = secondsLeft % 60;
-        int minutes = (secondsLeft - seconds) / 60; 
+        int secs = seconds % 60;
+        int mins = (seconds - secs) / 60; 
 
-        int digits[4] = {minutes/10, minutes % 10, seconds/10, seconds % 10};
+        int digits[4] = {mins/10, mins % 10, secs/10, secs % 10};
 
         setDigits(digits, true);
     } else if(args.size() == 5){
