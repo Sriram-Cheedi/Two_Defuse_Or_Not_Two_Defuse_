@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    public double bombTimer = 10;
+    public double bombTimer = 25.0;
     public bool isGameOver = false;
 
     public enum GameState { Menu, Playing, GameOver }
