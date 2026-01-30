@@ -4,15 +4,26 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance { get; private set; }
+
     public double bombTimer = 10;
     public bool isGameOver = false;
-    public enum GameState
+
+    public enum GameState { Menu, Playing, GameOver }
+    public GameState currentState = GameState.Menu;
+
+    private void Awake()
     {
-        Menu,
-        Playing,
-        GameOver
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
-    public static GameState currentState = GameState.Menu;
 
     public void Update()
     {
