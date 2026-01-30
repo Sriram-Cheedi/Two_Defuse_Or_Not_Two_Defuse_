@@ -51,7 +51,6 @@ void numberGameModule::updateDisplay(){
     if (currentDigit < 4){  // Show Digit
         shiftOut(dataPin, clockPin, LSBFIRST, digit_encodings[currentDigit]);
         shiftOut(dataPin, clockPin, LSBFIRST, segment_encodings[digitsBuffer[currentDigit]]);
-        Serial.println(digitsBuffer[currentDigit]);
         currentDigit++;
     }
     else{

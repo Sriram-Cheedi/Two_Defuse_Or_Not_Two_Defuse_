@@ -57,10 +57,10 @@ private:
     };
 
     const uint8_t digit_encodings[4] = {
-        0b01110000, // first digit
-        0b10110000, // second digit
-        0b11010000, // third digit
-        0b11100000, // fourth digit
+        0b10000000, // first digit
+        0b01000000, // second digit
+        0b00100000, // third digit
+        0b00010000, // fourth digit
     };
 
 public:
