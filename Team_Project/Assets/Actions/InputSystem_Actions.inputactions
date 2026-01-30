@@ -86,6 +86,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "InvertGravity",
+                    "type": "Button",
+                    "id": "29c2af7d-bf58-40e9-afc5-c8f7d61dd0e4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -493,6 +502,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "64b4b818-ef9a-4ffb-b046-a1e97b03a697",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse;Gamepad;Joystick",
+                    "action": "InvertGravity",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
