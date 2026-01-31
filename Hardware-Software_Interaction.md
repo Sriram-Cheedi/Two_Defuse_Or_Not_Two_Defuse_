@@ -12,7 +12,7 @@ cmd: function x y z ...
 |-------------------------|------------------------------------------------------|------------------------|-----------------------------------------------------------------------------------------|
 | Get displayed time left | $TMR:status#                                         | $X:status _time-left_# |                                                                                         |
 | Set time left           | $TMR:set _time-left_#                                | None                   |                                                                                         |
-| Set displayed digits    | $TMR:set _digit1_ _digit2_ _digit3_ _digit4_ _colon_ | None                   | Valid digits: 0, ..., 10 where 10 is digit off <br> Colon: "true" is on, "false" is off |
+| Set displayed digits    | $TMR:set _digit1_ _digit2_ _digit3_ _digit4_ _colon_# | None                   | Valid digits: 0, ..., 10 where 10 is digit off <br> Colon: "true" is on, "false" is off |
 
 
 ## IMU
