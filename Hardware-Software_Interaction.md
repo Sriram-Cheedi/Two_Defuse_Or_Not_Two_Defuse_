@@ -8,11 +8,11 @@ cmd: function x y z ...
 
 ## Timer
 
-| Command            | Code            | Values                              | Response             | Values                  | Description                                                                  |
-|--------------------|-----------------|-------------------------------------|----------------------|-------------------------|------------------------------------------------------------------------------|
-| Set remaining time | $TMR:set x#     | x: Time in seconds                  | $TMR:status y#        | y: Time in seconds      | Sets the timer to the equivalent MM:SS format for the given time in seconds. |
-| Flash timer        | $TMR:flash x y# | x: Number of flashes y: Flash delay | $TMR:status flashing# | y: Time in seconds      | Flashes all the digits of the timer                                          |
-| Set timer on/off   | $TMR:on x#      | x: 1 = on, 0 = off                  | $TMR:status x#        | x: -1 if off, >=0 if on | Turns the timer display on/off                                               |
+| Command                 | Code                                                 | Response               | Notes                                                                                   |
+|-------------------------|------------------------------------------------------|------------------------|-----------------------------------------------------------------------------------------|
+| Get displayed time left | $TMR:status#                                         | $X:status _time-left_# |                                                                                         |
+| Set time left           | $TMR:set _time-left_#                                | None                   |                                                                                         |
+| Set displayed digits    | $TMR:set _digit1_ _digit2_ _digit3_ _digit4_ _colon_ | None                   | Valid digits: 0, ..., 10 where 10 is digit off <br> Colon: "true" is on, "false" is off |
 
 Status of timer is the number of seconds it is displaying, unless display is turned off where the status is -1.
 
