@@ -3,10 +3,20 @@
 
 
 timerModule::timerModule(std::string name, int dataPin, int clockPin, int latchPin, SerialController serialController)
-: Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), seconds(0), serialController(serialController) {}
+: Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), seconds(0), serialController(serialController) {
+
+    pinMode(dataPin, OUTPUT);
+    pinMode(clockPin, OUTPUT);
+    pinMode(latchPin, OUTPUT);
+    pinMode(41, OUTPUT);
+
+    digitalWrite(41, HIGH);
+
+}
 
 
 void timerModule::set(std::vector<std::string> args){
+
     if(args.size() == 1){
         
         seconds = stoi(args[0]);
@@ -31,9 +41,10 @@ void timerModule::status(){
 
 
 void timerModule::setDigits(int* digits, bool colon){
-    memccpy(digitsBuffer, digits, 4, sizeof(int));
+    memcpy(digitsBuffer, digits, 4 * sizeof(int));
     colonEnabled = colon;
 }
+
 
 void timerModule::updateDisplay(){
 
@@ -46,14 +57,14 @@ void timerModule::updateDisplay(){
     if (currentDigit < 4){  // Show Digit
         shiftOut(dataPin, clockPin, LSBFIRST, digit_encodings[currentDigit]);
         shiftOut(dataPin, clockPin, LSBFIRST, segment_encodings[digitsBuffer[currentDigit]]);
-    }
-    
-    if (currentDigit == 4 && colonEnabled){  // Show Colon
+    } else if (currentDigit == 4 && colonEnabled){  // Show Colon
         shiftOut(dataPin, clockPin, LSBFIRST, digit_encodings[4]);
         shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
     }
     else{
         currentDigit = 0;
+        digitalWrite(latchPin, HIGH);
+        return;
     }
 
     digitalWrite(latchPin, HIGH);

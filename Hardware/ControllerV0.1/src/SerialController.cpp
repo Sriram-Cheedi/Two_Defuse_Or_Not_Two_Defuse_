@@ -5,7 +5,7 @@ SerialController::SerialController(){}
 
 void SerialController::serialWrite(std::string name, std::string args){
 
-    Serial.printf("$%s:%s#", name.c_str(), args.c_str());
+    Serial.printf("$%s:status %s#", name.c_str(), args.c_str());
 }
 
 void join(const std::vector<std::string>& v, char c, std::string& s) {
@@ -26,7 +26,7 @@ void SerialController::serialWrite(std::string name, std::vector<std::string> ar
 
     join(args, ' ', combinedArgs);
 
-    Serial.printf("$%s:%s#", name.c_str(), combinedArgs.c_str());
+    Serial.printf("$%s:status %s#", name.c_str(), combinedArgs.c_str());
 }
 
 std::string SerialController::serialRecieve(){
@@ -35,7 +35,7 @@ std::string SerialController::serialRecieve(){
 
         if(Serial.read() != '$') break;
 
-        std::string cmd = std::string(Serial.readStringUntil('#').c_str()).c_str();
+        std::string cmd = std::string(Serial.readStringUntil('#').c_str());
 
         if(cmd != ""){
             return cmd;

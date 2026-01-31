@@ -45,6 +45,10 @@ void imu::update(){
         gyroY = g.gyro.y;
         gyroZ = g.gyro.z;
 
+        accelX = a.acceleration.x;
+        accelY = a.acceleration.y;
+        accelZ = a.acceleration.z;
+
         status();
 
         if (millis() - lastMotionTime > motionTimout){
@@ -59,6 +63,6 @@ void imu::set(std::vector<std::string> args){
 
 void imu::status(){
 
-    serialController.serialWrite(name, {std::to_string(gyroX), std::to_string(gyroY), std::to_string(gyroZ)});
+    serialController.serialWrite(name, {std::to_string(gyroX), std::to_string(gyroY), std::to_string(gyroZ), std::to_string(accelX), std::to_string(accelY), std::to_string(accelZ)});
 
 }

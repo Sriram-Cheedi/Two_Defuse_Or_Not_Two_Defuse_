@@ -8,10 +8,10 @@
 
 SerialController serialController = SerialController();
 
-timerModule timer = timerModule("TMR", 23, 24, 25, serialController);
-imu gyro = imu("imu", serialController);
+timerModule timer = timerModule("TMR", 27, 25, 26, serialController);
+imu gyro = imu("IMU", serialController);
 
-std::vector<std::unique_ptr<Component>> components;
+std::vector<Component*> components;
 
 std::vector<std::string> split(const std::string& s) {
     std::stringstream ss(s);
@@ -44,10 +44,13 @@ void parseCommand(std::string command){
 }
 
 void setup() {
-  components.push_back(std::make_unique<timerModule>(timer));
-  components.push_back(std::make_unique<imu>(gyro));
-  
-  timer.set({"500"});
+  components.reserve(50);
+
+  components.push_back(&timer);
+  components.push_back(&gyro);  
+
+  timer.set({"0"});
+
 }
 
 void loop() {
