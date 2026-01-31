@@ -36,6 +36,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 standOrigin;
     private Vector3 crouchOrigin;
 
+    [SerializeField] private ApiManager api_manager;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
@@ -48,6 +50,16 @@ public class PlayerController : MonoBehaviour
         downSpeed = 5.0f;
         SetStandCenter();
         SetCrouchCenter();
+    }
+
+    private void OnEnable() { api_manager.OnGyroChanged += RotateLevel; }
+    private void OnDisable() { api_manager.OnGyroChanged -= RotateLevel; }
+    private void RotateLevel(string str, float rotationValue)
+    {
+        Debug.Log("Rotating: " + rotationValue);
+
+        // This will smoothly interpolate 
+        controller.transform.Rotate(0, 0, rotationValue);
     }
 
     public void OnMove(InputAction.CallbackContext ctx)
@@ -95,7 +107,7 @@ public class PlayerController : MonoBehaviour
             {
                 return;
             }
-            speed = defaultSpeed;   
+            speed = defaultSpeed;
             controller.height = Mathf.Lerp(controller.height, standHeight, downSpeed * Time.deltaTime);
             controller.center = Vector3.Lerp(controller.center, standOrigin, downSpeed * Time.deltaTime);
         }
@@ -112,7 +124,7 @@ public class PlayerController : MonoBehaviour
             crouchPressed = false;
         }
     }
-    
+
     private bool IsObstacleAbove()
     {
         Vector3 origin = transform.position + crouchOrigin;
@@ -120,7 +132,7 @@ public class PlayerController : MonoBehaviour
         float maxDist = standHeight - crouchHeight;
         return Physics.SphereCast(origin, radius, Vector3.up, out _, maxDist, ~0, QueryTriggerInteraction.Ignore);
     }
-    
+
     // Update is called once per frame
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
@@ -137,11 +149,11 @@ public class PlayerController : MonoBehaviour
         horizontalMove = moveDir.normalized * speed;
         return horizontalMove;
     }
-    
+
     private Vector3 ComputeHorizontalMoveDirOnSlope()
     {
         Vector3 slopDir = Vector3.ProjectOnPlane(Vector3.down, surfaceNormal).normalized;
-        Vector3 sidewayDir = Vector3.Cross(surfaceNormal,slopDir).normalized;
+        Vector3 sidewayDir = Vector3.Cross(surfaceNormal, slopDir).normalized;
         Vector3 sidewayMove = sidewayDir * moveInput.x;
         horizontalMove = sidewayMove * speed + slopDir * slideSpeed;
         return horizontalMove;
@@ -158,7 +170,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    
+
     void Update()
     {
         if (controller.isGrounded && onSlope)
@@ -171,8 +183,8 @@ public class PlayerController : MonoBehaviour
             //allow for full move
             horizontalMove = ComputeHorizontalMoveDir();
             ComputeVerticalVelocity();
-        }   
-        
+        }
+
         if (controller.isGrounded && verticalVelocity < 0.0f)
         {
             verticalVelocity = -2f;
