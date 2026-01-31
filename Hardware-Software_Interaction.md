@@ -14,7 +14,12 @@ cmd: function x y z ...
 | Set time left           | $TMR:set _time-left_#                                | None                   |                                                                                         |
 | Set displayed digits    | $TMR:set _digit1_ _digit2_ _digit3_ _digit4_ _colon_ | None                   | Valid digits: 0, ..., 10 where 10 is digit off <br> Colon: "true" is on, "false" is off |
 
-Status of timer is the number of seconds it is displaying, unless display is turned off where the status is -1.
+
+## IMU
+
+| Command           | Code         | Response                                                        | Notes                                                                         |
+|-------------------|--------------|-----------------------------------------------------------------|-------------------------------------------------------------------------------|
+| Get status of IMU | $IMU:status# | $IMU:status _gyroX_ _gyroY_ _gyroZ_ _accelX_ _accelY_ _accelZ_# | Response will be sent when requested OR whenever movement is detected by IMU. |
 
 ## Asynchronous Minigames
 
