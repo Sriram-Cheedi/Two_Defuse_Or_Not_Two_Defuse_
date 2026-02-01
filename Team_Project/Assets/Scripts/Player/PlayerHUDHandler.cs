@@ -5,10 +5,11 @@ using UnityEngine;
 public class PlayerHUDHandler : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
-    [SerializeField] private GameObject time_bars;
+    public GameObject time_bars;
 
     public void Update()
     {
+
         if (GameManager.Instance != null)
         {
             timerText.text = GameManager.Instance.bombTimer.ToString("F2");
@@ -21,8 +22,7 @@ public class PlayerHUDHandler : MonoBehaviour
     }
     public void TogglePopup()
     {
-        bool isActive = time_bars.activeSelf;
-        time_bars.SetActive(!isActive);
+        time_bars.SetActive(true);
     }
 }
 
