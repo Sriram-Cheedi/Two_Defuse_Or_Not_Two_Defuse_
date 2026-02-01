@@ -6,11 +6,14 @@ public class ApiManager : MonoBehaviour
 {
     public SerialManager serial;
 
-    public event Action<string, int> OnInputChanged;     
-    public event Action<string, float> OnGyroChanged;      
+    public event Action<string, int> OnInputChanged;
+    public event Action<Vector3> OnGyroChanged;
+    public event Action<Vector3, Vector3> OnImuChanged;
+    private Dictionary<string, int> ComponentStateManager = new Dictionary<string, int>();
 
-    Dictionary<string, int> ComponentStateManager = new Dictionary<string, int>();
-    Dictionary<string, float> GyroStates = new Dictionary<string, float>();
+    private Vector3 GyroValue = Vector3.zero;
+    private Vector3 AccelerometerValue = Vector3.zero;
+    private bool HasAccelerometer = false;
 
     void Awake()
     {
@@ -27,10 +30,6 @@ public class ApiManager : MonoBehaviour
         ComponentStateManager["LED1"] = 0;
         ComponentStateManager["LED2"] = 0;
         ComponentStateManager["LED3"] = 0;
-
-        GyroStates["GYR1"] = 0f;
-        GyroStates["GYR2"] = 0f;
-        GyroStates["GYR3"] = 0f; 
     }
 
     void OnEnable()
@@ -47,69 +46,105 @@ public class ApiManager : MonoBehaviour
         }
     }
 
- 
     private void HandleMessage(string message)
     {
-        if (string.IsNullOrEmpty(message))
-        {
+        if (string.IsNullOrWhiteSpace(message)){
             return;
+        }
+
+        message = message.Trim();
+        if (message.StartsWith("$")){
+            message = message.Substring(1);
+        }
+        if (message.EndsWith("#")){
+            message = message.Substring(0, message.Length - 1);
         }
 
         int colonIndex = message.IndexOf(':');
-
-        if (colonIndex == -1)
-        {
+        if (colonIndex == -1){
             return;
         }
 
-        string header = message.Substring(0, colonIndex);     
-        string CommandPart = message.Substring(colonIndex + 1);   
+        string header = message.Substring(0, colonIndex);
+        string commandPart = message.Substring(colonIndex + 1);
 
-        int spaceIndex = CommandPart.IndexOf(' ');
-
-        if (spaceIndex == -1)
-        {
+        int spaceIndex = commandPart.IndexOf(' ');
+        if (spaceIndex == -1){
             return;
         }
 
-        string Command = CommandPart.Substring(0, spaceIndex);       
-        string Value = CommandPart.Substring(spaceIndex + 1); 
+        string command = commandPart.Substring(0, spaceIndex);
+        string value = commandPart.Substring(spaceIndex + 1);
 
-        if (Command != "set" && Command != "status")
-        {
+        if (command != "set" && command != "status"){
             return;
         }
 
-        if (header.StartsWith("GYR"))
+        if (header == "GYR" && command == "status")
         {
-            if (!GyroStates.ContainsKey(header))
-            {
+            string[] parts = value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length != 3){
                 return;
             }
 
-            float NewValue = float.Parse(Value);
-            float OldValue = GyroStates[header];
+            float gx = float.Parse(parts[0]);
+            float gy = float.Parse(parts[1]);
+            float gz = float.Parse(parts[2]);
 
-            if (OldValue == NewValue)
-            {
+            Vector3 newGyro = new Vector3(gx, gy, gz);
+
+            if (GyroValue == newGyro && HasAccelerometer == false){
                 return;
             }
 
-            GyroStates[header] = NewValue;
-            OnGyroChanged?.Invoke(header, NewValue);
-            return;
+            GyroValue = newGyro;
+            HasAccelerometer = false;
+
+            OnGyroChanged?.Invoke(GyroValue);{
+                return;
+            }
         }
 
-        if (!ComponentStateManager.ContainsKey(header))
+
+        if (header == "IMU" && command == "status")
         {
+            string[] parts = value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length != 6){
+                return;
+            }
+
+            float gx = float.Parse(parts[0]);
+            float gy = float.Parse(parts[1]);
+            float gz = float.Parse(parts[2]);
+
+            float ax = float.Parse(parts[3]);
+            float ay = float.Parse(parts[4]);
+            float az = float.Parse(parts[5]);
+
+            Vector3 newGyro = new Vector3(gx, gy, gz);
+            Vector3 newAccel = new Vector3(ax, ay, az);
+
+            if (GyroValue == newGyro && AccelerometerValue == newAccel && HasAccelerometer == true){
+                return;
+            }
+
+            GyroValue = newGyro;
+            AccelerometerValue = newAccel;
+            HasAccelerometer = true;
+
+            OnImuChanged?.Invoke(GyroValue, AccelerometerValue);{
+                return;
+            }
+        }
+
+        if (!ComponentStateManager.ContainsKey(header)){
             return;
         }
 
-        int newInt = int.Parse(Value);
+        int newInt = int.Parse(value);
         int oldInt = ComponentStateManager[header];
 
-        if (oldInt == newInt)
-        {
+        if (oldInt == newInt){
             return;
         }
 
@@ -117,29 +152,28 @@ public class ApiManager : MonoBehaviour
         OnInputChanged?.Invoke(header, newInt);
     }
 
-    public int GetDigital(string header)
-    {
+    public int GetDigital(string header){
         return ComponentStateManager[header];
     }
-
-    public float GetGyro(string header)
-    {
-        return GyroStates[header];
+    public Vector3 GetGyro(){
+        return GyroValue;
+    }
+    public bool GetHasAccelerometer(){
+        return HasAccelerometer;
+    }
+    public Vector3 GetAccel(){
+        return AccelerometerValue;
     }
 
-    public int GetButton(string id)
-    { 
-        return ComponentStateManager["BTN" + id]; 
+    public int GetButton(string id){
+        return ComponentStateManager["BTN" + id];
     }
-    public int GetSwitch(string id)
-    { 
-        return ComponentStateManager["SWT" + id]; 
+    public int GetSwitch(string id){
+        return ComponentStateManager["SWT" + id];
     }
-    public int GetLed(string id)
-    { 
-        return ComponentStateManager["LED" + id]; 
+    public int GetLed(string id){
+        return ComponentStateManager["LED" + id];
     }
-
 
     public void SendSet(string header, int value)
     {
@@ -147,11 +181,6 @@ public class ApiManager : MonoBehaviour
         serial.SendToArduino(message);
     }
 
-    public void SendSetGyro(string header, float value)
-    {
-        string message = "$" + header + ":set " + value + "#";
-        serial.SendToArduino(message);
-    }
     public void TimerSet(int seconds)
     {
         string message = "$TMR:set " + seconds + "#";
@@ -164,9 +193,9 @@ public class ApiManager : MonoBehaviour
         serial.SendToArduino(message);
     }
 
-    public void TimerOnOff(int OnOff)
+    public void TimerOnOff(int onOff)
     {
-        string message = "$TMR:on " + OnOff + "#";
+        string message = "$TMR:on " + onOff + "#";
         serial.SendToArduino(message);
     }
 

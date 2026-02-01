@@ -14,10 +14,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float defaultSpeed = 12f;
     [SerializeField] private float speed;
     [SerializeField] private float slideSpeed = 12f;
-    [SerializeField] private float terminalVelocity = -30f;
+    [SerializeField] private float terminalDownVelocity = -30f;
+    [SerializeField] private float terminalUpVelocity = -30f;
 
     [Header("Jump")]
     [SerializeField] private float jumpHeight = 2f;
+    [SerializeField] private float springHeight = 6f;
+    [SerializeField] private float defaultGravity = -20f;
     [SerializeField] private float gravity = -20f;
 
     [Header("Crouch")]
@@ -26,40 +29,61 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float crouchSpeed;
     [SerializeField] private float downSpeed;
 
+    [Header("External")]
+    [SerializeField] private ApiManager api_manager;
+
     private Vector2 moveInput;
     private Vector3 horizontalMove;
     private Vector3 surfaceNormal;
     private float verticalVelocity;
     private bool onSlope;
+    private bool onSpring;
+    private bool invertGravity;
     private bool jumpQueued;
     private bool obstacleAbove;
     private Vector3 standOrigin;
     private Vector3 crouchOrigin;
+    private bool grounded;
 
-    [SerializeField] private ApiManager api_manager;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
+
         standHeight = controller.height;
         standCenterY = controller.center.y;
+
         crouchHeight = controller.height / 2f;
         crouchSpeed = defaultSpeed / 2f;
+
         speed = defaultSpeed;
         downSpeed = 5.0f;
+        invertGravity = false;
+
         SetStandCenter();
         SetCrouchCenter();
     }
 
-    private void OnEnable() { api_manager.OnGyroChanged += RotateLevel; }
-    private void OnDisable() { api_manager.OnGyroChanged -= RotateLevel; }
-    private void RotateLevel(string str, float rotationValue)
+    private void OnEnable()
     {
-        Debug.Log("Rotating: " + rotationValue);
+        if (api_manager != null)
+            api_manager.OnImuChanged += RotateLevel;
+    }
 
-        // This will smoothly interpolate 
-        controller.transform.Rotate(0, 0, rotationValue);
+    private void OnDisable()
+    {
+        if (api_manager != null)
+            api_manager.OnImuChanged -= RotateLevel;
+    }
+
+    private void RotateLevel(Vector3 gyro, Vector3 rotationValue)
+    {
+
+        // Flip gravity direction (so jump/gravity math stays consistent with sign)
+        // gravity = -gravity;
+        // Rotate the player (or level) around Z, as you had
+        Physics.gravity = gyro;
+        Debug.Log(gyro.x +" "+ gyro.y +" "+ gyro.z);
+        transform.Rotate(gyro.x, gyro.y, gyro.z);
     }
 
     public void OnMove(InputAction.CallbackContext ctx)
@@ -70,8 +94,22 @@ public class PlayerController : MonoBehaviour
     public void OnJump(InputAction.CallbackContext ctx)
     {
         if (ctx.performed && !IsObstacleAbove())
-        {
             jumpQueued = true;
+    }
+
+    public void OnCrouch(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed) crouchPressed = true;
+        else if (ctx.canceled) crouchPressed = false;
+    }
+
+    public void OnInvertGravity(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            invertGravity = !invertGravity;
+            transform.Rotate(0,0,180);
+            
         }
     }
 
@@ -92,36 +130,24 @@ public class PlayerController : MonoBehaviour
     private void SetCrouch(bool isCrouch)
     {
         obstacleAbove = IsObstacleAbove();
+
         if (isCrouch)
         {
-            if (controller.isGrounded)
-            {
+            if (grounded)
                 speed = crouchSpeed;
-            }
+
             controller.height = Mathf.Lerp(controller.height, crouchHeight, downSpeed * Time.deltaTime);
             controller.center = Vector3.Lerp(controller.center, crouchOrigin, downSpeed * Time.deltaTime);
         }
         else
         {
             if (obstacleAbove)
-            {
                 return;
-            }
+
             speed = defaultSpeed;
+
             controller.height = Mathf.Lerp(controller.height, standHeight, downSpeed * Time.deltaTime);
             controller.center = Vector3.Lerp(controller.center, standOrigin, downSpeed * Time.deltaTime);
-        }
-    }
-
-    public void OnCrouch(InputAction.CallbackContext ctx)
-    {
-        if (ctx.performed)
-        {
-            crouchPressed = true;
-        }
-        else if (ctx.canceled)
-        {
-            crouchPressed = false;
         }
     }
 
@@ -130,16 +156,26 @@ public class PlayerController : MonoBehaviour
         Vector3 origin = transform.position + crouchOrigin;
         float radius = controller.radius * 0.95f;
         float maxDist = standHeight - crouchHeight;
-        return Physics.SphereCast(origin, radius, Vector3.up, out _, maxDist, ~0, QueryTriggerInteraction.Ignore);
+        Vector3 rayDir = !invertGravity ? Vector3.up : Vector3.down;
+
+        return Physics.SphereCast(
+            origin,
+            radius,
+            rayDir,
+            out _,
+            maxDist,
+            ~0,
+            QueryTriggerInteraction.Ignore
+        );
     }
 
-    // Update is called once per frame
-    void OnControllerColliderHit(ControllerColliderHit hit)
+    private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (hit.moveDirection.y < -0.3f)
         {
             surfaceNormal = hit.normal;
             onSlope = hit.collider.CompareTag("Slide");
+            onSpring = hit.collider.CompareTag("Spring");
         }
     }
 
@@ -155,47 +191,80 @@ public class PlayerController : MonoBehaviour
         Vector3 slopDir = Vector3.ProjectOnPlane(Vector3.down, surfaceNormal).normalized;
         Vector3 sidewayDir = Vector3.Cross(surfaceNormal, slopDir).normalized;
         Vector3 sidewayMove = sidewayDir * moveInput.x;
+
         horizontalMove = sidewayMove * speed + slopDir * slideSpeed;
         return horizontalMove;
     }
 
     private void ComputeVerticalVelocity()
     {
-        if (jumpQueued)
+        if (!jumpQueued) return;
+
+        jumpQueued = false;
+
+        if (grounded && !invertGravity)
         {
-            jumpQueued = false;
-            if (controller.isGrounded)
-            {
-                verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            }
+            verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * defaultGravity);
+        }else if (grounded && invertGravity)
+        {
+            verticalVelocity = -Mathf.Sqrt(jumpHeight * -2f * defaultGravity);
         }
+            
     }
 
-    void Update()
+    private void Spring()
     {
-        if (controller.isGrounded && onSlope)
+        if (onSpring && grounded)
+            verticalVelocity = Mathf.Sqrt(springHeight * -2f * defaultGravity);
+    }
+
+    private void GravityInvert(bool isGravityInvert, CollisionFlags flags)
+    {
+        if (isGravityInvert)
         {
-            //only allow for side to side movement on slop
+            gravity = -defaultGravity;
+            grounded = (flags & CollisionFlags.Above) != 0;
+            if (verticalVelocity > 0.0f && grounded) //if going down in world dir
+            {
+                verticalVelocity = 2f;
+            }
+        }
+        else
+        {
+            gravity = defaultGravity;
+            grounded = (flags & CollisionFlags.Below) != 0;
+            if (verticalVelocity < 0.0f && grounded) //if going up in world dir
+            {
+                verticalVelocity = -2f;
+            }
+        }
+        verticalVelocity += gravity * Time.deltaTime;
+    }
+
+    private void Update()
+    {
+        if (grounded && onSlope)
+        {
+            // Only allow side-to-side movement on slope + forced slide direction
             horizontalMove = ComputeHorizontalMoveDirOnSlope();
         }
         else
         {
-            //allow for full move
+            // Full movement
             horizontalMove = ComputeHorizontalMoveDir();
             ComputeVerticalVelocity();
         }
 
-        if (controller.isGrounded && verticalVelocity < 0.0f)
-        {
-            verticalVelocity = -2f;
-        }
-        else
-        {
-            verticalVelocity += gravity * Time.deltaTime;
-        }
-        verticalVelocity = Mathf.Max(verticalVelocity, terminalVelocity);
+        // Apply gravity
+
+        
+        verticalVelocity = Mathf.Max(verticalVelocity, terminalDownVelocity);
+
         Vector3 move = horizontalMove + Vector3.up * verticalVelocity;
-        controller.Move(move * Time.deltaTime);
+        CollisionFlags flags = controller.Move(move * Time.deltaTime);
+        
         SetCrouch(crouchPressed);
+        Spring();
+        GravityInvert(invertGravity, flags);
     }
 }
