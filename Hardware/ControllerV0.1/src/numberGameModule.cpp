@@ -19,7 +19,14 @@ void numberGameModule::status(){
 }
 
 void numberGameModule::buttonCheck(){
-    buttonState = digitalRead(buttonPin);
+    int sensorValue = analogRead(buttonPin);
+    unsigned long now = micros();
+    if (now - lastUpdate < refreshInterval){
+       float voltage = sensorValue * (3.3 / 1023.0);
+        Serial.println(voltage);
+    }
+    
+    /*buttonState = digitalRead(buttonPin);
 
     if (buttonState != lastButtonState) {
         if (buttonState == HIGH) {
@@ -28,16 +35,12 @@ void numberGameModule::buttonCheck(){
                 buttonPushCounter = 0;
             }
             digitsBuffer[0] = buttonPushCounter / 1000;
-            Serial.println(digitsBuffer[0]);
             digitsBuffer[1] = (buttonPushCounter % 1000) / 100;
-            Serial.println(digitsBuffer[1]);
             digitsBuffer[2] = (buttonPushCounter % 100) / 10;
-            Serial.println(digitsBuffer[2]);
             digitsBuffer[3] = (buttonPushCounter % 10);
-            Serial.println(digitsBuffer[3]);
         }
     }
-    lastButtonState = buttonState;
+    lastButtonState = buttonState;*/
 }
 
 void numberGameModule::updateDisplay(){

@@ -11,7 +11,7 @@ SerialController serialController = SerialController();
 
 timerModule timer = timerModule("TMR", 23, 24, 25, serialController);
 
-numberGameModule numberGame = numberGameModule("NGM",36,34,35,33,serialController);
+numberGameModule numberGame = numberGameModule("NGM",36,34,35,A8,serialController);
 
 std::vector<std::unique_ptr<Component>> components;
 

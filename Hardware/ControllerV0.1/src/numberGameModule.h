@@ -19,7 +19,7 @@ private:
     SerialController serialController;
 
     unsigned long lastUpdate = 0;
-    const unsigned int refreshInterval = 200;
+    const unsigned int refreshInterval = 2000000;
     uint8_t currentDigit = 0; 
     int digitsBuffer[4] = {0,0,0,0};
 
