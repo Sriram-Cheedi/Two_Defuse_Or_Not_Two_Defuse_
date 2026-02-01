@@ -66,24 +66,24 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         if (api_manager != null)
-            api_manager.OnGyroChanged += RotateLevel;
+            api_manager.OnImuChanged += RotateLevel;
     }
 
     private void OnDisable()
     {
         if (api_manager != null)
-            api_manager.OnGyroChanged -= RotateLevel;
+            api_manager.OnImuChanged -= RotateLevel;
     }
 
-    private void RotateLevel(string str, float rotationValue)
+    private void RotateLevel(Vector3 gyro, Vector3 rotationValue)
     {
-        Debug.Log("Rotating: " + rotationValue);
 
         // Flip gravity direction (so jump/gravity math stays consistent with sign)
-        gravity = -gravity;
-
+        // gravity = -gravity;
         // Rotate the player (or level) around Z, as you had
-        transform.Rotate(0f, 0f, rotationValue);
+        Physics.gravity = gyro;
+        Debug.Log(gyro.x +" "+ gyro.y +" "+ gyro.z);
+        transform.Rotate(gyro.x, gyro.y, gyro.z);
     }
 
     public void OnMove(InputAction.CallbackContext ctx)
@@ -259,8 +259,6 @@ public class PlayerController : MonoBehaviour
 
         
         verticalVelocity = Mathf.Max(verticalVelocity, terminalDownVelocity);
-        Debug.Log(verticalVelocity);
-        Debug.Log(grounded);
 
         Vector3 move = horizontalMove + Vector3.up * verticalVelocity;
         CollisionFlags flags = controller.Move(move * Time.deltaTime);

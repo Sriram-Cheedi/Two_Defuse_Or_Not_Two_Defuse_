@@ -9,13 +9,12 @@ public class ApiTestListener : MonoBehaviour
     void OnEnable()
     {
         api.OnInputChanged += DigitalChanged;
-        api.OnGyroChanged += GyroChanged;
     }
 
     void OnDisable()
     {
         api.OnInputChanged -= DigitalChanged;
-        api.OnGyroChanged -= GyroChanged;
+
     }
 
     void DigitalChanged(string header, int value)
@@ -33,7 +32,7 @@ public class ApiTestListener : MonoBehaviour
         {
             Debug.Log("GET BTN1 -> " + api.GetButton("1"));
             Debug.Log("GET SWT2 -> " + api.GetSwitch("1"));
-            Debug.Log("GET GYR0 -> " + api.GetGyro("GYR1"));
+
         }
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
