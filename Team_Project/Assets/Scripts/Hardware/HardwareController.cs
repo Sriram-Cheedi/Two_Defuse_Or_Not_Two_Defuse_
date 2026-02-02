@@ -2,66 +2,75 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-public class ApiManager : MonoBehaviour
+public class HardwareController : MonoBehaviour, I_HardwareController
 {
-    public SerialManager serial;
-
+    [SerializeField] private SerialPortController serial;
     public event Action<string, int> OnInputChanged;
     public event Action<Vector3> OnGyroChanged;
     public event Action<Vector3, Vector3> OnImuChanged;
-    private Dictionary<string, int> ComponentStateManager = new Dictionary<string, int>();
+    private Dictionary<string, int> _componentStateManager = new Dictionary<string, int>();
+    private Vector3 _gyroValue = Vector3.zero;
+    private Vector3 _accelerometerValue = Vector3.zero;
+    private bool _hasAccelerometer = false;
 
-    private Vector3 GyroValue = Vector3.zero;
-    private Vector3 AccelerometerValue = Vector3.zero;
-    private bool HasAccelerometer = false;
+    // Getters
+    public Vector3 getGyroValue => _gyroValue;
+    public Vector3 getAccelerometerValue => _accelerometerValue;
+    public bool getHasAccelerometer => _hasAccelerometer;
+    public Dictionary<string, int> getComponentStateManager => _componentStateManager;
+    private void Awake() => Initialize();
+    private void OnDestroy() => Exit();
 
-    void Awake()
+    public void Initialize()
     {
-        ComponentStateManager["BTN1"] = 0;
-        ComponentStateManager["BTN2"] = 0;
-        ComponentStateManager["BTN3"] = 0;
-        ComponentStateManager["BTN4"] = 0;
-        ComponentStateManager["BTN5"] = 0;
+        _componentStateManager["BTN1"] = 0;
+        _componentStateManager["BTN2"] = 0;
+        _componentStateManager["BTN3"] = 0;
+        _componentStateManager["BTN4"] = 0;
+        _componentStateManager["BTN5"] = 0;
 
-        ComponentStateManager["SWT1"] = 0;
-        ComponentStateManager["SWT2"] = 0;
-        ComponentStateManager["SWT3"] = 0;
+        _componentStateManager["SWT1"] = 0;
+        _componentStateManager["SWT2"] = 0;
+        _componentStateManager["SWT3"] = 0;
 
-        ComponentStateManager["LED1"] = 0;
-        ComponentStateManager["LED2"] = 0;
-        ComponentStateManager["LED3"] = 0;
-    }
+        _componentStateManager["LED1"] = 0;
+        _componentStateManager["LED2"] = 0;
+        _componentStateManager["LED3"] = 0;
 
-    void OnEnable()
-    {
-        if (serial != null){
+        if (serial != null)
+        {
             serial.Received += HandleMessage;
         }
     }
 
-    void OnDisable()
+    void Exit()
     {
-        if (serial != null){
+        if (serial != null)
+        {
             serial.Received -= HandleMessage;
         }
     }
 
-    private void HandleMessage(string message)
+    public void HandleMessage(string message)
     {
-        if (string.IsNullOrWhiteSpace(message)){
+        if (string.IsNullOrWhiteSpace(message))
+        {
             return;
         }
 
         message = message.Trim();
-        if (message.StartsWith("$")){
+        if (message.StartsWith("$"))
+        {
             message = message.Substring(1);
         }
-        if (message.EndsWith("#")){
+        if (message.EndsWith("#"))
+        {
             message = message.Substring(0, message.Length - 1);
         }
 
         int colonIndex = message.IndexOf(':');
-        if (colonIndex == -1){
+        if (colonIndex == -1)
+        {
             return;
         }
 
@@ -69,21 +78,24 @@ public class ApiManager : MonoBehaviour
         string commandPart = message.Substring(colonIndex + 1);
 
         int spaceIndex = commandPart.IndexOf(' ');
-        if (spaceIndex == -1){
+        if (spaceIndex == -1)
+        {
             return;
         }
 
         string command = commandPart.Substring(0, spaceIndex);
         string value = commandPart.Substring(spaceIndex + 1);
 
-        if (command != "set" && command != "status"){
+        if (command != "set" && command != "status")
+        {
             return;
         }
 
         if (header == "GYR" && command == "status")
         {
             string[] parts = value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length != 3){
+            if (parts.Length != 3)
+            {
                 return;
             }
 
@@ -93,14 +105,16 @@ public class ApiManager : MonoBehaviour
 
             Vector3 newGyro = new Vector3(gx, gy, gz);
 
-            if (GyroValue == newGyro && HasAccelerometer == false){
+            if (_gyroValue == newGyro && _hasAccelerometer == false)
+            {
                 return;
             }
 
-            GyroValue = newGyro;
-            HasAccelerometer = false;
+            _gyroValue = newGyro;
+            _hasAccelerometer = false;
 
-            OnGyroChanged?.Invoke(GyroValue);{
+            OnGyroChanged?.Invoke(_gyroValue);
+            {
                 return;
             }
         }
@@ -109,7 +123,8 @@ public class ApiManager : MonoBehaviour
         if (header == "IMU" && command == "status")
         {
             string[] parts = value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length != 6){
+            if (parts.Length != 6)
+            {
                 return;
             }
 
@@ -124,55 +139,66 @@ public class ApiManager : MonoBehaviour
             Vector3 newGyro = new Vector3(gx, gy, gz);
             Vector3 newAccel = new Vector3(ax, ay, az);
 
-            if (GyroValue == newGyro && AccelerometerValue == newAccel && HasAccelerometer == true){
+            if (_gyroValue == newGyro && _accelerometerValue == newAccel && _hasAccelerometer == true)
+            {
                 return;
             }
 
-            GyroValue = newGyro;
-            AccelerometerValue = newAccel;
-            HasAccelerometer = true;
+            _gyroValue = newGyro;
+            _accelerometerValue = newAccel;
+            _hasAccelerometer = true;
 
-            OnImuChanged?.Invoke(GyroValue, AccelerometerValue);{
+            OnImuChanged?.Invoke(_gyroValue, _accelerometerValue);
+            {
                 return;
             }
         }
 
-        if (!ComponentStateManager.ContainsKey(header)){
+        if (!_componentStateManager.ContainsKey(header))
+        {
             return;
         }
 
         int newInt = int.Parse(value);
-        int oldInt = ComponentStateManager[header];
+        int oldInt = _componentStateManager[header];
 
-        if (oldInt == newInt){
+        if (oldInt == newInt)
+        {
             return;
         }
 
-        ComponentStateManager[header] = newInt;
+        _componentStateManager[header] = newInt;
         OnInputChanged?.Invoke(header, newInt);
     }
 
-    public int GetDigital(string header){
-        return ComponentStateManager[header];
+    public int GetDigital(string header)
+    {
+        return _componentStateManager[header];
     }
-    public Vector3 GetGyro(){
-        return GyroValue;
+    public Vector3 GetGyro()
+    {
+        return _gyroValue;
     }
-    public bool GetHasAccelerometer(){
-        return HasAccelerometer;
+    public bool GetHasAccelerometer()
+    {
+        return _hasAccelerometer;
     }
-    public Vector3 GetAccel(){
-        return AccelerometerValue;
+    public Vector3 GetAccel()
+    {
+        return _accelerometerValue;
     }
 
-    public int GetButton(string id){
-        return ComponentStateManager["BTN" + id];
+    public int GetButton(string id)
+    {
+        return _componentStateManager["BTN" + id];
     }
-    public int GetSwitch(string id){
-        return ComponentStateManager["SWT" + id];
+    public int GetSwitch(string id)
+    {
+        return _componentStateManager["SWT" + id];
     }
-    public int GetLed(string id){
-        return ComponentStateManager["LED" + id];
+    public int GetLed(string id)
+    {
+        return _componentStateManager["LED" + id];
     }
 
     public void SendSet(string header, int value)
@@ -205,7 +231,7 @@ public class ApiManager : MonoBehaviour
         serial.SendToArduino(message);
     }
 
-    public void Reset(string header)
+    public void ResetHardware(string header)
     {
         string message = "$" + header + ":reset 0#";
         serial.SendToArduino(message);

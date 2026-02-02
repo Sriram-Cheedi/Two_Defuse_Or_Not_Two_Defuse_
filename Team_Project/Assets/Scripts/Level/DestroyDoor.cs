@@ -7,20 +7,21 @@ public class DestroyDoor : MonoBehaviour
 {
     [SerializeField] private GameObject[] doors;
     [SerializeField] private float delay = 1f;
-    public ApiManager api;
+    [SerializeField] private HardwareProvider _hardwareProvider;
+    private I_HardwareController _activeHardware;
     private bool[] buttonsPressed;
     private void Awake()
     {
-        api = GameObject.FindGameObjectWithTag("API").GetComponent<ApiManager>();
+        _activeHardware = _hardwareProvider.ActiveHardware;
         buttonsPressed = new bool[3];
     }
-    
+
     private void GetButtonsValues()
     {
         for (int i = 0; i < buttonsPressed.Length; i++)
         {
             int buttonId = i + 1;
-            int buttonValue = api.GetButton(buttonId.ToString());
+            int buttonValue = _activeHardware.GetButton(buttonId.ToString());
             if (buttonValue == 1)
             {
                 buttonsPressed[i] = true;
@@ -32,7 +33,7 @@ public class DestroyDoor : MonoBehaviour
         }
     }
 
-        public void OnInput(InputAction.CallbackContext context)
+    public void OnInput(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
@@ -87,6 +88,6 @@ public class DestroyDoor : MonoBehaviour
         //         Destroy(doors[i]);
         //     }
         // }
-        
+
     }
 }

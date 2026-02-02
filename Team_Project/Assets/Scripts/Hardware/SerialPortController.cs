@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.IO.Ports;
 
-public class SerialManager : MonoBehaviour
+public class SerialPortController : MonoBehaviour
 {
     public string port = "COM1";
     public int baudRate = 115200;
@@ -30,7 +30,8 @@ public class SerialManager : MonoBehaviour
 
     void Update()
     {
-        if (serial == null || !serial.IsOpen){
+        if (serial == null || !serial.IsOpen)
+        {
             return;
         }
 
@@ -42,13 +43,15 @@ public class SerialManager : MonoBehaviour
             {
                 int start = buffer.IndexOf('$');
 
-                if (start == -1){
+                if (start == -1)
+                {
                     break;
                 }
 
                 int end = buffer.IndexOf('#', start + 1);
 
-                if (end == -1){
+                if (end == -1)
+                {
                     break;
                 }
 

@@ -1,0 +1,33 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+public interface I_HardwareController
+{
+    public event Action<string, int> OnInputChanged;
+    public event Action<Vector3> OnGyroChanged;
+    public event Action<Vector3, Vector3> OnImuChanged;
+
+    // Getters
+    Dictionary<string, int> getComponentStateManager { get; }
+    Vector3 getAccelerometerValue { get; }
+    bool getHasAccelerometer { get; }
+    Vector3 getGyroValue { get; }
+
+    // Methods
+    public void Initialize();
+    public void HandleMessage(string message);
+    public int GetDigital(string header);
+    public Vector3 GetGyro();
+    public bool GetHasAccelerometer();
+    public Vector3 GetAccel();
+    public int GetButton(string id);
+    public int GetSwitch(string id);
+    public int GetLed(string id);
+    public void SendSet(string header, int value);
+    public void TimerSet(int seconds);
+    public void TimerFlash(int times, int delay);
+    public void TimerOnOff(int onOff);
+    public void RequestStatus(string header);
+    public void ResetHardware(string header);
+}
