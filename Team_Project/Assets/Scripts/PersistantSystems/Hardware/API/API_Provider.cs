@@ -2,11 +2,22 @@ using UnityEngine;
 
 public class API_Provider : MonoBehaviour
 {
+    public static API_Provider Instance { get; private set; }
+
     public bool useMockHardware;
     public API_Controller_Interface ActiveAPIController { get; private set; }
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         if (useMockHardware)
         {
             ActiveAPIController = new Mock_API_Controller();

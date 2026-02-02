@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float downSpeed;
 
     [Header("External")]
-    [SerializeField] private API_Provider _API_Provider;
+    private API_Provider _API_Provider = API_Provider.Instance;
     private API_Controller_Interface _activeHardware;
 
     private Vector2 moveInput;

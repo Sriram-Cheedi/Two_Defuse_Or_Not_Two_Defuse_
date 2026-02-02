@@ -7,7 +7,7 @@ public class DestroyDoor : MonoBehaviour
 {
     [SerializeField] private GameObject[] doors;
     [SerializeField] private float delay = 1f;
-    [SerializeField] private API_Provider _API_Provider;
+    private API_Provider _API_Provider = API_Provider.Instance;
     private API_Controller_Interface _activeHardware;
     private bool[] buttonsPressed;
     private void Awake()
