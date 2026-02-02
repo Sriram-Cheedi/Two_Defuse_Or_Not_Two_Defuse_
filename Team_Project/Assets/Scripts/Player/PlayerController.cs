@@ -1,3 +1,5 @@
+using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Vector2 = UnityEngine.Vector2;
@@ -29,6 +31,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float crouchSpeed;
     [SerializeField] private float downSpeed;
 
+    [Header("Rotation")] [SerializeField] private float rotationSpeed = 0.01f;
+    [SerializeField] private float targetRotation = 180f;
+    
     [Header("External")]
     [SerializeField] private ApiManager api_manager;
 
@@ -44,10 +49,16 @@ public class PlayerController : MonoBehaviour
     private Vector3 standOrigin;
     private Vector3 crouchOrigin;
     private bool grounded;
+    private PlayerInput playerInput;
+
+    
+    private float step;
+    private float remainingRotation;
 
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
+        playerInput = GetComponent<PlayerInput>();
 
         standHeight = controller.height;
         standCenterY = controller.center.y;
@@ -58,7 +69,6 @@ public class PlayerController : MonoBehaviour
         speed = defaultSpeed;
         downSpeed = 5.0f;
         invertGravity = false;
-
         SetStandCenter();
         SetCrouchCenter();
     }
@@ -108,9 +118,24 @@ public class PlayerController : MonoBehaviour
         if (ctx.started)
         {
             invertGravity = !invertGravity;
-            transform.Rotate(0,0,180);
-            
+            StartCoroutine(SmoothRotate());
         }
+    }
+
+    IEnumerator SmoothRotate()
+    {
+        var playerMap = playerInput.actions.FindActionMap("Player");
+        playerMap.Disable();
+        remainingRotation = targetRotation;
+        while (remainingRotation > 0)
+        {
+            step = rotationSpeed * Time.deltaTime;
+            step = Mathf.Min(step, remainingRotation);
+            transform.Rotate(0,0, step);
+            remainingRotation -= step;
+            yield return null;
+        }
+        playerMap.Enable();
     }
 
     private void SetCrouchCenter()
