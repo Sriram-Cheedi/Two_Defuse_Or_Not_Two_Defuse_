@@ -5,6 +5,7 @@
 #include "component.h"
 #include "serialController.h"
 #include "numberGameModule.h"
+#include "LCDModule.h"
 
 
 SerialController serialController = SerialController();
@@ -12,6 +13,8 @@ SerialController serialController = SerialController();
 timerModule timer = timerModule("TMR", 23, 24, 25, serialController);
 
 numberGameModule numberGame = numberGameModule("NGM",36,34,35,A8,serialController);
+
+LCDModule LCDDisplay = LCDModule();
 
 std::vector<std::unique_ptr<Component>> components;
 
@@ -47,6 +50,7 @@ void setup() {
   //components.push_back(std::make_unique<timerModule>(timer));
   components.push_back(std::make_unique<numberGameModule>(numberGame));
   //timer.set({"500"});
+  //LCDDisplay.LCDSetup();
 }
 
 void loop() {
@@ -54,4 +58,5 @@ void loop() {
   parseCommand(serialController.serialRecieve());
   numberGame.updateDisplay();
   //timer.updateDisplay();
+  //LCDDisplay.LCDLoop();
 }

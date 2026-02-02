@@ -14,12 +14,13 @@ private:
     const int buttonPin;
     int buttonPushCounter = 0;  // counter for the number of button presses
     int buttonState = 0;        // current state of the button
-    int lastButtonState = 0;
+    float lastButtonState = 0;
 
     SerialController serialController;
 
     unsigned long lastUpdate = 0;
-    const unsigned int refreshInterval = 2000000;
+    unsigned long buttonUpdate = 0;
+    const unsigned int refreshInterval = 200;
     uint8_t currentDigit = 0; 
     int digitsBuffer[4] = {0,0,0,0};
 

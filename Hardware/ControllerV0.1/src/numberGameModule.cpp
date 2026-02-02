@@ -7,6 +7,7 @@ numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, 
     pinMode(clockPin,OUTPUT);
     pinMode(latchPin,OUTPUT);
     pinMode(buttonPin,INPUT);
+    //randomNum = randomNum(0,9999);
 }
 
 
@@ -19,13 +20,41 @@ void numberGameModule::status(){
 }
 
 void numberGameModule::buttonCheck(){
+    //unsigned long now = micros();
     int sensorValue = analogRead(buttonPin);
-    unsigned long now = micros();
-    if (now - lastUpdate < refreshInterval){
-       float voltage = sensorValue * (3.3 / 1023.0);
+    float voltage = sensorValue * (3.3 / 1023.0);
+    //if (now - buttonUpdate < refreshInterval*100) return;
+    //buttonUpdate = now;
+    if(lastButtonState > 3.1){
+        if(voltage <= 1.66){
+            digitsBuffer[0] = digitsBuffer[0] + 1;
+            if(digitsBuffer[0] > 9){
+                digitsBuffer[0] = 0;
+            }
+        }
+        else if(voltage <= 2.28){
+            digitsBuffer[1] = digitsBuffer[1] + 1;
+            if(digitsBuffer[1] > 9){
+                digitsBuffer[1] = 0;
+            }
+        }
+        else if(voltage <= 2.72){
+            digitsBuffer[2] = digitsBuffer[2] + 1;
+            if(digitsBuffer[2] > 9){
+                digitsBuffer[2] = 0;
+            }
+        }
+        else if(voltage <= 3){
+            digitsBuffer[3] = digitsBuffer[3] + 1;
+            if(digitsBuffer[3] > 9){
+                digitsBuffer[3] = 0;
+            }
+        }
         Serial.println(voltage);
     }
     
+
+    lastButtonState = voltage;
     /*buttonState = digitalRead(buttonPin);
 
     if (buttonState != lastButtonState) {
