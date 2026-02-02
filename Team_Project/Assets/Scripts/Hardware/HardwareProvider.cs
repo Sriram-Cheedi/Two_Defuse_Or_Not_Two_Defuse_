@@ -6,7 +6,6 @@ public class HardwareProvider : MonoBehaviour
 
     public bool useMockHardware;
 
-    // This is what other scripts (like your HUD) will talk to
     public I_HardwareController ActiveHardware { get; private set; }
 
     private void Awake()
@@ -19,6 +18,7 @@ public class HardwareProvider : MonoBehaviour
         {
             // If the physical script is on the same object
             ActiveHardware = GetComponent<HardwareController>();
+            UnityEngine.Debug.Log("Connected to real Hardware Controller");
         }
 
         ActiveHardware.Initialize();
