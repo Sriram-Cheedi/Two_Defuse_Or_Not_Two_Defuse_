@@ -30,7 +30,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float downSpeed;
 
     [Header("External")]
-    [SerializeField] private ApiManager api_manager;
+    private API_Provider _API_Provider = API_Provider.Instance;
+    private API_Controller_Interface _activeHardware;
 
     private Vector2 moveInput;
     private Vector3 horizontalMove;
@@ -61,18 +62,20 @@ public class PlayerController : MonoBehaviour
 
         SetStandCenter();
         SetCrouchCenter();
+
+        _activeHardware = _API_Provider.ActiveAPIController;
     }
 
     private void OnEnable()
     {
-        if (api_manager != null)
-            api_manager.OnImuChanged += RotateLevel;
+        if (_activeHardware != null)
+            _activeHardware.OnImuChanged += RotateLevel;
     }
 
     private void OnDisable()
     {
-        if (api_manager != null)
-            api_manager.OnImuChanged -= RotateLevel;
+        if (_activeHardware != null)
+            _activeHardware.OnImuChanged -= RotateLevel;
     }
 
     private void RotateLevel(Vector3 gyro, Vector3 rotationValue)
@@ -82,7 +85,7 @@ public class PlayerController : MonoBehaviour
         // gravity = -gravity;
         // Rotate the player (or level) around Z, as you had
         Physics.gravity = gyro;
-        Debug.Log(gyro.x +" "+ gyro.y +" "+ gyro.z);
+        Debug.Log(gyro.x + " " + gyro.y + " " + gyro.z);
         transform.Rotate(gyro.x, gyro.y, gyro.z);
     }
 
@@ -108,8 +111,8 @@ public class PlayerController : MonoBehaviour
         if (ctx.started)
         {
             invertGravity = !invertGravity;
-            transform.Rotate(0,0,180);
-            
+            transform.Rotate(0, 0, 180);
+
         }
     }
 
@@ -205,11 +208,12 @@ public class PlayerController : MonoBehaviour
         if (grounded && !invertGravity)
         {
             verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * defaultGravity);
-        }else if (grounded && invertGravity)
+        }
+        else if (grounded && invertGravity)
         {
             verticalVelocity = -Mathf.Sqrt(jumpHeight * -2f * defaultGravity);
         }
-            
+
     }
 
     private void Spring()
@@ -257,12 +261,12 @@ public class PlayerController : MonoBehaviour
 
         // Apply gravity
 
-        
+
         verticalVelocity = Mathf.Max(verticalVelocity, terminalDownVelocity);
 
         Vector3 move = horizontalMove + Vector3.up * verticalVelocity;
         CollisionFlags flags = controller.Move(move * Time.deltaTime);
-        
+
         SetCrouch(crouchPressed);
         Spring();
         GravityInvert(invertGravity, flags);

@@ -2,53 +2,59 @@ using UnityEngine;
 using System;
 using System.IO.Ports;
 
-public class SerialManager : MonoBehaviour
+public class SerialPortController : MonoBehaviour, I_SerialPortController
 {
-    public string port = "COM1";
-    public int baudRate = 115200;
-
-    private SerialPort serial;
+    private readonly string _portID = "COM1";
+    public int _baudRate = 115200;
+    private SerialPort _serialPort;
     private string buffer = "";
-
     public event Action<string> Received;
-
-    void Start()
+    public string getPortID => _portID;
+    public int getBaudRate => _baudRate;
+    public SerialPort getSerialPort => _serialPort;
+    public void Start()
     {
         try
         {
-            serial = new SerialPort(port, baudRate);
-            serial.ReadTimeout = 50;
-            serial.Open();
-            Debug.Log("Protocol Active on " + port);
+            _serialPort = new SerialPort(_portID, _baudRate);
+            _serialPort.ReadTimeout = 50;
+            _serialPort.Open();
+            Debug.Log("Protocol Active on " + _portID);
         }
         catch (Exception error)
         {
             Debug.LogError("Could not open port: " + error.Message);
-            serial = null;
+            this.enabled = false;
+            _serialPort = null;
+
         }
+
     }
 
-    void Update()
+    public void Update()
     {
-        if (serial == null || !serial.IsOpen){
+        if (_serialPort == null || !_serialPort.IsOpen)
+        {
             return;
         }
 
         try
         {
-            buffer += serial.ReadExisting();
+            buffer += _serialPort.ReadExisting();
 
             while (true)
             {
                 int start = buffer.IndexOf('$');
 
-                if (start == -1){
+                if (start == -1)
+                {
                     break;
                 }
 
                 int end = buffer.IndexOf('#', start + 1);
 
-                if (end == -1){
+                if (end == -1)
+                {
                     break;
                 }
 
@@ -70,15 +76,15 @@ public class SerialManager : MonoBehaviour
 
     public void SendToArduino(string message)
     {
-        serial.Write(message);
+        _serialPort.Write(message);
 
         Debug.Log("Sent: " + message);
     }
 
-    void OnApplicationQuit()
+    public void OnApplicationQuit()
     {
-        if (serial != null && serial.IsOpen)
-            serial.Close();
+        if (_serialPort != null && _serialPort.IsOpen)
+            _serialPort.Close();
     }
 }
 
