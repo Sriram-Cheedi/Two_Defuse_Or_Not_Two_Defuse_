@@ -50,7 +50,7 @@ void setup() {
   //components.push_back(std::make_unique<timerModule>(timer));
   components.push_back(std::make_unique<numberGameModule>(numberGame));
   //timer.set({"500"});
-  //LCDDisplay.LCDSetup();
+  LCDDisplay.LCDSetup();
 }
 
 void loop() {
@@ -58,5 +58,5 @@ void loop() {
   parseCommand(serialController.serialRecieve());
   numberGame.updateDisplay();
   //timer.updateDisplay();
-  //LCDDisplay.LCDLoop();
+  LCDDisplay.LCDLoop();
 }

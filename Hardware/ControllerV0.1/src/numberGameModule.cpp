@@ -38,7 +38,7 @@ void numberGameModule::buttonCheck(){
                 digitsBuffer[1] = 0;
             }
         }
-        else if(voltage <= 2.72){
+        else if(voltage <= 2.9){
             digitsBuffer[2] = digitsBuffer[2] + 1;
             if(digitsBuffer[2] > 9){
                 digitsBuffer[2] = 0;

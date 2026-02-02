@@ -15,6 +15,7 @@ private:
     int buttonPushCounter = 0;  // counter for the number of button presses
     int buttonState = 0;        // current state of the button
     float lastButtonState = 0;
+    int randomNum;
 
     SerialController serialController;
 
