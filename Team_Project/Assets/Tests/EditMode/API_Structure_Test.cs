@@ -11,10 +11,10 @@ public class API_StructureTests
     [SetUp]
     public void Setup()
     {
-        _testParent = new GameObject("TestProvider");
+        _testParent = new GameObject();
         _provider = _testParent.AddComponent<API_Provider>();
 
-        GameObject child = new GameObject("HardwareChild");
+        GameObject child = new GameObject();
         child.transform.SetParent(_testParent.transform);
         child.AddComponent<API_Controller>();
     }
@@ -22,7 +22,7 @@ public class API_StructureTests
     [TearDown]
     public void Teardown()
     {
-        Object.DestroyImmediate(_testParent);
+        Object.Destroy(_testParent);
     }
 
     [Test]
@@ -30,6 +30,7 @@ public class API_StructureTests
     {
         _provider.useMockHardware = true;
 
+        // This calls the private awake method
         MethodInfo awakeMethod = typeof(API_Provider).GetMethod("Awake", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
         awakeMethod.Invoke(_provider, null);
 
