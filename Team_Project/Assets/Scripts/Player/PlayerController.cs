@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float downSpeed;
 
     [Header("External")]
-    [SerializeField] private HardwareProvider _hardwareProvider;
+    [SerializeField] private API_Provider _API_Provider;
     private I_HardwareController _activeHardware;
 
     private Vector2 moveInput;
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
         SetStandCenter();
         SetCrouchCenter();
 
-        _activeHardware = _hardwareProvider.ActiveHardware;
+        _activeHardware = _API_Provider.ActiveHardware;
     }
 
     private void OnEnable()

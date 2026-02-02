@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using UnityEngine;
 
-public class HardwareProvider : MonoBehaviour
+public class API_Provider : MonoBehaviour
 {
 
     public bool useMockHardware;
@@ -17,7 +17,7 @@ public class HardwareProvider : MonoBehaviour
         else
         {
             // If the physical script is on the same object
-            ActiveHardware = GetComponent<HardwareController>();
+            ActiveHardware = GetComponent<API_Controller>();
             UnityEngine.Debug.Log("Connected to real Hardware Controller");
         }
 

@@ -4,7 +4,7 @@
 using UnityEngine;
 public class ApiTestListener : MonoBehaviour
 {
-    public HardwareController api;
+    public API_Controller api;
 
     void OnEnable()
     {

@@ -6,16 +6,12 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
 {
     private readonly string _portID = "COM1";
     public int _baudRate = 115200;
-
     private SerialPort _serialPort;
     private string buffer = "";
-
     public event Action<string> Received;
-
     public string getPortID => _portID;
     public int getBaudRate => _baudRate;
     public SerialPort getSerialPort => _serialPort;
-
     public void Start()
     {
         try

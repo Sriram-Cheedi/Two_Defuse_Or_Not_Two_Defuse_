@@ -1032,7 +1032,7 @@ MonoBehaviour:
   - {fileID: 1667475895}
   - {fileID: 1345017530}
   delay: 1
-  _hardwareProvider: {fileID: 1360846439}
+  _API_Provider: {fileID: 1360846439}
 --- !u!4 &289672841
 Transform:
   m_ObjectHideFlags: 0
@@ -4839,7 +4839,7 @@ GameObject:
   - component: {fileID: 1360846438}
   - component: {fileID: 1360846437}
   m_Layer: 0
-  m_Name: HardwareProvider
+  m_Name: API_Provider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4872,8 +4872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02bfd6254af84b746a7322c13d2c5a19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SerialPortController
-  port: COM1
-  baudRate: 115200
+  _baudRate: 115200
 --- !u!114 &1360846438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6920,9 +6919,9 @@ Transform:
   m_Children:
   - {fileID: 289672841}
   - {fileID: 959340398}
+  - {fileID: 1360846436}
   - {fileID: 1881431231}
   - {fileID: 1746803411}
-  - {fileID: 1360846436}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1868199399
@@ -8103,6 +8102,10 @@ PrefabInstance:
       propertyPath: jumpHeight
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1313110010756945612, guid: 0736c1b180fe3d4439f9d000ecc3b266, type: 3}
+      propertyPath: _API_Provider
+      value: 
+      objectReference: {fileID: 1360846439}
     - target: {fileID: 1313110010756945612, guid: 0736c1b180fe3d4439f9d000ecc3b266, type: 3}
       propertyPath: _hardwareProvider
       value: 

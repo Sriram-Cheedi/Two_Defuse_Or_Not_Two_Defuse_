@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-public class HardwareController : MonoBehaviour, I_HardwareController
+public class API_Controller : MonoBehaviour, I_HardwareController
 {
     [SerializeField] private SerialPortController serial;
     public event Action<string, int> OnInputChanged;
