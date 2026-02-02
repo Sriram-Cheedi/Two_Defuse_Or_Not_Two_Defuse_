@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Jump")]
     [SerializeField] private float jumpHeight = 2f;
-    [SerializeField] private float springHeight = 6f;
+    [SerializeField] private float springHeight = 30f;
     [SerializeField] private float defaultGravity = -20f;
     [SerializeField] private float gravity = -20f;
 
@@ -54,6 +54,8 @@ public class PlayerController : MonoBehaviour
     
     private float step;
     private float remainingRotation;
+    private bool hasInvertedPlayer;
+    private bool invertedPlayer;
 
     private void Awake()
     {
@@ -85,15 +87,26 @@ public class PlayerController : MonoBehaviour
             api_manager.OnImuChanged -= RotateLevel;
     }
 
-    private void RotateLevel(Vector3 gyro, Vector3 rotationValue)
+    private void RotateLevel(Vector3 gyro, Vector3 accelerometer)
     {
 
         // Flip gravity direction (so jump/gravity math stays consistent with sign)
         // gravity = -gravity;
         // Rotate the player (or level) around Z, as you had
-        Physics.gravity = gyro;
-        Debug.Log(gyro.x +" "+ gyro.y +" "+ gyro.z);
-        transform.Rotate(gyro.x, gyro.y, gyro.z);
+        if (accelerometer.z < -9f)
+        {
+            invertGravity = true;
+            invertedPlayer = true;
+        }
+        else if(accelerometer.z > 9f)
+        {
+            invertGravity = false;
+            invertedPlayer = true;
+        }
+        else
+        {
+            invertedPlayer = false;
+        }
     }
 
     public void OnMove(InputAction.CallbackContext ctx)
@@ -136,6 +149,16 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
         playerMap.Enable();
+    }
+
+    private void InvertPlayer(bool inverted)
+    {
+        if (!hasInvertedPlayer && inverted)
+        {
+            StartCoroutine(SmoothRotate());
+        }
+
+        hasInvertedPlayer = inverted;
     }
 
     private void SetCrouchCenter()
@@ -240,7 +263,9 @@ public class PlayerController : MonoBehaviour
     private void Spring()
     {
         if (onSpring && grounded)
+        {
             verticalVelocity = Mathf.Sqrt(springHeight * -2f * defaultGravity);
+        }
     }
 
     private void GravityInvert(bool isGravityInvert, CollisionFlags flags)
@@ -291,5 +316,6 @@ public class PlayerController : MonoBehaviour
         SetCrouch(crouchPressed);
         Spring();
         GravityInvert(invertGravity, flags);
+        InvertPlayer(invertedPlayer);
     }
 }
