@@ -22,7 +22,7 @@ public class API_StructureTests
     [TearDown]
     public void Teardown()
     {
-        Object.Destroy(_testParent);
+        Object.DestroyImmediate(_testParent);
     }
 
     [Test]
