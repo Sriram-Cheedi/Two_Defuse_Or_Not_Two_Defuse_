@@ -14,7 +14,6 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
     public SerialPort getSerialPort => _serialPort;
     public void Start()
     {
-
         try
         {
             _serialPort = new SerialPort(_portID, _baudRate);

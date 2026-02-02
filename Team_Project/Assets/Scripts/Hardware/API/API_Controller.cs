@@ -21,7 +21,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public Dictionary<string, int> getComponentStateManager => _componentStateManager;
     private void OnDestroy() => Exit();
 
-    public void Initialize()
+    public void Initialize(I_SerialPortController manualController = null)
     {
         _componentStateManager["BTN1"] = 0;
         _componentStateManager["BTN2"] = 0;
@@ -37,12 +37,13 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         _componentStateManager["LED2"] = 0;
         _componentStateManager["LED3"] = 0;
 
-        ActivePortController = GetComponentInChildren<SerialPortController>();
+        if (manualController != null)
+            ActivePortController = manualController;
+        else
+            ActivePortController = GetComponentInChildren<SerialPortController>();
 
         if (ActivePortController != null)
-        {
             ActivePortController.Received += HandleMessage;
-        }
     }
 
     void Exit()
@@ -176,18 +177,6 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public int GetDigital(string header)
     {
         return _componentStateManager[header];
-    }
-    public Vector3 GetGyro()
-    {
-        return _gyroValue;
-    }
-    public bool GetHasAccelerometer()
-    {
-        return _hasAccelerometer;
-    }
-    public Vector3 GetAccel()
-    {
-        return _accelerometerValue;
     }
 
     public int GetButton(string id)

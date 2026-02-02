@@ -15,12 +15,9 @@ public interface API_Controller_Interface
     Vector3 getGyroValue { get; }
 
     // Methods
-    public void Initialize();
+    public void Initialize(I_SerialPortController manualController = null);
     public void HandleMessage(string message);
     public int GetDigital(string header);
-    public Vector3 GetGyro();
-    public bool GetHasAccelerometer();
-    public Vector3 GetAccel();
     public int GetButton(string id);
     public int GetSwitch(string id);
     public int GetLed(string id);
