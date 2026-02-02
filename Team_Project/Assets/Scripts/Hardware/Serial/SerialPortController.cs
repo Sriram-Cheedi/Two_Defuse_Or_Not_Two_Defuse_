@@ -14,6 +14,7 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
     public SerialPort getSerialPort => _serialPort;
     public void Start()
     {
+
         try
         {
             _serialPort = new SerialPort(_portID, _baudRate);
@@ -24,8 +25,11 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
         catch (Exception error)
         {
             Debug.LogError("Could not open port: " + error.Message);
+            this.enabled = false;
             _serialPort = null;
+
         }
+
     }
 
     public void Update()

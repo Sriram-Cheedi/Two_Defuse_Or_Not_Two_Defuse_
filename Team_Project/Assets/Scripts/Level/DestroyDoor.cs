@@ -8,11 +8,11 @@ public class DestroyDoor : MonoBehaviour
     [SerializeField] private GameObject[] doors;
     [SerializeField] private float delay = 1f;
     [SerializeField] private API_Provider _API_Provider;
-    private I_HardwareController _activeHardware;
+    private API_Controller_Interface _activeHardware;
     private bool[] buttonsPressed;
     private void Awake()
     {
-        _activeHardware = _API_Provider.ActiveHardware;
+        _activeHardware = _API_Provider.ActiveAPIController;
         buttonsPressed = new bool[3];
     }
 

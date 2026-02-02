@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface I_HardwareController
+public interface API_Controller_Interface
 {
     public event Action<string, int> OnInputChanged;
     public event Action<Vector3> OnGyroChanged;

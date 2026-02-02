@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("External")]
     [SerializeField] private API_Provider _API_Provider;
-    private I_HardwareController _activeHardware;
+    private API_Controller_Interface _activeHardware;
 
     private Vector2 moveInput;
     private Vector3 horizontalMove;
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
         SetStandCenter();
         SetCrouchCenter();
 
-        _activeHardware = _API_Provider.ActiveHardware;
+        _activeHardware = _API_Provider.ActiveAPIController;
     }
 
     private void OnEnable()
@@ -91,7 +91,6 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext ctx)
     {
-        Debug.Log("TEST");
         moveInput = ctx.ReadValue<Vector2>();
     }
 

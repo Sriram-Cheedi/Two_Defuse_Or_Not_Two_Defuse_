@@ -1,10 +1,11 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 
-public class API_Controller : MonoBehaviour, I_HardwareController
+public class API_Controller : MonoBehaviour, API_Controller_Interface
 {
-    [SerializeField] private SerialPortController serial;
+    public I_SerialPortController ActivePortController { get; private set; }
     public event Action<string, int> OnInputChanged;
     public event Action<Vector3> OnGyroChanged;
     public event Action<Vector3, Vector3> OnImuChanged;
@@ -18,7 +19,6 @@ public class API_Controller : MonoBehaviour, I_HardwareController
     public Vector3 getAccelerometerValue => _accelerometerValue;
     public bool getHasAccelerometer => _hasAccelerometer;
     public Dictionary<string, int> getComponentStateManager => _componentStateManager;
-    private void Awake() => Initialize();
     private void OnDestroy() => Exit();
 
     public void Initialize()
@@ -37,17 +37,19 @@ public class API_Controller : MonoBehaviour, I_HardwareController
         _componentStateManager["LED2"] = 0;
         _componentStateManager["LED3"] = 0;
 
-        if (serial != null)
+        ActivePortController = GetComponentInChildren<SerialPortController>();
+
+        if (ActivePortController != null)
         {
-            serial.Received += HandleMessage;
+            ActivePortController.Received += HandleMessage;
         }
     }
 
     void Exit()
     {
-        if (serial != null)
+        if (ActivePortController != null)
         {
-            serial.Received -= HandleMessage;
+            ActivePortController.Received -= HandleMessage;
         }
     }
 
@@ -204,36 +206,36 @@ public class API_Controller : MonoBehaviour, I_HardwareController
     public void SendSet(string header, int value)
     {
         string message = "$" + header + ":set " + value + "#";
-        serial.SendToArduino(message);
+        ActivePortController.SendToArduino(message);
     }
 
     public void TimerSet(int seconds)
     {
         string message = "$TMR:set " + seconds + "#";
-        serial.SendToArduino(message);
+        ActivePortController.SendToArduino(message);
     }
 
     public void TimerFlash(int times, int delay)
     {
         string message = "$TMR:flash " + times + " " + delay + "#";
-        serial.SendToArduino(message);
+        ActivePortController.SendToArduino(message);
     }
 
     public void TimerOnOff(int onOff)
     {
         string message = "$TMR:on " + onOff + "#";
-        serial.SendToArduino(message);
+        ActivePortController.SendToArduino(message);
     }
 
     public void RequestStatus(string header)
     {
         string message = "$" + header + ":status 0#";
-        serial.SendToArduino(message);
+        ActivePortController.SendToArduino(message);
     }
 
     public void ResetHardware(string header)
     {
         string message = "$" + header + ":reset 0#";
-        serial.SendToArduino(message);
+        ActivePortController.SendToArduino(message);
     }
 }
