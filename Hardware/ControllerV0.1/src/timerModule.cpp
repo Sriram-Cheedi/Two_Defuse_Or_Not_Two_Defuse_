@@ -1,8 +1,8 @@
 #include <Arduino.h>
-#include "timerModule.h"
+#include "TimerModule.h"
 
 
-timerModule::timerModule(std::string name, int dataPin, int clockPin, int latchPin, SerialController serialController)
+TimerModule::TimerModule(std::string name, int dataPin, int clockPin, int latchPin, SerialController serialController)
 : Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), seconds(0), serialController(serialController) {
 
     pinMode(dataPin, OUTPUT);
@@ -15,10 +15,10 @@ timerModule::timerModule(std::string name, int dataPin, int clockPin, int latchP
 }
 
 
-void timerModule::set(std::vector<std::string> args){
+void TimerModule::set(std::vector<std::string> args){
 
     if(args.size() == 1){
-        
+
         seconds = stoi(args[0]);
 
         int secs = seconds % 60;
@@ -27,26 +27,32 @@ void timerModule::set(std::vector<std::string> args){
         int digits[4] = {mins/10, mins % 10, secs/10, secs % 10};
 
         setDigits(digits, true);
-    } else if(args.size() == 5){
 
-        int digits[4] = {stoi(args[0]) % 10, stoi(args[1]) % 10, stoi(args[2]) % 10, stoi(args[3]) % 10};
+        return;
+    } 
+
+    if(args.size() == 5){
+
+        int digits[4] = {stoi(args[0]) % 11, stoi(args[1]) % 11, stoi(args[2]) % 11, stoi(args[3]) % 11};
 
         setDigits(digits, args[4] == "true");
+
+        return;
     }   
 }
 
-void timerModule::status(){
+void TimerModule::status(){
     serialController.serialWrite(name, std::to_string(seconds));
 }
 
 
-void timerModule::setDigits(int* digits, bool colon){
+void TimerModule::setDigits(int* digits, bool colon){
     memcpy(digitsBuffer, digits, 4 * sizeof(int));
     colonEnabled = colon;
 }
 
 
-void timerModule::updateDisplay(){
+void TimerModule::updateDisplay(){
 
     unsigned long now = micros();
     if (now - lastUpdate < refreshInterval) return;

@@ -1,9 +1,9 @@
 #pragma once
 #include <Arduino.h>
-#include <component.h>
+#include <Component.h>
 #include <SerialController.h>
 
-class simonSaysModule : public Component {
+class SimonSaysModule : public Component {
 
     const std::string name;
 
@@ -22,7 +22,7 @@ class simonSaysModule : public Component {
 
 public:
 
-    simonSaysModule(std::string name, int dataPin, int clockPin, int latchPin, SerialController serialController);
+    SimonSaysModule(std::string name, int dataPin, int clockPin, int latchPin, SerialController serialController);
 
     void set(std::vector<std::string> args) override;
     void status() override;

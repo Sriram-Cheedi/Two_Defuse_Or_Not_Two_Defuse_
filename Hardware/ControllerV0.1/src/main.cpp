@@ -1,15 +1,23 @@
 #include <Arduino.h>
 #include <vector>
-#include <bits/stdc++.h>
-#include "timerModule.h"
-#include "component.h"
-#include "serialController.h"
-#include "imu.h"
+#include "TimerModule.h"
+#include <sstream>
+#include "Component.h"
+#include "SerialController.h"
+#include "Imu.h"
+#include "Button.h"
+#include <TeensyThreads.h>
 
 SerialController serialController = SerialController();
 
-timerModule timer = timerModule("TMR", 27, 25, 26, serialController);
-imu gyro = imu("IMU", serialController);
+TimerModule timer = TimerModule("TMR", 27, 25, 26, serialController);
+Imu gyro = Imu("IMU", serialController);
+
+void buttonPress(){
+  Serial.printf("A BUTTON IS PRESSED\n");
+}
+
+Button testButton = Button("TestBtn", 38, serialController, buttonPress);
 
 std::vector<Component*> components;
 
@@ -43,13 +51,26 @@ void parseCommand(std::string command){
   }
 }
 
-void setup() {
-  components.reserve(50);
+volatile int i = 600;
 
+void countDown(){
+  while(i >= 0){
+    timer.set({std::to_string(i)});
+    threads.delay(1000);
+    i--;
+  }
+}
+
+
+
+
+void setup() {
   components.push_back(&timer);
   components.push_back(&gyro);  
+  components.push_back(&testButton);
 
-  timer.set({"0"});
+
+  threads.addThread(countDown, 1);
 
 }
 
@@ -57,6 +78,8 @@ void loop() {
 
   parseCommand(serialController.serialRecieve());
 
+
   timer.updateDisplay();
   gyro.update();
+  testButton.update();
 }

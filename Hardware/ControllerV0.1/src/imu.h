@@ -1,11 +1,11 @@
 #pragma once
-#include "component.h"
+#include "Component.h"
 #include "SerialController.h"
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
 
-class imu : public Component {
+class Imu : public Component {
 
 private:
 
@@ -28,7 +28,7 @@ private:
 
 public:
 
-    imu(std::string name, SerialController serialController);
+    Imu(std::string name, SerialController serialController);
 
     void update();
 

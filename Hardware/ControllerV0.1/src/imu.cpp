@@ -1,8 +1,8 @@
-#include "imu.h"
+#include "Imu.h"
 
 
 
-imu::imu(std::string name, SerialController serialController)
+Imu::Imu(std::string name, SerialController serialController)
 : Component(name)
 {
 
@@ -19,9 +19,7 @@ imu::imu(std::string name, SerialController serialController)
     delay(100);
 }
 
-
-
-void imu::update(){
+void Imu::update(){
 
     if(mpu.getMotionInterruptStatus()) {
         motionActive = true;
@@ -57,12 +55,24 @@ void imu::update(){
     }
 }
 
-void imu::set(std::vector<std::string> args){
+void Imu::set(std::vector<std::string> args){
     return;
 }
 
-void imu::status(){
+auto to_string_2dp = [](float v) {
+    char buf[16];
+    snprintf(buf, sizeof(buf), "%.2f", v); 
+    return std::string(buf);
+};
 
-    serialController.serialWrite(name, {std::to_string(gyroX), std::to_string(gyroY), std::to_string(gyroZ), std::to_string(accelX), std::to_string(accelY), std::to_string(accelZ)});
+void Imu::status(){
+
+    serialController.serialWrite(name, {to_string_2dp(gyroX),
+                                        to_string_2dp(gyroY),
+                                        to_string_2dp(gyroZ),
+                                        to_string_2dp(accelX),
+                                        to_string_2dp(accelY),
+                                        to_string_2dp(accelZ)
+                                        });
 
 }
