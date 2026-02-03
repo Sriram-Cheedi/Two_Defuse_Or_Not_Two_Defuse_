@@ -1,3 +1,4 @@
+using PlasticGui.WorkspaceWindow;
 using UnityEngine;
 
 public class API_Provider : MonoBehaviour
@@ -6,6 +7,7 @@ public class API_Provider : MonoBehaviour
 
     public bool useMockHardware;
     public API_Controller_Interface ActiveAPIController { get; private set; }
+    public I_SerialPortController ActiveSerialController { get; private set; }
 
     private void Awake()
     {
@@ -20,31 +22,25 @@ public class API_Provider : MonoBehaviour
 
         if (useMockHardware)
         {
-            ActiveAPIController = new Mock_API_Controller();
-            Debug.Log("<color=cyan>API Provider: Initializing MOCK mode.</color>");
+            GameObject mockChild = new GameObject("Mock_API_Controller");
+            mockChild.transform.SetParent(this.transform);
 
-            ActiveAPIController.Initialize(null);
-
-            // Disabling Serial Port Controller so that ports dont open during mocks
-            var realSerial = GetComponentInChildren<SerialPortController>(true);
-            if (realSerial != null && realSerial is MonoBehaviour mb) mb.enabled = false;
+            ActiveAPIController = mockChild.AddComponent<Mock_API_Controller>();
         }
         else
         {
-            ActiveAPIController = GetComponentInChildren<API_Controller>();
+            GameObject child = new GameObject("API_Controller");
+            child.transform.SetParent(this.transform);
 
-            if (ActiveAPIController != null)
-            {
-                Debug.Log("<color=green>API Provider: Initializing REAL mode.</color>");
+            ActiveAPIController = gameObject.AddComponent<API_Controller>();
 
-                I_SerialPortController serial = GetComponentInChildren<SerialPortController>();
+            Debug.Log("<color=green>API Provider: Initializing REAL mode.</color>");
 
-                ActiveAPIController.Initialize(serial);
-            }
-            else
-            {
-                Debug.LogError("API Provider: Could not find API_Controller in children!");
-            }
+            GameObject serialChild = new GameObject("Serial_Controller");
+            serialChild.transform.SetParent(this.transform);
+
+            ActiveSerialController = serialChild.AddComponent<SerialPortController>();
+            ActiveAPIController.Initialize(ActiveSerialController);
         }
     }
 

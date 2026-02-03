@@ -38,12 +38,19 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         _componentStateManager["LED3"] = 0;
 
         if (manualController != null)
+        {
             ActivePortController = manualController;
+            Debug.Log("Setting Serial Controller");
+        }
         else
             ActivePortController = GetComponentInChildren<SerialPortController>();
 
+
         if (ActivePortController != null)
+        {
+            Debug.Log("Setting Handle Message for Real Serial Controller");
             ActivePortController.Received += HandleMessage;
+        }
     }
 
     void Exit()
