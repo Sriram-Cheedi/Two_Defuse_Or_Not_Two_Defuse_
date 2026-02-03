@@ -10,7 +10,7 @@
 
 SerialController serialController = SerialController();
 
-timerModule timer = timerModule("TMR", 23, 24, 25, serialController);
+//timerModule timer = timerModule("TMR", 23, 24, 25, serialController);
 
 numberGameModule numberGame = numberGameModule("NGM",36,34,35,A8,serialController);
 
@@ -58,5 +58,5 @@ void loop() {
   parseCommand(serialController.serialRecieve());
   numberGame.updateDisplay();
   //timer.updateDisplay();
-  LCDDisplay.LCDLoop();
+  //LCDDisplay.LCDLoop();
 }

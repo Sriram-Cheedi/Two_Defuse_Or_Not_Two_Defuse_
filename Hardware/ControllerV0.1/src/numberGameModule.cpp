@@ -22,29 +22,30 @@ void numberGameModule::status(){
 void numberGameModule::buttonCheck(){
     //unsigned long now = micros();
     int sensorValue = analogRead(buttonPin);
+    
     float voltage = sensorValue * (3.3 / 1023.0);
     //if (now - buttonUpdate < refreshInterval*100) return;
     //buttonUpdate = now;
-    if(lastButtonState > 3.1){
-        if(voltage <= 1.66){
+    if(lastButtonState < 0.5){
+        if(voltage >= 2.6 && voltage <= 2.7){
             digitsBuffer[0] = digitsBuffer[0] + 1;
             if(digitsBuffer[0] > 9){
                 digitsBuffer[0] = 0;
             }
         }
-        else if(voltage <= 2.28){
+        else if(voltage >= 2.3 && voltage <= 2.4){
             digitsBuffer[1] = digitsBuffer[1] + 1;
             if(digitsBuffer[1] > 9){
                 digitsBuffer[1] = 0;
             }
         }
-        else if(voltage <= 2.9){
+        else if(voltage >= 1.9 && voltage <= 2){
             digitsBuffer[2] = digitsBuffer[2] + 1;
             if(digitsBuffer[2] > 9){
                 digitsBuffer[2] = 0;
             }
         }
-        else if(voltage <= 3){
+        else if(voltage >= 1.1 && voltage <= 1.2){
             digitsBuffer[3] = digitsBuffer[3] + 1;
             if(digitsBuffer[3] > 9){
                 digitsBuffer[3] = 0;
