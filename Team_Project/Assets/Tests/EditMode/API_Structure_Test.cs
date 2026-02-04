@@ -42,7 +42,7 @@ public class API_StructureTests
     public void MockController_ReturnsSimulatedGyro()
     {
         var mock = new Mock_API_Controller();
-        mock.Initialize(null);
+        mock.Initialize();
 
         Vector3 gyro = mock.getGyroValue;
 

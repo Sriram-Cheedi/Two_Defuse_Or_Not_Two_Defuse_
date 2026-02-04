@@ -721,10 +721,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42cd7dea592b14c92ae732a57add6146, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  bombTimer: 25
+  bombTimer: 60
   isGameOver: 0
   currentState: 0
-  provider: {fileID: 61791668}
 --- !u!1 &702796034
 GameObject:
   m_ObjectHideFlags: 0
@@ -1521,8 +1520,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 518062551}
   - {fileID: 61791667}
+  - {fileID: 518062551}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1622320733

@@ -23,6 +23,9 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     // Local saved hardware values
     private HardwareState hardwareState;
 
+    public I_SerialPortController serialController;
+
+
     // Getters for Local saved hardware values
     public Vector3 getGyroValue => hardwareState.gyroValue;
     public Vector3 getAccelerometerValue => hardwareState.accelerometerValue;
@@ -30,28 +33,45 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public Dictionary<string, int> getComponentStateManager => hardwareState.componentStates;
     private void OnDestroy() => Exit();
 
+    public void Awake() 
+    { 
+        hardwareState = new HardwareState();
+        hardwareState.componentStates = new Dictionary<string, int>();
+        hardwareState.gyroValue = Vector3.zero; ;
+        hardwareState.hasAccelerometer = false;
+    }
     /// <summary>
     /// Initializes Local dictionary of all connected hardware components to 0 (off).
     /// Passes in the serialController and connects its 'Received' action to the HandleMessage function.
     /// </summary>
-    public void Initialize(I_SerialPortController serialController)
+    public void Initialize()
     {
 
-        hardwareState.componentStates["BTN1"] = 0;
-        hardwareState.componentStates["BTN2"] = 0;
-        hardwareState.componentStates["BTN3"] = 0;
-        hardwareState.componentStates["BTN4"] = 0;
-        hardwareState.componentStates["BTN5"] = 0;
+        hardwareState.componentStates.Add("BTN1", 0);   
+        hardwareState.componentStates.Add("BTN2", 0);
+        hardwareState.componentStates.Add("BTN3", 0);
+        hardwareState.componentStates.Add("BTN4", 0);
+        hardwareState.componentStates.Add("BTN5", 0);
 
-        hardwareState.componentStates["SWT1"] = 0;
-        hardwareState.componentStates["SWT2"] = 0;
-        hardwareState.componentStates["SWT3"] = 0;
+        hardwareState.componentStates.Add("SWT1", 0);
+        hardwareState.componentStates.Add("SWT2", 0);
+        hardwareState.componentStates.Add("SWT3", 0);
 
-        hardwareState.componentStates["LED1"] = 0;
-        hardwareState.componentStates["LED2"] = 0;
-        hardwareState.componentStates["LED3"] = 0;
+        hardwareState.componentStates.Add("LED1", 0);
+        hardwareState.componentStates.Add("LED2", 0);
+        hardwareState.componentStates.Add("LED3", 0);
 
-        ActivePortController = serialController;
+        //hardwareState.componentStates["SWT1"] = 0;
+        //hardwareState.componentStates["SWT2"] = 0;
+        //hardwareState.componentStates["SWT3"] = 0;
+
+        //hardwareState.componentStates["LED1"] = 0;
+        //hardwareState.componentStates["LED2"] = 0;
+        //hardwareState.componentStates["LED3"] = 0;
+
+        GameObject child = new GameObject("Serial_Port_Controller");
+        child.transform.SetParent(this.transform);
+        ActivePortController = child.AddComponent<SerialPortController>();
         Debug.Log("Setting Serial Controller");
 
         if (ActivePortController != null)
@@ -201,6 +221,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
     public int GetButton(string id)
     {
+        Debug.Log(id);
         return hardwareState.componentStates["BTN" + id];
     }
     public int GetSwitch(string id)

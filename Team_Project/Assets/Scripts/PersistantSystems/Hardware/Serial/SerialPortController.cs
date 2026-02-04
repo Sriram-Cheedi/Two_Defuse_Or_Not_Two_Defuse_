@@ -4,7 +4,7 @@ using System.IO.Ports;
 
 public class SerialPortController : MonoBehaviour, I_SerialPortController
 {
-    private readonly string _portID = "COM1";
+    private readonly string _portID = "COM4";
     public int _baudRate = 115200;
     private SerialPort _serialPort;
     private string buffer = "";

@@ -17,7 +17,7 @@ public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
     public bool getHasAccelerometer => _hasAccel;
     public Dictionary<string, int> getComponentStateManager => _componentStateManager;
 
-    public void Initialize(I_SerialPortController manualController = null)
+    public void Initialize()
     {
         Debug.Log("<color=orange>MOCK: Initializing Simulated Hardware...</color>");
 
