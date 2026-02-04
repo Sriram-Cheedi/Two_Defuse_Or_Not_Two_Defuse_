@@ -1,3 +1,4 @@
+using System;
 using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,6 +12,8 @@ public class GameManager : MonoBehaviour
 
     public enum GameState { Menu, Playing, GameOver }
     public GameState currentState = GameState.Menu;
+
+    [SerializeField] private API_Provider provider;
 
     private void Awake()
     {
@@ -31,6 +34,8 @@ public class GameManager : MonoBehaviour
         {
             EndGame();
         }
+
+        provider.ActiveAPIController.TimerSet((int)bombTimer);
     }
 
     public void StartGame()

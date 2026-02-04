@@ -724,6 +724,7 @@ MonoBehaviour:
   bombTimer: 25
   isGameOver: 0
   currentState: 0
+  provider: {fileID: 61791668}
 --- !u!1 &702796034
 GameObject:
   m_ObjectHideFlags: 0
