@@ -132,34 +132,41 @@ void numberGameModule::checkGuess() {
         }
     }
     attempts++;
+    //if all positions are correct display you win on the LCD
     if(correctPositions == 4){
-        char word[] = "You Win! ";
+        char word[] = "You Win!";
         display.LCDSet(word);
     }
     
 }
 
 void numberGameModule::updateDisplay(){
+    //only check for game updates every 200 micro seconds
     unsigned long now = micros();
     if (now - lastUpdate < refreshInterval) return;
     lastUpdate = now;
     buttonCheck();
     int state = digitalRead(37);
+    //check the current guess when the button is pressed
     if(state ==  HIGH && state != lastButtonState){
         checkGuess();
     }
-    digitalWrite(latchPin, LOW);
 
-    if (currentDigit < 4){  // Show Digit
+    //start writing to the shift registers
+    digitalWrite(latchPin, LOW);
+    if (currentDigit < 4){
+        //LED display
         shiftOut(dataPin, clockPin, LSBFIRST, ledStates);
+        //Which digit is being displayed
         shiftOut(dataPin, clockPin, LSBFIRST, digit_encodings[currentDigit]);
+        //The number being displayed
         shiftOut(dataPin, clockPin, LSBFIRST, segment_encodings[digitsBuffer[currentDigit]]);
         currentDigit++;
     }
     else{
         currentDigit = 0;
     }
-
+    //end writing to the shift registers
     digitalWrite(latchPin, HIGH);
     lastButtonState = state;
 }
