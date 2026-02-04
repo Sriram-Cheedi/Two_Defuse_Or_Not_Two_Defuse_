@@ -115,13 +115,13 @@ public class RigidBodyMovement : MonoBehaviour
         // Flip gravity direction (so jump/gravity math stays consistent with sign)
         // gravity = -gravity;
         // Rotate the player (or level) around Z, as you had
-        if (accelerometer.z < -9f)
+        if (accelerometer.z > 9f && Vector3.Dot(Vector3.down,-orientation.transform.up) < 0)
         {
             invertGravity = true;
         }
-        else if(accelerometer.z > 9f)
+        else if(accelerometer.z < -9f && Vector3.Dot(Vector3.down,-orientation.transform.up) > 0)
         {
-            invertGravity = false;
+            invertGravity = true;
         }
         else
         {
