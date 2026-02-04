@@ -7,17 +7,18 @@
 #include "Imu.h"
 #include "Button.h"
 #include <TeensyThreads.h>
+#include "SimonSaysModule.h"
 
 SerialController serialController = SerialController();
 
 TimerModule timer = TimerModule("TMR", 27, 25, 26, serialController);
 Imu gyro = Imu("IMU", serialController);
 
-void buttonPress(){
-  Serial.printf("A BUTTON IS PRESSED\n");
-}
+Button btn1 = Button("BTN1", 38, serialController);
+Button btn2 = Button("BTN2", 39, serialController);
+Button btn3 = Button("BTN3", 40, serialController);
 
-Button testButton = Button("TestBtn", 38, serialController, buttonPress);
+//SimonSaysModule ssm = SimonSaysModule("SSM", {38, 39, 40, 41}, serialController);
 
 std::vector<Component*> components;
 
@@ -51,7 +52,7 @@ void parseCommand(std::string command){
   }
 }
 
-volatile int i = 600;
+/* volatile int i = 600;
 
 void countDown(){
   while(i >= 0){
@@ -59,7 +60,7 @@ void countDown(){
     threads.delay(1000);
     i--;
   }
-}
+} */
 
 
 
@@ -67,10 +68,9 @@ void countDown(){
 void setup() {
   components.push_back(&timer);
   components.push_back(&gyro);  
-  components.push_back(&testButton);
+  //components.push_back(&ssm);
 
-
-  threads.addThread(countDown, 1);
+  //threads.addThread(countDown, 1);
 
 }
 
@@ -78,8 +78,10 @@ void loop() {
 
   parseCommand(serialController.serialRecieve());
 
+  btn1.update();
+  btn2.update();
+  btn3.update();
 
   timer.updateDisplay();
   gyro.update();
-  testButton.update();
 }
