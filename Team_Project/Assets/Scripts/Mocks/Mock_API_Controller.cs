@@ -2,22 +2,22 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-public class Mock_API_Controller : API_Controller_Interface
+public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
 {
     public event Action<string, int> OnInputChanged;
     public event Action<Vector3> OnGyroChanged;
     public event Action<Vector3, Vector3> OnImuChanged;
 
     private Dictionary<string, int> _componentStateManager = new Dictionary<string, int>();
-    private Vector3 _gyroValue = Vector3.zero;
-    private Vector3 _accelValue = Vector3.zero;
+    [SerializeField] private Vector3 _gyroValue = Vector3.zero;
+    [SerializeField] private Vector3 _accelValue = Vector3.zero;
     private bool _hasAccel = false;
     public Vector3 getGyroValue => _gyroValue;
     public Vector3 getAccelerometerValue => _accelValue;
     public bool getHasAccelerometer => _hasAccel;
     public Dictionary<string, int> getComponentStateManager => _componentStateManager;
 
-    public void Initialize(I_SerialPortController manualController = null)
+    public void Initialize()
     {
         Debug.Log("<color=orange>MOCK: Initializing Simulated Hardware...</color>");
 

@@ -1,3 +1,4 @@
+using PlasticGui.WorkspaceWindow;
 using UnityEngine;
 
 public class API_Provider : MonoBehaviour
@@ -20,31 +21,23 @@ public class API_Provider : MonoBehaviour
 
         if (useMockHardware)
         {
-            ActiveAPIController = new Mock_API_Controller();
-            Debug.Log("<color=cyan>API Provider: Initializing MOCK mode.</color>");
 
-            ActiveAPIController.Initialize(null);
+            Debug.Log("TEST");
+            GameObject mockChild = new GameObject("Mock_API_Controller");
+            mockChild.transform.SetParent(this.transform);
 
-            // Disabling Serial Port Controller so that ports dont open during mocks
-            var realSerial = GetComponentInChildren<SerialPortController>(true);
-            if (realSerial != null && realSerial is MonoBehaviour mb) mb.enabled = false;
+            ActiveAPIController = mockChild.AddComponent<Mock_API_Controller>();
         }
         else
         {
-            ActiveAPIController = GetComponentInChildren<API_Controller>();
+            GameObject child = new GameObject("API_Controller");
+            child.transform.SetParent(this.transform);
 
-            if (ActiveAPIController != null)
-            {
-                Debug.Log("<color=green>API Provider: Initializing REAL mode.</color>");
+            ActiveAPIController = child.AddComponent<API_Controller>();
 
-                I_SerialPortController serial = GetComponentInChildren<SerialPortController>();
-
-                ActiveAPIController.Initialize(serial);
-            }
-            else
-            {
-                Debug.LogError("API Provider: Could not find API_Controller in children!");
-            }
+            Debug.Log("<color=green>API Provider: Initializing REAL mode.</color>");
+            
+            ActiveAPIController.Initialize();
         }
     }
 
