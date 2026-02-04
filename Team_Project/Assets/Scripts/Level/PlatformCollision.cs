@@ -12,7 +12,7 @@ public class PlatformCollision : MonoBehaviour
             other.gameObject.transform.parent = platform;
         }
     }
-
+    
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag.Equals(playerTag))

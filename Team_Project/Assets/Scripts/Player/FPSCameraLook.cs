@@ -21,6 +21,7 @@ public class FPSCameraLook : MonoBehaviour
     {
         lookInput = ctx.ReadValue<Vector2>();
     }
+    
     // Update is called once per frame
     void Update()
     {
