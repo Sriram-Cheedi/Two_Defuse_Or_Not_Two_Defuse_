@@ -16,9 +16,11 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
     {
         try
         {
+            Debug.Log("Attempting to Open Port on: " + _portID + " and baud rate: " + _baudRate);
             _serialPort = new SerialPort(_portID, _baudRate);
             _serialPort.ReadTimeout = 50;
             _serialPort.Open();
+
             Debug.Log("Protocol Active on " + _portID);
         }
         catch (Exception error)

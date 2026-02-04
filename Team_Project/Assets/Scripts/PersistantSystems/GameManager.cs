@@ -12,8 +12,7 @@ public class GameManager : MonoBehaviour
 
     public enum GameState { Menu, Playing, GameOver }
     public GameState currentState = GameState.Menu;
-
-    [SerializeField] private API_Provider provider;
+    private API_Provider _provider = API_Provider.Instance;
 
     private void Awake()
     {
@@ -35,7 +34,7 @@ public class GameManager : MonoBehaviour
             EndGame();
         }
 
-        provider.ActiveAPIController.TimerSet((int)bombTimer);
+        _provider.ActiveAPIController.TimerSet((int)bombTimer);
     }
 
     public void StartGame()
