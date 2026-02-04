@@ -55,7 +55,9 @@ public class RigidBodyMovement : MonoBehaviour
     [SerializeField] float gravityMultiplier = 2.0f;
     [SerializeField] private float downSpeed;
     [Header("External")]
-    [SerializeField] private ApiManager api_manager;
+    [Header("External")]
+    private API_Provider _API_Provider = API_Provider.Instance;
+    private API_Controller_Interface _activeHardware;
     [Header("Rotation")] [SerializeField] private float rotationSpeed = 20f;
 
     Vector3 gravityDir = Physics.gravity.normalized;
@@ -65,6 +67,7 @@ public class RigidBodyMovement : MonoBehaviour
     private bool hasInvertGravity;
     private Rigidbody rb;
     private MovementState movementState;
+    private bool invertedPlayer;
     
     private enum MovementState
     {
@@ -96,14 +99,14 @@ public class RigidBodyMovement : MonoBehaviour
     }
     private void OnEnable()
     {
-        if (api_manager != null)
-            api_manager.OnImuChanged += RotateLevel;
+        if (_activeHardware != null)
+            _activeHardware.OnImuChanged += RotateLevel;
     }
 
     private void OnDisable()
     {
-        if (api_manager != null)
-            api_manager.OnImuChanged -= RotateLevel;
+        if (_activeHardware != null)
+            _activeHardware.OnImuChanged -= RotateLevel;
     }
     
     private void RotateLevel(Vector3 gyro, Vector3 accelerometer)
@@ -112,20 +115,18 @@ public class RigidBodyMovement : MonoBehaviour
         // Flip gravity direction (so jump/gravity math stays consistent with sign)
         // gravity = -gravity;
         // Rotate the player (or level) around Z, as you had
-        // if (accelerometer.z < -9f)
-        // {
-        //     invertGravity = true;
-        //     invertedPlayer = true;
-        // }
-        // else if(accelerometer.z > 9f)
-        // {
-        //     invertGravity = false;
-        //     invertedPlayer = true;
-        // }
-        // else
-        // {
-        //     invertedPlayer = false;
-        // }
+        if (accelerometer.z < -9f)
+        {
+            invertGravity = true;
+        }
+        else if(accelerometer.z > 9f)
+        {
+            invertGravity = false;
+        }
+        else
+        {
+            invertedPlayer = false;
+        }
     }
 
     private void MyInput()

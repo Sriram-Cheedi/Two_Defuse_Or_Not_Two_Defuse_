@@ -7,32 +7,31 @@ public class DestroyDoor : MonoBehaviour
 {
     [SerializeField] private GameObject[] doors;
     [SerializeField] private float delay = 1f;
-    public ApiManager api;
+    private API_Provider _API_Provider = API_Provider.Instance;
+    private API_Controller_Interface _activeHardware;
     private bool[] buttonsPressed;
     private void Awake()
     {
-        api = GameObject.FindGameObjectWithTag("API").GetComponent<ApiManager>();
+        _activeHardware = _API_Provider.ActiveAPIController;
         buttonsPressed = new bool[3];
     }
-    
+
     private void GetButtonsValues()
     {
         for (int i = 0; i < buttonsPressed.Length; i++)
         {
             int buttonId = i + 1;
-            int buttonValue = api.GetButton(buttonId.ToString());
+            int buttonValue = API_Provider.Instance.ActiveAPIController.GetButton(buttonId.ToString());
             if (buttonValue == 1)
             {
-                buttonsPressed[i] = true;
+                DisableDoorForSeconds(doors[i], 1f);
+                doors[i].SetActive(false);
             }
-            else
-            {
-                buttonsPressed[i] = false;
-            }
+            
         }
     }
 
-        public void OnInput(InputAction.CallbackContext context)
+    public void OnInput(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
@@ -78,7 +77,7 @@ public class DestroyDoor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // GetButtonsValues();
+        GetButtonsValues();
         // for (int i = 0; i < buttonsPressed.Length; i++)
         // {
         //     Debug.Log(buttonsPressed[i]);
@@ -87,6 +86,6 @@ public class DestroyDoor : MonoBehaviour
         //         Destroy(doors[i]);
         //     }
         // }
-        
+
     }
 }

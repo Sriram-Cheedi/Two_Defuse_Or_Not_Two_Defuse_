@@ -4,7 +4,7 @@
 using UnityEngine;
 public class ApiTestListener : MonoBehaviour
 {
-    public ApiManager api;
+    public API_Controller api;
 
     void OnEnable()
     {
@@ -26,7 +26,7 @@ public class ApiTestListener : MonoBehaviour
     {
         Debug.Log("GYRO -> " + header + " = " + value);
     }
-     void Update()
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {

@@ -1,3 +1,4 @@
+using System;
 using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,7 +18,6 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
         {
             EndGame();
         }
+
+        API_Provider.Instance.ActiveAPIController.TimerSet((int)bombTimer);
     }
 
     public void StartGame()

@@ -9,7 +9,7 @@ public class MovingPlatform : MonoBehaviour
     [Header("Movement")]
     [SerializeField] float speed = 10f;
     [SerializeField] float delay = 0.5f;
-    
+
     [SerializeField] private Transform platform;
     private Vector3 targetPosition;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -31,7 +31,7 @@ public class MovingPlatform : MonoBehaviour
                 platform.position = Vector3.MoveTowards(platform.position, targetPosition, speed * Time.deltaTime);
                 yield return null;
             }
-            targetPosition = targetPosition == pointA.position ? pointB.position :  pointA.position;
+            targetPosition = targetPosition == pointA.position ? pointB.position : pointA.position;
             yield return new WaitForSeconds(delay);
         }
     }

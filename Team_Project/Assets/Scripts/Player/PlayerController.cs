@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Vector2 = UnityEngine.Vector2;
@@ -21,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Jump")]
     [SerializeField] private float jumpHeight = 2f;
-    [SerializeField] private float springHeight = 30f;
+    [SerializeField] private float springHeight = 6f;
     [SerializeField] private float defaultGravity = -20f;
     [SerializeField] private float gravity = -20f;
 
@@ -35,7 +34,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float targetRotation = 180f;
     
     [Header("External")]
-    [SerializeField] private ApiManager api_manager;
+    private API_Provider _API_Provider = API_Provider.Instance;
+    private API_Controller_Interface _activeHardware;
 
     private Vector2 moveInput;
     private Vector3 horizontalMove;
@@ -56,7 +56,6 @@ public class PlayerController : MonoBehaviour
     private float remainingRotation;
     private bool hasInvertedPlayer;
     private bool invertedPlayer;
-
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -71,20 +70,23 @@ public class PlayerController : MonoBehaviour
         speed = defaultSpeed;
         downSpeed = 5.0f;
         invertGravity = false;
+
         SetStandCenter();
         SetCrouchCenter();
+
+        _activeHardware = _API_Provider.ActiveAPIController;
     }
 
     private void OnEnable()
     {
-        if (api_manager != null)
-            api_manager.OnImuChanged += RotateLevel;
+        if (_activeHardware != null)
+            _activeHardware.OnImuChanged += RotateLevel;
     }
 
     private void OnDisable()
     {
-        if (api_manager != null)
-            api_manager.OnImuChanged -= RotateLevel;
+        if (_activeHardware != null)
+            _activeHardware.OnImuChanged -= RotateLevel;
     }
 
     private void RotateLevel(Vector3 gyro, Vector3 accelerometer)
