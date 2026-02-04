@@ -7,7 +7,7 @@ public class PlayerCam : MonoBehaviour
     [SerializeField] private float sensY = 10f;
     [SerializeField] private Transform orientation;
     private Vector2 lookInput;
-    
+    public float rollZ;
     private float xRotation;
     private float yRotation;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -36,7 +36,7 @@ public class PlayerCam : MonoBehaviour
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
         
-        transform.rotation = Quaternion.Euler(xRotation, yRotation , 0f);
+        transform.rotation = Quaternion.Euler(xRotation, yRotation , rollZ);
         orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
     }
 }

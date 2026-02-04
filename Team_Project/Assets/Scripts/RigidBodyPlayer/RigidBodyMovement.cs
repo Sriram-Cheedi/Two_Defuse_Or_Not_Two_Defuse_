@@ -40,6 +40,7 @@ public class RigidBodyMovement : MonoBehaviour
     [SerializeField] private float airMultiplier = 0.4f;
     private bool readyToJump = true;
     private bool isCrouchPressed;
+    [SerializeField] private PlayerCam playerCam;
     
     private float remainingRotation;
     private float step;
@@ -55,7 +56,7 @@ public class RigidBodyMovement : MonoBehaviour
     [SerializeField] private float downSpeed;
     [Header("External")]
     [SerializeField] private ApiManager api_manager;
-    [Header("Rotation")] [SerializeField] private float rotationSpeed = 10f;
+    [Header("Rotation")] [SerializeField] private float rotationSpeed = 20f;
 
     Vector3 gravityDir = Physics.gravity.normalized;
     Vector3 movementDir;
@@ -76,6 +77,7 @@ public class RigidBodyMovement : MonoBehaviour
     private void Awake()
     {
         controller = GetComponent<CapsuleCollider>();
+        rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
         standHeight = controller.height;
         standCenterY = controller.center.y;
@@ -88,7 +90,6 @@ public class RigidBodyMovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
         rb.freezeRotation = true;
         moveSpeed = walkSpeed;
@@ -285,6 +286,8 @@ public class RigidBodyMovement : MonoBehaviour
             step = rotationSpeed * Time.fixedDeltaTime;
             step = Mathf.Min(step, remainingRotation);
             Quaternion deltaRotation = Quaternion.Euler(0, 0, step);
+            cameraPostion.Rotate(Vector3.forward, step,Space.Self);
+            playerCam.rollZ += step; 
             rb.MoveRotation(rb.rotation * deltaRotation);
             remainingRotation -= step;
             yield return new WaitForFixedUpdate();
