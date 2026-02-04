@@ -16,6 +16,9 @@ void LCDModule::LCDSetup() {
   lcd.backlight();
   lcd.print("Hello, world!");
 }
- 
-void LCDModule::LCDLoop() {
+
+void LCDModule::LCDSet(char word[]){
+  lcd.clear();
+  lcd.backlight();
+  lcd.print(word);
 }

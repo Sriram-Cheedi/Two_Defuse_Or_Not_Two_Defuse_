@@ -2,11 +2,11 @@
 #include <string>
 #include "component.h"
 #include "serialController.h"
+#include "LCDModule.h"
 
 class numberGameModule : public Component {
 
 private:
-
     const int dataPin;
     const int clockPin;
     const int latchPin;
@@ -15,10 +15,20 @@ private:
     int buttonPushCounter = 0;  // counter for the number of button presses
     int buttonState = 0;        // current state of the button
     float lastButtonState = 0;
-    int randomNum;
+    float lastVoltage = 0;
+
+    uint8_t ledStates = 0b00000000;
+    int secretNumber[4];
+    int attempts = 0;
+    const byte ledPositions[4][2] = {
+        {7, 0},
+        {1, 2},
+        {3, 4},
+        {5, 6}
+    };
 
     SerialController serialController;
-
+    LCDModule& display;
     unsigned long lastUpdate = 0;
     unsigned long buttonUpdate = 0;
     const unsigned int refreshInterval = 200;
@@ -67,10 +77,11 @@ private:
 
 public:
 
-    numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin,SerialController serialController);
+    numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin,SerialController serialController,LCDModule& display);
     void set(std::vector<std::string> args) override;
     void status() override;
-
+    void setupGame();
+    void checkGuess();
     void buttonCheck();
     void updateDisplay();
   

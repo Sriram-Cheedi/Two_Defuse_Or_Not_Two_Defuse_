@@ -12,9 +12,9 @@ SerialController serialController = SerialController();
 
 //timerModule timer = timerModule("TMR", 23, 24, 25, serialController);
 
-numberGameModule numberGame = numberGameModule("NGM",36,34,35,A8,serialController);
-
 LCDModule LCDDisplay = LCDModule();
+
+numberGameModule numberGame = numberGameModule("NGM",36,34,35,A8,serialController,LCDDisplay);
 
 std::vector<std::unique_ptr<Component>> components;
 
@@ -51,6 +51,7 @@ void setup() {
   components.push_back(std::make_unique<numberGameModule>(numberGame));
   //timer.set({"500"});
   LCDDisplay.LCDSetup();
+  numberGame.setupGame();
 }
 
 void loop() {
