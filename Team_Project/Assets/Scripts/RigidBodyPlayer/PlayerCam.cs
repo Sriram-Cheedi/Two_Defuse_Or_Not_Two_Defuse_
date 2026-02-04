@@ -32,11 +32,14 @@ public class PlayerCam : MonoBehaviour
     {
         float mouseX = lookInput.x * sensX * Time.deltaTime;
         float mouseY = lookInput.y * sensY * Time.deltaTime;
+        float sign = Vector3.Dot(transform.up, Vector3.up) < 0f ? -1f : 1f;
+        mouseX *= sign;
+        mouseY *= sign;
         yRotation += mouseX;
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
         
         transform.rotation = Quaternion.Euler(xRotation, yRotation , rollZ);
-        orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
+        orientation.rotation = Quaternion.Euler(0f, yRotation, rollZ);
     }
 }

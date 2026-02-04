@@ -372,7 +372,7 @@ public class RigidBodyMovement : MonoBehaviour
         Vector3 origin = controller.bounds.center;
         float rayLength = controller.bounds.extents.y + 0.2f;
 
-        if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, rayLength, groundLayer))
+        if (Physics.Raycast(origin, -rb.transform.up, out RaycastHit hit, rayLength, groundLayer))
         {
             isGrounded = true;
             slopeHit = hit;

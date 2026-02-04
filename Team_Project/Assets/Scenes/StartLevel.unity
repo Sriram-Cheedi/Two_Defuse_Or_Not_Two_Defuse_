@@ -1095,7 +1095,6 @@ MonoBehaviour:
   - {fileID: 1667475895}
   - {fileID: 1345017530}
   delay: 1
-  api: {fileID: 2068363219}
 --- !u!4 &289672841
 Transform:
   m_ObjectHideFlags: 0
@@ -2151,7 +2150,7 @@ GameObject:
   - component: {fileID: 537564872}
   - component: {fileID: 537564871}
   - component: {fileID: 537564870}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3600,8 +3599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02bfd6254af84b746a7322c13d2c5a19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SerialManager
-  port: COM3
-  baudRate: 115200
+  _baudRate: 115200
 --- !u!4 &774978247
 Transform:
   m_ObjectHideFlags: 0
@@ -3629,7 +3627,7 @@ GameObject:
   - component: {fileID: 775515130}
   - component: {fileID: 775515129}
   - component: {fileID: 775515128}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8175,7 +8173,7 @@ GameObject:
   - component: {fileID: 1667980205}
   - component: {fileID: 1667980204}
   - component: {fileID: 1667980203}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9900,7 +9898,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6fd08ec5db9e404e978af55ae5de61f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ApiManager
-  serial: {fileID: 774978246}
 --- !u!4 &2068363220
 Transform:
   m_ObjectHideFlags: 0
