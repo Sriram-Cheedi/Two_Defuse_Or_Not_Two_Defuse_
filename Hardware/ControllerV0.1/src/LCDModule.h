@@ -5,6 +5,7 @@ class LCDModule {
 public:
     LCDModule();
     void LCDSetup();
+    void LCDScroll();
     void LCDSet(char word[]);
 };
 

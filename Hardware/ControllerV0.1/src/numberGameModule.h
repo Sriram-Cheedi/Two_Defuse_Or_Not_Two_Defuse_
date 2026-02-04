@@ -19,7 +19,7 @@ private:
 
     uint8_t ledStates = 0b00000000;
     int secretNumber[4];
-    int attempts = 0;
+    byte attempts = 0;
     const byte ledPositions[4][2] = {
         {7, 0},
         {1, 2},
@@ -29,6 +29,8 @@ private:
 
     SerialController serialController;
     LCDModule& display;
+
+    unsigned long displayUpdate = 0;
     unsigned long lastUpdate = 0;
     unsigned long buttonUpdate = 0;
     const unsigned int refreshInterval = 200;

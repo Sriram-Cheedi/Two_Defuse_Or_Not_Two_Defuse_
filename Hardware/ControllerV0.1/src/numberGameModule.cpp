@@ -21,6 +21,9 @@ void numberGameModule::status(){
 }
 
 void numberGameModule::setupGame(){
+    //set the random numbers to be guessed.
+    //ensures no repeat numbers.
+
     secretNumber[0] = random(0,9);
 
     secretNumber[1] = random(0,9);
@@ -55,11 +58,13 @@ void numberGameModule::setupGame(){
 }
 
 void numberGameModule::buttonCheck(){
+    //Resitor ladder DAC buttons
+    //Each button has a different threshold voltage.
     int sensorValue = analogRead(buttonPin);
     
     float voltage = sensorValue * (3.3 / 1023.0);
     if(lastVoltage < 0.6){
-        if(voltage >= 2.55 && voltage <= 2.8){ //2.7 2.57
+        if(voltage >= 2.55 && voltage <= 2.8){ //button 1
             digitsBuffer[0] = digitsBuffer[0] + 1;
             if(digitsBuffer[0] > 9){
                 digitsBuffer[0] = 0;
@@ -69,19 +74,19 @@ void numberGameModule::buttonCheck(){
             Serial.print(secretNumber[2]);
             Serial.println(secretNumber[3]);
         }
-        else if(voltage >= 2.3 && voltage <= 2.5){ //2.41 2.36
+        else if(voltage >= 2.3 && voltage <= 2.5){ //button 2
             digitsBuffer[1] = digitsBuffer[1] + 1;
             if(digitsBuffer[1] > 9){
                 digitsBuffer[1] = 0;
             }
         }
-        else if(voltage >= 1.9 && voltage <= 2.2){ //2.02 2.12
+        else if(voltage >= 1.9 && voltage <= 2.2){ //button 3
             digitsBuffer[2] = digitsBuffer[2] + 1;
             if(digitsBuffer[2] > 9){
                 digitsBuffer[2] = 0;
             }
         }
-        else if(voltage >= 1.1 && voltage <= 1.4){ //1.23 1.36
+        else if(voltage >= 1.1 && voltage <= 1.4){ //button 4
             digitsBuffer[3] = digitsBuffer[3] + 1;
             if(digitsBuffer[3] > 9){
                 digitsBuffer[3] = 0;
@@ -103,6 +108,7 @@ void numberGameModule::checkGuess() {
     
     //Green LED
     for (int i = 0; i < 4; i++) {
+        //Checks what digits are in the correct place
         if (digitsBuffer[i] == secretNumber[i]) {
             correctPositions++;
             ledStates |= (1 << ledPositions[i][1]);
@@ -110,9 +116,9 @@ void numberGameModule::checkGuess() {
             guessUsed[i] = true;
         }
     }
-  //Serial.println(ledStates,BIN);
-  //Orange LED
+    //Orange LED
     for (int i = 0; i < 4; i++) {
+        //Checks what digits are correct but in the wrong position.
         if (!guessUsed[i]) {
             for (int j = 0; j < 4; j++) {
                 if (!secretUsed[j] && digitsBuffer[i] == secretNumber[j]) {
@@ -125,12 +131,12 @@ void numberGameModule::checkGuess() {
             }
         }
     }
-
+    attempts++;
     if(correctPositions == 4){
-        char word[] = "You Win!";
+        char word[] = "You Win! ";
         display.LCDSet(word);
     }
-    attempts++;
+    
 }
 
 void numberGameModule::updateDisplay(){

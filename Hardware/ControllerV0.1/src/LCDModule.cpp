@@ -14,7 +14,12 @@ void LCDModule::LCDSetup() {
 
   // Print a message to the LCD.
   lcd.backlight();
-  lcd.print("Hello, world!");
+  //lcd.print("Guess the Number using the four buttons. The 5th button will submit your current guess. No light indicates the number is not correct. Yellow light indicates that the number is correct but in the wrong position. Green is the correct number in the correct place. Numbers do no repeat.");
+  lcd.print("Guess the Number");
+}
+
+void LCDModule::LCDScroll(){
+  lcd.scrollDisplayLeft();
 }
 
 void LCDModule::LCDSet(char word[]){
