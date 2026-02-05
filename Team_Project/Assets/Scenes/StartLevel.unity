@@ -608,7 +608,7 @@ GameObject:
   - component: {fileID: 141764190}
   m_Layer: 6
   m_Name: RespawnPoint4 (2)
-  m_TagString: Untagged
+  m_TagString: FlipSection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2152,7 +2152,7 @@ GameObject:
   - component: {fileID: 537564870}
   m_Layer: 6
   m_Name: Platform
-  m_TagString: Untagged
+  m_TagString: FlipSection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2760,7 +2760,11 @@ PrefabInstance:
     - target: {fileID: 5605535105995821793, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
       propertyPath: api_manager
       value: 
-      objectReference: {fileID: 2068363219}
+      objectReference: {fileID: 0}
+    - target: {fileID: 5605535105995821793, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
+      propertyPath: playerInput
+      value: 
+      objectReference: {fileID: 1889529501}
     - target: {fileID: 5605535105995821793, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
       propertyPath: springForce
       value: 45
@@ -3570,51 +3574,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8285810384674727271, guid: e44cdc2a223cd814f967e90b1e84e37c, type: 3}
   m_PrefabInstance: {fileID: 765279477}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &774978245
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 774978247}
-  - component: {fileID: 774978246}
-  m_Layer: 0
-  m_Name: SerialManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &774978246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 774978245}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02bfd6254af84b746a7322c13d2c5a19, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SerialManager
-  _baudRate: 115200
---- !u!4 &774978247
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 774978245}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -190.6097, y: -33.513138, z: 173.16475}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1856132837}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &775515127
 GameObject:
   m_ObjectHideFlags: 0
@@ -3629,7 +3588,7 @@ GameObject:
   - component: {fileID: 775515128}
   m_Layer: 6
   m_Name: Platform (2)
-  m_TagString: Untagged
+  m_TagString: FlipSection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8175,7 +8134,7 @@ GameObject:
   - component: {fileID: 1667980203}
   m_Layer: 6
   m_Name: Platform (1)
-  m_TagString: Untagged
+  m_TagString: FlipSection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8646,9 +8605,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 289672841}
-  - {fileID: 774978247}
   - {fileID: 959340398}
-  - {fileID: 2068363220}
   - {fileID: 1881431231}
   - {fileID: 1746803411}
   m_Father: {fileID: 0}
@@ -8719,7 +8676,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9390aa4e94764171b015e3680785a7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelHandler
-  player: {fileID: 0}
+  player: {fileID: 1889529493}
 --- !u!4 &1881431231
 Transform:
   m_ObjectHideFlags: 0
@@ -8751,6 +8708,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcdc472b0354b4544991144a911f4c90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RigidBodyMovement
+--- !u!114 &1889529501 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4370538636245182427, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
+  m_PrefabInstance: {fileID: 654452714}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889529493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
 --- !u!1001 &1909650439
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9705,7 +9673,7 @@ GameObject:
   - component: {fileID: 2056856776}
   m_Layer: 6
   m_Name: RespawnPoint4
-  m_TagString: Untagged
+  m_TagString: FlipSection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9869,50 +9837,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55b6eb5bffec98a4db98522d8beec7dc, type: 3}
---- !u!1 &2068363218
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2068363220}
-  - component: {fileID: 2068363219}
-  m_Layer: 0
-  m_Name: ApiManager
-  m_TagString: API
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2068363219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2068363218}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6fd08ec5db9e404e978af55ae5de61f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ApiManager
---- !u!4 &2068363220
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2068363218}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -178.11142, y: -47.3953, z: 187.04689}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1856132837}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2094823757
 GameObject:
   m_ObjectHideFlags: 0

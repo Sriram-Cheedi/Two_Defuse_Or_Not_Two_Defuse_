@@ -68,6 +68,8 @@ public class RigidBodyMovement : MonoBehaviour
     private Rigidbody rb;
     private MovementState movementState;
     private bool invertedPlayer;
+    private bool isRotating;
+    private bool onFlip;
     
     private enum MovementState
     {
@@ -86,6 +88,9 @@ public class RigidBodyMovement : MonoBehaviour
         standCenterY = controller.center.y;
         downSpeed = 5.0f;
         crouchHeight = controller.height / 2f;
+        _activeHardware = _API_Provider.ActiveAPIController;
+        hasInvertGravity = false;
+        isRotating = false;
         SetStandCenter();
         SetCrouchCenter();
     }
@@ -125,7 +130,7 @@ public class RigidBodyMovement : MonoBehaviour
         }
         else
         {
-            invertedPlayer = false;
+            invertGravity = false;
         }
     }
 
@@ -268,6 +273,10 @@ public class RigidBodyMovement : MonoBehaviour
 
     private void InvertGravityDirection()
     {
+        if (isRotating)
+        {
+            return;
+        }
         if (!hasInvertGravity && invertGravity)
         {
             gravityDir = -gravityDir;
@@ -279,6 +288,7 @@ public class RigidBodyMovement : MonoBehaviour
     
     IEnumerator SmoothRotate()
     {
+        isRotating = true;
         var playerMap = playerInput.actions.FindActionMap("Player");
         playerMap.Disable();
         remainingRotation = targetRotation;
@@ -294,6 +304,7 @@ public class RigidBodyMovement : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         playerMap.Enable();
+        isRotating = false;
     }
     
     public void OnJump(InputAction.CallbackContext ctx)
@@ -378,6 +389,7 @@ public class RigidBodyMovement : MonoBehaviour
             slopeHit = hit;
             onSlope = hit.collider.CompareTag("Slide");
             onMovingPlatform = hit.collider.CompareTag("MovingPlatform");
+            onFlip = hit.collider.CompareTag("FlipSection");
         }
         else
         {
