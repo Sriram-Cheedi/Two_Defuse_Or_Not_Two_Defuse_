@@ -12,7 +12,7 @@ public class DestroyDoor : MonoBehaviour
     private bool[] buttonsPressed;
     private void Awake()
     {
-        _activeHardware = _API_Provider.ActiveAPIController;
+        // _activeHardware = _API_Provider.ActiveAPIController;
         buttonsPressed = new bool[3];
     }
 
@@ -21,15 +21,13 @@ public class DestroyDoor : MonoBehaviour
         for (int i = 0; i < buttonsPressed.Length; i++)
         {
             int buttonId = i + 1;
-            int buttonValue = _activeHardware.GetButton(buttonId.ToString());
+            int buttonValue = API_Provider.Instance.ActiveAPIController.GetButton(buttonId.ToString());
             if (buttonValue == 1)
             {
-                buttonsPressed[i] = true;
+                DisableDoorForSeconds(doors[i], 1f);
+                doors[i].SetActive(false);
             }
-            else
-            {
-                buttonsPressed[i] = false;
-            }
+            
         }
     }
 
@@ -79,7 +77,7 @@ public class DestroyDoor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // GetButtonsValues();
+        GetButtonsValues();
         // for (int i = 0; i < buttonsPressed.Length; i++)
         // {
         //     Debug.Log(buttonsPressed[i]);

@@ -7,8 +7,9 @@ TagManager:
   - API
   - Slide
   - Spring
+  - MovingPlatform
   - HardwareProvider
-  - BakeCamera
+  - FlipSection
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 'ElectricBake '
+  - 
   - 
   - 
   - 

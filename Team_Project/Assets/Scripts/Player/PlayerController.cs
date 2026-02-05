@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Vector2 = UnityEngine.Vector2;
@@ -29,6 +30,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float crouchSpeed;
     [SerializeField] private float downSpeed;
 
+    [Header("Rotation")] [SerializeField] private float rotationSpeed = 0.01f;
+    [SerializeField] private float targetRotation = 180f;
+    
     [Header("External")]
     private API_Provider _API_Provider = API_Provider.Instance;
     private API_Controller_Interface _activeHardware;
@@ -45,10 +49,17 @@ public class PlayerController : MonoBehaviour
     private Vector3 standOrigin;
     private Vector3 crouchOrigin;
     private bool grounded;
+    private PlayerInput playerInput;
 
+    
+    private float step;
+    private float remainingRotation;
+    private bool hasInvertedPlayer;
+    private bool invertedPlayer;
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
+        playerInput = GetComponent<PlayerInput>();
 
         standHeight = controller.height;
         standCenterY = controller.center.y;
@@ -78,15 +89,26 @@ public class PlayerController : MonoBehaviour
             _activeHardware.OnImuChanged -= RotateLevel;
     }
 
-    private void RotateLevel(Vector3 gyro, Vector3 rotationValue)
+    private void RotateLevel(Vector3 gyro, Vector3 accelerometer)
     {
 
         // Flip gravity direction (so jump/gravity math stays consistent with sign)
         // gravity = -gravity;
         // Rotate the player (or level) around Z, as you had
-        Physics.gravity = gyro;
-        Debug.Log(gyro.x + " " + gyro.y + " " + gyro.z);
-        transform.Rotate(gyro.x, gyro.y, gyro.z);
+        if (accelerometer.z < -9f)
+        {
+            invertGravity = true;
+            invertedPlayer = true;
+        }
+        else if(accelerometer.z > 9f)
+        {
+            invertGravity = false;
+            invertedPlayer = true;
+        }
+        else
+        {
+            invertedPlayer = false;
+        }
     }
 
     public void OnMove(InputAction.CallbackContext ctx)
@@ -111,9 +133,34 @@ public class PlayerController : MonoBehaviour
         if (ctx.started)
         {
             invertGravity = !invertGravity;
-            transform.Rotate(0, 0, 180);
-
+            StartCoroutine(SmoothRotate());
         }
+    }
+
+    IEnumerator SmoothRotate()
+    {
+        var playerMap = playerInput.actions.FindActionMap("Player");
+        playerMap.Disable();
+        remainingRotation = targetRotation;
+        while (remainingRotation > 0)
+        {
+            step = rotationSpeed * Time.deltaTime;
+            step = Mathf.Min(step, remainingRotation);
+            transform.Rotate(0,0, step);
+            remainingRotation -= step;
+            yield return null;
+        }
+        playerMap.Enable();
+    }
+
+    private void InvertPlayer(bool inverted)
+    {
+        if (!hasInvertedPlayer && inverted)
+        {
+            StartCoroutine(SmoothRotate());
+        }
+
+        hasInvertedPlayer = inverted;
     }
 
     private void SetCrouchCenter()
@@ -208,18 +255,19 @@ public class PlayerController : MonoBehaviour
         if (grounded && !invertGravity)
         {
             verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * defaultGravity);
-        }
-        else if (grounded && invertGravity)
+        }else if (grounded && invertGravity)
         {
             verticalVelocity = -Mathf.Sqrt(jumpHeight * -2f * defaultGravity);
         }
-
+            
     }
 
     private void Spring()
     {
         if (onSpring && grounded)
+        {
             verticalVelocity = Mathf.Sqrt(springHeight * -2f * defaultGravity);
+        }
     }
 
     private void GravityInvert(bool isGravityInvert, CollisionFlags flags)
@@ -261,14 +309,15 @@ public class PlayerController : MonoBehaviour
 
         // Apply gravity
 
-
+        
         verticalVelocity = Mathf.Max(verticalVelocity, terminalDownVelocity);
 
         Vector3 move = horizontalMove + Vector3.up * verticalVelocity;
         CollisionFlags flags = controller.Move(move * Time.deltaTime);
-
+        
         SetCrouch(crouchPressed);
         Spring();
         GravityInvert(invertGravity, flags);
+        InvertPlayer(invertedPlayer);
     }
 }

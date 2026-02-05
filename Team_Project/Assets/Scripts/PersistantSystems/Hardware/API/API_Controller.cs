@@ -3,47 +3,86 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 
+struct HardwareState
+{
+    public Dictionary<string, int> componentStates;
+    public Vector3 gyroValue;
+    public Vector3 accelerometerValue;
+    public bool hasAccelerometer;
+}
+
 public class API_Controller : MonoBehaviour, API_Controller_Interface
 {
     public I_SerialPortController ActivePortController { get; private set; }
+
+
     public event Action<string, int> OnInputChanged;
     public event Action<Vector3> OnGyroChanged;
     public event Action<Vector3, Vector3> OnImuChanged;
-    private Dictionary<string, int> _componentStateManager = new Dictionary<string, int>();
-    private Vector3 _gyroValue = Vector3.zero;
-    private Vector3 _accelerometerValue = Vector3.zero;
-    private bool _hasAccelerometer = false;
 
-    // Getters
-    public Vector3 getGyroValue => _gyroValue;
-    public Vector3 getAccelerometerValue => _accelerometerValue;
-    public bool getHasAccelerometer => _hasAccelerometer;
-    public Dictionary<string, int> getComponentStateManager => _componentStateManager;
+    // Local saved hardware values
+    private HardwareState hardwareState;
+
+    public I_SerialPortController serialController;
+
+
+    // Getters for Local saved hardware values
+    public Vector3 getGyroValue => hardwareState.gyroValue;
+    public Vector3 getAccelerometerValue => hardwareState.accelerometerValue;
+    public bool getHasAccelerometer => hardwareState.hasAccelerometer;
+    public Dictionary<string, int> getComponentStateManager => hardwareState.componentStates;
     private void OnDestroy() => Exit();
 
-    public void Initialize(I_SerialPortController manualController = null)
+    public void Awake() 
+    { 
+        hardwareState = new HardwareState();
+        hardwareState.componentStates = new Dictionary<string, int>();
+        hardwareState.gyroValue = Vector3.zero; ;
+        hardwareState.hasAccelerometer = false;
+    }
+    /// <summary>
+    /// Initializes Local dictionary of all connected hardware components to 0 (off).
+    /// Passes in the serialController and connects its 'Received' action to the HandleMessage function.
+    /// </summary>
+    public void Initialize()
     {
-        _componentStateManager["BTN1"] = 0;
-        _componentStateManager["BTN2"] = 0;
-        _componentStateManager["BTN3"] = 0;
-        _componentStateManager["BTN4"] = 0;
-        _componentStateManager["BTN5"] = 0;
 
-        _componentStateManager["SWT1"] = 0;
-        _componentStateManager["SWT2"] = 0;
-        _componentStateManager["SWT3"] = 0;
+        hardwareState.componentStates["BTN1"] = 0;
+        hardwareState.componentStates["BTN2"] = 0;
+        hardwareState.componentStates["BTN3"] = 0;
+        hardwareState.componentStates["BTN4"] = 0;
+        hardwareState.componentStates["BTN5"] = 0;
 
-        _componentStateManager["LED1"] = 0;
-        _componentStateManager["LED2"] = 0;
-        _componentStateManager["LED3"] = 0;
+        hardwareState.componentStates["SWT1"] = 0;
+        hardwareState.componentStates["SWT2"] = 0;
+        hardwareState.componentStates["SWT3"] = 0;
+        
+        hardwareState.componentStates["LED1"] = 0;
+        hardwareState.componentStates["LED2"] = 0;
+        hardwareState.componentStates["LED3"] = 0;
 
-        if (manualController != null)
-            ActivePortController = manualController;
-        else
-            ActivePortController = GetComponentInChildren<SerialPortController>();
+        //hardwareState.componentStates["SWT1"] = 0;
+        //hardwareState.componentStates["SWT2"] = 0;
+        //hardwareState.componentStates["SWT3"] = 0;
+
+        //hardwareState.componentStates["LED1"] = 0;
+        //hardwareState.componentStates["LED2"] = 0;
+        //hardwareState.componentStates["LED3"] = 0;
+
+        GameObject child = new GameObject("Serial_Port_Controller");
+        child.transform.SetParent(this.transform);
+        ActivePortController = child.AddComponent<SerialPortController>();
+        Debug.Log("Setting Serial Controller");
 
         if (ActivePortController != null)
+        {
+            Debug.Log("Setting Handle Message for Real Serial Controller");
             ActivePortController.Received += HandleMessage;
+        }
+        else
+        {
+            Debug.LogError("Error: Unable to set serial Controller for REAL API_Controller");
+        }
     }
 
     void Exit()
@@ -51,6 +90,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         if (ActivePortController != null)
         {
             ActivePortController.Received -= HandleMessage;
+            ActivePortController.OnApplicationQuit();
         }
     }
 
@@ -108,15 +148,15 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
             Vector3 newGyro = new Vector3(gx, gy, gz);
 
-            if (_gyroValue == newGyro && _hasAccelerometer == false)
+            if (hardwareState.gyroValue == newGyro && hardwareState.hasAccelerometer == false)
             {
                 return;
             }
 
-            _gyroValue = newGyro;
-            _hasAccelerometer = false;
+            hardwareState.gyroValue = newGyro;
+            hardwareState.hasAccelerometer = false;
 
-            OnGyroChanged?.Invoke(_gyroValue);
+            OnGyroChanged?.Invoke(hardwareState.gyroValue);
             {
                 return;
             }
@@ -142,54 +182,55 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
             Vector3 newGyro = new Vector3(gx, gy, gz);
             Vector3 newAccel = new Vector3(ax, ay, az);
 
-            if (_gyroValue == newGyro && _accelerometerValue == newAccel && _hasAccelerometer == true)
+            if (hardwareState.gyroValue == newGyro && hardwareState.accelerometerValue == newAccel && hardwareState.hasAccelerometer == true)
             {
                 return;
             }
 
-            _gyroValue = newGyro;
-            _accelerometerValue = newAccel;
-            _hasAccelerometer = true;
+            hardwareState.gyroValue = newGyro;
+            hardwareState.accelerometerValue = newAccel;
+            hardwareState.hasAccelerometer = true;
 
-            OnImuChanged?.Invoke(_gyroValue, _accelerometerValue);
+            OnImuChanged?.Invoke(hardwareState.gyroValue, hardwareState.accelerometerValue);
             {
                 return;
             }
         }
 
-        if (!_componentStateManager.ContainsKey(header))
+        if (!hardwareState.componentStates.ContainsKey(header))
         {
             return;
         }
 
         int newInt = int.Parse(value);
-        int oldInt = _componentStateManager[header];
+        int oldInt = hardwareState.componentStates[header];
 
         if (oldInt == newInt)
         {
             return;
         }
 
-        _componentStateManager[header] = newInt;
+        hardwareState.componentStates[header] = newInt;
         OnInputChanged?.Invoke(header, newInt);
     }
 
     public int GetDigital(string header)
     {
-        return _componentStateManager[header];
+        return hardwareState.componentStates[header];
     }
 
     public int GetButton(string id)
     {
-        return _componentStateManager["BTN" + id];
+        Debug.Log(id);
+        return hardwareState.componentStates["BTN" + id];
     }
     public int GetSwitch(string id)
     {
-        return _componentStateManager["SWT" + id];
+        return hardwareState.componentStates["SWT" + id];
     }
     public int GetLed(string id)
     {
-        return _componentStateManager["LED" + id];
+        return hardwareState.componentStates["LED" + id];
     }
 
     public void SendSet(string header, int value)

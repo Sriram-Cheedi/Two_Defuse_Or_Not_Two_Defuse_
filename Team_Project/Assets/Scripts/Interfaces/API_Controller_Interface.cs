@@ -15,7 +15,7 @@ public interface API_Controller_Interface
     Vector3 getGyroValue { get; }
 
     // Methods
-    public void Initialize(I_SerialPortController manualController = null);
+    public void Initialize();
     public void HandleMessage(string message);
     public int GetDigital(string header);
     public int GetButton(string id);
