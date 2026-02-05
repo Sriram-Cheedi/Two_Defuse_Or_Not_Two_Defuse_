@@ -12,8 +12,8 @@ private:
     const int latchPin;
 
     const int buttonPin;
-    int buttonPushCounter = 0;  // counter for the number of button presses
-    int buttonState = 0;        // current state of the button
+    int buttonPushCounter = 0;
+    int buttonState = 0;
     float lastButtonState = 0;
     float lastVoltage = 0;
 

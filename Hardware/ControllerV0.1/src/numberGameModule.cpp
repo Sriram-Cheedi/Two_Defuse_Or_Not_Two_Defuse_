@@ -13,7 +13,7 @@ numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, 
 
 
 void numberGameModule::set(std::vector<std::string> args){
-
+    
 }
 
 void numberGameModule::status(){
@@ -69,10 +69,6 @@ void numberGameModule::buttonCheck(){
             if(digitsBuffer[0] > 9){
                 digitsBuffer[0] = 0;
             }
-            Serial.print(secretNumber[0]);
-            Serial.print(secretNumber[1]);
-            Serial.print(secretNumber[2]);
-            Serial.println(secretNumber[3]);
         }
         else if(voltage >= 2.3 && voltage <= 2.5){ //button 2
             digitsBuffer[1] = digitsBuffer[1] + 1;
@@ -102,7 +98,6 @@ void numberGameModule::checkGuess() {
     // Reset LED states
     ledStates = 0b00000000;
     int correctPositions = 0;
-    int correctDigits = 0;
     bool secretUsed[4] = {false, false, false, false};
     bool guessUsed[4] = {false, false, false, false};
     
@@ -122,7 +117,6 @@ void numberGameModule::checkGuess() {
         if (!guessUsed[i]) {
             for (int j = 0; j < 4; j++) {
                 if (!secretUsed[j] && digitsBuffer[i] == secretNumber[j]) {
-                    correctDigits++;
                     ledStates |= (1 << ledPositions[i][0]);
                     secretUsed[j] = true;
                     guessUsed[i] = true;
