@@ -8,7 +8,7 @@ public class RigidBodyMovement : MonoBehaviour
 {
     [Header("Movement")] [SerializeField] private float moveSpeed;
     [SerializeField] private float sideWayMoveSpeed = 20f;
-    [SerializeField] private Transform orientation;
+    [SerializeField] public Transform orientation;
     [SerializeField] private float walkSpeed = 10;
     [SerializeField] private float sprintSpeed = 13;
     
@@ -95,6 +95,16 @@ public class RigidBodyMovement : MonoBehaviour
         SetCrouchCenter();
     }
 
+    public void ResetPlayer()
+    {
+        hasInvertGravity = false;
+        invertGravity = false;
+        isRotating = false;
+        orientation.rotation = Quaternion.Euler(0, 0, 0);
+        rb.rotation = Quaternion.Euler(0, 0, 0);
+        gravityDir = Vector3.down;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -120,11 +130,11 @@ public class RigidBodyMovement : MonoBehaviour
         // Flip gravity direction (so jump/gravity math stays consistent with sign)
         // gravity = -gravity;
         // Rotate the player (or level) around Z, as you had
-        if (accelerometer.z > 9f && Vector3.Dot(Vector3.down,-orientation.transform.up) < 0)
+        if (accelerometer.z > 9f && Vector3.Dot(Vector3.down,-orientation.transform.up) < 0 && onFlip)
         {
             invertGravity = true;
         }
-        else if(accelerometer.z < -9f && Vector3.Dot(Vector3.down,-orientation.transform.up) > 0)
+        else if(accelerometer.z < -9f && Vector3.Dot(Vector3.down,-orientation.transform.up) > 0 && onFlip)
         {
             invertGravity = true;
         }
