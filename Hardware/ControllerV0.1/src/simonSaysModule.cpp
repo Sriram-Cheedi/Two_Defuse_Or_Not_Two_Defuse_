@@ -1,13 +1,25 @@
 #include "SimonSaysModule.h"
 
 
-SimonSaysModule::SimonSaysModule(std::string name, std::vector<int> buttonPins, SerialController serialController)
-: Component(name), buttonPins(buttonPins), state(0), serialController(serialController) {
+SimonSaysModule::SimonSaysModule(std::string name, std::vector<int> buttonPins, int rgbPin, SerialController serialController)
+: Component(name), buttonPins(buttonPins), rgbPin(rgbPin), state(0), serialController(serialController) {
 
     for(size_t i = 0; i < buttonPins.size(); i++){
         Button btn = Button("SSM" + std::to_string(i), buttonPins[i], serialController, [this](std::string name, int state){buttonPressed(name, state);});   
         buttons.push_back(btn);
     }
+
+    strip = Adafruit_NeoPixel(4, rgbPin, NEO_RGBW + NEO_KHZ800);
+
+    strip.begin();
+
+    delay(10);
+
+    strip.setPixelColor(0, 255, 0, 0, 255);
+    strip.setPixelColor(1, 255, 0, 0, 255);
+    strip.setPixelColor(2, 255, 0, 0, 255);
+    strip.setPixelColor(3, 255, 0, 0, 255);
+    strip.show();
 
 }
 
@@ -16,24 +28,7 @@ void SimonSaysModule::buttonPressed(std::string btnName, int state){
     if(state == LOW){
         pressedButton = btnName;
     }
-
 }
-
-
-/* void SimonSaysModule::set_leds(int* rgb1, int* rgb2, int* rgb3, int* rgb4){
-
-  int8_t sr1 = (rgb1[0] << 7) + (rgb1[1] << 6) + (rgb1[2] << 5)
-             + (rgb2[0] << 4) + (rgb2[1] << 3) + (rgb2[2] << 2);
-
-  int8_t sr2 = (rgb3[0] << 7) + (rgb3[1] << 6) + (rgb3[2] << 5)
-             + (rgb4[0] << 4) + (rgb4[1] << 3) + (rgb4[2] << 2);          
-
-  digitalWrite(latchPin, LOW);
-  shiftOut(dataPin, clockPin, LSBFIRST, ~sr2);
-  shiftOut(dataPin, clockPin, LSBFIRST, ~sr1);
-  digitalWrite(latchPin, HIGH);
-  
-} */
 
 void SimonSaysModule::set(std::vector<std::string> args) {
     if(args.size() == 1){
@@ -42,7 +37,7 @@ void SimonSaysModule::set(std::vector<std::string> args) {
         if(newState == 0){
             reset();
         }else if (newState == 2){
-            //complete();
+            complete();
         }
     } else{
 

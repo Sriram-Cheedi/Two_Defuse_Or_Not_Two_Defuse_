@@ -16,9 +16,9 @@ Imu gyro = Imu("IMU", serialController);
 
 Button btn1 = Button("BTN1", 38, serialController);
 Button btn2 = Button("BTN2", 39, serialController);
-Button btn3 = Button("BTN3", 40, serialController);
+Button btn3 = Button("BTN3", 41, serialController);
 
-//SimonSaysModule ssm = SimonSaysModule("SSM", {38, 39, 40, 41}, serialController);
+SimonSaysModule ssm = SimonSaysModule("SSM", {38, 39, 40, 41}, 14,  serialController);
 
 std::vector<Component*> components;
 
@@ -52,25 +52,10 @@ void parseCommand(std::string command){
   }
 }
 
-/* volatile int i = 600;
-
-void countDown(){
-  while(i >= 0){
-    timer.set({std::to_string(i)});
-    threads.delay(1000);
-    i--;
-  }
-} */
-
-
-
-
 void setup() {
   components.push_back(&timer);
   components.push_back(&gyro);  
-  //components.push_back(&ssm);
-
-  //threads.addThread(countDown, 1);
+  components.push_back(&ssm);
 
 }
 
@@ -80,7 +65,7 @@ void loop() {
 
   btn1.update();
   btn2.update();
-  btn3.update();
+  btn3.update(); 
 
   timer.updateDisplay();
   gyro.update();

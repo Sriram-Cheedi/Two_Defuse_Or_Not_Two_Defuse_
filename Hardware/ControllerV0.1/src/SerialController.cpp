@@ -37,6 +37,11 @@ std::string SerialController::serialRecieve(){
 
         std::string cmd = std::string(Serial.readStringUntil('#').c_str());
 
+        if(cmd == "PING"){
+            Serial.printf("$PONG#");
+            return "";
+        }
+
         if(cmd != ""){
             return cmd;
         }

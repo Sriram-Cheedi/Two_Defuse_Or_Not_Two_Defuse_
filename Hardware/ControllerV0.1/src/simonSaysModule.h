@@ -4,6 +4,7 @@
 #include <SerialController.h>
 #include <TeensyThreads.h>
 #include "Button.h"
+#include "Adafruit_NeoPixel.h"
 
 class SimonSaysModule : public Component {
 
@@ -13,6 +14,8 @@ private:
 
     const std::vector<int> buttonPins;
     std::vector<Button> buttons;
+
+    const int rgbPin;
 
     int state;  // 0 = Not Started, 1 = In Progress, 2 = Complete, 3 = Failed (Resetting)
 
@@ -24,6 +27,8 @@ private:
 
     std::string pressedButton;
 
+    Adafruit_NeoPixel strip;
+
     void reset();     // Reset Module to the initial state
     void complete();  // Auto complete the module 
     
@@ -32,7 +37,7 @@ private:
     void loop();
     int getInputSequence();
 
-    //void set_leds(int* rgb1, int* rgb2, int* rgb3, int* rgb4);
+    void set_leds(std::vector<int> rgb1, std::vector<int> rgb2, std::vector<int> rgb3, std::vector<int> rgb4);
 
     SerialController serialController;
 
@@ -43,7 +48,7 @@ private:
 
 public:
 
-    SimonSaysModule(std::string name, std::vector<int> buttonPins, SerialController serialController);
+    SimonSaysModule(std::string name, std::vector<int> buttonPins, int rgbPin, SerialController serialController);
 
     void set(std::vector<std::string> args) override;
     void status() override;
