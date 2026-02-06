@@ -26,7 +26,7 @@ public class RigidBodyMovement : MonoBehaviour
     private Vector3 standOrigin;
     [SerializeField]private PlayerInput playerInput;
     [SerializeField]private Transform cameraPostion;
-    [SerializeField]private MovePlat movingPlatform;
+    private MovePlat movingPlatform;
     
     [Header("Slope")]
     private RaycastHit slopeHit;
@@ -100,8 +100,10 @@ public class RigidBodyMovement : MonoBehaviour
         hasInvertGravity = false;
         invertGravity = false;
         isRotating = false;
+        playerCam.rollZ = 0;
         orientation.rotation = Quaternion.Euler(0, 0, 0);
         rb.rotation = Quaternion.Euler(0, 0, 0);
+        rb.linearVelocity = Vector3.zero; 
         gravityDir = Vector3.down;
     }
 
@@ -406,6 +408,7 @@ public class RigidBodyMovement : MonoBehaviour
             isGrounded = false;
             onSlope = false;
             onMovingPlatform = false;
+            onFlip = false;
         }
     }
     
