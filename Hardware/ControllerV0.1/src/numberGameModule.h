@@ -19,7 +19,6 @@ private:
 
     uint8_t ledStates = 0b00000000;
     int secretNumber[4];
-    byte attempts = 0;
     const byte ledPositions[4][2] = {
         {7, 0},
         {1, 2},
@@ -30,7 +29,6 @@ private:
     SerialController serialController;
     LCDModule& display;
 
-    unsigned long displayUpdate = 0;
     unsigned long lastUpdate = 0;
     unsigned long buttonUpdate = 0;
     const unsigned int refreshInterval = 200;
@@ -57,7 +55,7 @@ private:
         0b11100000, // fourth digit
     };*/
 
-    const uint8_t segment_encodings[11] = {
+    const uint8_t segment_encodings[10] = {
         0b00000011, // 0
         0b10011111, // 1
         0b00100101, // 2
