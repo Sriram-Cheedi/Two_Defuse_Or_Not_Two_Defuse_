@@ -3389,7 +3389,7 @@
 	)
 	(gr_line
 		(start 120.65 85.09)
-		(end 135.89 85.09)
+		(end 130.81 85.09)
 		(stroke
 			(width 0.1)
 			(type default)
@@ -3406,16 +3406,6 @@
 		)
 		(layer "User.1")
 		(uuid "483313da-34ed-49aa-983c-3c26052eb7d9")
-	)
-	(gr_line
-		(start 113.03 102.87)
-		(end 115.57 102.87)
-		(stroke
-			(width 0.1)
-			(type default)
-		)
-		(layer "User.1")
-		(uuid "5b3dcf19-aabe-4daa-8b74-040e05c91a99")
 	)
 	(gr_line
 		(start 120.65 102.87)
@@ -3476,6 +3466,16 @@
 		)
 		(layer "User.1")
 		(uuid "cb7678d0-a54a-472e-b5c9-cdfceec9895e")
+	)
+	(gr_line
+		(start 133.35 85.09)
+		(end 135.89 85.09)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "User.1")
+		(uuid "dc2df7b2-4086-4ce2-8674-6d5e1425f257")
 	)
 	(gr_line
 		(start 128.27 110.49)
