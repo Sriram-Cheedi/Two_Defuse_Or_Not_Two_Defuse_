@@ -1,19 +1,20 @@
 #include <Arduino.h>
 #include "numberGameModule.h"
 
-numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin,SerialController serialController, LCDModule& display)
-: Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), buttonPin(buttonPin), serialController(serialController),display(display) {
+numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin, int submitButtonPin, SerialController serialController, LCDModule& display)
+: Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), buttonPin(buttonPin), submitButtonPin(submitButtonPin), serialController(serialController), display(display) {
     pinMode(dataPin,OUTPUT);
     pinMode(clockPin,OUTPUT);
     pinMode(latchPin,OUTPUT);
     pinMode(buttonPin,INPUT);
-    pinMode(37,INPUT);
+    pinMode(submitButtonPin,INPUT);
     randomSeed(analogRead(A0));
 }
 
 
 void numberGameModule::set(std::vector<std::string> args){
-    
+    //implement methods for unity to reset the game.
+    //need to learn more about how the api works before i can do that.
 }
 
 void numberGameModule::status(){
@@ -110,6 +111,8 @@ void numberGameModule::checkGuess() {
         //Checks what digits are in the correct place
         if (digitsBuffer[i] == secretNumber[i]) {
             correctPositions++;
+            //selects the correct led to be lit up using the ledPosition array created in the header file.
+            //column 1 is for green LEDs because that matches the physical layout of the game since they are the right most LEDs.
             ledStates |= (1 << ledPositions[i][1]);
             secretUsed[i] = true;
             guessUsed[i] = true;
@@ -121,6 +124,8 @@ void numberGameModule::checkGuess() {
         if (!guessUsed[i]) {
             for (int j = 0; j < 4; j++) {
                 if (!secretUsed[j] && digitsBuffer[i] == secretNumber[j]) {
+                    //selects the correct led to be lit up using the ledPosition array created in the header file.
+                    //column 0 is for orange LEDs because that matches the physical layout of the game since they are the left most LEDs.
                     ledStates |= (1 << ledPositions[i][0]);
                     secretUsed[j] = true;
                     guessUsed[i] = true;
@@ -143,9 +148,9 @@ void numberGameModule::updateDisplay(){
     if (now - lastUpdate < refreshInterval) return;
     lastUpdate = now;
     buttonCheck();
-    int state = digitalRead(37);
+    buttonState = digitalRead(submitButtonPin);
     //check the current guess when the button is pressed
-    if(state ==  HIGH && state != lastButtonState){
+    if(buttonState  ==  HIGH && buttonState  != lastButtonState){
         checkGuess();
     }
 
@@ -165,5 +170,5 @@ void numberGameModule::updateDisplay(){
     }
     //end writing to the shift registers
     digitalWrite(latchPin, HIGH);
-    lastButtonState = state;
+    lastButtonState = buttonState;
 }

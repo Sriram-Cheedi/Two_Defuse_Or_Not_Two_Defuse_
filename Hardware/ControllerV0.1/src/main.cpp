@@ -14,7 +14,7 @@ SerialController serialController = SerialController();
 
 LCDModule LCDDisplay = LCDModule();
 
-numberGameModule numberGame = numberGameModule("NGM",36,34,35,A8,serialController,LCDDisplay);
+numberGameModule numberGame = numberGameModule("NGM",36,34,35,A8,37,serialController,LCDDisplay);
 
 std::vector<std::unique_ptr<Component>> components;
 

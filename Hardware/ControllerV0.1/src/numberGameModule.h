@@ -1,3 +1,6 @@
+#ifndef NUMBERGAMEMODULE_H
+#define NUMBERGAMEMODULE_H
+
 #include <stdint.h>
 #include <string>
 #include "component.h"
@@ -10,11 +13,12 @@ private:
     const int dataPin;
     const int clockPin;
     const int latchPin;
-
     const int buttonPin;
+    const int submitButtonPin;
+
     int buttonPushCounter = 0;
     int buttonState = 0;
-    float lastButtonState = 0;
+    int lastButtonState = 0;
     float lastVoltage = 0;
 
     uint8_t ledStates = 0b00000000;
@@ -35,26 +39,7 @@ private:
     uint8_t currentDigit = 0; 
     int digitsBuffer[4] = {0,0,0,0};
 
-    /*const uint8_t segment_encodings[10] = {
-        0b11111100, // 0
-        0b01100000, // 1
-        0b11011010, // 2
-        0b11110010, // 3
-        0b01100110, // 4
-        0b10110110, // 5
-        0b10111110, // 6
-        0b11100000, // 7
-        0b11111110, // 8
-        0b11100110  // 9
-    };
-
-    const uint8_t digit_encodings[5] = {
-        0b01110000, // first digit
-        0b10110000, // second digit
-        0b11010000, // third digit
-        0b11100000, // fourth digit
-    };*/
-
+    //common anode segment encoding
     const uint8_t segment_encodings[10] = {
         0b00000011, // 0
         0b10011111, // 1
@@ -77,7 +62,7 @@ private:
 
 public:
 
-    numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin,SerialController serialController,LCDModule& display);
+    numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin, int submitButtonPin, SerialController serialController, LCDModule& display);
     void set(std::vector<std::string> args) override;
     void status() override;
     void setupGame();
@@ -86,3 +71,5 @@ public:
     void updateDisplay();
   
 };
+
+#endif
