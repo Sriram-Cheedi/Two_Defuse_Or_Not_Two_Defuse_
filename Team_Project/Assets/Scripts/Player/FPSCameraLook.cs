@@ -7,7 +7,7 @@ public class FPSCameraLook : MonoBehaviour
     [SerializeField]private Transform cameraPivot; 
     [SerializeField]private float mouseSensitivity = 20f; 
     [SerializeField]private CharacterController controller;
-    float xRotation = 0f;
+    float xRotation;
     private Vector2 lookInput;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created

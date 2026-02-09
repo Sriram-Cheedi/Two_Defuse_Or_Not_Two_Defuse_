@@ -47,19 +47,19 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public void Initialize()
     {
 
-        hardwareState.componentStates.Add("BTN1", 0);   
-        hardwareState.componentStates.Add("BTN2", 0);
-        hardwareState.componentStates.Add("BTN3", 0);
-        hardwareState.componentStates.Add("BTN4", 0);
-        hardwareState.componentStates.Add("BTN5", 0);
+        hardwareState.componentStates["BTN1"] = 0;
+        hardwareState.componentStates["BTN2"] = 0;
+        hardwareState.componentStates["BTN3"] = 0;
+        hardwareState.componentStates["BTN4"] = 0;
+        hardwareState.componentStates["BTN5"] = 0;
 
-        hardwareState.componentStates.Add("SWT1", 0);
-        hardwareState.componentStates.Add("SWT2", 0);
-        hardwareState.componentStates.Add("SWT3", 0);
-
-        hardwareState.componentStates.Add("LED1", 0);
-        hardwareState.componentStates.Add("LED2", 0);
-        hardwareState.componentStates.Add("LED3", 0);
+        hardwareState.componentStates["SWT1"] = 0;
+        hardwareState.componentStates["SWT2"] = 0;
+        hardwareState.componentStates["SWT3"] = 0;
+        
+        hardwareState.componentStates["LED1"] = 0;
+        hardwareState.componentStates["LED2"] = 0;
+        hardwareState.componentStates["LED3"] = 0;
 
         //hardwareState.componentStates["SWT1"] = 0;
         //hardwareState.componentStates["SWT2"] = 0;
@@ -221,7 +221,6 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
     public int GetButton(string id)
     {
-        Debug.Log(id);
         return hardwareState.componentStates["BTN" + id];
     }
     public int GetSwitch(string id)
