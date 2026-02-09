@@ -21,6 +21,14 @@ cmd: function x y z ...
 |-------------------|--------------|-----------------------------------------------------------------|-------------------------------------------------------------------------------|
 | Get status of IMU | $IMU:status# | $IMU:status _gyroX_ _gyroY_ _gyroZ_ _accelX_ _accelY_ _accelZ_# | Response will be sent when requested OR whenever movement is detected by IMU. |
 
+## Simon Says
+
+| Command                            | Code                | Response             | Notes                                                                                  |
+|------------------------------------|---------------------|----------------------|----------------------------------------------------------------------------------------|
+| Get Status of Simon Says           | $SSM:status#        | $SSM:status _state_# | State: 0 = Not Started, 1 = In Progress, 2 = Complete                                  |
+| Set Status of Simon Says           | $SSM:set _state_#   | None                 | See above                                                                              |
+| Reset Simon Says with new sequence | $SSM:set _sequence_# | None                 | Sequence of format "seq1 seq2 seq3 seq4 ..." where each element is a single digit 0-3 e.g. $SSM:set 0 1 2 3# |
+
 ## Asynchronous Minigames
 
 Asyncronous minigames' logic will be onboard. Status of the minigame can be queried through the following commands. Any changes made to the hardware of the minigame **will not** trigger a status update. Changes of the state of the minigame (not started, in progress, failed, completed) **will** trigger a status update without requiring a request. The meaning of status is dependant on the minigame.
