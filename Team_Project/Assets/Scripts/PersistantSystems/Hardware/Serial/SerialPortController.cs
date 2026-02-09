@@ -2,9 +2,11 @@ using UnityEngine;
 using System;
 using System.IO.Ports;
 
+
 public class SerialPortController : MonoBehaviour, I_SerialPortController
 {
-    private readonly string _portID = "COM4";
+    // private readonly string _portID = "COM3";
+    private string _portID = "COM3";
     public int _baudRate = 115200;
     private SerialPort _serialPort;
     private string buffer = "";
@@ -12,8 +14,54 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
     public string getPortID => _portID;
     public int getBaudRate => _baudRate;
     public SerialPort getSerialPort => _serialPort;
+    
     public void Start()
     {
+        string[] AvailablePorts = SerialPort.GetPortNames();
+        foreach (var PortName in AvailablePorts)
+        {
+            SerialPort CheckPort = null;
+            try
+            {
+                CheckPort = new SerialPort(PortName, _baudRate);
+                CheckPort.ReadTimeout = 300;
+                Debug.Log("Checking port: " + PortName);
+                CheckPort.Open();
+                CheckPort.Write("$PING#");
+                System.Threading.Thread.Sleep(50);
+                string HandshakeMessage = "";
+                
+                float startTime = Time.realtimeSinceStartup;
+
+                while (Time.realtimeSinceStartup - startTime < 1.0f)
+                {
+                    HandshakeMessage += CheckPort.ReadExisting();
+                    if (HandshakeMessage.Contains("$PONG#"))
+                    {
+                       _portID = PortName;
+                       Debug.Log("Arduino found on port:" + _portID);
+                       break;
+                    }
+                }
+                CheckPort.Close();
+                if (_portID == PortName)
+                {
+                    break;
+                }
+            }
+            catch {} 
+            finally
+            {
+                if (CheckPort != null && CheckPort.IsOpen)
+                {
+                    CheckPort.Close();
+                }
+            }
+        }
+        if(_portID == null || _portID == "")
+        {
+            return;
+        }
         try
         {
             Debug.Log("Attempting to Open Port on: " + _portID + " and baud rate: " + _baudRate);
@@ -75,13 +123,39 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
             Debug.LogError("Serial error: " + error.Message);
         }
     }
+    
+    // public void SendToArduino(string message)
+    // {
+    //     if (_serialPort == null || !_serialPort.IsOpen)
+    //     {
+    //         Debug.LogError("Serial port is not open. Cannot send: " + message);
+    //         return;
+    //     }
+    //     _serialPort.Write(message);
+    //     Debug.Log("Sent: " + message);
+    // }
 
     public void SendToArduino(string message)
     {
-        _serialPort.Write(message);
+        if (_serialPort == null || !_serialPort.IsOpen)
+        {
+            Debug.LogError("Serial port is not open.");
+            return;
+        }
+        try
+        {
+            _serialPort.Write(message);
+            Debug.Log("Sent: " + message);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Serial write failed (device disconnected?): " + e.Message);
 
-        Debug.Log("Sent: " + message);
+            try { _serialPort.Close(); } catch {}
+            _serialPort = null;
+        }
     }
+
 
     public void OnApplicationQuit()
     {

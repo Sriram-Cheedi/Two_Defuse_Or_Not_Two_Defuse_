@@ -12,7 +12,7 @@ public class DestroyDoor : MonoBehaviour
     private bool[] buttonsPressed;
     private void Awake()
     {
-        _activeHardware = _API_Provider.ActiveAPIController;
+        // _activeHardware = _API_Provider.ActiveAPIController;
         buttonsPressed = new bool[3];
     }
 

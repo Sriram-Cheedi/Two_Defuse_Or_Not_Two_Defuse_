@@ -8,7 +8,7 @@ public class RigidBodyMovement : MonoBehaviour
 {
     [Header("Movement")] [SerializeField] private float moveSpeed;
     [SerializeField] private float sideWayMoveSpeed = 20f;
-    [SerializeField] private Transform orientation;
+    [SerializeField] public Transform orientation;
     [SerializeField] private float walkSpeed = 10;
     [SerializeField] private float sprintSpeed = 13;
     
@@ -26,7 +26,8 @@ public class RigidBodyMovement : MonoBehaviour
     private Vector3 standOrigin;
     [SerializeField]private PlayerInput playerInput;
     [SerializeField]private Transform cameraPostion;
-    [SerializeField]private MovePlat movingPlatform;
+    private MovePlat movingPlatform;
+    private Vector3 movingPlatLastPos;
     
     [Header("Slope")]
     private RaycastHit slopeHit;
@@ -68,6 +69,10 @@ public class RigidBodyMovement : MonoBehaviour
     private Rigidbody rb;
     private MovementState movementState;
     private bool invertedPlayer;
+    private bool isRotating;
+    private bool onFlip;
+    
+
     
     private enum MovementState
     {
@@ -86,8 +91,23 @@ public class RigidBodyMovement : MonoBehaviour
         standCenterY = controller.center.y;
         downSpeed = 5.0f;
         crouchHeight = controller.height / 2f;
+        _activeHardware = _API_Provider.ActiveAPIController;
+        hasInvertGravity = false;
+        isRotating = false;
         SetStandCenter();
         SetCrouchCenter();
+    }
+
+    public void ResetPlayer()
+    {
+        hasInvertGravity = false;
+        invertGravity = false;
+        isRotating = false;
+        playerCam.rollZ = 0;
+        orientation.rotation = Quaternion.Euler(0, 0, 0);
+        rb.rotation = Quaternion.Euler(0, 0, 0);
+        rb.linearVelocity = Vector3.zero; 
+        gravityDir = Vector3.down;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -115,17 +135,17 @@ public class RigidBodyMovement : MonoBehaviour
         // Flip gravity direction (so jump/gravity math stays consistent with sign)
         // gravity = -gravity;
         // Rotate the player (or level) around Z, as you had
-        if (accelerometer.z > 9f && Vector3.Dot(Vector3.down,-orientation.transform.up) < 0)
+        if (accelerometer.z > 9f && Vector3.Dot(Vector3.down,-orientation.transform.up) < 0 && onFlip)
         {
             invertGravity = true;
         }
-        else if(accelerometer.z < -9f && Vector3.Dot(Vector3.down,-orientation.transform.up) > 0)
+        else if(accelerometer.z < -9f && Vector3.Dot(Vector3.down,-orientation.transform.up) > 0 && onFlip)
         {
             invertGravity = true;
         }
         else
         {
-            invertedPlayer = false;
+            invertGravity = false;
         }
     }
 
@@ -250,7 +270,7 @@ public class RigidBodyMovement : MonoBehaviour
 
     private void SpeedControl()
     {
-        Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0f,  rb.linearVelocity.z);
+        Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
         if (flatVelocity.magnitude > moveSpeed)
         {
             Vector3 limitedVelocity = flatVelocity.normalized * moveSpeed;
@@ -268,6 +288,10 @@ public class RigidBodyMovement : MonoBehaviour
 
     private void InvertGravityDirection()
     {
+        if (isRotating)
+        {
+            return;
+        }
         if (!hasInvertGravity && invertGravity)
         {
             gravityDir = -gravityDir;
@@ -279,6 +303,7 @@ public class RigidBodyMovement : MonoBehaviour
     
     IEnumerator SmoothRotate()
     {
+        isRotating = true;
         var playerMap = playerInput.actions.FindActionMap("Player");
         playerMap.Disable();
         remainingRotation = targetRotation;
@@ -294,6 +319,7 @@ public class RigidBodyMovement : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         playerMap.Enable();
+        isRotating = false;
     }
     
     public void OnJump(InputAction.CallbackContext ctx)
@@ -336,37 +362,42 @@ public class RigidBodyMovement : MonoBehaviour
         cameraPostion.transform.localPosition = new Vector3(cameraPostion.transform.localPosition.x, 
             cameraCenterY,cameraPostion.transform.localPosition.z);
     }
-
-    private void MoveWithPlat()
-    {
-        movementDir = orientation.forward * verticalInput + orientation.right * horizontaInput;
-        if (onMovingPlatform && isGrounded)
-        {
-            platformVel = movingPlatform.Velocity;
-            
-            rb.linearVelocity = new Vector3(
-                platformVel.x + rb.linearVelocity.x, 
-                rb.linearVelocity.y, 
-                platformVel.z + rb.linearVelocity.z
-            );
-            platformVel = Vector3.zero;
-        }
-    }
+    
     
     private void FixedUpdate()
     {
         GroudCheck();
+        ApplyRidingMovePlat();
         Spring();
         ApplyCustomGravity();
         
         SetCrouch(isCrouchPressed);
         MovePlayer();
         SpeedControl();
-        MoveWithPlat();
         InvertGravityDirection();
-        rb.linearDamping = isGrounded ? groundDrag : 0f;
+        ApplyDamping();
     }
 
+    private void ApplyDamping()
+    {
+        rb.linearDamping = 0f;
+        if (isGrounded)
+        {
+            rb.linearDamping = groundDrag;
+        }
+        if (onMovingPlatform)
+        {
+            rb.linearDamping = 0.1f;
+        }
+    }
+
+    private void ApplyRidingMovePlat()
+    {
+        if (!isGrounded || movingPlatform == null) return;
+        Vector3 delta = movingPlatform.rb.position - movingPlatLastPos;
+        rb.MovePosition(rb.position + delta);
+        movingPlatLastPos = movingPlatform.rb.position;
+    }
     private void GroudCheck()
     {
         Vector3 origin = controller.bounds.center;
@@ -378,15 +409,24 @@ public class RigidBodyMovement : MonoBehaviour
             slopeHit = hit;
             onSlope = hit.collider.CompareTag("Slide");
             onMovingPlatform = hit.collider.CompareTag("MovingPlatform");
+            onFlip = hit.collider.CompareTag("FlipSection");
+            if (onMovingPlatform && hit.rigidbody)
+            {
+                Debug.Log("MovingPlatform");
+                movingPlatform = hit.rigidbody.GetComponent<MovePlat>();
+                movingPlatLastPos = movingPlatform.rb.position;
+            }
         }
         else
         {
             isGrounded = false;
             onSlope = false;
             onMovingPlatform = false;
+            onFlip = false;
+            movingPlatform = null;
         }
     }
-    
+
     // Update is called once per frame
     void Update()
     {
