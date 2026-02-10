@@ -300,7 +300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 341c9b60cd86c405d944500e7eec2c32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HardwareProvider
-  useMockHardware: 0
+  useMockHardware: 1
 --- !u!1 &161418437
 GameObject:
   m_ObjectHideFlags: 0
@@ -721,7 +721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42cd7dea592b14c92ae732a57add6146, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  bombTimer: 120
+  bombTimer: 4
   isGameOver: 0
   currentState: 0
 --- !u!1 &702796034
