@@ -33,8 +33,8 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public Dictionary<string, int> getComponentStateManager => hardwareState.componentStates;
     private void OnDestroy() => Exit();
 
-    public void Awake() 
-    { 
+    public void Awake()
+    {
         hardwareState = new HardwareState();
         hardwareState.componentStates = new Dictionary<string, int>();
         hardwareState.gyroValue = Vector3.zero; ;
@@ -56,7 +56,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         hardwareState.componentStates["SWT1"] = 0;
         hardwareState.componentStates["SWT2"] = 0;
         hardwareState.componentStates["SWT3"] = 0;
-        
+
         hardwareState.componentStates["LED1"] = 0;
         hardwareState.componentStates["LED2"] = 0;
         hardwareState.componentStates["LED3"] = 0;
@@ -230,6 +230,19 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public int GetLed(string id)
     {
         return hardwareState.componentStates["LED" + id];
+    }
+
+    public void SendSeq(string header, int[] seq)
+    {
+        string strseq = "";
+        for (int i = 0; i < seq.Length; i++)
+        {
+            strseq += seq[i] + " ";
+        }
+        strseq = strseq.Substring(0, strseq.Length - 2);
+
+        string message = "$" + header + ":set " + strseq + "#";
+        ActivePortController.SendToArduino(message);
     }
 
     public void SendSet(string header, int value)
