@@ -232,7 +232,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         return hardwareState.componentStates["LED" + id];
     }
 
-    public void SendSeq(string header, int[] seq)
+    public void SendSetSeq(string header, int[] seq)
     {
         string strseq = "";
         for (int i = 0; i < seq.Length; i++)
