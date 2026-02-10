@@ -8,19 +8,27 @@ SimonSaysModule::SimonSaysModule(std::string name, std::vector<int> buttonPins, 
         Button btn = Button("SSM" + std::to_string(i), buttonPins[i], serialController, [this](std::string name, int state){buttonPressed(name, state);});   
         buttons.push_back(btn);
     }
+}
 
-    strip = Adafruit_NeoPixel(4, rgbPin, NEO_RGBW + NEO_KHZ800);
+static inline uint32_t Color(uint8_t r, uint8_t g, uint8_t b) {
+    return ((uint32_t)r << 16) | ((uint32_t)g << 8) | b;
+}
 
+void SimonSaysModule::init(){
+    strip = Adafruit_NeoPixel(4, rgbPin, NEO_GRB + NEO_KHZ800);
     strip.begin();
 
-    delay(10);
+    setPixelBuffer({strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0)});
+}
 
-    strip.setPixelColor(0, 255, 0, 0, 255);
-    strip.setPixelColor(1, 255, 0, 0, 255);
-    strip.setPixelColor(2, 255, 0, 0, 255);
-    strip.setPixelColor(3, 255, 0, 0, 255);
-    strip.show();
+void SimonSaysModule::update(){
 
+    pixelBufferMutex.lock();
+    for(int i = 0; i < 4; i++){
+        strip.setPixelColor(i, pixelBuffer[i]);
+    }
+    //strip.show();
+    pixelBufferMutex.unlock();
 }
 
 void SimonSaysModule::buttonPressed(std::string btnName, int state){
@@ -31,6 +39,7 @@ void SimonSaysModule::buttonPressed(std::string btnName, int state){
 }
 
 void SimonSaysModule::set(std::vector<std::string> args) {
+
     if(args.size() == 1){
         int newState = stoi(args[0]);
 
@@ -40,7 +49,6 @@ void SimonSaysModule::set(std::vector<std::string> args) {
             complete();
         }
     } else{
-
         correctSequence.clear();
 
         for(std::string arg : args){
@@ -59,6 +67,7 @@ void SimonSaysModule::reset(){
 
     if(threadID != -1){
         threads.kill(threadID);
+        threadID = -1;
     }
 
     state = 0;
@@ -72,6 +81,7 @@ void SimonSaysModule::complete(){
 
     if(threadID != -1){
         threads.kill(threadID);
+        threadID = -1;
     }
 
     state = 0;
@@ -79,7 +89,6 @@ void SimonSaysModule::complete(){
     inputSequence = {};
     state = 2;
     
-    Serial.println("COMPLETE");
 }
 
 int SimonSaysModule::getInputSequence(){
@@ -132,11 +141,17 @@ int SimonSaysModule::getInputSequence(){
     return 2;
 } 
 
+void SimonSaysModule::setPixelBuffer(std::vector<uint32_t> newColours){
+
+    pixelBufferMutex.lock();
+    pixelBuffer = newColours;
+    pixelBufferMutex.unlock();
+
+}
+
 void SimonSaysModule::loop(){
 
     while(true){
-
-        Serial.printf("Round %x\n", currentRound);
 
         if((currentRound > 1) & (state != 1)) state = 1;
 
@@ -145,19 +160,19 @@ void SimonSaysModule::loop(){
             switch(correctSequence[i]) {
             case 0:
 
-                Serial.print("1");    
+                setPixelBuffer({Color(255, 0, 0), Color(0, 0, 0), Color(0, 0, 0), Color(0, 0, 0)});
                 break;
 
             case 1:
-                Serial.print("2"); 
+                setPixelBuffer({Color(0, 0, 0), Color(0, 255, 0), Color(0, 0, 0), Color(0, 0, 0)});
                 break;
 
             case 2:
-                Serial.print("3"); 
+                setPixelBuffer({Color(0, 0, 0), Color(0, 0, 0), Color(0, 0, 255), Color(0, 0, 0)});
                 break;
 
             case 3:
-                Serial.print("4"); 
+                setPixelBuffer({Color(0, 0, 0), Color(0, 0, 0), Color(0, 0, 0), Color(255, 0, 255)});
                 break;
 
             default:
@@ -166,19 +181,21 @@ void SimonSaysModule::loop(){
 
             uint32_t waitUntil = millis() + 500;
             while (millis() < waitUntil) threads.yield();
+
+            setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)});
+
+            waitUntil = millis() + 200;
+            while (millis() < waitUntil) threads.yield();
+        
         }
 
-        Serial.println();
-
         int result = getInputSequence();
-        Serial.printf("Result: %d\n", result);
 
         if(result == 2){
             if(currentRound < correctSequence.size()){
                 currentRound++;
             }else{
                 complete();
-                return;
             }
         }else if(result == 0){
             reset();

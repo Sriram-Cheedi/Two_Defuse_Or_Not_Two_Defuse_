@@ -15,11 +15,15 @@ private:
     const std::vector<int> buttonPins;
     std::vector<Button> buttons;
 
+    std::vector<uint32_t> pixelBuffer; 
+
     const int rgbPin;
 
     int state;  // 0 = Not Started, 1 = In Progress, 2 = Complete, 3 = Failed (Resetting)
 
     int threadID = -1;
+
+    std::mutex pixelBufferMutex;
 
     size_t currentRound;
     std::vector<int> correctSequence;
@@ -37,6 +41,8 @@ private:
     void loop();
     int getInputSequence();
 
+    void setPixelBuffer(std::vector<uint32_t> newColours);
+
     void set_leds(std::vector<int> rgb1, std::vector<int> rgb2, std::vector<int> rgb3, std::vector<int> rgb4);
 
     SerialController serialController;
@@ -49,6 +55,9 @@ private:
 public:
 
     SimonSaysModule(std::string name, std::vector<int> buttonPins, int rgbPin, SerialController serialController);
+
+    void update();
+    void init();
 
     void set(std::vector<std::string> args) override;
     void status() override;
