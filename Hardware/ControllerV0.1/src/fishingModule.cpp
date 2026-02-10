@@ -9,8 +9,28 @@ fishingModule::fishingModule(std::string name, int dataPin, int clockPin, int la
     randomSeed(analogRead(0));
 }
 
-void fishingModule::set(std::vector<std::string> args){
+void fishingModule::reset(){
+    buttonState = 0;
+    lastButtonState = 0;
+    hookPos = 9;
+    points = 0;
+    randState = 0;
+    state = 0;
+}
 
+void fishingModule::complete(){
+    state = 2;
+    points = 45;
+}
+
+void fishingModule::set(std::vector<std::string> args){
+    int newState = stoi(args[0]);
+
+    if(newState == 0){
+        reset();
+    }else if (newState == 2){
+        complete();
+    }
 }
 
 void fishingModule::status(){
@@ -26,7 +46,7 @@ void fishingModule::shift(uint32_t digit){
 }
 
 void fishingModule::scoreCheck(){
-  int hasScored = pondLED[randState] & fishLED[fishPos];
+  int hasScored = fishLED[randState] & hookLED[hookPos];
   if (hasScored > 0){
     points++;
     Serial.println(points);
@@ -42,14 +62,19 @@ void fishingModule::updateGame(){
         buttonState = digitalRead(buttonPin);
 
         if(buttonState == HIGH && buttonState != lastButtonState){
-            fishPos--;
-            if(fishPos < 0) fishPos = 0;
+            hookPos--;
+            if(hookPos < 0) hookPos = 0;
         }
 
         if(milli - lastHookUpdate > hookInterval){
-            fishPos++;
-            if(fishPos > 9) fishPos = 9;
+            hookPos++;
+            if(hookPos > 9) hookPos = 9;
             lastHookUpdate = milli;
+        }
+
+        if(milli - lastScoreUpdate > scoreInterval){
+            scoreCheck();
+            lastScoreUpdate = milli;
         }
 
         if(milli - lastFishUpdate > fishInterval){
@@ -57,10 +82,8 @@ void fishingModule::updateGame(){
             lastFishUpdate = milli;
         }
 
-        uint32_t LEDBarState = (pondLED[randState] << 14) + (fishLED[fishPos] << 4);
+        uint32_t LEDBarState = (fishLED[randState] << 14) + (hookLED[hookPos] << 4);
         shift(LEDBarState);
-
-        scoreCheck();
 
         lastButtonState = buttonState;
     }
