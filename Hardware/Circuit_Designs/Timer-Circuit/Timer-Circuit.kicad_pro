@@ -479,7 +479,17 @@
       "version": 4
     },
     "net_colors": null,
-    "netclass_assignments": null,
+    "netclass_assignments": {
+      "Net-(IC1-RCLK)": [
+        "RCLK In"
+      ],
+      "Net-(IC1-SRCLK)": [
+        "SRCLK In"
+      ],
+      "unconnected-(IC1-SER-Pad14)": [
+        "Serial In"
+      ]
+    },
     "netclass_patterns": []
   },
   "pcbnew": {
