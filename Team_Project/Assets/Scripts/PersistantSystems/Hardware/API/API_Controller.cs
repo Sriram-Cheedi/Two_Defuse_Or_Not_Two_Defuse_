@@ -221,7 +221,6 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
     public int GetButton(string id)
     {
-        Debug.Log(id);
         return hardwareState.componentStates["BTN" + id];
     }
     public int GetSwitch(string id)

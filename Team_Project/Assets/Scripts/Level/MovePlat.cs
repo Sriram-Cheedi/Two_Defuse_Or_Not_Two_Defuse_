@@ -7,11 +7,10 @@ public class MovePlat : MonoBehaviour
     [SerializeField] private Transform pointB;
     [Header("Movement")]
     [SerializeField] float speed = 10f;
-    [SerializeField] float delay = 0.5f;
-    
-    [SerializeField] private Rigidbody rb;
+
+    public Rigidbody rb {get; private set;}
     private Vector3 targetPosition;
-    private Vector3 prevPosition;
+    private Vector3 lastPosition;
     public Vector3 Velocity { get; private set; }
     private void Awake()
     {
@@ -24,15 +23,15 @@ public class MovePlat : MonoBehaviour
     {
         rb.position = pointA.position;
         targetPosition = pointB.position;
-        prevPosition = rb.position;
+        lastPosition = rb.position;  
     }
 
     private void FixedUpdate()
     {
         Vector3 newPosition = Vector3.MoveTowards(rb.position, targetPosition, speed * Time.fixedDeltaTime);
         rb.MovePosition(newPosition);
-        Velocity = (newPosition - prevPosition) / Time.fixedDeltaTime;
-        prevPosition = newPosition;
+        Velocity = (newPosition - lastPosition) / Time.fixedDeltaTime;
+        lastPosition = newPosition;
         if (Vector3.Distance(newPosition, targetPosition) < 0.05f)
         {
             targetPosition = (targetPosition == pointA.position) ? pointB.position : pointA.position;

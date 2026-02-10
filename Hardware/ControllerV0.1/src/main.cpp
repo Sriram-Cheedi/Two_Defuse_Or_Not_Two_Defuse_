@@ -4,11 +4,17 @@
 #include "timerModule.h"
 #include "component.h"
 #include "serialController.h"
+#include "numberGameModule.h"
+#include "LCDModule.h"
 
 
 SerialController serialController = SerialController();
 
-timerModule timer = timerModule("TMR", 23, 24, 25, serialController);
+//timerModule timer = timerModule("TMR", 23, 24, 25, serialController);
+
+LCDModule LCDDisplay = LCDModule();
+
+numberGameModule numberGame = numberGameModule("NGM",36,34,35,A8,37,serialController,LCDDisplay);
 
 std::vector<std::unique_ptr<Component>> components;
 
@@ -41,14 +47,17 @@ void parseCommand(std::string command){
 }
 
 void setup() {
-  components.push_back(std::make_unique<timerModule>(timer));
-  
-  timer.set({"500"});
+  //components.push_back(std::make_unique<timerModule>(timer));
+  components.push_back(std::make_unique<numberGameModule>(numberGame));
+  //timer.set({"500"});
+  LCDDisplay.LCDSetup();
+  numberGame.setupGame();
 }
 
 void loop() {
 
   parseCommand(serialController.serialRecieve());
-
-  timer.updateDisplay();
+  numberGame.updateDisplay();
+  //timer.updateDisplay();
+  //LCDDisplay.LCDLoop();
 }

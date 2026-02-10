@@ -27,6 +27,7 @@ public class RigidBodyMovement : MonoBehaviour
     [SerializeField]private PlayerInput playerInput;
     [SerializeField]private Transform cameraPostion;
     private MovePlat movingPlatform;
+    private Vector3 movingPlatLastPos;
     
     [Header("Slope")]
     private RaycastHit slopeHit;
@@ -70,6 +71,8 @@ public class RigidBodyMovement : MonoBehaviour
     private bool invertedPlayer;
     private bool isRotating;
     private bool onFlip;
+    
+
     
     private enum MovementState
     {
@@ -267,7 +270,7 @@ public class RigidBodyMovement : MonoBehaviour
 
     private void SpeedControl()
     {
-        Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0f,  rb.linearVelocity.z);
+        Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
         if (flatVelocity.magnitude > moveSpeed)
         {
             Vector3 limitedVelocity = flatVelocity.normalized * moveSpeed;
@@ -359,37 +362,42 @@ public class RigidBodyMovement : MonoBehaviour
         cameraPostion.transform.localPosition = new Vector3(cameraPostion.transform.localPosition.x, 
             cameraCenterY,cameraPostion.transform.localPosition.z);
     }
-
-    private void MoveWithPlat()
-    {
-        movementDir = orientation.forward * verticalInput + orientation.right * horizontaInput;
-        if (onMovingPlatform && isGrounded)
-        {
-            platformVel = movingPlatform.Velocity;
-            
-            rb.linearVelocity = new Vector3(
-                platformVel.x + rb.linearVelocity.x, 
-                rb.linearVelocity.y, 
-                platformVel.z + rb.linearVelocity.z
-            );
-            platformVel = Vector3.zero;
-        }
-    }
+    
     
     private void FixedUpdate()
     {
         GroudCheck();
+        ApplyRidingMovePlat();
         Spring();
         ApplyCustomGravity();
         
         SetCrouch(isCrouchPressed);
         MovePlayer();
         SpeedControl();
-        MoveWithPlat();
         InvertGravityDirection();
-        rb.linearDamping = isGrounded ? groundDrag : 0f;
+        ApplyDamping();
     }
 
+    private void ApplyDamping()
+    {
+        rb.linearDamping = 0f;
+        if (isGrounded)
+        {
+            rb.linearDamping = groundDrag;
+        }
+        if (onMovingPlatform)
+        {
+            rb.linearDamping = 0.1f;
+        }
+    }
+
+    private void ApplyRidingMovePlat()
+    {
+        if (!isGrounded || movingPlatform == null) return;
+        Vector3 delta = movingPlatform.rb.position - movingPlatLastPos;
+        rb.MovePosition(rb.position + delta);
+        movingPlatLastPos = movingPlatform.rb.position;
+    }
     private void GroudCheck()
     {
         Vector3 origin = controller.bounds.center;
@@ -402,6 +410,12 @@ public class RigidBodyMovement : MonoBehaviour
             onSlope = hit.collider.CompareTag("Slide");
             onMovingPlatform = hit.collider.CompareTag("MovingPlatform");
             onFlip = hit.collider.CompareTag("FlipSection");
+            if (onMovingPlatform && hit.rigidbody)
+            {
+                Debug.Log("MovingPlatform");
+                movingPlatform = hit.rigidbody.GetComponent<MovePlat>();
+                movingPlatLastPos = movingPlatform.rb.position;
+            }
         }
         else
         {
@@ -409,9 +423,10 @@ public class RigidBodyMovement : MonoBehaviour
             onSlope = false;
             onMovingPlatform = false;
             onFlip = false;
+            movingPlatform = null;
         }
     }
-    
+
     // Update is called once per frame
     void Update()
     {
