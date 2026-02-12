@@ -6,81 +6,76 @@ using Vector3 = UnityEngine.Vector3;
 
 public class RigidBodyMovement : MonoBehaviour
 {
-    [Header("Movement")] [SerializeField] private float moveSpeed;
-    [SerializeField] private float sideWayMoveSpeed = 20f;
-    [SerializeField] public Transform orientation;
+    [Header("Movement")] 
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float sideWayMoveSpeed = 50f;
     [SerializeField] private float walkSpeed = 10;
     [SerializeField] private float sprintSpeed = 13;
+    [SerializeField] private float crouchSpeed = 5f;
+    [SerializeField] private float groundAcceleration = 35f;
     
     [Header("Ground Check")]
-    [SerializeField] private float playerHeight = 2f;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private float groundDrag;
     private bool isGrounded;
-
-    [Header("Crouching")] [SerializeField] private float crouchSpeed = 5f;
+    
+    [Header("Setup")]
+    [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private CapsuleCollider controller;
+    
+    [Header("Slope")]
+    private RaycastHit slopeHit;
+    [SerializeField] private float slopeSpeed = 10f;
+    private bool readyToJump = true;
+    
+    [Header("Camera")]
+    public Transform orientation;
+    [SerializeField] private Transform cameraPosition;
+    [SerializeField] private PlayerCam playerCam;
+    [SerializeField] private float targetRotation = 180f;
+    [SerializeField] private float camDownSpeed = 5;
     private float standCenterY;
     private float standHeight;
     private float crouchHeight;
     private Vector3 crouchOrigin;
     private Vector3 standOrigin;
-    [SerializeField]private PlayerInput playerInput;
-    [SerializeField]private Transform cameraPostion;
-    private MovePlat movingPlatform;
-    private Vector3 movingPlatLastPos;
     
-    [Header("Slope")]
-    private RaycastHit slopeHit;
-    [SerializeField] private float slopeSpeed = 30f;
-    
-    [SerializeField] private CapsuleCollider controller;
-
+    [Header("Air Control")]
     [SerializeField] private float jumpForce = 11.5f;
     [SerializeField] private float springForce = 45f;
     [SerializeField] private float jumpCooldown = 0.25f;
-    [SerializeField] private float airMultiplier = 0.4f;
-    private bool readyToJump = true;
-    private bool isCrouchPressed;
-    [SerializeField] private PlayerCam playerCam;
-    
-    private float remainingRotation;
-    private float step;
-    [SerializeField] private float targetRotation = 180f;
-    private Vector2 moveInput;
-    private float horizontaInput;
-    private float verticalInput;
-    private bool isSprintPressed;
-    private bool onSpring;
-    private bool onSlope;
-    private bool onMovingPlatform;
+    [SerializeField] private float airAcceleration = 15;
+    [SerializeField] private float rotationSpeed = 20f;
     [SerializeField] float gravityMultiplier = 2.0f;
-    [SerializeField] private float downSpeed;
-    [Header("External")]
+    
     [Header("External")]
     private API_Provider _API_Provider = API_Provider.Instance;
     private API_Controller_Interface _activeHardware;
-    [Header("Rotation")] [SerializeField] private float rotationSpeed = 20f;
+    
+    private Vector3 connectionVelocity;
+    private Vector3 connectionWorldPosition;
+    private Vector3 connectionLocalPosition;
+    private Rigidbody connectedBody;
+    private Rigidbody previousConnectedBody;
+    public Rigidbody rb;
+    
+    private bool isCrouchPressed;
+    private bool isSprintPressed;
+    private bool invertGravity;
+    private bool hasInvertGravity;
+    private bool isRotating;
+    private bool onFlip;
+    private bool onSlope;
+    private bool onMovingPlatform;
+    
+    private float remainingRotation;
+    private float step;
+    
+    private float horizontalInput;
+    private float verticalInput;
+    private Vector2 moveInput;
 
     Vector3 gravityDir = Physics.gravity.normalized;
     Vector3 movementDir;
-    private Vector3 platformVel;
-    private bool invertGravity;
-    private bool hasInvertGravity;
-    private Rigidbody rb;
-    private MovementState movementState;
-    private bool invertedPlayer;
-    private bool isRotating;
-    private bool onFlip;
-    
-
-    
-    private enum MovementState
-    {
-        Walking,
-        Couching,
-        Sprinting,
-        Air,
-    }
 
     private void Awake()
     {
@@ -89,9 +84,9 @@ public class RigidBodyMovement : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         standHeight = controller.height;
         standCenterY = controller.center.y;
-        downSpeed = 5.0f;
+        camDownSpeed = 5.0f;
         crouchHeight = controller.height / 2f;
-        _activeHardware = _API_Provider.ActiveAPIController;
+        // _activeHardware = _API_Provider.ActiveAPIController;
         hasInvertGravity = false;
         isRotating = false;
         SetStandCenter();
@@ -151,7 +146,7 @@ public class RigidBodyMovement : MonoBehaviour
 
     private void MyInput()
     {
-        horizontaInput = moveInput.x;
+        horizontalInput = moveInput.x;
         verticalInput = moveInput.y;
     }
     
@@ -216,33 +211,42 @@ public class RigidBodyMovement : MonoBehaviour
 
         if (isCrouch)
         {
-            controller.height = Mathf.Lerp(controller.height, crouchHeight, downSpeed * Time.deltaTime);
-            controller.center = Vector3.Lerp(controller.center, crouchOrigin, downSpeed * Time.deltaTime);
+            controller.height = Mathf.Lerp(controller.height, crouchHeight, camDownSpeed * Time.deltaTime);
+            controller.center = Vector3.Lerp(controller.center, crouchOrigin, camDownSpeed * Time.deltaTime);
         }
         else
         {
-            controller.height = Mathf.Lerp(controller.height, standHeight, downSpeed * Time.deltaTime);
-            controller.center = Vector3.Lerp(controller.center, standOrigin, downSpeed * Time.deltaTime);
+            controller.height = Mathf.Lerp(controller.height, standHeight, camDownSpeed * Time.deltaTime);
+            controller.center = Vector3.Lerp(controller.center, standOrigin, camDownSpeed * Time.deltaTime);
         }
     }
 
-    private void MovePlayer()
+    private void ApplyMovement()
     {
-        movementDir = orientation.forward * verticalInput + orientation.right * horizontaInput;
+        //get user input
+        movementDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        Vector3 desiredRelativeVelocity;
         if (onSlope && isGrounded)
         {
             Vector3 slopDir = Vector3.ProjectOnPlane(Vector3.down, slopeHit.normal).normalized;
             Vector3 sidewayDir = Vector3.Cross(slopeHit.normal, slopDir).normalized;
-            movementDir = sidewayDir * horizontaInput;
-            rb.AddForce(slopDir * slopeSpeed * 10f, ForceMode.Force);
-            rb.AddForce(movementDir * sideWayMoveSpeed * 10f, ForceMode.Force);
-        }else if (isGrounded)
-        {
-            rb.AddForce(movementDir.normalized * moveSpeed * 10f, ForceMode.Force);
+            movementDir = sidewayDir * horizontalInput;
+            desiredRelativeVelocity = movementDir.sqrMagnitude > 0.0001f ? movementDir.normalized * sideWayMoveSpeed : Vector3.zero;
+            Vector3 slopVelocity = slopDir * slopeSpeed;
+            rb.linearVelocity = desiredRelativeVelocity + slopVelocity;
         }
         else
         {
-            rb.AddForce(movementDir.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+            Vector3 platformVelocity = (onMovingPlatform && isGrounded) ? connectionVelocity : Vector3.zero;
+            Vector3 v = rb.linearVelocity;
+            Vector3 relativeVelocity = v - platformVelocity;
+            desiredRelativeVelocity = movementDir.sqrMagnitude > 0.0001f ? movementDir.normalized * moveSpeed : Vector3.zero;
+            float acceleration = isGrounded ? groundAcceleration : airAcceleration;
+            float maxDelta = acceleration * Time.fixedDeltaTime;
+            float newX = Mathf.MoveTowards(relativeVelocity.x, desiredRelativeVelocity.x, maxDelta);
+            float newZ = Mathf.MoveTowards(relativeVelocity.z, desiredRelativeVelocity.z, maxDelta);
+            relativeVelocity = new Vector3(newX, relativeVelocity.y, newZ);
+            rb.linearVelocity = relativeVelocity + platformVelocity;
         }
         
     }
@@ -251,31 +255,15 @@ public class RigidBodyMovement : MonoBehaviour
     {
         if (isGrounded && isSprintPressed)
         {
-            movementState = MovementState.Sprinting;
             moveSpeed = sprintSpeed;
         }else if (isCrouchPressed && isGrounded)
         {
-            movementState = MovementState.Couching;
             moveSpeed = crouchSpeed;
         }else if (isGrounded)
         {
-            movementState = MovementState.Walking;
             moveSpeed = walkSpeed;
         }
-        else
-        {
-            movementState = MovementState.Air;
-        }
-    }
 
-    private void SpeedControl()
-    {
-        Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-        if (flatVelocity.magnitude > moveSpeed)
-        {
-            Vector3 limitedVelocity = flatVelocity.normalized * moveSpeed;
-            rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y,  limitedVelocity.z);
-        }
     }
 
     private void ApplyCustomGravity()
@@ -312,7 +300,7 @@ public class RigidBodyMovement : MonoBehaviour
             step = rotationSpeed * Time.fixedDeltaTime;
             step = Mathf.Min(step, remainingRotation);
             Quaternion deltaRotation = Quaternion.Euler(0, 0, step);
-            cameraPostion.Rotate(Vector3.forward, step,Space.Self);
+            cameraPosition.Rotate(Vector3.forward, step,Space.Self);
             playerCam.rollZ += step; 
             rb.MoveRotation(rb.rotation * deltaRotation);
             remainingRotation -= step;
@@ -359,44 +347,41 @@ public class RigidBodyMovement : MonoBehaviour
     {
         float bottomLocal = controller.center.y - controller.height / 2.0f;
         float cameraCenterY = bottomLocal + controller.height;
-        cameraPostion.transform.localPosition = new Vector3(cameraPostion.transform.localPosition.x, 
-            cameraCenterY,cameraPostion.transform.localPosition.z);
+        cameraPosition.transform.localPosition = new Vector3(cameraPosition.transform.localPosition.x, 
+            cameraCenterY,cameraPosition.transform.localPosition.z);
     }
-    
     
     private void FixedUpdate()
     {
+        previousConnectedBody = connectedBody;
         GroudCheck();
-        ApplyRidingMovePlat();
+        UpdateConnectionState();
         Spring();
         ApplyCustomGravity();
         
         SetCrouch(isCrouchPressed);
-        MovePlayer();
-        SpeedControl();
+        MyInput();
+        StateHandler();
+        ApplyMovement();
         InvertGravityDirection();
-        ApplyDamping();
     }
 
-    private void ApplyDamping()
+    private void UpdateConnectionState()
     {
-        rb.linearDamping = 0f;
-        if (isGrounded)
+        connectionVelocity = Vector3.zero;
+        if (!isGrounded || connectedBody == null)
         {
-            rb.linearDamping = groundDrag;
+            return;
         }
-        if (onMovingPlatform)
+        if (connectedBody == previousConnectedBody)
         {
-            rb.linearDamping = 0.1f;
+            Vector3 newWorldPoint = connectedBody.transform.TransformPoint(connectionLocalPosition);
+            Vector3 movement = newWorldPoint - connectionWorldPosition;
+            connectionVelocity = movement / Time.fixedDeltaTime;
         }
-    }
 
-    private void ApplyRidingMovePlat()
-    {
-        if (!isGrounded || movingPlatform == null) return;
-        Vector3 delta = movingPlatform.rb.position - movingPlatLastPos;
-        rb.MovePosition(rb.position + delta);
-        movingPlatLastPos = movingPlatform.rb.position;
+        connectionWorldPosition = rb.position;
+        connectionLocalPosition = connectedBody.transform.InverseTransformPoint(connectionWorldPosition);
     }
     private void GroudCheck()
     {
@@ -410,12 +395,7 @@ public class RigidBodyMovement : MonoBehaviour
             onSlope = hit.collider.CompareTag("Slide");
             onMovingPlatform = hit.collider.CompareTag("MovingPlatform");
             onFlip = hit.collider.CompareTag("FlipSection");
-            if (onMovingPlatform && hit.rigidbody)
-            {
-                Debug.Log("MovingPlatform");
-                movingPlatform = hit.rigidbody.GetComponent<MovePlat>();
-                movingPlatLastPos = movingPlatform.rb.position;
-            }
+            connectedBody = hit.rigidbody;
         }
         else
         {
@@ -423,15 +403,8 @@ public class RigidBodyMovement : MonoBehaviour
             onSlope = false;
             onMovingPlatform = false;
             onFlip = false;
-            movingPlatform = null;
+            connectedBody  = null;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        MyInput();
-        StateHandler();
     }
 
     private void LateUpdate()

@@ -721,7 +721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42cd7dea592b14c92ae732a57add6146, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  bombTimer: 500
+  bombTimer: 5
   isGameOver: 0
   currentState: 0
 --- !u!1 &702796034

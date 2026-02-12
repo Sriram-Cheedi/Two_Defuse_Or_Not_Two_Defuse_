@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 5698642697521741651}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 116.71, y: 339.97, z: 298.3}
+  m_LocalPosition: {x: -8.37182, y: 35.16, z: -3.66}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -225,27 +225,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RigidBodyMovement
   moveSpeed: 0
-  orientation: {fileID: 7393091596066557072}
+  sideWayMoveSpeed: 50
   walkSpeed: 7
   sprintSpeed: 10
-  playerHeight: 2
+  crouchSpeed: 3.5
+  groundAcceleration: 35
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  groundDrag: 6
-  crouchSpeed: 3.5
-  crouchYScale: 0
-  startYScale: 0
-  cameraPostion: {fileID: 1053736292381441385}
-  maxSlopeAngle: 0
-  slopeSpeed: 10
+  playerInput: {fileID: 0}
   controller: {fileID: 722863900267491481}
+  slopeSpeed: 10
+  orientation: {fileID: 7393091596066557072}
+  cameraPosition: {fileID: 0}
+  playerCam: {fileID: 0}
+  targetRotation: 180
+  camDownSpeed: 5
   jumpForce: 6
   springForce: 20
   jumpCooldown: 0.25
-  airMultiplier: 0.4
-  downSpeed: 5
-  api_manager: {fileID: 0}
+  airAcceleration: 15
+  rotationSpeed: 20
+  gravityMultiplier: 2
 --- !u!54 &5102822317218207650
 Rigidbody:
   m_ObjectHideFlags: 0

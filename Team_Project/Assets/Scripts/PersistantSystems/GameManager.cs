@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -26,7 +27,7 @@ public class GameManager : MonoBehaviour
     }
     public void Update()
     {
-        if (bombTimer > 0.0f)
+        if (bombTimer > 0.0f &&  currentState == GameState.Playing)
         {
             bombTimer -= Time.deltaTime;
         
@@ -54,7 +55,16 @@ public class GameManager : MonoBehaviour
         if (currentState == GameState.GameOver) return;
 
         currentState = GameState.GameOver;
-        SceneManager.LoadScene("GameOver");
+        SceneManager.LoadScene("Explode");
+        StartCoroutine(GameoverAnimation());
+        
+        
+        
     }
 
+    IEnumerator GameoverAnimation()
+    {
+        yield return new WaitForSeconds(1.0f);
+        SceneManager.LoadScene("GameOver");
+    }
 }
