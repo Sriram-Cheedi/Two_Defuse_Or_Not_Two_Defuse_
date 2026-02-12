@@ -29,8 +29,15 @@ void SimonSaysModule::update(){
 }
 
 void SimonSaysModule::buttonPressed(std::string btnName, int state){
+    
+    int index = stoi(btnName.substr(3));
+
+    if(state == HIGH){
+        setPixelBuffer(index, colourMap[index]);
+    }
 
     if(state == LOW){
+        setPixelBuffer(index, Color(0,0,0));
         pressedButton = btnName;
     }
 }
@@ -94,7 +101,7 @@ int SimonSaysModule::getInputSequence(){
 
     std::vector<int> inputSequence = std::vector<int>();
 
-    while(millis() - startTime < 3000){
+    while(millis() - startTime < 4000){
 
         for(auto& btn : buttons){
             
@@ -107,7 +114,7 @@ int SimonSaysModule::getInputSequence(){
                 startTime = millis();
 
                 if(pressedButton == "SSM0"){
-                inputSequence.push_back(0);
+                    inputSequence.push_back(0);
                 }else
                 if(pressedButton == "SSM1"){
                     inputSequence.push_back(1);
@@ -119,13 +126,17 @@ int SimonSaysModule::getInputSequence(){
                     inputSequence.push_back(3);
                 }
 
+                pressedButton = "";
+
                 if(inputSequence.size() > currentRound) return 0;
 
                 for(size_t i = 0; i < inputSequence.size(); i++){
                     if(inputSequence[i] != correctSequence[i]) return 0;
                 }
 
-                pressedButton = "";
+                if(inputSequence.size() == currentRound){
+                    startTime -= 3000;
+                }
             }
         }
 
@@ -152,6 +163,14 @@ void SimonSaysModule::setPixelBuffer(std::vector<uint32_t> newColours){
     
 }
 
+void SimonSaysModule::setPixelBuffer(int index, uint32_t newColour){
+
+    pixelBufferMutex.lock();
+    pixelBuffer[index] = newColour;
+    pixelBufferMutex.unlock();
+
+}
+
 void SimonSaysModule::loop(){
 
     while(true){
@@ -160,27 +179,7 @@ void SimonSaysModule::loop(){
 
         for(size_t i = 0; i < currentRound; i++){
 
-            switch(correctSequence[i]) {
-            case 0:
-
-                setPixelBuffer({Color(255, 0, 0), Color(0, 0, 0), Color(0, 0, 0), Color(0, 0, 0)});
-                break;
-
-            case 1:
-                setPixelBuffer({Color(0, 0, 0), Color(0, 255, 0), Color(0, 0, 0), Color(0, 0, 0)});
-                break;
-
-            case 2:
-                setPixelBuffer({Color(0, 0, 0), Color(0, 0, 0), Color(0, 0, 255), Color(0, 0, 0)});
-                break;
-
-            case 3:
-                setPixelBuffer({Color(0, 0, 0), Color(0, 0, 0), Color(0, 0, 0), Color(255, 0, 255)});
-                break;
-
-            default:
-                break;
-            }
+            setPixelBuffer(correctSequence[i], colourMap[correctSequence[i]]);
 
             uint32_t waitUntil = millis() + 500;
             while (millis() < waitUntil) threads.yield();
