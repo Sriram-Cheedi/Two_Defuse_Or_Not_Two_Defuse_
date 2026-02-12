@@ -28,15 +28,20 @@ void SimonSaysModule::update(){
     }
 }
 
-void SimonSaysModule::buttonPressed(std::string btnName, int state){
-    
+void SimonSaysModule::buttonPressed(std::string btnName, int btnState){
+
+    if((currentRound == 1) && (state != 1)) {
+        state = 1;
+        status();
+    }
+
     int index = stoi(btnName.substr(3));
 
-    if(state == HIGH){
+    if(btnState == HIGH){
         setPixelBuffer(index, colourMap[index]);
     }
 
-    if(state == LOW){
+    if(btnState == LOW){
         setPixelBuffer(index, Color(0,0,0));
         pressedButton = btnName;
     }
@@ -89,10 +94,8 @@ void SimonSaysModule::complete(){
         threadID = -1;
     }
 
-    state = 0;
     currentRound = 1;
     state = 2;
-
 }
 
 int SimonSaysModule::getInputSequence(){
@@ -175,8 +178,6 @@ void SimonSaysModule::loop(){
 
     while(true){
 
-        if((currentRound > 1) & (state != 1)) state = 1;
-
         for(size_t i = 0; i < currentRound; i++){
 
             setPixelBuffer(correctSequence[i], colourMap[correctSequence[i]]);
@@ -198,7 +199,12 @@ void SimonSaysModule::loop(){
             if(currentRound < correctSequence.size()){
                 currentRound++;
             }else{
-                complete();
+                setPixelBuffer({strip.Color(0, 255, 0), strip.Color(0, 255, 0), strip.Color(0, 255, 0), strip.Color(0, 255, 0)});
+
+                currentRound = 1;
+                state = 2;
+                
+                status();
                 return;
             }
         }else if(result == 0){
@@ -231,6 +237,7 @@ void SimonSaysModule::loop(){
             setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)}); 
 
             state = 0;
+            status();
             currentRound = 1;
         }
     }
