@@ -44,8 +44,9 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     /// Initializes Local dictionary of all connected hardware components to 0 (off).
     /// Passes in the serialController and connects its 'Received' action to the HandleMessage function.
     /// </summary>
-    public void Initialize()
+    public void InitializeSelf()
     {
+        Debug.Log("<color=green>API Provider: Initializing REAL mode.</color>");
 
         hardwareState.componentStates["BTN1"] = 0;
         hardwareState.componentStates["BTN2"] = 0;
@@ -60,6 +61,10 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         hardwareState.componentStates["LED1"] = 0;
         hardwareState.componentStates["LED2"] = 0;
         hardwareState.componentStates["LED3"] = 0;
+
+        hardwareState.componentStates["SSM"] = 0;
+
+
 
         //hardwareState.componentStates["SWT1"] = 0;
         //hardwareState.componentStates["SWT2"] = 0;
@@ -83,6 +88,14 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         {
             Debug.LogError("Error: Unable to set serial Controller for REAL API_Controller");
         }
+    }
+
+
+    public void InitializeHardware()
+    {
+        // Init Simon Says Sequence
+        int[] seq = new int[] { 0, 1, 2, 3 };
+        SendSetSeq("SSM", seq);
     }
 
     void Exit()

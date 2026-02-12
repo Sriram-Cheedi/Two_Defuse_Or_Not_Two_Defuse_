@@ -17,7 +17,7 @@ public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
     public bool getHasAccelerometer => _hasAccel;
     public Dictionary<string, int> getComponentStateManager => _componentStateManager;
 
-    public void Initialize()
+    public void InitializeSelf()
     {
         Debug.Log("<color=orange>MOCK: Initializing Simulated Hardware...</color>");
 
@@ -36,19 +36,21 @@ public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
         _componentStateManager["LED3"] = 0;
 
     }
+
+    public void InitializeHardware() => Debug.Log("<color=orange>MOCK: Init Mock Hardware</color>");
     public void UpdateSimulation()
     {
         _gyroValue = new Vector3(Mathf.Sin(Time.time), Mathf.Cos(Time.time), 0);
         OnGyroChanged?.Invoke(_gyroValue);
     }
 
-    public void HandleMessage(string message) => Debug.Log($"MOCK HANDLE MESSAGE");
+    public void HandleMessage(string message) => Debug.Log($"MOCK: Handle Message");
 
-    public void SendSet(string header, int value) => Debug.Log("MOCK SEND SET: $" + header + ":set " + value + "#");
-
+    public void SendSet(string header, int value) => Debug.Log("MOCK: SendSet: " + header + ":set " + value + "#");
+    public void SendSetSeq(string header, int[] value) => Debug.Log("MOCK: SendSetSeq: " + header + ":set " + value + "#");
     public int GetButton(string id) => _componentStateManager.ContainsKey("BTN" + id) ? _componentStateManager["BTN" + id] : 0;
-    public void TimerSet(int seconds) => Debug.Log($"MOCK TIMER: Set to {seconds}s");
-    public void ResetHardware(string header) => Debug.Log($"MOCK RESET: {header}");
+    public void TimerSet(int seconds) => Debug.Log($"MOCK: Timer Set to {seconds}s");
+    public void ResetHardware(string header) => Debug.Log($"MOCK: Reset: {header}");
     public int GetDigital(string h) => 0;
     public Vector3 GetAccel() => _accelValue;
     public int GetSwitch(string id) => 0;

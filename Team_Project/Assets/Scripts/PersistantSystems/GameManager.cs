@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     public double bombTimer = 25.0;
     public bool isGameOver = false;
+    public bool isTimerActive = false;
 
     public enum GameState { Menu, Playing, GameOver }
     public GameState currentState = GameState.Menu;
@@ -26,14 +27,15 @@ public class GameManager : MonoBehaviour
     }
     public void Update()
     {
-        if (bombTimer > 0.0f)
+        if (bombTimer > 0.0f && isTimerActive)
         {
             bombTimer -= Time.deltaTime;
-        
+
             if (bombTimer <= 0 && currentState != GameState.GameOver)
             {
-                EndGame();
+                isTimerActive = false;
                 bombTimer = 0.0f;
+                EndGame();
             }
 
             API_Provider.Instance.ActiveAPIController.TimerSet((int)bombTimer);
@@ -47,6 +49,9 @@ public class GameManager : MonoBehaviour
 
         currentState = GameState.Playing;
         SceneManager.LoadScene("StartLevel");
+
+        isTimerActive = true;
+        API_Provider.Instance.ActiveAPIController.InitializeHardware();
     }
 
     public void EndGame()
