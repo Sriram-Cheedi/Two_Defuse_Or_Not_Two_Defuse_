@@ -4,9 +4,14 @@
 #include <SerialController.h>
 #include <TeensyThreads.h>
 #include "Button.h"
-#include "Adafruit_NeoPixel.h"
+#include "WS2812Serial.h"
 
 class SimonSaysModule : public Component {
+
+    
+    static inline uint32_t Color(uint8_t r, uint8_t g, uint8_t b) {
+        return ((uint32_t)r << 16) | ((uint32_t)g << 8) | b;
+    }
 
 private:
 
@@ -15,7 +20,7 @@ private:
     const std::vector<int> buttonPins;
     std::vector<Button> buttons;
 
-    std::vector<uint32_t> pixelBuffer; 
+    std::vector<uint32_t> pixelBuffer = {Color(255, 0, 0), Color(255, 0, 0), Color(255, 0, 0), Color(255, 0, 0)}; 
 
     const int rgbPin;
 
@@ -23,15 +28,17 @@ private:
 
     int threadID = -1;
 
-    std::mutex pixelBufferMutex;
+    Threads::Mutex pixelBufferMutex;
 
     size_t currentRound;
     std::vector<int> correctSequence;
-    std::vector<int> inputSequence;
 
     std::string pressedButton;
 
-    Adafruit_NeoPixel strip;
+    byte drawingMemory[16*3];
+    byte displayMemory[16*12];
+
+    WS2812Serial strip = WS2812Serial(4, drawingMemory, displayMemory, 1, WS2812_GRB);
 
     void reset();     // Reset Module to the initial state
     void complete();  // Auto complete the module 

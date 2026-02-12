@@ -10,25 +10,22 @@ SimonSaysModule::SimonSaysModule(std::string name, std::vector<int> buttonPins, 
     }
 }
 
-static inline uint32_t Color(uint8_t r, uint8_t g, uint8_t b) {
-    return ((uint32_t)r << 16) | ((uint32_t)g << 8) | b;
-}
 
 void SimonSaysModule::init(){
-    strip = Adafruit_NeoPixel(4, rgbPin, NEO_GRB + NEO_KHZ800);
     strip.begin();
 
-    setPixelBuffer({strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0)});
+    setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)});
 }
 
 void SimonSaysModule::update(){
 
-    pixelBufferMutex.lock();
-    for(int i = 0; i < 4; i++){
-        strip.setPixelColor(i, pixelBuffer[i]);
+    if(pixelBufferMutex.try_lock()){
+        for(int i = 0; i < 4; i++){
+            strip.setPixel(i, pixelBuffer[i]);
+        }
+        strip.show();
+        pixelBufferMutex.unlock();
     }
-    //strip.show();
-    pixelBufferMutex.unlock();
 }
 
 void SimonSaysModule::buttonPressed(std::string btnName, int state){
@@ -72,12 +69,13 @@ void SimonSaysModule::reset(){
 
     state = 0;
     currentRound = 1;
-    inputSequence = {};
 
     threadID = threads.addThread(loopTrampoline, this);
 }
 
 void SimonSaysModule::complete(){
+
+    setPixelBuffer({strip.Color(0, 255, 0), strip.Color(0, 255, 0), strip.Color(0, 255, 0), strip.Color(0, 255, 0)});
 
     if(threadID != -1){
         threads.kill(threadID);
@@ -86,16 +84,15 @@ void SimonSaysModule::complete(){
 
     state = 0;
     currentRound = 1;
-    inputSequence = {};
     state = 2;
-    
+
 }
 
 int SimonSaysModule::getInputSequence(){
 
     int startTime = millis(); 
 
-    inputSequence.clear();
+    std::vector<int> inputSequence = std::vector<int>();
 
     while(millis() - startTime < 3000){
 
@@ -122,6 +119,12 @@ int SimonSaysModule::getInputSequence(){
                     inputSequence.push_back(3);
                 }
 
+                if(inputSequence.size() > currentRound) return 0;
+
+                for(size_t i = 0; i < inputSequence.size(); i++){
+                    if(inputSequence[i] != correctSequence[i]) return 0;
+                }
+
                 pressedButton = "";
             }
         }
@@ -146,7 +149,7 @@ void SimonSaysModule::setPixelBuffer(std::vector<uint32_t> newColours){
     pixelBufferMutex.lock();
     pixelBuffer = newColours;
     pixelBufferMutex.unlock();
-
+    
 }
 
 void SimonSaysModule::loop(){
@@ -156,7 +159,7 @@ void SimonSaysModule::loop(){
         if((currentRound > 1) & (state != 1)) state = 1;
 
         for(size_t i = 0; i < currentRound; i++){
-            
+
             switch(correctSequence[i]) {
             case 0:
 
@@ -184,9 +187,10 @@ void SimonSaysModule::loop(){
 
             setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)});
 
-            waitUntil = millis() + 200;
-            while (millis() < waitUntil) threads.yield();
-        
+            if( i < currentRound - 1){
+                waitUntil = millis() + 200;
+                while (millis() < waitUntil) threads.yield();
+            }
         }
 
         int result = getInputSequence();
@@ -196,9 +200,39 @@ void SimonSaysModule::loop(){
                 currentRound++;
             }else{
                 complete();
+                return;
             }
         }else if(result == 0){
-            reset();
+        
+            setPixelBuffer({strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0)});
+
+            uint32_t waitUntil = millis() + 100;
+            while (millis() < waitUntil) threads.yield();
+
+            setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)});   
+            
+            waitUntil = millis() + 100;
+            while (millis() < waitUntil) threads.yield();
+
+            setPixelBuffer({strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0)}); 
+
+            waitUntil = millis() + 100;
+            while (millis() < waitUntil) threads.yield();
+
+            setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)}); 
+
+            waitUntil = millis() + 100;
+            while (millis() < waitUntil) threads.yield();
+
+            setPixelBuffer({strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0), strip.Color(255, 0, 0)}); 
+
+            waitUntil = millis() + 100;
+            while (millis() < waitUntil) threads.yield();
+
+            setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)}); 
+
+            state = 0;
+            currentRound = 1;
         }
     }
 
