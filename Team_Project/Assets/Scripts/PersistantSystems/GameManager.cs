@@ -24,17 +24,22 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
     public void Update()
     {
-        bombTimer -= Time.deltaTime;
-        if (bombTimer <= 0 && currentState != GameState.GameOver)
+        if (bombTimer > 0.0f)
         {
-            EndGame();
-        }
+            bombTimer -= Time.deltaTime;
+        
+            if (bombTimer <= 0 && currentState != GameState.GameOver)
+            {
+                EndGame();
+                bombTimer = 0.0f;
+            }
 
-        API_Provider.Instance.ActiveAPIController.TimerSet((int)bombTimer);
+            API_Provider.Instance.ActiveAPIController.TimerSet((int)bombTimer);
+        }
     }
+
 
     public void StartGame()
     {
