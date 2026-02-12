@@ -18,6 +18,8 @@ public class AssetArray : MonoBehaviour
     public float sign = 1;
     public int noOfAssets;
     private List<GameObject> objects = new List<GameObject>();
+    [Header("manual offset")]
+    public float Addedoffset;
 
 
     public void Start()
@@ -34,9 +36,9 @@ public class AssetArray : MonoBehaviour
         Renderer r = obj.GetComponent<Renderer>();
         Bounds b = r.localBounds;
 
-        Xoffset = b.size.x * obj.transform.localScale.x;
-        Yoffset = b.size.y * obj.transform.localScale.y;
-        Zoffset = b.size.z * obj.transform.localScale.z;
+        Xoffset = b.size.x * obj.transform.localScale.x + Addedoffset;
+        Yoffset = b.size.y * obj.transform.localScale.y + Addedoffset;
+        Zoffset = b.size.z * obj.transform.localScale.z + Addedoffset;
 
 
         DuplicateObject();

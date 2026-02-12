@@ -2606,13 +2606,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: NewAssembly::AssetArray
   obj: {fileID: 1557621484}
-  rotation: {x: 0, y: 0, z: 0, w: 0}
+  rotation: {x: -0, y: -0, z: -0.17540726, w: 0.98449594}
   dx: 0
   dy: 0
   dz: 1
   direction: 1
   sign: 1
-  noOfAssets: 10
+  noOfAssets: 0
 --- !u!4 &1317952566
 Transform:
   m_ObjectHideFlags: 0
