@@ -73,6 +73,4 @@ void loop() {
   gyro.update();
   ssm.update();
   numberGame.updateDisplay();
-  //timer.updateDisplay();
-  //LCDDisplay.LCDLoop();
 }
