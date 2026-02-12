@@ -14,9 +14,9 @@ SerialController serialController = SerialController();
 TimerModule timer = TimerModule("TMR", 29, 27, 28, serialController);
 Imu gyro = Imu("IMU", serialController);
 
-/* Button btn1 = Button("BTN1", 38, serialController);
+Button btn1 = Button("BTN1", 38, serialController);
 Button btn2 = Button("BTN2", 39, serialController);
-Button btn3 = Button("BTN3", 41, serialController); */
+Button btn3 = Button("BTN3", 41, serialController);
 
 SimonSaysModule ssm = SimonSaysModule("SSM", {38, 39, 40, 41}, 6,  serialController);
 
@@ -65,11 +65,14 @@ void loop() {
 
   parseCommand(serialController.serialRecieve());
 
-  /* btn1.update();
+  btn1.update();
   btn2.update();
-  btn3.update();  */
+  btn3.update();
 
   timer.updateDisplay();
   gyro.update();
   ssm.update();
+  numberGame.updateDisplay();
+  //timer.updateDisplay();
+  //LCDDisplay.LCDLoop();
 }

@@ -1,27 +1,45 @@
+using System;
 using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public double bombTimer = 10;
-    public bool isGameOver = false;
-    public enum GameState
-    {
-        Menu,
-        Playing,
-        GameOver
-    }
-    public static GameState currentState = GameState.Menu;
+    public static GameManager Instance { get; private set; }
 
-    public void Update()
+    public double bombTimer = 25.0;
+    public bool isGameOver = false;
+
+    public enum GameState { Menu, Playing, GameOver }
+    public GameState currentState = GameState.Menu;
+
+    private void Awake()
     {
-        bombTimer -= Time.deltaTime;
-        if (bombTimer <= 0 && currentState != GameState.GameOver)
+        if (Instance == null)
         {
-            EndGame();
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
+    public void Update()
+    {
+        if (bombTimer > 0.0f)
+        {
+            bombTimer -= Time.deltaTime;
+        
+            if (bombTimer <= 0 && currentState != GameState.GameOver)
+            {
+                EndGame();
+                bombTimer = 0.0f;
+            }
+
+            API_Provider.Instance.ActiveAPIController.TimerSet((int)bombTimer);
+        }
+    }
+
 
     public void StartGame()
     {
