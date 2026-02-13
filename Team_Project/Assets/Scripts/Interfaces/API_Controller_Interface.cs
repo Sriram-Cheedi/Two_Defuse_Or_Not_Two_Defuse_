@@ -15,12 +15,15 @@ public interface API_Controller_Interface
     Vector3 getGyroValue { get; }
 
     // Methods
-    public void Initialize();
+    public void InitializeSelf();
+    public void InitializeHardware();
     public void HandleMessage(string message);
     public int GetDigital(string header);
     public int GetButton(string id);
     public int GetSwitch(string id);
     public int GetLed(string id);
+
+    public void SendSetSeq(string header, int[] value);
     public void SendSet(string header, int value);
     public void TimerSet(int seconds);
     public void TimerFlash(int times, int delay);
