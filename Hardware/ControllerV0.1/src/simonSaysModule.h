@@ -3,6 +3,7 @@
 #include <Component.h>
 #include <SerialController.h>
 #include <TeensyThreads.h>
+#include <atomic>
 #include "Button.h"
 #include "WS2812Serial.h"
 
@@ -15,8 +16,6 @@ class SimonSaysModule : public Component {
 
 private:
 
-    const std::string name;
-
     const std::vector<int> buttonPins;
     std::vector<Button> buttons;
 
@@ -26,7 +25,9 @@ private:
 
     const int rgbPin;
 
-    int state;  // 0 = Not Started, 1 = In Progress, 2 = Complete, 3 = Failed (Resetting)
+    std::atomic<int> state;  // 0 = Not Started, 1 = In Progress, 2 = Complete, 3 = Failed (Resetting)
+
+    int oldState = 0;
 
     int threadID = -1;
 
@@ -35,7 +36,7 @@ private:
     size_t currentRound;
     std::vector<int> correctSequence;
 
-    std::string pressedButton;
+    std::atomic<int> pressedButton{-1};
 
     byte drawingMemory[16*3];
     byte displayMemory[16*12];

@@ -2,7 +2,7 @@
 
 
 SimonSaysModule::SimonSaysModule(std::string name, std::vector<int> buttonPins, int rgbPin, SerialController serialController)
-: Component(name), buttonPins(buttonPins), rgbPin(rgbPin), state(0), serialController(serialController) {
+: Component(name), buttonPins(buttonPins), rgbPin(rgbPin), state(std::atomic<int>(0)), serialController(serialController) {
 
     for(size_t i = 0; i < buttonPins.size(); i++){
         Button btn = Button("SSM" + std::to_string(i), buttonPins[i], serialController, [this](std::string name, int state){buttonPressed(name, state);});   
@@ -26,13 +26,20 @@ void SimonSaysModule::update(){
         strip.show();
         pixelBufferMutex.unlock();
     }
+
+    int newState = state.load(std::memory_order_acquire);
+
+    if(newState != oldState){
+        oldState = newState;
+        status();
+    }
+
 }
 
 void SimonSaysModule::buttonPressed(std::string btnName, int btnState){
 
-    if((currentRound == 1) && (state != 1)) {
-        state = 1;
-        status();
+    if((currentRound == 1) && (state.load(std::memory_order_acquire) != 1)) {
+        state.store(1, std::memory_order_release);
     }
 
     int index = stoi(btnName.substr(3));
@@ -43,7 +50,7 @@ void SimonSaysModule::buttonPressed(std::string btnName, int btnState){
 
     if(btnState == LOW){
         setPixelBuffer(index, Color(0,0,0));
-        pressedButton = btnName;
+        pressedButton.store(index, std::memory_order_release);
     }
 }
 
@@ -69,7 +76,7 @@ void SimonSaysModule::set(std::vector<std::string> args) {
 }
 
 void SimonSaysModule::status() {
-    serialController.serialWrite(name, std::to_string(state));
+    serialController.serialWrite(name, std::to_string(state.load(std::memory_order_acquire)));
 }
 
 void SimonSaysModule::reset(){
@@ -79,7 +86,7 @@ void SimonSaysModule::reset(){
         threadID = -1;
     }
 
-    state = 0;
+    state.store(0, std::memory_order_release);
     currentRound = 1;
 
     threadID = threads.addThread(loopTrampoline, this);
@@ -95,7 +102,7 @@ void SimonSaysModule::complete(){
     }
 
     currentRound = 1;
-    state = 2;
+    state.store(2, std::memory_order_release);
 }
 
 int SimonSaysModule::getInputSequence(){
@@ -110,26 +117,26 @@ int SimonSaysModule::getInputSequence(){
             
             btn.update();
 
-            if(pressedButton == ""){
+            if(pressedButton.load(std::memory_order_acquire) == -1){
                 continue;
             }else{
 
                 startTime = millis();
 
-                if(pressedButton == "SSM0"){
+                if(pressedButton.load(std::memory_order_acquire) == 0){
                     inputSequence.push_back(0);
                 }else
-                if(pressedButton == "SSM1"){
+                if(pressedButton.load(std::memory_order_acquire) == 1){
                     inputSequence.push_back(1);
                 }else 
-                if(pressedButton == "SSM2"){
+                if(pressedButton.load(std::memory_order_acquire) == 2){
                     inputSequence.push_back(2);
                 }else 
-                if(pressedButton == "SSM3"){
+                if(pressedButton.load(std::memory_order_acquire) == 3){
                     inputSequence.push_back(3);
                 }
 
-                pressedButton = "";
+                pressedButton.store(-1, std::memory_order_release);
 
                 if(inputSequence.size() > currentRound) return 0;
 
@@ -202,9 +209,8 @@ void SimonSaysModule::loop(){
                 setPixelBuffer({strip.Color(0, 255, 0), strip.Color(0, 255, 0), strip.Color(0, 255, 0), strip.Color(0, 255, 0)});
 
                 currentRound = 1;
-                state = 2;
+                state.store(2, std::memory_order_release);
                 
-                status();
                 return;
             }
         }else if(result == 0){
@@ -236,8 +242,7 @@ void SimonSaysModule::loop(){
 
             setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)}); 
 
-            state = 0;
-            status();
+            state.store(0, std::memory_order_release);
             currentRound = 1;
         }
     }
