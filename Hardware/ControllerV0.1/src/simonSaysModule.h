@@ -9,7 +9,6 @@
 
 class SimonSaysModule : public Component {
 
-    
     static inline uint32_t Color(uint8_t r, uint8_t g, uint8_t b) {
         return ((uint32_t)r << 16) | ((uint32_t)g << 8) | b;
     }
@@ -26,7 +25,6 @@ private:
     const int rgbPin;
 
     std::atomic<int> state;  // 0 = Not Started, 1 = In Progress, 2 = Complete, 3 = Failed (Resetting)
-
     int oldState = 0;
 
     int threadID = -1;
@@ -43,25 +41,25 @@ private:
 
     WS2812Serial strip = WS2812Serial(4, drawingMemory, displayMemory, 1, WS2812_GRB);
 
+    // EXTERNAL THREAD FUNCTIONS
     void reset();     // Reset Module to the initial state
     void complete();  // Auto complete the module 
-    
     void buttonPressed(std::string btnName, int state);
 
+    // SSM THREAD ONLY FUNCTIONS
     void loop();
     int getInputSequence();
-
     void setPixelBuffer(std::vector<uint32_t> newColours);
     void setPixelBuffer(int index, uint32_t newColour);
-
     void set_leds(std::vector<int> rgb1, std::vector<int> rgb2, std::vector<int> rgb3, std::vector<int> rgb4);
 
     SerialController serialController;
 
-        static void loopTrampoline(void *arg) {
-            SimonSaysModule *self = static_cast<SimonSaysModule*>(arg);
-            self->loop();   // call the real method
-        }
+    // Static function to being SSM thread
+    static void loopTrampoline(void *arg) {
+        SimonSaysModule *self = static_cast<SimonSaysModule*>(arg);
+        self->loop();   // call the real method
+    }
 
 public:
 
