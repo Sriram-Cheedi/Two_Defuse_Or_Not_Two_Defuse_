@@ -33,6 +33,7 @@ public class API_Provider : MonoBehaviour
             ActiveAPIController = child.AddComponent<API_Controller>();
         }
         ActiveAPIController.InitializeSelf();
+        ActiveAPIController.InitializeHardware();
     }
 
     public void Update()

@@ -93,9 +93,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
     public void InitializeHardware()
     {
-        // Init Simon Says Sequence
-        int[] seq = new int[] { 0, 1, 2, 3 };
-        SendSetSeq("SSM", seq);
+        SendSetSeq("SSM", PuzzleManager.Instance.GenerateSSMSequence());
     }
 
     void Exit()

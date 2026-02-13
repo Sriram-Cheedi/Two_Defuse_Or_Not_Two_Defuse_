@@ -22,7 +22,6 @@ public interface API_Controller_Interface
     public int GetButton(string id);
     public int GetSwitch(string id);
     public int GetLed(string id);
-
     public void SendSetSeq(string header, int[] value);
     public void SendSet(string header, int value);
     public void TimerSet(int seconds);

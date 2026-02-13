@@ -51,7 +51,6 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("StartLevel");
 
         isTimerActive = true;
-        API_Provider.Instance.ActiveAPIController.InitializeHardware();
     }
 
     public void EndGame()
