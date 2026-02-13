@@ -2429,6 +2429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d63688c34ae2b9458bee88aa38fc867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CheckPointScript
+  spawnManager: {fileID: 0}
 --- !u!4 &597298195
 Transform:
   m_ObjectHideFlags: 0
@@ -2805,7 +2806,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5605535105995821793, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
       propertyPath: slopeSpeed
-      value: 80
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5605535105995821793, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
       propertyPath: api_manager
@@ -4562,6 +4563,7 @@ MonoBehaviour:
   player: {fileID: 1889529493}
   rm: {fileID: 1889529497}
   respawnPoint: {fileID: 0}
+  gridManager: {fileID: 0}
 --- !u!4 &959340398
 Transform:
   m_ObjectHideFlags: 0
@@ -7806,6 +7808,22 @@ PrefabInstance:
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[3].m_Value.z
       value: 312.2218
       objectReference: {fileID: 0}
+    - target: {fileID: 3384342998346153896, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3384342998346153896, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: be9b92e0f92dc8f44965806387d8de17, type: 3}
+    - target: {fileID: 3384342998346153896, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3384342998346153896, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3712443149926943918, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
       propertyPath: m_Name
       value: CurrentParent3
@@ -7857,6 +7875,38 @@ PrefabInstance:
     - target: {fileID: 4991943964482445188, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[3].m_Value.z
       value: 312.2218
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270085473879979202, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270085473879979202, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: be9b92e0f92dc8f44965806387d8de17, type: 3}
+    - target: {fileID: 5270085473879979202, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270085473879979202, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7303055183857692129, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7303055183857692129, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: be9b92e0f92dc8f44965806387d8de17, type: 3}
+    - target: {fileID: 7303055183857692129, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7303055183857692129, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7583008138426042023, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[0].m_Value.x
@@ -8360,6 +8410,22 @@ PrefabInstance:
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[3].m_Value.z
       value: 240.21997
       objectReference: {fileID: 0}
+    - target: {fileID: 3384342998346153896, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3384342998346153896, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: be9b92e0f92dc8f44965806387d8de17, type: 3}
+    - target: {fileID: 3384342998346153896, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3384342998346153896, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3712443149926943918, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
       propertyPath: m_Name
       value: CurrentParent2
@@ -8411,6 +8477,38 @@ PrefabInstance:
     - target: {fileID: 4991943964482445188, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[3].m_Value.z
       value: 240.21999
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270085473879979202, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270085473879979202, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: be9b92e0f92dc8f44965806387d8de17, type: 3}
+    - target: {fileID: 5270085473879979202, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270085473879979202, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7303055183857692129, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7303055183857692129, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: be9b92e0f92dc8f44965806387d8de17, type: 3}
+    - target: {fileID: 7303055183857692129, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7303055183857692129, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7583008138426042023, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[0].m_Value.x
@@ -8809,6 +8907,7 @@ MonoBehaviour:
   player: {fileID: 0}
   rm: {fileID: 0}
   respawnPoint: {fileID: 0}
+  gridManager: {fileID: 0}
 --- !u!1 &1975850738
 GameObject:
   m_ObjectHideFlags: 0
@@ -9876,6 +9975,22 @@ PrefabInstance:
       propertyPath: spawnManager
       value: 
       objectReference: {fileID: 959340397}
+    - target: {fileID: 3384342998346153896, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3384342998346153896, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: be9b92e0f92dc8f44965806387d8de17, type: 3}
+    - target: {fileID: 3384342998346153896, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3384342998346153896, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3712443149926943918, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
       propertyPath: m_Name
       value: CurrentParent1
@@ -9927,6 +10042,38 @@ PrefabInstance:
     - target: {fileID: 4991943964482445188, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[3].m_Value.z
       value: 165.66998
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270085473879979202, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270085473879979202, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: be9b92e0f92dc8f44965806387d8de17, type: 3}
+    - target: {fileID: 5270085473879979202, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5270085473879979202, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7303055183857692129, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7303055183857692129, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: be9b92e0f92dc8f44965806387d8de17, type: 3}
+    - target: {fileID: 7303055183857692129, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7303055183857692129, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7583008138426042023, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[0].m_Value.x
@@ -10175,3 +10322,7 @@ SceneRoots:
   - {fileID: 853415232}
   - {fileID: 322683635}
   - {fileID: 1921889246}
+  - {fileID: 1412721288}
+  - {fileID: 1487768183}
+  - {fileID: 280245692}
+  - {fileID: 812793286}

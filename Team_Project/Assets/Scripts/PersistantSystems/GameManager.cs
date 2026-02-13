@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
 
     public enum GameState { Menu, Playing, GameOver }
     public GameState currentState = GameState.Menu;
+    [Header("Warning")]
+     private AudioSource WarningAudio;
 
     private void Awake()
     {
@@ -27,9 +29,22 @@ public class GameManager : MonoBehaviour
     }
     public void Update()
     {
+        WarningAudio = GetComponent<AudioSource>();
+
         if (bombTimer > 0.0f &&  currentState == GameState.Playing)
         {
             bombTimer -= Time.deltaTime;
+            if (currentState == GameState.Playing && bombTimer <= 5f && bombTimer > 0f)
+            {
+                if (!WarningAudio.isPlaying)
+                    WarningAudio.Play();
+            }
+            else
+            {
+                if (WarningAudio.isPlaying)
+                    WarningAudio.Stop();
+            }
+
         
             if (bombTimer <= 0 && currentState != GameState.GameOver)
             {

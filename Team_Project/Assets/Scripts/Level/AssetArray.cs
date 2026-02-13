@@ -32,6 +32,7 @@ public class AssetArray : MonoBehaviour
 
     public void OnValidate()
     {
+        
         if (!obj) return;
         Renderer r = obj.GetComponent<Renderer>();
         Bounds b = r.localBounds;
