@@ -35,7 +35,7 @@ public class PlayerCam : MonoBehaviour
 
                 if (hit.collider.TryGetComponent<Interactible_Interface>(out var interactable))
                 {
-                    interactable.Interact();
+                    interactable.Interact(hit);
                 }
             }
         }
