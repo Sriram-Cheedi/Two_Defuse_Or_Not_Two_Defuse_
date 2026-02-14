@@ -2,7 +2,7 @@
 
 
 SimonSaysModule::SimonSaysModule(std::string name, std::vector<int> buttonPins, int rgbPin, SerialController serialController)
-: Component(name), buttonPins(buttonPins), rgbPin(rgbPin), state(std::atomic<int>(0)), serialController(serialController) {
+: Component(name), buttonPins(buttonPins), rgbPin(rgbPin), serialController(serialController) {
 
     for(size_t i = 0; i < buttonPins.size(); i++){
         Button btn = Button("SSM" + std::to_string(i), buttonPins[i], serialController, [this](std::string name, int state){buttonPressed(name, state);});   
@@ -261,6 +261,9 @@ void SimonSaysModule::loop(){
             while (millis() < waitUntil) threads.yield();
 
             setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)}); 
+
+            waitUntil = millis() + 500;
+            while (millis() < waitUntil) threads.yield();
 
             state.store(0, std::memory_order_release);
             currentRound = 1;

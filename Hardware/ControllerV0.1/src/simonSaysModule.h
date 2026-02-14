@@ -15,16 +15,16 @@ class SimonSaysModule : public Component {
 
 private:
 
-    SerialController serialController;
+    // MAIN THREAD ONLY VARIABLES
 
     const std::vector<int> buttonPins;
     std::vector<Button> buttons;
-
     const int rgbPin;
+
     int oldState = 0;
     int threadID = -1;
 
-    size_t currentRound;
+    SerialController serialController;
 
     byte drawingMemory[16*3];
     byte displayMemory[16*12];
@@ -33,16 +33,18 @@ private:
 
     std::vector<uint32_t> colourMap = {Color(255, 0, 0), Color(0, 255, 0), Color(0, 0, 255), Color(255, 0, 255)};
 
-    // THREAD PROTECTED VARIABLES 
+    // SSM THREAD ONLY VARIABLES
+    size_t currentRound;
+
+    // MULTI-THREAD VARIABLES (Protected) 
     std::vector<uint32_t> pixelBuffer = {Color(255, 0, 0), Color(255, 0, 0), Color(255, 0, 0), Color(255, 0, 0)}; 
-    std::atomic<int> state;  // 0 = Not Started, 1 = In Progress, 2 = Complete, 3 = Failed (Resetting)
-    std::vector<int> correctSequence;
+    std::atomic<int> state{0};  // 0 = Not Started, 1 = In Progress, 2 = Complete, 3 = Failed (Resetting)
     std::atomic<int> pressedButton{-1};
+    std::vector<int> correctSequence;
 
     Threads::Mutex resetingMutex; //Protects Correct Sequence
     Threads::Mutex pixelBufferMutex; //Protects pixelBuffer
     // --------------------------
-
 
     // EXTERNAL THREAD FUNCTIONS
     void reset();     // Reset Module to the initial state
