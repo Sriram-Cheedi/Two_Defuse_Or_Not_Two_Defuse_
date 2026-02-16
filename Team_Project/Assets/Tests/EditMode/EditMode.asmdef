@@ -5,7 +5,8 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "NewAssembly",
-        "Game.Main"
+        "Game.Main",
+        "KeypadAssembly"
     ],
     "includePlatforms": [
         "Editor"
