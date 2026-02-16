@@ -16,6 +16,11 @@ void fishingModule::reset(){
     points = 0;
     randState = 0;
     state = 0;
+    lastGameUpdate = 0;
+    lastFishUpdate = 0;
+    lastHookUpdate = 0;
+    lastScoreUpdate = 0;
+    lastButtonUpdate = 0;
 }
 
 void fishingModule::complete(){
@@ -48,6 +53,7 @@ void fishingModule::shift(uint32_t digit){
 void fishingModule::scoreCheck(){
   int hasScored = fishLED[randState] & hookLED[hookPos];
   if (hasScored > 0){
+    if(points == 0) state = 1;
     points++;
     Serial.println(points);
   }
@@ -56,7 +62,7 @@ void fishingModule::scoreCheck(){
 void fishingModule::updateGame(){
     unsigned long micro = micros();
     unsigned long milli = millis();
-    if (micro - lastGameUpdate > gameInterval){
+    if (micro - lastGameUpdate > gameInterval && state < 2){
 
         lastGameUpdate = micro;
         buttonState = digitalRead(buttonPin);
@@ -81,6 +87,8 @@ void fishingModule::updateGame(){
             randState = random(0,11);
             lastFishUpdate = milli;
         }
+
+        if(points >= 45) state = 2;
 
         uint32_t LEDBarState = (fishLED[randState] << 14) + (hookLED[hookPos] << 4);
         shift(LEDBarState);
