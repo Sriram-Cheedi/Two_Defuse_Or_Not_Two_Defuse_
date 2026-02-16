@@ -93,7 +93,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
     public void InitializeHardware()
     {
-        SendSetSeq("SSM", PuzzleManager.Instance.GenerateSSMSequence());
+        Debug.Log("<color=green>Initializing REAL Hardware...</color>");
     }
 
     void Exit()

@@ -45,10 +45,11 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        Debug.Log("<color=blue>GameManager: Starting Game...</color>");
         if (currentState == GameState.Playing) return;
 
         currentState = GameState.Playing;
-        SceneManager.LoadScene("StartLevel");
+        SceneManager.LoadScene(1);
 
         isTimerActive = true;
     }
@@ -58,7 +59,7 @@ public class GameManager : MonoBehaviour
         if (currentState == GameState.GameOver) return;
 
         currentState = GameState.GameOver;
-        SceneManager.LoadScene("GameOver");
+        SceneManager.LoadScene(2);
     }
 
 }

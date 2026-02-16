@@ -26,6 +26,7 @@ public class PuzzleManager : MonoBehaviour
     public int[] GenerateSSMSequence()
     {
         SSMSeq = new int[] { 0, 1, 2, 0, 2, 3 };
+        Debug.Log("Inside Generate Sequence");
 
         if (SSMKeypad != null)
         {

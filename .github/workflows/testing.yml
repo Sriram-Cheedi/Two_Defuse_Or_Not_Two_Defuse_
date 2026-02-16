@@ -12,6 +12,10 @@ permissions:
   checks: write
   pull-requests: write
   
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+  
 jobs:
   test:
     name: Run Unity Tests
@@ -36,6 +40,8 @@ jobs:
         with:
           path: .git/lfs
           key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+          restore-keys: |               
+            ${{ runner.os }}-lfs-
 
       - name: Git LFS Pull
         run: |
@@ -43,11 +49,11 @@ jobs:
           git add .
           git reset --hard
 
-      # Cache
-      - uses: actions/cache@v3
+      - name: Cache Library
+        uses: actions/cache@v3
         with:
-          path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          path: Team_Project/Library
+          key: Library-${{ hashFiles('Team_Project/Assets/**', 'Team_Project/Packages/**', 'Team_Project/ProjectSettings/**') }}
           restore-keys: |
             Library-
 
@@ -86,6 +92,8 @@ jobs:
           with:
             path: .git/lfs
             key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+            restore-keys: |
+              ${{ runner.os }}-lfs-
   
         - name: Git LFS Pull
           run: |
@@ -97,7 +105,7 @@ jobs:
         - name: Restore Library Cache
           uses: actions/cache@v3
           with:
-            path: Library
+            path: Team_Project/Library
             key: Library-${{ hashFiles('Team_Project/Assets/**', 'Team_Project/Packages/**', 'Team_Project/ProjectSettings/**') }}
             restore-keys: |
               Library-
