@@ -1,6 +1,7 @@
 #ifndef NUMBERGAMEMODULE_H
 #define NUMBERGAMEMODULE_H
 
+#include <array>
 #include <stdint.h>
 #include <string>
 #include "component.h"
@@ -10,24 +11,25 @@
 class numberGameModule : public Component {
 
 private:
+    int state = 0; // 0 = Not Started, 1 = In Progress, 2 = Complete, 3 = Failed (Resetting)
+
     const int dataPin;
     const int clockPin;
     const int latchPin;
-    const int buttonPin;
-    const int submitButtonPin;
+    const std::array<int,5> buttonPins; //First 4 button are used to increment the display numbers. Button 5 will be the submit button.
 
     int buttonPushCounter = 0;
     int buttonState = 0;
-    int lastButtonState = 0;
-    float lastVoltage = 0;
+    //int lastButtonState = 0;
+    std::array<int,5> lastInputStates = {0,0,0,0,0};
 
     uint8_t ledStates = 0b00000000;
     int secretNumber[4];
     const byte ledPositions[4][2] = {
-        {7, 0},
-        {1, 2},
-        {3, 4},
-        {5, 6}
+        {7, 6},
+        {5, 4},
+        {3, 2},
+        {1, 0}
     };
 
     SerialController serialController;
@@ -62,7 +64,7 @@ private:
 
 public:
 
-    numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin, int submitButtonPin, SerialController serialController, LCDModule& display);
+    numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, std::array<int,5> buttonPins, SerialController serialController, LCDModule& display);
     void set(std::vector<std::string> args) override;
     void status() override;
     void setupGame();

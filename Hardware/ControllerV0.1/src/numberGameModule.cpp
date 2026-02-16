@@ -1,13 +1,14 @@
 #include <Arduino.h>
 #include "numberGameModule.h"
 
-numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin, int submitButtonPin, SerialController serialController, LCDModule& display)
-: Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), buttonPin(buttonPin), submitButtonPin(submitButtonPin), serialController(serialController), display(display) {
+numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, std::array<int,5> buttonPins, SerialController serialController, LCDModule& display)
+: Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), buttonPins(buttonPins), serialController(serialController), display(display) {
     pinMode(dataPin,OUTPUT);
     pinMode(clockPin,OUTPUT);
     pinMode(latchPin,OUTPUT);
-    pinMode(buttonPin,INPUT);
-    pinMode(submitButtonPin,INPUT);
+    for(int i = 0; i < 5; i++){
+        pinMode(buttonPins[i],INPUT_PULLDOWN);
+    }
     randomSeed(analogRead(A0));
 }
 
@@ -15,10 +16,12 @@ numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, 
 void numberGameModule::set(std::vector<std::string> args){
     //implement methods for unity to reset the game.
     //need to learn more about how the api works before i can do that.
+    int num = stoi(args[0]);
+    
 }
 
 void numberGameModule::status(){
-
+    serialController.serialWrite(name, std::to_string(state));
 }
 
 void numberGameModule::setupGame(){
@@ -59,44 +62,40 @@ void numberGameModule::setupGame(){
 }
 
 void numberGameModule::buttonCheck(){
-    //Resitor ladder DAC buttons
-    //Each button has a different threshold voltage.
-    int sensorValue = analogRead(buttonPin);
-    float voltage = sensorValue * (3.3 / 1023.0);
-
     const unsigned long debounceDelay = 50;
     unsigned long now = millis();
-
-    if(lastVoltage < 0.6){
-        if(now - buttonUpdate > debounceDelay){
-            if(voltage >= 2.55 && voltage <= 2.8){ //button 1
-                digitsBuffer[0] = digitsBuffer[0] + 1;
-                if(digitsBuffer[0] > 9){
-                    digitsBuffer[0] = 0;
-                }
+    int state0 = digitalRead(buttonPins[0]);
+    int state1 = digitalRead(buttonPins[1]);
+    int state2 = digitalRead(buttonPins[2]);
+    int state3 = digitalRead(buttonPins[3]);
+    if(now - buttonUpdate > debounceDelay){
+        if(state0 = HIGH && lastInputStates[0] != state0){
+            digitsBuffer[0] += 1;
+            if(digitsBuffer[0] > 9){
+                digitsBuffer[0] = 0;
             }
-            else if(voltage >= 2.3 && voltage <= 2.5){ //button 2
-                digitsBuffer[1] = digitsBuffer[1] + 1;
-                if(digitsBuffer[1] > 9){
-                    digitsBuffer[1] = 0;
-                }
-            }
-            else if(voltage >= 1.9 && voltage <= 2.2){ //button 3
-                digitsBuffer[2] = digitsBuffer[2] + 1;
-                if(digitsBuffer[2] > 9){
-                    digitsBuffer[2] = 0;
-                }
-            }
-            else if(voltage >= 1.1 && voltage <= 1.4){ //button 4
-                digitsBuffer[3] = digitsBuffer[3] + 1;
-                if(digitsBuffer[3] > 9){
-                    digitsBuffer[3] = 0;
-                }
-            }
-            buttonUpdate = now;
         }
+        if(state1 = HIGH && lastInputStates[1] != state1){
+            digitsBuffer[1] += 1;
+            if(digitsBuffer[1] > 9){
+                digitsBuffer[1] = 0;
+            }
+        }
+        if(state2 = HIGH && lastInputStates[2] != state2){
+            digitsBuffer[2] += 1;
+            if(digitsBuffer[2] > 9){
+                digitsBuffer[2] = 0;
+            }
+        }
+        if(state3 = HIGH && lastInputStates[3] != state3){
+            digitsBuffer[3] += 1;
+            if(digitsBuffer[3] > 9){
+                digitsBuffer[3] = 0;
+            }
+        }
+        buttonUpdate = now;  
     }
-    lastVoltage = voltage;
+    
 }
 
 void numberGameModule::checkGuess() {
@@ -148,9 +147,9 @@ void numberGameModule::updateDisplay(){
     if (now - lastUpdate < refreshInterval) return;
     lastUpdate = now;
     buttonCheck();
-    buttonState = digitalRead(submitButtonPin);
+    buttonState = digitalRead(buttonPins[4]);
     //check the current guess when the button is pressed
-    if(buttonState  ==  HIGH && buttonState  != lastButtonState){
+    if(buttonState  ==  HIGH && buttonState  != lastInputStates[4]){
         checkGuess();
     }
 
@@ -170,5 +169,5 @@ void numberGameModule::updateDisplay(){
     }
     //end writing to the shift registers
     digitalWrite(latchPin, HIGH);
-    lastButtonState = buttonState;
+    lastInputStates[4] = buttonState;
 }

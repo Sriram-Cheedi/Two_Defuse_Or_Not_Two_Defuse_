@@ -61,7 +61,7 @@ class fishingModule : public Component {
         0b0000000001
     };
 
-    int state; // 0 = Not Started, 1 = In Progress, 2 = Complete, 3 = Failed (Resetting)
+    int state = 0; // 0 = Not Started, 1 = In Progress, 2 = Complete, 3 = Failed (Resetting)
 
     SerialController serialController;
 
