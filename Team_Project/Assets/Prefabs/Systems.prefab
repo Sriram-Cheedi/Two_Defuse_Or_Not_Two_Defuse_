@@ -92,7 +92,7 @@ MonoBehaviour:
   bombTimer: 500
   isGameOver: 0
   isTimerActive: 0
-  currentState: 1
+  currentState: 0
 --- !u!1 &7180209173059562556
 GameObject:
   m_ObjectHideFlags: 0

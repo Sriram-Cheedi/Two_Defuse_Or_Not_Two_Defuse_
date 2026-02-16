@@ -40,7 +40,6 @@ public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
     public void InitializeHardware()
     {
         Debug.Log("<color=orange>MOCK: Initializing Mock Hardware...</color>");
-        SendSetSeq("SSM", PuzzleManager.Instance.GenerateSSMSequence());
     }
     public void UpdateSimulation()
     {
