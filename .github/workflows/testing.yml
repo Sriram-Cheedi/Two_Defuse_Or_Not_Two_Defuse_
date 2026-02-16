@@ -5,7 +5,7 @@ on:
     branches:
       - main 
   pull_request:
-    types: [opened, reopened, ready_for_review]
+    types: [opened, reopened, synchronize]
 
 permissions:
   contents: write
@@ -16,7 +16,6 @@ jobs:
   test:
     name: Run Unity Tests
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/main'
     steps:
       - name: Free Disk Space
         run: |
@@ -99,7 +98,7 @@ jobs:
           uses: actions/cache@v3
           with:
             path: Library
-            key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+            key: Library-${{ hashFiles('Team_Project/Assets/**', 'Team_Project/Packages/**', 'Team_Project/ProjectSettings/**') }}
             restore-keys: |
               Library-
 

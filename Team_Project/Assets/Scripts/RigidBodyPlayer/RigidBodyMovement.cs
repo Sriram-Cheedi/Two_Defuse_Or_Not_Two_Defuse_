@@ -6,33 +6,33 @@ using Vector3 = UnityEngine.Vector3;
 
 public class RigidBodyMovement : MonoBehaviour
 {
-    [Header("Movement")] [SerializeField] private float moveSpeed;
+    [Header("Movement")][SerializeField] private float moveSpeed;
     [SerializeField] private float sideWayMoveSpeed = 20f;
     [SerializeField] public Transform orientation;
     [SerializeField] private float walkSpeed = 10;
     [SerializeField] private float sprintSpeed = 13;
-    
+
     [Header("Ground Check")]
     [SerializeField] private float playerHeight = 2f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundDrag;
     private bool isGrounded;
 
-    [Header("Crouching")] [SerializeField] private float crouchSpeed = 5f;
+    [Header("Crouching")][SerializeField] private float crouchSpeed = 5f;
     private float standCenterY;
     private float standHeight;
     private float crouchHeight;
     private Vector3 crouchOrigin;
     private Vector3 standOrigin;
-    [SerializeField]private PlayerInput playerInput;
-    [SerializeField]private Transform cameraPostion;
+    [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private Transform cameraPostion;
     private MovePlat movingPlatform;
     private Vector3 movingPlatLastPos;
-    
+
     [Header("Slope")]
     private RaycastHit slopeHit;
     [SerializeField] private float slopeSpeed = 30f;
-    
+
     [SerializeField] private CapsuleCollider controller;
 
     [SerializeField] private float jumpForce = 11.5f;
@@ -42,7 +42,7 @@ public class RigidBodyMovement : MonoBehaviour
     private bool readyToJump = true;
     private bool isCrouchPressed;
     [SerializeField] private PlayerCam playerCam;
-    
+
     private float remainingRotation;
     private float step;
     [SerializeField] private float targetRotation = 180f;
@@ -58,8 +58,7 @@ public class RigidBodyMovement : MonoBehaviour
     [Header("External")]
     [Header("External")]
     private API_Provider _API_Provider = API_Provider.Instance;
-    private API_Controller_Interface _activeHardware;
-    [Header("Rotation")] [SerializeField] private float rotationSpeed = 20f;
+    [Header("Rotation")][SerializeField] private float rotationSpeed = 20f;
 
     Vector3 gravityDir = Physics.gravity.normalized;
     Vector3 movementDir;
@@ -71,9 +70,9 @@ public class RigidBodyMovement : MonoBehaviour
     private bool invertedPlayer;
     private bool isRotating;
     private bool onFlip;
-    
 
-    
+
+
     private enum MovementState
     {
         Walking,
@@ -91,7 +90,6 @@ public class RigidBodyMovement : MonoBehaviour
         standCenterY = controller.center.y;
         downSpeed = 5.0f;
         crouchHeight = controller.height / 2f;
-        _activeHardware = _API_Provider.ActiveAPIController;
         hasInvertGravity = false;
         isRotating = false;
         SetStandCenter();
@@ -106,7 +104,7 @@ public class RigidBodyMovement : MonoBehaviour
         playerCam.rollZ = 0;
         orientation.rotation = Quaternion.Euler(0, 0, 0);
         rb.rotation = Quaternion.Euler(0, 0, 0);
-        rb.linearVelocity = Vector3.zero; 
+        rb.linearVelocity = Vector3.zero;
         gravityDir = Vector3.down;
     }
 
@@ -119,27 +117,27 @@ public class RigidBodyMovement : MonoBehaviour
     }
     private void OnEnable()
     {
-        if (_activeHardware != null)
-            _activeHardware.OnImuChanged += RotateLevel;
+        if (API_Provider.Instance.ActiveAPIController != null)
+            API_Provider.Instance.ActiveAPIController.OnImuChanged += RotateLevel;
     }
 
     private void OnDisable()
     {
-        if (_activeHardware != null)
-            _activeHardware.OnImuChanged -= RotateLevel;
+        if (API_Provider.Instance.ActiveAPIController != null)
+            API_Provider.Instance.ActiveAPIController.OnImuChanged -= RotateLevel;
     }
-    
+
     private void RotateLevel(Vector3 gyro, Vector3 accelerometer)
     {
 
         // Flip gravity direction (so jump/gravity math stays consistent with sign)
         // gravity = -gravity;
         // Rotate the player (or level) around Z, as you had
-        if (accelerometer.z > 9f && Vector3.Dot(Vector3.down,-orientation.transform.up) < 0 && onFlip)
+        if (accelerometer.z > 9f && Vector3.Dot(Vector3.down, -orientation.transform.up) < 0 && onFlip)
         {
             invertGravity = true;
         }
-        else if(accelerometer.z < -9f && Vector3.Dot(Vector3.down,-orientation.transform.up) > 0 && onFlip)
+        else if (accelerometer.z < -9f && Vector3.Dot(Vector3.down, -orientation.transform.up) > 0 && onFlip)
         {
             invertGravity = true;
         }
@@ -154,7 +152,7 @@ public class RigidBodyMovement : MonoBehaviour
         horizontaInput = moveInput.x;
         verticalInput = moveInput.y;
     }
-    
+
     public void OnMove(InputAction.CallbackContext ctx)
     {
         moveInput = ctx.ReadValue<Vector2>();
@@ -185,11 +183,11 @@ public class RigidBodyMovement : MonoBehaviour
             invertGravity = false;
         }
     }
-    
+
     private void Spring()
     {
-        
-        if (Physics.Raycast(controller.bounds.center, Vector3.down, out RaycastHit hit,controller.bounds.extents.y + 0.2f, groundLayer)
+
+        if (Physics.Raycast(controller.bounds.center, Vector3.down, out RaycastHit hit, controller.bounds.extents.y + 0.2f, groundLayer)
             && hit.collider.CompareTag("Spring"))
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
@@ -210,7 +208,7 @@ public class RigidBodyMovement : MonoBehaviour
         float newCenterY = bottomLocal + standHeight / 2f;
         standOrigin = new Vector3(controller.center.x, newCenterY, controller.center.z);
     }
-    
+
     private void SetCrouch(bool isCrouch)
     {
 
@@ -236,7 +234,8 @@ public class RigidBodyMovement : MonoBehaviour
             movementDir = sidewayDir * horizontaInput;
             rb.AddForce(slopDir * slopeSpeed * 10f, ForceMode.Force);
             rb.AddForce(movementDir * sideWayMoveSpeed * 10f, ForceMode.Force);
-        }else if (isGrounded)
+        }
+        else if (isGrounded)
         {
             rb.AddForce(movementDir.normalized * moveSpeed * 10f, ForceMode.Force);
         }
@@ -244,7 +243,7 @@ public class RigidBodyMovement : MonoBehaviour
         {
             rb.AddForce(movementDir.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
         }
-        
+
     }
 
     private void StateHandler()
@@ -253,11 +252,13 @@ public class RigidBodyMovement : MonoBehaviour
         {
             movementState = MovementState.Sprinting;
             moveSpeed = sprintSpeed;
-        }else if (isCrouchPressed && isGrounded)
+        }
+        else if (isCrouchPressed && isGrounded)
         {
             movementState = MovementState.Couching;
             moveSpeed = crouchSpeed;
-        }else if (isGrounded)
+        }
+        else if (isGrounded)
         {
             movementState = MovementState.Walking;
             moveSpeed = walkSpeed;
@@ -274,7 +275,7 @@ public class RigidBodyMovement : MonoBehaviour
         if (flatVelocity.magnitude > moveSpeed)
         {
             Vector3 limitedVelocity = flatVelocity.normalized * moveSpeed;
-            rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y,  limitedVelocity.z);
+            rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y, limitedVelocity.z);
         }
     }
 
@@ -300,7 +301,7 @@ public class RigidBodyMovement : MonoBehaviour
 
         hasInvertGravity = invertGravity;
     }
-    
+
     IEnumerator SmoothRotate()
     {
         isRotating = true;
@@ -312,8 +313,8 @@ public class RigidBodyMovement : MonoBehaviour
             step = rotationSpeed * Time.fixedDeltaTime;
             step = Mathf.Min(step, remainingRotation);
             Quaternion deltaRotation = Quaternion.Euler(0, 0, step);
-            cameraPostion.Rotate(Vector3.forward, step,Space.Self);
-            playerCam.rollZ += step; 
+            cameraPostion.Rotate(Vector3.forward, step, Space.Self);
+            playerCam.rollZ += step;
             rb.MoveRotation(rb.rotation * deltaRotation);
             remainingRotation -= step;
             yield return new WaitForFixedUpdate();
@@ -321,7 +322,7 @@ public class RigidBodyMovement : MonoBehaviour
         playerMap.Enable();
         isRotating = false;
     }
-    
+
     public void OnJump(InputAction.CallbackContext ctx)
     {
         if (ctx.performed && readyToJump && isGrounded && !onSlope)
@@ -359,18 +360,18 @@ public class RigidBodyMovement : MonoBehaviour
     {
         float bottomLocal = controller.center.y - controller.height / 2.0f;
         float cameraCenterY = bottomLocal + controller.height;
-        cameraPostion.transform.localPosition = new Vector3(cameraPostion.transform.localPosition.x, 
-            cameraCenterY,cameraPostion.transform.localPosition.z);
+        cameraPostion.transform.localPosition = new Vector3(cameraPostion.transform.localPosition.x,
+            cameraCenterY, cameraPostion.transform.localPosition.z);
     }
-    
-    
+
+
     private void FixedUpdate()
     {
         GroudCheck();
         ApplyRidingMovePlat();
         Spring();
         ApplyCustomGravity();
-        
+
         SetCrouch(isCrouchPressed);
         MovePlayer();
         SpeedControl();

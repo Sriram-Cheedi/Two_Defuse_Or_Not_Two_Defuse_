@@ -93,9 +93,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
     public void InitializeHardware()
     {
-        // Init Simon Says Sequence
-        int[] seq = new int[] { 0, 1, 2, 3 };
-        SendSetSeq("SSM", seq);
+        SendSetSeq("SSM", PuzzleManager.Instance.GenerateSSMSequence());
     }
 
     void Exit()
@@ -252,7 +250,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         {
             strseq += seq[i] + " ";
         }
-        strseq = strseq.Substring(0, strseq.Length - 2);
+        strseq = strseq.Substring(0, strseq.Length - 1);
 
         string message = "$" + header + ":set " + strseq + "#";
         ActivePortController.SendToArduino(message);

@@ -19,7 +19,7 @@ public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
 
     public void InitializeSelf()
     {
-        Debug.Log("<color=orange>MOCK: Initializing Simulated Hardware...</color>");
+        Debug.Log("<color=orange>MOCK: Initializing Simulated Controlller...</color>");
 
         _componentStateManager["BTN1"] = 0;
         _componentStateManager["BTN2"] = 0;
@@ -37,7 +37,11 @@ public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
 
     }
 
-    public void InitializeHardware() => Debug.Log("<color=orange>MOCK: Init Mock Hardware</color>");
+    public void InitializeHardware()
+    {
+        Debug.Log("<color=orange>MOCK: Initializing Mock Hardware...</color>");
+        SendSetSeq("SSM", PuzzleManager.Instance.GenerateSSMSequence());
+    }
     public void UpdateSimulation()
     {
         _gyroValue = new Vector3(Mathf.Sin(Time.time), Mathf.Cos(Time.time), 0);

@@ -1,6 +1,7 @@
 ﻿<Solution>
-  <Project Path="NewAssembly.csproj" />
+  <Project Path="Game.Main.csproj" />
+  <Project Path="EditMode.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
-  <Project Path="EditMode.csproj" />
+  <Project Path="KeypadAssembly.csproj" />
 </Solution>
