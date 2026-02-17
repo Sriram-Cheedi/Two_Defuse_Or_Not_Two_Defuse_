@@ -61,6 +61,8 @@ void setup() {
 
 void loop() {
 
+  delay(1);
+
   parseCommand(serialController.serialRecieve());
 
   btn1.update();

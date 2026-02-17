@@ -92,7 +92,7 @@ void SimonSaysModule::reset(){
     state.store(0, std::memory_order_release);
     currentRound = 1;
 
-    threadID = threads.addThread(loopTrampoline, this);
+    threadID = threads.addThread(loopTrampoline, this, 8192);
 }
 
 void SimonSaysModule::complete(){
