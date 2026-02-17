@@ -17,6 +17,7 @@ numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, 
     Button btn = Button("NGM4", buttonPins[4], serialController, [this](std::string name, int state){checkGuess(name, state);});   
     buttons.push_back(btn);
     randomSeed(analogRead(A0));
+    setupGame();
 }
 
 

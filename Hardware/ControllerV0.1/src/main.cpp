@@ -59,10 +59,6 @@ void setup() {
   components.push_back(&gyro);  
   components.push_back(&ssm);
   components.push_back(&ngm);
-
-  //ssm.init();
-  ngm.setupGame();
-
 }
 
 void loop() {
@@ -74,7 +70,7 @@ void loop() {
   btn3.update();
 
   timer.updateDisplay();
-  //gyro.update();
-  //ssm.update();
+  gyro.update();
+  ssm.update();
   ngm.update();
 }
