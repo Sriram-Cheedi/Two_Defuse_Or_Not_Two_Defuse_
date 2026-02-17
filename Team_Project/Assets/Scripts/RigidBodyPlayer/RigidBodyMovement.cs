@@ -86,7 +86,7 @@ public class RigidBodyMovement : MonoBehaviour
         standCenterY = controller.center.y;
         camDownSpeed = 5.0f;
         crouchHeight = controller.height / 2f;
-        // _activeHardware = _API_Provider.ActiveAPIController;
+        _activeHardware = _API_Provider.ActiveAPIController;
         hasInvertGravity = false;
         isRotating = false;
         SetStandCenter();
@@ -101,7 +101,7 @@ public class RigidBodyMovement : MonoBehaviour
         playerCam.rollZ = 0;
         orientation.rotation = Quaternion.Euler(0, 0, 0);
         rb.rotation = Quaternion.Euler(0, 0, 0);
-        rb.linearVelocity = Vector3.zero; 
+        rb.linearVelocity = Vector3.zero;
         gravityDir = Vector3.down;
     }
 
@@ -114,27 +114,27 @@ public class RigidBodyMovement : MonoBehaviour
     }
     private void OnEnable()
     {
-        if (_activeHardware != null)
-            _activeHardware.OnImuChanged += RotateLevel;
+        if (API_Provider.Instance.ActiveAPIController != null)
+            API_Provider.Instance.ActiveAPIController.OnImuChanged += RotateLevel;
     }
 
     private void OnDisable()
     {
-        if (_activeHardware != null)
-            _activeHardware.OnImuChanged -= RotateLevel;
+        if (API_Provider.Instance.ActiveAPIController != null)
+            API_Provider.Instance.ActiveAPIController.OnImuChanged -= RotateLevel;
     }
-    
+
     private void RotateLevel(Vector3 gyro, Vector3 accelerometer)
     {
 
         // Flip gravity direction (so jump/gravity math stays consistent with sign)
         // gravity = -gravity;
         // Rotate the player (or level) around Z, as you had
-        if (accelerometer.z > 9f && Vector3.Dot(Vector3.down,-orientation.transform.up) < 0 && onFlip)
+        if (accelerometer.z > 9f && Vector3.Dot(Vector3.down, -orientation.transform.up) < 0 && onFlip)
         {
             invertGravity = true;
         }
-        else if(accelerometer.z < -9f && Vector3.Dot(Vector3.down,-orientation.transform.up) > 0 && onFlip)
+        else if (accelerometer.z < -9f && Vector3.Dot(Vector3.down, -orientation.transform.up) > 0 && onFlip)
         {
             invertGravity = true;
         }
@@ -149,7 +149,7 @@ public class RigidBodyMovement : MonoBehaviour
         horizontalInput = moveInput.x;
         verticalInput = moveInput.y;
     }
-    
+
     public void OnMove(InputAction.CallbackContext ctx)
     {
         moveInput = ctx.ReadValue<Vector2>();
@@ -180,11 +180,11 @@ public class RigidBodyMovement : MonoBehaviour
             invertGravity = false;
         }
     }
-    
+
     private void Spring()
     {
-        
-        if (Physics.Raycast(controller.bounds.center, Vector3.down, out RaycastHit hit,controller.bounds.extents.y + 0.2f, groundLayer)
+
+        if (Physics.Raycast(controller.bounds.center, Vector3.down, out RaycastHit hit, controller.bounds.extents.y + 0.2f, groundLayer)
             && hit.collider.CompareTag("Spring"))
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
@@ -205,7 +205,7 @@ public class RigidBodyMovement : MonoBehaviour
         float newCenterY = bottomLocal + standHeight / 2f;
         standOrigin = new Vector3(controller.center.x, newCenterY, controller.center.z);
     }
-    
+
     private void SetCrouch(bool isCrouch)
     {
 
@@ -248,7 +248,7 @@ public class RigidBodyMovement : MonoBehaviour
             relativeVelocity = new Vector3(newX, relativeVelocity.y, newZ);
             rb.linearVelocity = relativeVelocity + platformVelocity;
         }
-        
+
     }
 
     private void StateHandler()
@@ -256,10 +256,12 @@ public class RigidBodyMovement : MonoBehaviour
         if (isGrounded && isSprintPressed)
         {
             moveSpeed = sprintSpeed;
-        }else if (isCrouchPressed && isGrounded)
+        }
+        else if (isCrouchPressed && isGrounded)
         {
             moveSpeed = crouchSpeed;
-        }else if (isGrounded)
+        }
+        else if (isGrounded)
         {
             moveSpeed = walkSpeed;
         }
@@ -288,7 +290,7 @@ public class RigidBodyMovement : MonoBehaviour
 
         hasInvertGravity = invertGravity;
     }
-    
+
     IEnumerator SmoothRotate()
     {
         isRotating = true;
@@ -309,7 +311,7 @@ public class RigidBodyMovement : MonoBehaviour
         playerMap.Enable();
         isRotating = false;
     }
-    
+
     public void OnJump(InputAction.CallbackContext ctx)
     {
         if (ctx.performed && readyToJump && isGrounded && !onSlope)
@@ -358,7 +360,7 @@ public class RigidBodyMovement : MonoBehaviour
         UpdateConnectionState();
         Spring();
         ApplyCustomGravity();
-        
+
         SetCrouch(isCrouchPressed);
         MyInput();
         StateHandler();
