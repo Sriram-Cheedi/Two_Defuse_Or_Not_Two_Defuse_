@@ -8,9 +8,21 @@ public class API_StructureTests
     private GameObject _testParent;
     private API_Provider _provider;
 
+    private GameObject _puzzleParent;
+    private PuzzleManager _puzzleManager;
+
     [SetUp]
     public void Setup()
     {
+        _puzzleParent = new GameObject();
+        _puzzleManager = _puzzleParent.AddComponent<PuzzleManager>();
+
+        GameObject keypadObject = new GameObject();
+        _puzzleManager.SSMKeypad = keypadObject.AddComponent<NavKeypad.Keypad>();
+
+        MethodInfo awakeMethod = typeof(PuzzleManager).GetMethod("Awake", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+        awakeMethod.Invoke(_puzzleManager, null);
+
         _testParent = new GameObject();
         _provider = _testParent.AddComponent<API_Provider>();
 
@@ -22,6 +34,11 @@ public class API_StructureTests
     [TearDown]
     public void Teardown()
     {
+        var instanceProperty = typeof(PuzzleManager).GetProperty("Instance",
+            BindingFlags.Static | BindingFlags.Public);
+        instanceProperty.SetValue(null, null);
+
+        Object.DestroyImmediate(_puzzleParent);
         Object.DestroyImmediate(_testParent);
     }
 
@@ -32,17 +49,19 @@ public class API_StructureTests
 
         // This calls the private awake method
         MethodInfo awakeMethod = typeof(API_Provider).GetMethod("Awake", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-        awakeMethod.Invoke(_provider, null);
+        MethodInfo startMethod = typeof(API_Provider).GetMethod("Start", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 
-        Assert.IsInstanceOf<Mock_API_Controller>(_provider.ActiveAPIController,
-            "Provider should assign a Mock controller when useMockHardware is true.");
+        awakeMethod.Invoke(_provider, null);
+        startMethod.Invoke(_provider, null);
+
+        Assert.IsInstanceOf<Mock_API_Controller>(_provider.ActiveAPIController, "Provider should assign a Mock controller when useMockHardware is true.");
     }
 
     [Test]
     public void MockController_ReturnsSimulatedGyro()
     {
         var mock = new Mock_API_Controller();
-        mock.Initialize();
+        mock.InitializeSelf();
 
         Vector3 gyro = mock.getGyroValue;
 

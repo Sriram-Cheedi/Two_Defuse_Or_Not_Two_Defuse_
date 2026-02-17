@@ -33,8 +33,8 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public Dictionary<string, int> getComponentStateManager => hardwareState.componentStates;
     private void OnDestroy() => Exit();
 
-    public void Awake() 
-    { 
+    public void Awake()
+    {
         hardwareState = new HardwareState();
         hardwareState.componentStates = new Dictionary<string, int>();
         hardwareState.gyroValue = Vector3.zero; ;
@@ -44,8 +44,9 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     /// Initializes Local dictionary of all connected hardware components to 0 (off).
     /// Passes in the serialController and connects its 'Received' action to the HandleMessage function.
     /// </summary>
-    public void Initialize()
+    public void InitializeSelf()
     {
+        Debug.Log("<color=green>API Provider: Initializing REAL mode.</color>");
 
         hardwareState.componentStates["BTN1"] = 0;
         hardwareState.componentStates["BTN2"] = 0;
@@ -56,10 +57,14 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         hardwareState.componentStates["SWT1"] = 0;
         hardwareState.componentStates["SWT2"] = 0;
         hardwareState.componentStates["SWT3"] = 0;
-        
+
         hardwareState.componentStates["LED1"] = 0;
         hardwareState.componentStates["LED2"] = 0;
         hardwareState.componentStates["LED3"] = 0;
+
+        hardwareState.componentStates["SSM"] = 0;
+
+
 
         //hardwareState.componentStates["SWT1"] = 0;
         //hardwareState.componentStates["SWT2"] = 0;
@@ -83,6 +88,12 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         {
             Debug.LogError("Error: Unable to set serial Controller for REAL API_Controller");
         }
+    }
+
+
+    public void InitializeHardware()
+    {
+        Debug.Log("<color=green>Initializing REAL Hardware...</color>");
     }
 
     void Exit()
@@ -230,6 +241,19 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public int GetLed(string id)
     {
         return hardwareState.componentStates["LED" + id];
+    }
+
+    public void SendSetSeq(string header, int[] seq)
+    {
+        string strseq = "";
+        for (int i = 0; i < seq.Length; i++)
+        {
+            strseq += seq[i] + " ";
+        }
+        strseq = strseq.Substring(0, strseq.Length - 1);
+
+        string message = "$" + header + ":set " + strseq + "#";
+        ActivePortController.SendToArduino(message);
     }
 
     public void SendSet(string header, int value)
