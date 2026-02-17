@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     public double bombTimer = 25.0;
     public bool isGameOver = false;
+    public bool isTimerActive = false;
 
     public enum GameState { Menu, Playing, GameOver }
     public GameState currentState = GameState.Menu;
@@ -24,24 +25,33 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
     public void Update()
     {
-        bombTimer -= Time.deltaTime;
-        if (bombTimer <= 0 && currentState != GameState.GameOver)
+        if (bombTimer > 0.0f && isTimerActive)
         {
-            EndGame();
-        }
+            bombTimer -= Time.deltaTime;
 
-        API_Provider.Instance.ActiveAPIController.TimerSet((int)bombTimer);
+            if (bombTimer <= 0 && currentState != GameState.GameOver)
+            {
+                isTimerActive = false;
+                bombTimer = 0.0f;
+                EndGame();
+            }
+
+            API_Provider.Instance.ActiveAPIController.TimerSet((int)bombTimer);
+        }
     }
+
 
     public void StartGame()
     {
+        Debug.Log("<color=blue>GameManager: Starting Game...</color>");
         if (currentState == GameState.Playing) return;
 
         currentState = GameState.Playing;
-        SceneManager.LoadScene("StartLevel");
+        SceneManager.LoadScene(1);
+
+        isTimerActive = true;
     }
 
     public void EndGame()
@@ -49,7 +59,7 @@ public class GameManager : MonoBehaviour
         if (currentState == GameState.GameOver) return;
 
         currentState = GameState.GameOver;
-        SceneManager.LoadScene("GameOver");
+        SceneManager.LoadScene(2);
     }
 
 }

@@ -1,40 +1,58 @@
 #include <Arduino.h>
-#include "timerModule.h"
+#include "TimerModule.h"
 
 
-timerModule::timerModule(std::string name, int dataPin, int clockPin, int latchPin, SerialController serialController)
-: Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), seconds(0), serialController(serialController) {}
+TimerModule::TimerModule(std::string name, int dataPin, int clockPin, int latchPin, SerialController serialController)
+: Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), seconds(0), serialController(serialController) {
+
+    pinMode(dataPin, OUTPUT);
+    pinMode(clockPin, OUTPUT);
+    pinMode(latchPin, OUTPUT);
+    pinMode(41, OUTPUT);
+
+    digitalWrite(41, HIGH);
+
+}
 
 
-void timerModule::set(std::vector<std::string> args){
+void TimerModule::set(std::vector<std::string> args){
+
     if(args.size() == 1){
-        int secondsLeft = stoi(args[0]);
 
-        int seconds = secondsLeft % 60;
-        int minutes = (secondsLeft - seconds) / 60; 
+        seconds = stoi(args[0]);
 
-        int digits[4] = {minutes/10, minutes % 10, seconds/10, seconds % 10};
+        int secs = seconds % 60;
+        int mins = (seconds - secs) / 60; 
+
+        int digits[4] = {mins/10, mins % 10, secs/10, secs % 10};
 
         setDigits(digits, true);
-    } else if(args.size() == 5){
 
-        int digits[4] = {stoi(args[0]) % 10, stoi(args[1]) % 10, stoi(args[2]) % 10, stoi(args[3]) % 10};
+        return;
+    } 
+
+    if(args.size() == 5){
+
+        int digits[4] = {stoi(args[0]) % 11, stoi(args[1]) % 11, stoi(args[2]) % 11, stoi(args[3]) % 11};
 
         setDigits(digits, args[4] == "true");
+
+        return;
     }   
 }
 
-void timerModule::status(){
+void TimerModule::status(){
     serialController.serialWrite(name, std::to_string(seconds));
 }
 
 
-void timerModule::setDigits(int* digits, bool colon){
-    memccpy(digitsBuffer, digits, 4, sizeof(int));
+void TimerModule::setDigits(int* digits, bool colon){
+    memcpy(digitsBuffer, digits, 4 * sizeof(int));
     colonEnabled = colon;
 }
 
-void timerModule::updateDisplay(){
+
+void TimerModule::updateDisplay(){
 
     unsigned long now = micros();
     if (now - lastUpdate < refreshInterval) return;
@@ -45,14 +63,14 @@ void timerModule::updateDisplay(){
     if (currentDigit < 4){  // Show Digit
         shiftOut(dataPin, clockPin, LSBFIRST, digit_encodings[currentDigit]);
         shiftOut(dataPin, clockPin, LSBFIRST, segment_encodings[digitsBuffer[currentDigit]]);
-    }
-    
-    if (currentDigit == 4 && colonEnabled){  // Show Colon
+    } else if (currentDigit == 4 && colonEnabled){  // Show Colon
         shiftOut(dataPin, clockPin, LSBFIRST, digit_encodings[4]);
         shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
     }
     else{
         currentDigit = 0;
+        digitalWrite(latchPin, HIGH);
+        return;
     }
 
     digitalWrite(latchPin, HIGH);

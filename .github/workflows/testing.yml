@@ -5,18 +5,21 @@ on:
     branches:
       - main 
   pull_request:
-    types: [opened, reopened, ready_for_review]
+    types: [opened, reopened, synchronize]
 
 permissions:
   contents: write
   checks: write
   pull-requests: write
   
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+  
 jobs:
   test:
     name: Run Unity Tests
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/main'
     steps:
       - name: Free Disk Space
         run: |
@@ -37,6 +40,8 @@ jobs:
         with:
           path: .git/lfs
           key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+          restore-keys: |               
+            ${{ runner.os }}-lfs-
 
       - name: Git LFS Pull
         run: |
@@ -44,11 +49,11 @@ jobs:
           git add .
           git reset --hard
 
-      # Cache
-      - uses: actions/cache@v3
+      - name: Cache Library
+        uses: actions/cache@v3
         with:
-          path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          path: Team_Project/Library
+          key: Library-${{ hashFiles('Team_Project/Assets/**', 'Team_Project/Packages/**', 'Team_Project/ProjectSettings/**') }}
           restore-keys: |
             Library-
 
@@ -65,8 +70,8 @@ jobs:
 
   build:
       name: Build project
+      needs: test
       runs-on: ubuntu-latest
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       steps:
         - name: Free Disk Space
           run: |
@@ -87,6 +92,8 @@ jobs:
           with:
             path: .git/lfs
             key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+            restore-keys: |
+              ${{ runner.os }}-lfs-
   
         - name: Git LFS Pull
           run: |
@@ -98,8 +105,8 @@ jobs:
         - name: Restore Library Cache
           uses: actions/cache@v3
           with:
-            path: Library
-            key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+            path: Team_Project/Library
+            key: Library-${{ hashFiles('Team_Project/Assets/**', 'Team_Project/Packages/**', 'Team_Project/ProjectSettings/**') }}
             restore-keys: |
               Library-
 

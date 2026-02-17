@@ -26,14 +26,13 @@ private:
     uint8_t ledStates = 0b00000000;
     int secretNumber[4];
     const byte ledPositions[4][2] = {
-        {7, 6},
-        {5, 4},
-        {3, 2},
-        {1, 0}
+        {0,1},
+        {2,3},
+        {4,5},
+        {6,7},
     };
 
     SerialController serialController;
-    LCDModule& display;
 
     unsigned long lastUpdate = 0;
     unsigned long buttonUpdate = 0;
@@ -64,13 +63,13 @@ private:
 
 public:
 
-    numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, std::array<int,5> buttonPins, SerialController serialController, LCDModule& display);
+    numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, std::array<int,5> buttonPins, SerialController serialController);
     void set(std::vector<std::string> args) override;
     void status() override;
     void setupGame();
     void checkGuess();
     void buttonCheck();
-    void updateDisplay();
+    void update();
   
 };
 

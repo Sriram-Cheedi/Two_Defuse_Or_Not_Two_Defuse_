@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include "numberGameModule.h"
 
-numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, std::array<int,5> buttonPins, SerialController serialController, LCDModule& display)
-: Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), buttonPins(buttonPins), serialController(serialController), display(display) {
+numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, std::array<int,5> buttonPins, SerialController serialController)
+: Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), buttonPins(buttonPins), serialController(serialController) {
     pinMode(dataPin,OUTPUT);
     pinMode(clockPin,OUTPUT);
     pinMode(latchPin,OUTPUT);
@@ -16,7 +16,7 @@ numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, 
 void numberGameModule::set(std::vector<std::string> args){
     //implement methods for unity to reset the game.
     //need to learn more about how the api works before i can do that.
-    int num = stoi(args[0]);
+    //int num = stoi(args[0]);
     
 }
 
@@ -69,36 +69,45 @@ void numberGameModule::buttonCheck(){
     int state2 = digitalRead(buttonPins[2]);
     int state3 = digitalRead(buttonPins[3]);
     if(now - buttonUpdate > debounceDelay){
-        if(state0 = HIGH && lastInputStates[0] != state0){
+        if(state0 == HIGH && lastInputStates[0] != state0){
             digitsBuffer[0] += 1;
             if(digitsBuffer[0] > 9){
                 digitsBuffer[0] = 0;
             }
         }
-        if(state1 = HIGH && lastInputStates[1] != state1){
+        if(state1 == HIGH && lastInputStates[1] != state1){
             digitsBuffer[1] += 1;
             if(digitsBuffer[1] > 9){
                 digitsBuffer[1] = 0;
             }
         }
-        if(state2 = HIGH && lastInputStates[2] != state2){
+        if(state2 == HIGH && lastInputStates[2] != state2){
             digitsBuffer[2] += 1;
             if(digitsBuffer[2] > 9){
                 digitsBuffer[2] = 0;
             }
+
         }
-        if(state3 = HIGH && lastInputStates[3] != state3){
+        if(state3 == HIGH && lastInputStates[3] != state3){
             digitsBuffer[3] += 1;
             if(digitsBuffer[3] > 9){
                 digitsBuffer[3] = 0;
             }
         }
-        buttonUpdate = now;  
+        buttonUpdate = now;
+        lastInputStates[0] = state0;
+        lastInputStates[1] = state1;
+        lastInputStates[2] = state2;
+        lastInputStates[3] = state3;
     }
     
 }
 
 void numberGameModule::checkGuess() {
+    Serial.print(secretNumber[0]);
+    Serial.print(secretNumber[1]);
+    Serial.print(secretNumber[2]);
+    Serial.println(secretNumber[3]);
     // Reset LED states
     ledStates = 0b00000000;
     int correctPositions = 0;
@@ -133,15 +142,9 @@ void numberGameModule::checkGuess() {
             }
         }
     }
-    //if all positions are correct display you win on the LCD
-    if(correctPositions == 4){
-        char word[] = "You Win!";
-        display.LCDSet(word);
-    }
-    
 }
 
-void numberGameModule::updateDisplay(){
+void numberGameModule::update(){
     //only check for game updates every 200 micro seconds
     unsigned long now = micros();
     if (now - lastUpdate < refreshInterval) return;
@@ -149,7 +152,7 @@ void numberGameModule::updateDisplay(){
     buttonCheck();
     buttonState = digitalRead(buttonPins[4]);
     //check the current guess when the button is pressed
-    if(buttonState  ==  HIGH && buttonState  != lastInputStates[4]){
+    if(buttonState  ==  HIGH && buttonState  != lastInputStates[4] && state != 2){
         checkGuess();
     }
 
