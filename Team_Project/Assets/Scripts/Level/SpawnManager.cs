@@ -10,6 +10,10 @@ public class SpawnManager : MonoBehaviour
 
     private void Awake()
     {
+        if (gridManager == null)
+        {
+            return;
+        }
         gridManager = GameObject.FindGameObjectWithTag("GridManager").GetComponent<GridManager>();
     }
 
