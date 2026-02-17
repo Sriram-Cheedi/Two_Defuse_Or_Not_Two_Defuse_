@@ -7,6 +7,7 @@
 #include "component.h"
 #include "serialController.h"
 #include "LCDModule.h"
+#include "Button.h"
 
 class numberGameModule : public Component {
 
@@ -17,11 +18,7 @@ private:
     const int clockPin;
     const int latchPin;
     const std::array<int,5> buttonPins; //First 4 button are used to increment the display numbers. Button 5 will be the submit button.
-
-    int buttonPushCounter = 0;
-    int buttonState = 0;
-    //int lastButtonState = 0;
-    std::array<int,5> lastInputStates = {0,0,0,0,0};
+    std::vector<Button> buttons;
 
     uint8_t ledStates = 0b00000000;
     int secretNumber[4];
@@ -67,8 +64,8 @@ public:
     void set(std::vector<std::string> args) override;
     void status() override;
     void setupGame();
-    void checkGuess();
-    void buttonCheck();
+    void checkGuess(std::string btnName, int btnState);
+    void buttonCheck(std::string btnName, int btnState);
     void update();
   
 };
