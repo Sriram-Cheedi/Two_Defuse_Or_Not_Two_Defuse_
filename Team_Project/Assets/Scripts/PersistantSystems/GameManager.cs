@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,10 +10,11 @@ public class GameManager : MonoBehaviour
 
     public double bombTimer = 25.0;
     public bool isGameOver = false;
-    public bool isTimerActive = false;
 
     public enum GameState { Menu, Playing, GameOver }
     public GameState currentState = GameState.Menu;
+    [Header("Warning")]
+     private AudioSource WarningAudio;
 
     private void Awake()
     {
@@ -27,15 +29,27 @@ public class GameManager : MonoBehaviour
     }
     public void Update()
     {
-        if (bombTimer > 0.0f && isTimerActive)
+        WarningAudio = GetComponent<AudioSource>();
+
+        if (bombTimer > 0.0f &&  currentState == GameState.Playing)
         {
             bombTimer -= Time.deltaTime;
+            if (currentState == GameState.Playing && bombTimer <= 5f && bombTimer > 0f)
+            {
+                if (!WarningAudio.isPlaying)
+                    WarningAudio.Play();
+            }
+            else
+            {
+                if (WarningAudio.isPlaying)
+                    WarningAudio.Stop();
+            }
 
+        
             if (bombTimer <= 0 && currentState != GameState.GameOver)
             {
-                isTimerActive = false;
-                bombTimer = 0.0f;
                 EndGame();
+                bombTimer = 0.0f;
             }
 
             API_Provider.Instance.ActiveAPIController.TimerSet((int)bombTimer);
@@ -45,13 +59,10 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        Debug.Log("<color=blue>GameManager: Starting Game...</color>");
         if (currentState == GameState.Playing) return;
 
         currentState = GameState.Playing;
-        SceneManager.LoadScene(1);
-
-        isTimerActive = true;
+        SceneManager.LoadScene("StartLevel");
     }
 
     public void EndGame()
@@ -59,7 +70,16 @@ public class GameManager : MonoBehaviour
         if (currentState == GameState.GameOver) return;
 
         currentState = GameState.GameOver;
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene("Explode");
+        StartCoroutine(GameoverAnimation());
+        
+        
+        
     }
 
+    IEnumerator GameoverAnimation()
+    {
+        yield return new WaitForSeconds(1.0f);
+        SceneManager.LoadScene("GameOver");
+    }
 }

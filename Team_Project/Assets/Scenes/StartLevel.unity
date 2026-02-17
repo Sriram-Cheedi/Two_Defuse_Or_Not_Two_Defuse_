@@ -2429,6 +2429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d63688c34ae2b9458bee88aa38fc867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CheckPointScript
+  spawnManager: {fileID: 0}
 --- !u!4 &597298195
 Transform:
   m_ObjectHideFlags: 0
@@ -2805,7 +2806,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5605535105995821793, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
       propertyPath: slopeSpeed
-      value: 80
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 5605535105995821793, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
       propertyPath: api_manager
@@ -2827,6 +2828,10 @@ PrefabInstance:
       propertyPath: rotationSpeed
       value: 300
       objectReference: {fileID: 0}
+    - target: {fileID: 5605535105995821793, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
+      propertyPath: cameraPosition
+      value: 
+      objectReference: {fileID: 1772393986}
     - target: {fileID: 5605535105995821793, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
       propertyPath: movingPlatform
       value: 
@@ -4562,6 +4567,7 @@ MonoBehaviour:
   player: {fileID: 1889529493}
   rm: {fileID: 1889529497}
   respawnPoint: {fileID: 0}
+  gridManager: {fileID: 0}
 --- !u!4 &959340398
 Transform:
   m_ObjectHideFlags: 0
@@ -7745,6 +7751,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70f81184dd711574282fa9503946ccaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCam
+--- !u!4 &1772393986 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2557689827615523807, guid: 40052bfe099242a459bea5393191f9c7, type: 3}
+  m_PrefabInstance: {fileID: 86307304}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1777268894 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5274364799448993036, guid: e44cdc2a223cd814f967e90b1e84e37c, type: 3}
@@ -8809,6 +8820,7 @@ MonoBehaviour:
   player: {fileID: 0}
   rm: {fileID: 0}
   respawnPoint: {fileID: 0}
+  gridManager: {fileID: 0}
 --- !u!1 &1975850738
 GameObject:
   m_ObjectHideFlags: 0
@@ -10175,3 +10187,7 @@ SceneRoots:
   - {fileID: 853415232}
   - {fileID: 322683635}
   - {fileID: 1921889246}
+  - {fileID: 1487768183}
+  - {fileID: 812793286}
+  - {fileID: 280245692}
+  - {fileID: 1412721288}
