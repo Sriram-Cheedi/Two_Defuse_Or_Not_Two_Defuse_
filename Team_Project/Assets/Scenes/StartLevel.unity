@@ -4570,6 +4570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d63688c34ae2b9458bee88aa38fc867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CheckPointScript
+  spawnManager: {fileID: 0}
 --- !u!4 &597298195
 Transform:
   m_ObjectHideFlags: 0
@@ -4652,15 +4653,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0675297ecf5f6ac439e2b4c4b9dfff51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NewAssembly::AssetArray
-  obj: {fileID: 0}
-  rotation: {x: 0, y: 0, z: 0, w: 0}
-  dx: 1
-  dy: 0
-  dz: 0
-  direction: 0
-  sign: -1
-  noOfAssets: 0
-  Addedoffset: 0
 --- !u!23 &601346349
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5058,7 +5050,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5605535105995821793, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
       propertyPath: slopeSpeed
-      value: 80
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5605535105995821793, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
       propertyPath: api_manager
@@ -5081,12 +5073,16 @@ PrefabInstance:
       value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 5605535105995821793, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
+      propertyPath: cameraPosition
+      value: 
+      objectReference: {fileID: 215567060}
+    - target: {fileID: 5605535105995821793, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
       propertyPath: movingPlatform
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5605535105995821793, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
       propertyPath: sideWayMoveSpeed
-      value: 50
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5605535105995821793, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
       propertyPath: gravityMultiplier
@@ -5353,15 +5349,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0675297ecf5f6ac439e2b4c4b9dfff51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NewAssembly::AssetArray
-  obj: {fileID: 0}
-  rotation: {x: 0, y: 0, z: 0, w: 0}
-  dx: 1
-  dy: 0
-  dz: 0
-  direction: 0
-  sign: -1
-  noOfAssets: 0
-  Addedoffset: 0
 --- !u!23 &689686533
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6683,15 +6670,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0675297ecf5f6ac439e2b4c4b9dfff51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NewAssembly::AssetArray
-  obj: {fileID: 0}
-  rotation: {x: 0, y: 0, z: 0, w: 0}
-  dx: 1
-  dy: 0
-  dz: 0
-  direction: 0
-  sign: -1
-  noOfAssets: 0
-  Addedoffset: 0
 --- !u!23 &866946830
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7754,6 +7732,7 @@ MonoBehaviour:
   player: {fileID: 1889529493}
   rm: {fileID: 1889529497}
   respawnPoint: {fileID: 0}
+  gridManager: {fileID: 0}
 --- !u!4 &959340398
 Transform:
   m_ObjectHideFlags: 0
@@ -7820,15 +7799,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0675297ecf5f6ac439e2b4c4b9dfff51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NewAssembly::AssetArray
-  obj: {fileID: 0}
-  rotation: {x: 0, y: 0, z: 0, w: 0}
-  dx: 1
-  dy: 0
-  dz: 0
-  direction: 0
-  sign: -1
-  noOfAssets: 0
-  Addedoffset: 0
 --- !u!23 &1005292416
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8331,15 +8301,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0675297ecf5f6ac439e2b4c4b9dfff51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NewAssembly::AssetArray
-  obj: {fileID: 0}
-  rotation: {x: 0, y: 0, z: 0, w: 0}
-  dx: 1
-  dy: 0
-  dz: 0
-  direction: 0
-  sign: -1
-  noOfAssets: 0
-  Addedoffset: 0
 --- !u!23 &1149246119
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10564,15 +10525,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0675297ecf5f6ac439e2b4c4b9dfff51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NewAssembly::AssetArray
-  obj: {fileID: 0}
-  rotation: {x: 0, y: 0, z: 0, w: 0}
-  dx: 1
-  dy: 0
-  dz: 0
-  direction: 0
-  sign: -1
-  noOfAssets: 0
-  Addedoffset: 0
 --- !u!23 &1387441904
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15582,15 +15534,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0675297ecf5f6ac439e2b4c4b9dfff51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NewAssembly::AssetArray
-  obj: {fileID: 0}
-  rotation: {x: 0, y: 0, z: 0, w: 0}
-  dx: 1
-  dy: 0
-  dz: 0
-  direction: 0
-  sign: -1
-  noOfAssets: 0
-  Addedoffset: 0
 --- !u!23 &1986263666
 MeshRenderer:
   m_ObjectHideFlags: 0

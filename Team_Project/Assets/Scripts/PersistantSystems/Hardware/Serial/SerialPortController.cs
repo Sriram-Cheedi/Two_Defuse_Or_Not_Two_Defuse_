@@ -6,7 +6,7 @@ using System.IO.Ports;
 public class SerialPortController : MonoBehaviour, I_SerialPortController
 {
     // private readonly string _portID = "COM3";
-    private string _portID = "COM3";
+    private string _portID = "COM4";
     public int _baudRate = 115200;
     private SerialPort _serialPort;
     private string buffer = "";
@@ -15,7 +15,8 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
     public int getBaudRate => _baudRate;
     public SerialPort getSerialPort => _serialPort;
     
-    public void Start()
+    public void Start() { }
+    public void Awake()
     {
         string[] AvailablePorts = SerialPort.GetPortNames();
         foreach (var PortName in AvailablePorts)
