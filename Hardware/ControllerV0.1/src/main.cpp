@@ -19,8 +19,9 @@ Button btn1 = Button("BTN1", 38, serialController);
 Button btn2 = Button("BTN2", 39, serialController);
 Button btn3 = Button("BTN3", 41, serialController);
 
-SimonSaysModule ssm = SimonSaysModule("SSM", {38, 39, 40, 41}, 6,  serialController);
+
 numberGameModule ngm = numberGameModule("NGM",3,5,4,{6,7,8,9,10}, serialController);
+SimonSaysModule ssm = SimonSaysModule("SSM", {11, 12, 24, 25}, 6,  serialController);
 
 std::vector<Component*> components;
 
@@ -59,22 +60,20 @@ void setup() {
   components.push_back(&gyro);  
   components.push_back(&ssm);
   components.push_back(&ngm);
-
-  //ssm.init();
-  ngm.setupGame();
-
 }
 
 void loop() {
+
+  delay(1);
 
   parseCommand(serialController.serialRecieve());
 
   btn1.update();
   btn2.update();
-  btn3.update();
+  btn3.update(); 
 
   timer.updateDisplay();
-  //gyro.update();
-  //ssm.update();
   ngm.update();
+  gyro.update();
+  ssm.update();
 }
