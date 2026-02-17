@@ -1,22 +1,26 @@
 #include <Arduino.h>
 #include <vector>
-#include <bits/stdc++.h>
-#include "timerModule.h"
-#include "component.h"
-#include "serialController.h"
-#include "numberGameModule.h"
-#include "LCDModule.h"
-
+#include "TimerModule.h"
+#include <sstream>
+#include "Component.h"
+#include "SerialController.h"
+#include "Imu.h"
+#include "Button.h"
+#include <TeensyThreads.h>
+#include "SimonSaysModule.h"
 
 SerialController serialController = SerialController();
 
-//timerModule timer = timerModule("TMR", 23, 24, 25, serialController);
+TimerModule timer = TimerModule("TMR", 29, 27, 28, serialController);
+Imu gyro = Imu("IMU", serialController);
 
-LCDModule LCDDisplay = LCDModule();
+Button btn1 = Button("BTN1", 38, serialController);
+Button btn2 = Button("BTN2", 39, serialController);
+Button btn3 = Button("BTN3", 41, serialController);
 
-numberGameModule numberGame = numberGameModule("NGM",36,34,35,A8,37,serialController,LCDDisplay);
+SimonSaysModule ssm = SimonSaysModule("SSM", {38, 39, 40, 41}, 6,  serialController);
 
-std::vector<std::unique_ptr<Component>> components;
+std::vector<Component*> components;
 
 std::vector<std::string> split(const std::string& s) {
     std::stringstream ss(s);
@@ -30,6 +34,8 @@ std::vector<std::string> split(const std::string& s) {
 }
 
 void parseCommand(std::string command){
+
+  if(command == "") return;
 
   std::string name = command.substr(0, command.find(':'));
 
@@ -47,17 +53,24 @@ void parseCommand(std::string command){
 }
 
 void setup() {
-  //components.push_back(std::make_unique<timerModule>(timer));
-  components.push_back(std::make_unique<numberGameModule>(numberGame));
-  //timer.set({"500"});
-  LCDDisplay.LCDSetup();
-  numberGame.setupGame();
+  components.push_back(&timer);
+  components.push_back(&gyro);  
+  components.push_back(&ssm);
+
+  ssm.init();
+
 }
 
 void loop() {
 
   parseCommand(serialController.serialRecieve());
+
+  btn1.update();
+  btn2.update();
+  btn3.update();
+
+  timer.updateDisplay();
+  gyro.update();
+  ssm.update();
   numberGame.updateDisplay();
-  //timer.updateDisplay();
-  //LCDDisplay.LCDLoop();
 }

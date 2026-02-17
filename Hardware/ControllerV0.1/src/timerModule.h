@@ -1,9 +1,9 @@
 #include <stdint.h>
 #include <string>
-#include "component.h"
-#include "serialController.h"
+#include "Component.h"
+#include "SerialController.h"
 
-class timerModule : public Component {
+class TimerModule : public Component {
 
 private:
 
@@ -16,12 +16,13 @@ private:
     SerialController serialController;
 
     unsigned long lastUpdate = 0;
-    const unsigned int refreshInterval = 200;
+    const unsigned int refreshInterval = 10;
     uint8_t currentDigit = 0;
     bool colonEnabled = false;
+    bool flashing = false;
     int digitsBuffer[4];
 
-    const uint8_t segment_encodings[10] = {
+    const uint8_t segment_encodings[11] = {
         0b11111100, // 0
         0b01100000, // 1
         0b11011010, // 2
@@ -31,7 +32,8 @@ private:
         0b10111110, // 6
         0b11100000, // 7
         0b11111110, // 8
-        0b11100110  // 9
+        0b11100110, // 9
+        0b00000000  // off
     };
 
     const uint8_t digit_encodings[5] = {
@@ -44,7 +46,7 @@ private:
 
 public:
 
-    timerModule(std::string name, int dataPin, int clockPin, int latchPin, SerialController serialController);
+    TimerModule(std::string name, int dataPin, int clockPin, int latchPin, SerialController serialController);
     void set(std::vector<std::string> args) override;
     void status() override;
 
