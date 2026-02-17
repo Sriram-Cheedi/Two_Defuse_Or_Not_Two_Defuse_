@@ -36,7 +36,6 @@ public class MovePlat : MonoBehaviour
         {
             targetPosition = (targetPosition == pointA.position) ? pointB.position : pointA.position;
         }
-            
     }
     
 }

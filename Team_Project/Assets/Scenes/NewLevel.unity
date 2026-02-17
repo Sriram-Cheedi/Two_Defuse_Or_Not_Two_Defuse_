@@ -2552,7 +2552,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5698642697521741651, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2134240189}
   m_SourcePrefab: {fileID: 100100000, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
 --- !u!1 &1291577092 stripped
 GameObject:
@@ -3433,6 +3436,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1193794212}
   m_SourcePrefab: {fileID: 100100000, guid: 60de5ea3f87916d4299eff703847637e, type: 3}
+--- !u!1 &1663188620 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5698642697521741651, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
+  m_PrefabInstance: {fileID: 1265591148}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1690684941 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 61220403983911273, guid: 60de5ea3f87916d4299eff703847637e, type: 3}
@@ -3628,10 +3636,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6633d559fb87aca46ac96c79adb0139b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NewAssembly::SpawnManager
-  player: {fileID: 5698642697521741651, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
   rm: {fileID: 2134240184}
   respawnPoint: {fileID: 1886848418}
-  gridManager: {fileID: 0}
 --- !u!4 &1784608110
 Transform:
   m_ObjectHideFlags: 0
@@ -4281,12 +4287,24 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5605535105995821793, guid: 3cf0e66c7c34fe74a933c210292db687, type: 3}
   m_PrefabInstance: {fileID: 1265591148}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1663188620}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fcdc472b0354b4544991144a911f4c90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RigidBodyMovement
+--- !u!114 &2134240189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663188620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8040292d407782441b17d6489dbd0a3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NewAssembly::PlayerInputRelay
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

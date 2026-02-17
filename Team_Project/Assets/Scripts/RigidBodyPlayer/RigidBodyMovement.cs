@@ -4,13 +4,13 @@ using UnityEngine.InputSystem;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
+[RequireComponent(typeof(Rigidbody))]
 public class RigidBodyMovement : MonoBehaviour
 {
     [Header("Movement")] 
     [SerializeField] private float moveSpeed;
-    [SerializeField] private float sideWayMoveSpeed = 50f;
+    [SerializeField] private float sideWayMoveSpeed = 30f;
     [SerializeField] private float walkSpeed = 10;
-    [SerializeField] private float sprintSpeed = 13;
     [SerializeField] private float crouchSpeed = 5f;
     [SerializeField] private float groundAcceleration = 35f;
     
@@ -50,6 +50,8 @@ public class RigidBodyMovement : MonoBehaviour
     [Header("External")]
     private API_Provider _API_Provider = API_Provider.Instance;
     private API_Controller_Interface _activeHardware;
+    private PlayerInputRelay relay;
+    private Vector2 cachedMove;
     
     private Vector3 connectionVelocity;
     private Vector3 connectionWorldPosition;
@@ -59,7 +61,6 @@ public class RigidBodyMovement : MonoBehaviour
     public Rigidbody rb;
     
     private bool isCrouchPressed;
-    private bool isSprintPressed;
     private bool invertGravity;
     private bool hasInvertGravity;
     private bool isRotating;
@@ -79,9 +80,13 @@ public class RigidBodyMovement : MonoBehaviour
 
     private void Awake()
     {
-        controller = GetComponent<CapsuleCollider>();
-        rb = GetComponent<Rigidbody>();
-        playerInput = GetComponent<PlayerInput>();
+
+        InitializeComponents();
+        
+        
+        
+        
+        
         standHeight = controller.height;
         standCenterY = controller.center.y;
         camDownSpeed = 5.0f;
@@ -91,6 +96,30 @@ public class RigidBodyMovement : MonoBehaviour
         isRotating = false;
         SetStandCenter();
         SetCrouchCenter();
+        relay = GetComponent<PlayerInputRelay>();
+        ValidateDependencies();
+    }
+
+    private void InitializeComponents()
+    {
+        controller = GetComponent<CapsuleCollider>();
+        rb = GetComponent<Rigidbody>();
+        playerInput = GetComponent<PlayerInput>();
+        if (orientation == null) orientation = transform.Find("Orientation");
+        if (playerCam == null)  playerCam = FindAnyObjectByType<PlayerCam>();
+        if (relay == null) relay = GetComponent<PlayerInputRelay>();
+        rb.useGravity = false;
+        rb.freezeRotation = true;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+    }
+
+    private void ValidateDependencies()
+    {
+        if (rb == null) Debug.LogError($"RigidBodyPlayer: No RigidBody component attached on {gameObject.name}", this);
+        if (controller == null) Debug.LogError($"RigidBodyPlayer: No Controller component attached on {gameObject.name}", this);
+        if (playerCam == null) Debug.LogError($"RigidBodyPlayer: No camera found in the scene", this);
+        if (orientation == null) Debug.LogError($"RigidBodyPlayer: No orientation component attached", this);
+        if (relay == null) Debug.LogError("RigidBodyPlayer: No relay component attached", this);
     }
 
     public void ResetPlayer()
@@ -101,7 +130,7 @@ public class RigidBodyMovement : MonoBehaviour
         playerCam.rollZ = 0;
         orientation.rotation = Quaternion.Euler(0, 0, 0);
         rb.rotation = Quaternion.Euler(0, 0, 0);
-        rb.linearVelocity = Vector3.zero;
+        rb.linearVelocity = Vector3.zero; 
         gravityDir = Vector3.down;
     }
 
@@ -114,27 +143,43 @@ public class RigidBodyMovement : MonoBehaviour
     }
     private void OnEnable()
     {
-        if (API_Provider.Instance.ActiveAPIController != null)
-            API_Provider.Instance.ActiveAPIController.OnImuChanged += RotateLevel;
+        if (_activeHardware != null)
+            _activeHardware.OnImuChanged += RotateLevel;
+        if (relay != null)
+        {
+            relay.Move += HandleMove;
+            relay.Jump += HandleJump;
+            relay.Crouch += HandleCrouch;
+            relay.InvertGravity += HandleGravityInverted;
+            relay.RespawnRequested += ResetPlayer;
+        }
     }
 
     private void OnDisable()
     {
-        if (API_Provider.Instance.ActiveAPIController != null)
-            API_Provider.Instance.ActiveAPIController.OnImuChanged -= RotateLevel;
+        if (_activeHardware != null)
+            _activeHardware.OnImuChanged -= RotateLevel;
+        if (relay != null)
+        {
+            relay.Move -= HandleMove;
+            relay.Jump -= HandleJump;
+            relay.Crouch -= HandleCrouch;
+            relay.InvertGravity -= HandleGravityInverted;
+            relay.RespawnRequested -= ResetPlayer;
+        }
     }
-
+    
     private void RotateLevel(Vector3 gyro, Vector3 accelerometer)
     {
 
         // Flip gravity direction (so jump/gravity math stays consistent with sign)
         // gravity = -gravity;
         // Rotate the player (or level) around Z, as you had
-        if (accelerometer.z > 9f && Vector3.Dot(Vector3.down, -orientation.transform.up) < 0 && onFlip)
+        if (accelerometer.z > 9f && Vector3.Dot(Vector3.down,-orientation.transform.up) < 0 && onFlip)
         {
             invertGravity = true;
         }
-        else if (accelerometer.z < -9f && Vector3.Dot(Vector3.down, -orientation.transform.up) > 0 && onFlip)
+        else if(accelerometer.z < -9f && Vector3.Dot(Vector3.down,-orientation.transform.up) > 0 && onFlip)
         {
             invertGravity = true;
         }
@@ -144,47 +189,41 @@ public class RigidBodyMovement : MonoBehaviour
         }
     }
 
+    private void HandleMove(Vector2 value)
+    {
+        cachedMove = value;
+    }
+
+    private void HandleCrouch(bool pressed)
+    {
+        isCrouchPressed = pressed;
+    }
+
+    private void HandleJump()
+    {
+        if (readyToJump && isGrounded && !onSlope)
+        {
+            readyToJump = false;
+            Jump();
+            Invoke(nameof(ResetJump), jumpCooldown);
+        }
+    }
+    
     private void MyInput()
     {
-        horizontalInput = moveInput.x;
-        verticalInput = moveInput.y;
+        horizontalInput = cachedMove.x;
+        verticalInput = cachedMove.y;
     }
-
-    public void OnMove(InputAction.CallbackContext ctx)
+    
+    private void HandleGravityInverted(bool inverted)
     {
-        moveInput = ctx.ReadValue<Vector2>();
+        invertGravity = inverted;
     }
-
-    public void OnCrouch(InputAction.CallbackContext ctx)
-    {
-        if (ctx.performed)
-        {
-            isCrouchPressed = true;
-        }
-
-        if (ctx.canceled)
-        {
-            isCrouchPressed = false;
-        }
-    }
-
-    public void OnInvertGravity(InputAction.CallbackContext ctx)
-    {
-        if (ctx.performed)
-        {
-            invertGravity = true;
-        }
-
-        if (ctx.canceled)
-        {
-            invertGravity = false;
-        }
-    }
-
+    
     private void Spring()
     {
-
-        if (Physics.Raycast(controller.bounds.center, Vector3.down, out RaycastHit hit, controller.bounds.extents.y + 0.2f, groundLayer)
+        
+        if (Physics.Raycast(controller.bounds.center, Vector3.down, out RaycastHit hit,controller.bounds.extents.y + 0.2f, groundLayer)
             && hit.collider.CompareTag("Spring"))
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
@@ -205,7 +244,7 @@ public class RigidBodyMovement : MonoBehaviour
         float newCenterY = bottomLocal + standHeight / 2f;
         standOrigin = new Vector3(controller.center.x, newCenterY, controller.center.z);
     }
-
+    
     private void SetCrouch(bool isCrouch)
     {
 
@@ -248,24 +287,18 @@ public class RigidBodyMovement : MonoBehaviour
             relativeVelocity = new Vector3(newX, relativeVelocity.y, newZ);
             rb.linearVelocity = relativeVelocity + platformVelocity;
         }
-
+        
     }
 
     private void StateHandler()
     {
-        if (isGrounded && isSprintPressed)
-        {
-            moveSpeed = sprintSpeed;
-        }
-        else if (isCrouchPressed && isGrounded)
+        if (isCrouchPressed && isGrounded)
         {
             moveSpeed = crouchSpeed;
-        }
-        else if (isGrounded)
+        }else if (isGrounded)
         {
             moveSpeed = walkSpeed;
         }
-
     }
 
     private void ApplyCustomGravity()
@@ -290,7 +323,7 @@ public class RigidBodyMovement : MonoBehaviour
 
         hasInvertGravity = invertGravity;
     }
-
+    
     IEnumerator SmoothRotate()
     {
         isRotating = true;
@@ -312,29 +345,6 @@ public class RigidBodyMovement : MonoBehaviour
         isRotating = false;
     }
 
-    public void OnJump(InputAction.CallbackContext ctx)
-    {
-        if (ctx.performed && readyToJump && isGrounded && !onSlope)
-        {
-            readyToJump = false;
-            Jump();
-            Invoke(nameof(ResetJump), jumpCooldown);
-        }
-    }
-
-    public void OnSprint(InputAction.CallbackContext ctx)
-    {
-        if (ctx.started)
-        {
-            isSprintPressed = true;
-        }
-
-        if (ctx.canceled)
-        {
-            isSprintPressed = false;
-        }
-    }
-
     private void Jump()
     {
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
@@ -345,6 +355,7 @@ public class RigidBodyMovement : MonoBehaviour
     {
         readyToJump = true;
     }
+    
     private void CamFollow()
     {
         float bottomLocal = controller.center.y - controller.height / 2.0f;
@@ -360,7 +371,7 @@ public class RigidBodyMovement : MonoBehaviour
         UpdateConnectionState();
         Spring();
         ApplyCustomGravity();
-
+        
         SetCrouch(isCrouchPressed);
         MyInput();
         StateHandler();

@@ -1,12 +1,9 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerCam : MonoBehaviour
 {
-    [SerializeField] private Camera cam;
-    [SerializeField] private float interactDistance = 5f;
-    [SerializeField] private LayerMask interactableLayer;
-
     [SerializeField] private float sensX = 10f;
     [SerializeField] private float sensY = 10f;
     [SerializeField] private Transform orientation;
@@ -14,38 +11,39 @@ public class PlayerCam : MonoBehaviour
     public float rollZ;
     private float xRotation;
     private float yRotation;
+    private PlayerInputRelay relay;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void Awake()
+    {
+        relay = FindFirstObjectByType<PlayerInputRelay>();
+        if (orientation == null)
+        {
+            Debug.LogError($"No orientation found on {gameObject.name}" + "please assign them in the Inspector.", this);
+        }
+    }
+
+    private void OnEnable()
+    {
+        relay.Look += SetLookInput ;
+    }
+    
+    private void OnDisable()
+    {
+        relay.Look -= SetLookInput ;
+    }
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    public void OnClick(InputAction.CallbackContext ctx)
+    private void SetLookInput(Vector2 v)
     {
-        if (ctx.started)
-        {
-            // Use 'cam' instead of 'this' to access the camera's method
-            Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, interactDistance, interactableLayer))
-            {
-                Debug.Log($"Hit: {hit.collider.name}");
-
-                if (hit.collider.TryGetComponent<Interactible_Interface>(out var interactable))
-                {
-                    interactable.Interact(hit);
-                }
-            }
-        }
+        lookInput = v;
     }
-
-    public void OnLook(InputAction.CallbackContext ctx)
-    {
-        lookInput = ctx.ReadValue<Vector2>();
-    }
-
+    
     // Update is called once per frame
     private void LateUpdate()
     {
@@ -62,8 +60,8 @@ public class PlayerCam : MonoBehaviour
         yRotation += mouseX;
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-
-        transform.rotation = Quaternion.Euler(xRotation, yRotation, rollZ);
+        
+        transform.rotation = Quaternion.Euler(xRotation, yRotation , rollZ);
         orientation.rotation = Quaternion.Euler(0f, yRotation, rollZ);
     }
 }

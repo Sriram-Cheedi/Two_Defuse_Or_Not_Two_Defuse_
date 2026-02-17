@@ -1,29 +1,38 @@
-using System;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private GameObject player;
     [SerializeField] private RigidBodyMovement rm;
     [SerializeField] public GameObject respawnPoint;
-    [SerializeField] private GridManager gridManager;
-
+    private PlayerInputRelay relay;
     private void Awake()
     {
-        if (gridManager == null)
+        relay = Object.FindAnyObjectByType<PlayerInputRelay>();
+    }
+    private void OnEnable()
+    {
+        if (relay != null) 
         {
-            return;
+            // Subscribe to the "ThingHappened" event
+            relay.RespawnRequested += MovePlayerToRespawn; 
         }
-        gridManager = GameObject.FindGameObjectWithTag("GridManager").GetComponent<GridManager>();
     }
 
-
-    public void Respawn()
+    private void OnDisable()
     {
-        rm.rb.position = respawnPoint.transform.position;
-        
-        rm.ResetPlayer();
-        gridManager.ResetPath();
+        if (relay != null) 
+        {
+            // Unsubscribe to prevent memory leaks or "ghost" calls
+            relay.RespawnRequested -= MovePlayerToRespawn; 
+        }
+    }
+
+    public void MovePlayerToRespawn()
+    {
+        if (rm != null)
+        {
+            rm.rb.position = respawnPoint.transform.position;
+        }
     }
 
 }

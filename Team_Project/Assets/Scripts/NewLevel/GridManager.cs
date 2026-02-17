@@ -1,5 +1,7 @@
+using System;
 using System.Linq;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using Random = System.Random;
 
 public class GridManager : MonoBehaviour
@@ -21,7 +23,13 @@ public class GridManager : MonoBehaviour
     float offsetToSpawn = 10.0f;
     private Vector3 grizScale = new Vector3(17.0f, 1.0f, 17.0f);
     public Material myMat;
+    private PlayerInputRelay relay;
 
+    private void Awake()
+    {
+        
+    }
+    
     public void Start()
     {
         spawnPoint =  GameObject.FindGameObjectWithTag("GridSpawn");
@@ -71,6 +79,26 @@ public class GridManager : MonoBehaviour
                 }
             }
             Debug.Log(sb.ToString());
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (relay == null)
+        {
+            relay = Object.FindAnyObjectByType<PlayerInputRelay>();
+        }
+        if (relay != null)
+        {
+            relay.RespawnRequested += ResetPath;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (relay != null)
+        {
+            relay.RespawnRequested -= ResetPath;
         }
     }
 

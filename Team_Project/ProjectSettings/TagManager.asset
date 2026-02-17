@@ -12,6 +12,8 @@ TagManager:
   - FlipSection
   - GridSpawn
   - GridManager
+  - Orientation
+  - CameraPosition
   layers:
   - Default
   - TransparentFX

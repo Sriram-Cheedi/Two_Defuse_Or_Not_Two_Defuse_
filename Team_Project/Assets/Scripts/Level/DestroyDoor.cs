@@ -10,10 +10,28 @@ public class DestroyDoor : MonoBehaviour
     private API_Provider _API_Provider = API_Provider.Instance;
     private API_Controller_Interface _activeHardware;
     private bool[] buttonsPressed;
+    private PlayerInputRelay relay;
     private void Awake()
     {
         // _activeHardware = _API_Provider.ActiveAPIController;
         buttonsPressed = new bool[3];
+    }
+
+    private void OnEnable()
+    {
+        relay = Object.FindAnyObjectByType<PlayerInputRelay>();
+        if (relay != null)
+        {
+            relay.NumberPressed += HandleDoorInput;
+        }
+    }
+    
+    private void OnDisable()
+    {
+        if (relay != null)
+        {
+            relay.NumberPressed -= HandleDoorInput;
+        }
     }
 
     private void GetButtonsValues()
@@ -27,39 +45,21 @@ public class DestroyDoor : MonoBehaviour
                 DisableDoorForSeconds(doors[i], 1f);
                 doors[i].SetActive(false);
             }
-            
         }
     }
 
-    public void OnInput(InputAction.CallbackContext context)
+    private void HandleDoorInput(int number)
     {
-        if (context.performed)
+        int index = number - 1;
+        if (index >= 0 && index < doors.Length)
         {
-            if (context.control is not KeyControl key) return;
-            if (key.keyCode == Key.Digit1 || key.keyCode == Key.Numpad1)
+            GameObject targetDoor = doors[index];
+            if (targetDoor != null && targetDoor.activeSelf)
             {
-                if (doors[0] != null)
-                {
-                    DisableDoorForSeconds(doors[0], 1f);
-                    doors[0].SetActive(false);
-                }
+                DisableDoorForSeconds(targetDoor, 1f);
+                targetDoor.SetActive(false);
             }
-            if (key.keyCode == Key.Digit2 || key.keyCode == Key.Numpad2)
-            {
-                if (doors[1] != null)
-                {
-                    DisableDoorForSeconds(doors[1], 1f);
-                    doors[1].SetActive(false);
-                }
-            }
-            if (key.keyCode == Key.Digit3 || key.keyCode == Key.Numpad3)
-            {
-                if (doors[2] != null)
-                {
-                    DisableDoorForSeconds(doors[2], 1f);
-                    doors[2].SetActive(false);
-                }
-            }
+            
         }
     }
 
@@ -77,15 +77,6 @@ public class DestroyDoor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GetButtonsValues();
-        // for (int i = 0; i < buttonsPressed.Length; i++)
-        // {
-        //     Debug.Log(buttonsPressed[i]);
-        //     if (buttonsPressed[i])
-        //     {
-        //         Destroy(doors[i]);
-        //     }
-        // }
-
+        // GetButtonsValues();
     }
 }
