@@ -196,7 +196,7 @@ void SimonSaysModule::setPixelBuffer(int index, uint32_t newColour){
 
 void SimonSaysModule::completeSequence(){
 
-    setPixelBuffer({strip.Color(0, 50, 0), strip.Color(0, 50, 0), strip.Color(0, 50, 0), strip.Color(0, 50, 0)});
+    setPixelBuffer({strip.Color(0, 30, 0), strip.Color(0, 30, 0), strip.Color(0, 30, 0), strip.Color(0, 30, 0)});
 
     while(true){
 
@@ -214,7 +214,7 @@ void SimonSaysModule::completeSequence(){
             uint32_t waitUntil = millis() + 500;
             while (millis() < waitUntil) threads.yield();
 
-            setPixelBuffer({strip.Color(0, 50, 0), strip.Color(0, 50, 0), strip.Color(0, 50, 0), strip.Color(0, 50, 0)});
+            setPixelBuffer({strip.Color(0, 30, 0), strip.Color(0, 30, 0), strip.Color(0, 30, 0), strip.Color(0, 30, 0)});
 
         }
 
