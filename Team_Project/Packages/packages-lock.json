@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.moolt.arraymodifiers": {
+      "version": "https://github.com/Moolt/Unity-GameObject-Array.git?path=Assets/ArrayModifiers",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "5a15f32bdd681e42c33f239c1c5d21916d05dfe3"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
