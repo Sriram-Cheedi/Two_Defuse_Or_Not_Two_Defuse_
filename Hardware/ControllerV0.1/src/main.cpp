@@ -18,7 +18,7 @@ Button btn1 = Button("BTN1", 38, serialController);
 Button btn2 = Button("BTN2", 39, serialController);
 Button btn3 = Button("BTN3", 41, serialController);
 
-SimonSaysModule ssm = SimonSaysModule("SSM", {25, 24, 10, 9}, 6,  serialController);
+SimonSaysModule ssm = SimonSaysModule("SSM", {11, 12, 24, 25}, 6,  serialController);
 
 std::vector<Component*> components;
 
