@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include <component.h>
 #include <SerialController.h>
+#include "Button.h"
 
 class fishingModule : public Component {
     const std::string name;
@@ -10,9 +11,8 @@ class fishingModule : public Component {
     const int clockPin;
     const int latchPin;
     const int buttonPin;
+    Button btn;
 
-    int buttonState = 0;
-    int lastButtonState = 0;
     int hookPos = 9;
     int points = 0;
     int randState = 0;
@@ -67,7 +67,7 @@ class fishingModule : public Component {
 
     void reset();     // Reset Module to the initial state
     void complete();  // Auto complete the module 
-    
+    void buttonUpdate(std::string btnName, int btnState);
     void shift(uint32_t digit);
     void scoreCheck();
 

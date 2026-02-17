@@ -1,17 +1,16 @@
 #include "fishingModule.h"
 
 fishingModule::fishingModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin, SerialController serialController)
-: Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), buttonPin(buttonPin), state(0), serialController(serialController){
+: Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), buttonPin(buttonPin), state(0), serialController(serialController),
+btn("FGM1", buttonPin, serialController,[this](std::string name, int state){buttonUpdate(name, state);})
+{
     pinMode(dataPin, OUTPUT);
     pinMode(clockPin, OUTPUT);
     pinMode(latchPin, OUTPUT);
-    pinMode(buttonPin,INPUT);
     randomSeed(analogRead(0));
 }
 
 void fishingModule::reset(){
-    buttonState = 0;
-    lastButtonState = 0;
     hookPos = 9;
     points = 0;
     randState = 0;
@@ -50,6 +49,13 @@ void fishingModule::shift(uint32_t digit){
   digitalWrite(latchPin,HIGH);
 }
 
+void fishingModule::buttonUpdate(std::string btnName, int btnState){
+    if(btnState == HIGH){
+        hookPos--;
+        if(hookPos < 0) hookPos = 0;
+    }
+}
+
 void fishingModule::scoreCheck(){
   int hasScored = fishLED[randState] & hookLED[hookPos];
   if (hasScored > 0){
@@ -63,15 +69,11 @@ void fishingModule::updateGame(){
     unsigned long micro = micros();
     unsigned long milli = millis();
     if (micro - lastGameUpdate > gameInterval && state < 2){
-
         lastGameUpdate = micro;
-        buttonState = digitalRead(buttonPin);
-
-        if(buttonState == HIGH && buttonState != lastButtonState){
-            hookPos--;
-            if(hookPos < 0) hookPos = 0;
+        if(milli - lastButtonUpdate > buttonInterval){
+            btn.update();
+            lastButtonUpdate = milli;
         }
-
         if(milli - lastHookUpdate > hookInterval){
             hookPos++;
             if(hookPos > 9) hookPos = 9;
@@ -92,7 +94,5 @@ void fishingModule::updateGame(){
 
         uint32_t LEDBarState = (fishLED[randState] << 14) + (hookLED[hookPos] << 4);
         shift(LEDBarState);
-
-        lastButtonState = buttonState;
     }
 }
