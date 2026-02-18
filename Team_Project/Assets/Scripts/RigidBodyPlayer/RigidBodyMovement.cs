@@ -86,7 +86,7 @@ public class RigidBodyMovement : MonoBehaviour
         standCenterY = controller.center.y;
         camDownSpeed = 5.0f;
         crouchHeight = controller.height / 2f;
-        // _activeHardware = _API_Provider.ActiveAPIController;
+        _activeHardware = _API_Provider.ActiveAPIController;
         hasInvertGravity = false;
         isRotating = false;
         SetStandCenter();
@@ -291,26 +291,35 @@ public class RigidBodyMovement : MonoBehaviour
         hasInvertGravity = invertGravity;
     }
 
-    IEnumerator SmoothRotate()
+   IEnumerator SmoothRotate()
+{
+    isRotating = true;
+    var playerMap = playerInput.actions.FindActionMap("Player");
+    playerMap.Disable();
+
+    remainingRotation = targetRotation;
+
+    while (remainingRotation > 0f)
     {
-        isRotating = true;
-        var playerMap = playerInput.actions.FindActionMap("Player");
-        playerMap.Disable();
-        remainingRotation = targetRotation;
-        while (remainingRotation > 0)
-        {
-            step = rotationSpeed * Time.fixedDeltaTime;
-            step = Mathf.Min(step, remainingRotation);
-            Quaternion deltaRotation = Quaternion.Euler(0, 0, step);
-            cameraPosition.Rotate(Vector3.forward, step,Space.Self);
-            playerCam.rollZ += step; 
-            rb.MoveRotation(rb.rotation * deltaRotation);
-            remainingRotation -= step;
-            yield return new WaitForFixedUpdate();
-        }
-        playerMap.Enable();
-        isRotating = false;
+        float step = rotationSpeed * Time.fixedDeltaTime;
+        step = Mathf.Min(step, remainingRotation);
+
+        Quaternion deltaRotation = Quaternion.Euler(0f, 0f, step);
+
+        rb.MoveRotation(rb.rotation * deltaRotation);
+
+        // IMPORTANT: drive rollZ from actual rb rotation, normalized (no huge numbers)
+        float z = rb.rotation.eulerAngles.z;
+        playerCam.rollZ = Mathf.DeltaAngle(0f, z);
+
+        remainingRotation -= step;
+        yield return new WaitForFixedUpdate();
     }
+
+    playerMap.Enable();
+    isRotating = false;
+}
+
 
     public void OnJump(InputAction.CallbackContext ctx)
     {
@@ -366,6 +375,8 @@ public class RigidBodyMovement : MonoBehaviour
         StateHandler();
         ApplyMovement();
         InvertGravityDirection();
+        
+        CamFollow();
     }
 
     private void UpdateConnectionState()
@@ -411,6 +422,6 @@ public class RigidBodyMovement : MonoBehaviour
 
     private void LateUpdate()
     {
-        CamFollow();
+        
     }
 }
