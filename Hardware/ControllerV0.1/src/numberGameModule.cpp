@@ -1,24 +1,31 @@
 #include <Arduino.h>
 #include "numberGameModule.h"
 
-numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin, int submitButtonPin, SerialController serialController, LCDModule& display)
-: Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), buttonPin(buttonPin), submitButtonPin(submitButtonPin), serialController(serialController), display(display) {
+numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, std::array<int,5> buttonPins, SerialController serialController)
+: Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), buttonPins(buttonPins), serialController(serialController) {
     pinMode(dataPin,OUTPUT);
     pinMode(clockPin,OUTPUT);
     pinMode(latchPin,OUTPUT);
-    pinMode(buttonPin,INPUT);
-    pinMode(submitButtonPin,INPUT);
+    for(size_t i = 0; i < 4; i++){
+        Button btn = Button("NGM" + std::to_string(i), buttonPins[i], serialController, [this](std::string name, int state){buttonCheck(name, state);});   
+        buttons.push_back(btn);
+    }
+    Button btn = Button("NGM4", buttonPins[4], serialController, [this](std::string name, int state){checkGuess(name, state);});   
+    buttons.push_back(btn);
     randomSeed(analogRead(A0));
+    setupGame();
 }
 
 
 void numberGameModule::set(std::vector<std::string> args){
     //implement methods for unity to reset the game.
     //need to learn more about how the api works before i can do that.
+    //int num = stoi(args[0]);
+    
 }
 
 void numberGameModule::status(){
-
+    serialController.serialWrite(name, std::to_string(state));
 }
 
 void numberGameModule::setupGame(){
@@ -58,102 +65,73 @@ void numberGameModule::setupGame(){
     }
 }
 
-void numberGameModule::buttonCheck(){
-    //Resitor ladder DAC buttons
-    //Each button has a different threshold voltage.
-    int sensorValue = analogRead(buttonPin);
-    float voltage = sensorValue * (3.3 / 1023.0);
-
+void numberGameModule::buttonCheck(std::string btnName, int btnState){
     const unsigned long debounceDelay = 50;
     unsigned long now = millis();
-
-    if(lastVoltage < 0.6){
-        if(now - buttonUpdate > debounceDelay){
-            if(voltage >= 2.55 && voltage <= 2.8){ //button 1
-                digitsBuffer[0] = digitsBuffer[0] + 1;
-                if(digitsBuffer[0] > 9){
-                    digitsBuffer[0] = 0;
-                }
+    int index = stoi(btnName.substr(3));
+    if(now - buttonUpdate > debounceDelay){
+        if(btnState == HIGH){
+            digitsBuffer[index] += 1;
+            if(digitsBuffer[index] > 9){
+                digitsBuffer[index] = 0;
             }
-            else if(voltage >= 2.3 && voltage <= 2.5){ //button 2
-                digitsBuffer[1] = digitsBuffer[1] + 1;
-                if(digitsBuffer[1] > 9){
-                    digitsBuffer[1] = 0;
-                }
-            }
-            else if(voltage >= 1.9 && voltage <= 2.2){ //button 3
-                digitsBuffer[2] = digitsBuffer[2] + 1;
-                if(digitsBuffer[2] > 9){
-                    digitsBuffer[2] = 0;
-                }
-            }
-            else if(voltage >= 1.1 && voltage <= 1.4){ //button 4
-                digitsBuffer[3] = digitsBuffer[3] + 1;
-                if(digitsBuffer[3] > 9){
-                    digitsBuffer[3] = 0;
-                }
-            }
-            buttonUpdate = now;
         }
+        buttonUpdate = now;
     }
-    lastVoltage = voltage;
 }
 
-void numberGameModule::checkGuess() {
-    // Reset LED states
-    ledStates = 0b00000000;
-    int correctPositions = 0;
-    bool secretUsed[4] = {false, false, false, false};
-    bool guessUsed[4] = {false, false, false, false};
-    
-    //Green LED
-    for (int i = 0; i < 4; i++) {
-        //Checks what digits are in the correct place
-        if (digitsBuffer[i] == secretNumber[i]) {
-            correctPositions++;
-            //selects the correct led to be lit up using the ledPosition array created in the header file.
-            //column 1 is for green LEDs because that matches the physical layout of the game since they are the right most LEDs.
-            ledStates |= (1 << ledPositions[i][1]);
-            secretUsed[i] = true;
-            guessUsed[i] = true;
+void numberGameModule::checkGuess(std::string btnName, int btnState) {
+    if(btnState == HIGH){
+        // Reset LED states
+        ledStates = 0b00000000;
+        int correctPositions = 0;
+        bool secretUsed[4] = {false, false, false, false};
+        bool guessUsed[4] = {false, false, false, false};
+        
+        //Green LED
+        for (int i = 0; i < 4; i++) {
+            //Checks what digits are in the correct place
+            if (digitsBuffer[i] == secretNumber[i]) {
+                correctPositions++;
+                //selects the correct led to be lit up using the ledPosition array created in the header file.
+                //column 1 is for green LEDs because that matches the physical layout of the game since they are the right most LEDs.
+                ledStates |= (1 << ledPositions[i][1]);
+                secretUsed[i] = true;
+                guessUsed[i] = true;
+            }
         }
-    }
-    //Orange LED
-    for (int i = 0; i < 4; i++) {
-        //Checks what digits are correct but in the wrong position.
-        if (!guessUsed[i]) {
-            for (int j = 0; j < 4; j++) {
-                if (!secretUsed[j] && digitsBuffer[i] == secretNumber[j]) {
-                    //selects the correct led to be lit up using the ledPosition array created in the header file.
-                    //column 0 is for orange LEDs because that matches the physical layout of the game since they are the left most LEDs.
-                    ledStates |= (1 << ledPositions[i][0]);
-                    secretUsed[j] = true;
-                    guessUsed[i] = true;
-                    break;
+        //Orange LED
+        for (int i = 0; i < 4; i++) {
+            //Checks what digits are correct but in the wrong position.
+            if (!guessUsed[i]) {
+                for (int j = 0; j < 4; j++) {
+                    if (!secretUsed[j] && digitsBuffer[i] == secretNumber[j]) {
+                        //selects the correct led to be lit up using the ledPosition array created in the header file.
+                        //column 0 is for orange LEDs because that matches the physical layout of the game since they are the left most LEDs.
+                        ledStates |= (1 << ledPositions[i][0]);
+                        secretUsed[j] = true;
+                        guessUsed[i] = true;
+                        break;
+                    }
                 }
             }
         }
+        if(correctPositions == 4){
+            state = 2;
+        }
     }
-    //if all positions are correct display you win on the LCD
-    if(correctPositions == 4){
-        char word[] = "You Win!";
-        display.LCDSet(word);
-    }
-    
 }
 
-void numberGameModule::updateDisplay(){
+void numberGameModule::update(){
     //only check for game updates every 200 micro seconds
     unsigned long now = micros();
     if (now - lastUpdate < refreshInterval) return;
     lastUpdate = now;
-    buttonCheck();
-    buttonState = digitalRead(submitButtonPin);
-    //check the current guess when the button is pressed
-    if(buttonState  ==  HIGH && buttonState  != lastButtonState){
-        checkGuess();
+    for(auto& btn : buttons){
+        if(state != 2){
+            btn.update(); 
+        }
     }
-
     //start writing to the shift registers
     digitalWrite(latchPin, LOW);
     if (currentDigit < 4){
@@ -170,5 +148,4 @@ void numberGameModule::updateDisplay(){
     }
     //end writing to the shift registers
     digitalWrite(latchPin, HIGH);
-    lastButtonState = buttonState;
 }

@@ -2,6 +2,11 @@
 	(version 20250114)
 	(generator "eeschema")
 	(generator_version "9.0")
+<<<<<<< HEAD
+	(uuid "f286e069-1d6c-4e07-ba55-ef486a3b71c6")
+	(paper "A4")
+	(lib_symbols)
+=======
 	(uuid "6645a9cf-330e-4f59-9cb4-0d1951e143a7")
 	(paper "A4")
 	(lib_symbols
@@ -6930,6 +6935,7 @@
 			)
 		)
 	)
+>>>>>>> 507cc054c19821dd5869d040e62c10fbf5f1cb6b
 	(sheet_instances
 		(path "/"
 			(page "1")
