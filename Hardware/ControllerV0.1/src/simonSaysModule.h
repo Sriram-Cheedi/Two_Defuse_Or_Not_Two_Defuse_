@@ -54,6 +54,7 @@ private:
     // SSM THREAD ONLY FUNCTIONS
     void loop();
     int getInputSequence();
+    void completeSequence();
     void setPixelBuffer(std::vector<uint32_t> newColours);
     void setPixelBuffer(int index, uint32_t newColour);
     void set_leds(std::vector<int> rgb1, std::vector<int> rgb2, std::vector<int> rgb3, std::vector<int> rgb4);

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CheckPointScript : MonoBehaviour
 {
-    private SpawnManager spawnManager;
+    [SerializeField]private SpawnManager spawnManager;
     private BoxCollider respawnCollider;
 
     void Awake()
