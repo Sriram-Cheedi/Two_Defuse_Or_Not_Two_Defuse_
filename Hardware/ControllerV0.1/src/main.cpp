@@ -18,7 +18,7 @@ Imu gyro = Imu("IMU", serialController);
 
 Button btn1 = Button("BTN1", 38, serialController);
 Button btn2 = Button("BTN2", 39, serialController);
-Button btn3 = Button("BTN3", 41, serialController);
+Button btn3 = Button("BTN3", 40, serialController);
 
 
 numberGameModule ngm = numberGameModule("NGM",3,5,4,{6,7,8,9,10}, serialController);
@@ -63,6 +63,8 @@ void setup() {
   components.push_back(&ssm);
   components.push_back(&ngm);
   //components.push_back(&fgm);
+
+  ssm.set({"0", "2", "3", "1", "3", "2", "1", "0", "0"});
 }
 
 void loop() {

@@ -114,7 +114,7 @@ int SimonSaysModule::getInputSequence(){
 
     std::vector<int> inputSequence = std::vector<int>();
 
-    while(millis() - startTime < 4000){
+    while(millis() - startTime < 3000){
 
         for(auto& btn : buttons){
             
@@ -226,6 +226,9 @@ void SimonSaysModule::loop(){
 
     while(true){
 
+
+        setPixelBuffer({strip.Color(5, 0, 0), strip.Color(5, 0, 0), strip.Color(5, 0, 0), strip.Color(5, 0, 0)});
+
         for(size_t i = 0; i < currentRound; i++){
 
             resetingMutex.lock();
@@ -234,22 +237,26 @@ void SimonSaysModule::loop(){
 
             resetingMutex.unlock();
 
-            uint32_t waitUntil = millis() + 500;
+            uint32_t waitUntil = millis() + 250;
             while (millis() < waitUntil) threads.yield();
 
-            setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)});
+            setPixelBuffer({strip.Color(5, 0, 0), strip.Color(5, 0, 0), strip.Color(5, 0, 0), strip.Color(5, 0, 0)});
 
             if( i < currentRound - 1){
-                waitUntil = millis() + 200;
+                waitUntil = millis() + 100;
                 while (millis() < waitUntil) threads.yield();
             }
         }
+
+        setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)});
 
         int result = getInputSequence();
 
         if(result == 2){
             resetingMutex.lock();
             if(currentRound < correctSequence.size()){
+                uint32_t waitUntil = millis() + 500;
+                while (millis() < waitUntil) threads.yield();
                 currentRound++;
             }else{
 
