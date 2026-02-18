@@ -1,37 +1,35 @@
 #ifndef NUMBERGAMEMODULE_H
 #define NUMBERGAMEMODULE_H
 
+#include <array>
 #include <stdint.h>
 #include <string>
 #include "component.h"
 #include "serialController.h"
 #include "LCDModule.h"
+#include "Button.h"
 
 class numberGameModule : public Component {
 
 private:
+    int state = 0; // 0 = Not Started, 1 = In Progress, 2 = Complete, 3 = Failed (Resetting)
+
     const int dataPin;
     const int clockPin;
     const int latchPin;
-    const int buttonPin;
-    const int submitButtonPin;
-
-    int buttonPushCounter = 0;
-    int buttonState = 0;
-    int lastButtonState = 0;
-    float lastVoltage = 0;
+    const std::array<int,5> buttonPins; //First 4 button are used to increment the display numbers. Button 5 will be the submit button.
+    std::vector<Button> buttons;
 
     uint8_t ledStates = 0b00000000;
     int secretNumber[4];
-    const byte ledPositions[4][2] = {
-        {7, 0},
-        {1, 2},
-        {3, 4},
-        {5, 6}
+    const uint8_t ledPositions[4][2] = {
+        {0,1},
+        {2,3},
+        {4,5},
+        {6,7},
     };
 
     SerialController serialController;
-    LCDModule& display;
 
     unsigned long lastUpdate = 0;
     unsigned long buttonUpdate = 0;
@@ -62,13 +60,13 @@ private:
 
 public:
 
-    numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin, int submitButtonPin, SerialController serialController, LCDModule& display);
+    numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, std::array<int,5> buttonPins, SerialController serialController);
     void set(std::vector<std::string> args) override;
     void status() override;
     void setupGame();
-    void checkGuess();
-    void buttonCheck();
-    void updateDisplay();
+    void checkGuess(std::string btnName, int btnState);
+    void buttonCheck(std::string btnName, int btnState);
+    void update();
   
 };
 

@@ -13,7 +13,7 @@ public class DestroyDoor : MonoBehaviour
     private PlayerInputRelay relay;
     private void Awake()
     {
-        // _activeHardware = _API_Provider.ActiveAPIController;
+        _activeHardware = _API_Provider.ActiveAPIController;
         buttonsPressed = new bool[3];
     }
 
