@@ -23,7 +23,7 @@ public class SpawnManager : MonoBehaviour
         rm.rb.position = respawnPoint.transform.position;
         
         rm.ResetPlayer();
-        gridManager.ResetPath();
+        // gridManager.ResetPath();
     }
 
 }
