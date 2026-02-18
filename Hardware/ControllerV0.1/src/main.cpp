@@ -9,6 +9,7 @@
 #include <TeensyThreads.h>
 #include "SimonSaysModule.h"
 #include "numberGameModule.h"
+#include "fishingModule.h"
 
 SerialController serialController = SerialController();
 
@@ -21,6 +22,7 @@ Button btn3 = Button("BTN3", 41, serialController);
 
 SimonSaysModule ssm = SimonSaysModule("SSM", {38, 39, 40, 41}, 6,  serialController);
 numberGameModule ngm = numberGameModule("NGM",3,5,4,{6,7,8,9,10}, serialController);
+//fishingModule fgm = fishingModule("FGM",36,35,34,13,serialController);
 
 std::vector<Component*> components;
 
@@ -59,6 +61,7 @@ void setup() {
   components.push_back(&gyro);  
   components.push_back(&ssm);
   components.push_back(&ngm);
+  //components.push_back(&fgm);
 }
 
 void loop() {
@@ -73,4 +76,5 @@ void loop() {
   gyro.update();
   ssm.update();
   ngm.update();
+  //fgm.update();
 }

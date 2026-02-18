@@ -5,17 +5,15 @@
 #include "Button.h"
 
 class fishingModule : public Component {
-    const std::string name;
 
     const int dataPin;
     const int clockPin;
     const int latchPin;
     const int buttonPin;
-    Button btn;
 
     int hookPos = 9;
     int points = 0;
-    int randState = 0;
+    long randState = 0;
 
     const unsigned int gameInterval = 500;
     unsigned long lastGameUpdate = 0;
@@ -23,7 +21,7 @@ class fishingModule : public Component {
     const unsigned int fishInterval = 2000;
     unsigned long lastFishUpdate = 0;
 
-    const unsigned int hookInterval = 200;
+    const unsigned int hookInterval = 500;
     unsigned long lastHookUpdate = 0;
 
     const unsigned int scoreInterval = 500;
@@ -64,6 +62,7 @@ class fishingModule : public Component {
     int state = 0; // 0 = Not Started, 1 = In Progress, 2 = Complete, 3 = Failed (Resetting)
 
     SerialController serialController;
+    Button btn;
 
     void reset();     // Reset Module to the initial state
     void complete();  // Auto complete the module 
@@ -77,5 +76,5 @@ public:
     void set(std::vector<std::string> args) override;
     void status() override;
 
-    void updateGame();
+    void update();
 };

@@ -7,7 +7,7 @@ btn("FGM1", buttonPin, serialController,[this](std::string name, int state){butt
     pinMode(dataPin, OUTPUT);
     pinMode(clockPin, OUTPUT);
     pinMode(latchPin, OUTPUT);
-    randomSeed(analogRead(0));
+    randomSeed(analogRead(A1));
 }
 
 void fishingModule::reset(){
@@ -51,8 +51,8 @@ void fishingModule::shift(uint32_t digit){
 
 void fishingModule::buttonUpdate(std::string btnName, int btnState){
     if(btnState == HIGH){
-        hookPos--;
-        if(hookPos < 0) hookPos = 0;
+        hookPos++;
+        if(hookPos > 9) hookPos = 9;
     }
 }
 
@@ -61,11 +61,10 @@ void fishingModule::scoreCheck(){
   if (hasScored > 0){
     if(points == 0) state = 1;
     points++;
-    Serial.println(points);
   }
 }
 
-void fishingModule::updateGame(){
+void fishingModule::update(){
     unsigned long micro = micros();
     unsigned long milli = millis();
     if (micro - lastGameUpdate > gameInterval && state < 2){
@@ -75,8 +74,8 @@ void fishingModule::updateGame(){
             lastButtonUpdate = milli;
         }
         if(milli - lastHookUpdate > hookInterval){
-            hookPos++;
-            if(hookPos > 9) hookPos = 9;
+            hookPos--;
+            if(hookPos < 0) hookPos = 0;
             lastHookUpdate = milli;
         }
 
@@ -86,7 +85,7 @@ void fishingModule::updateGame(){
         }
 
         if(milli - lastFishUpdate > fishInterval){
-            randState = random(0,11);
+            randState = random(0,12);
             lastFishUpdate = milli;
         }
 

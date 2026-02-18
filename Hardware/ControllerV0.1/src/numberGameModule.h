@@ -22,7 +22,7 @@ private:
 
     uint8_t ledStates = 0b00000000;
     int secretNumber[4];
-    const byte ledPositions[4][2] = {
+    const uint8_t ledPositions[4][2] = {
         {0,1},
         {2,3},
         {4,5},

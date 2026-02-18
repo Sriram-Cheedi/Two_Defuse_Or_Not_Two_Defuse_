@@ -6,10 +6,6 @@ numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, 
     pinMode(dataPin,OUTPUT);
     pinMode(clockPin,OUTPUT);
     pinMode(latchPin,OUTPUT);
-    for(int i = 0; i < 5; i++){
-        //pinMode(buttonPins[i],INPUT_PULLDOWN);
-    }
-
     for(size_t i = 0; i < 4; i++){
         Button btn = Button("NGM" + std::to_string(i), buttonPins[i], serialController, [this](std::string name, int state){buttonCheck(name, state);});   
         buttons.push_back(btn);
@@ -86,10 +82,6 @@ void numberGameModule::buttonCheck(std::string btnName, int btnState){
 
 void numberGameModule::checkGuess(std::string btnName, int btnState) {
     if(btnState == HIGH){
-        Serial.print(secretNumber[0]);
-        Serial.print(secretNumber[1]);
-        Serial.print(secretNumber[2]);
-        Serial.println(secretNumber[3]);
         // Reset LED states
         ledStates = 0b00000000;
         int correctPositions = 0;
