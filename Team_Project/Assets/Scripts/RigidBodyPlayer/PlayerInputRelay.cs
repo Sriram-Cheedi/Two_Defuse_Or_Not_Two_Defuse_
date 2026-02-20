@@ -9,7 +9,8 @@ public class PlayerInputRelay : MonoBehaviour
     
     public event Action<Vector2> Move;
     public event Action<Vector2> Look;
-    public event Action Jump;
+    public event Action JumpPressed;
+    public event Action JumpCanceled;
     public event Action<bool> Crouch;
     public event Action<bool> InvertGravity;
     public event Action<int> NumberPressed;
@@ -43,6 +44,7 @@ public class PlayerInputRelay : MonoBehaviour
         look.canceled += OnLook;
         
         jump.performed += OnJump;
+        jump.canceled += OnJump;
         
         crouch.performed += OnCrouch;
         crouch.canceled += OnCrouch;
@@ -62,6 +64,7 @@ public class PlayerInputRelay : MonoBehaviour
         look.canceled -= OnLook;
         
         jump.performed -= OnJump;
+        jump.canceled -= OnJump;
         
         crouch.performed -= OnCrouch;
         crouch.canceled -= OnCrouch;
@@ -84,7 +87,11 @@ public class PlayerInputRelay : MonoBehaviour
         Look?.Invoke(LookValue);
     }
 
-    private void OnJump(InputAction.CallbackContext ctx) => Jump?.Invoke();
+    private void OnJump(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed) JumpPressed?.Invoke();
+        if (ctx.canceled) JumpCanceled?.Invoke();
+    }
 
     private void OnCrouch(InputAction.CallbackContext ctx)
     {

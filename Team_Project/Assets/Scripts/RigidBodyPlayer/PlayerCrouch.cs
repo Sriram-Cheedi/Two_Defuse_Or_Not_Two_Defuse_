@@ -29,7 +29,7 @@ public class PlayerCrouch : MonoBehaviour
         SetCrouchCenter();
     }
 
-    public void Tick(bool isCrouchPressed)
+    public void UpdateCrouch(bool isCrouchPressed)
     {
         SetCrouch(isCrouchPressed);
     }

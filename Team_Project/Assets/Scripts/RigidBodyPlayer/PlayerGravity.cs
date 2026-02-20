@@ -20,13 +20,12 @@ public class PlayerGravity : MonoBehaviour
 
     private Rigidbody rb;
 
-    private Vector3 gravityDir = Vector3.down;
-    private bool invertRequested;
+    public Vector3 gravityDir = Vector3.down;
+    public bool invertRequested;
     private bool hasInvertRequest;
     private bool isRotating;
 
     public bool IsRotating => isRotating;
-    public Vector3 GravityDir => gravityDir;
 
     private void Awake()
     {
@@ -37,7 +36,6 @@ public class PlayerGravity : MonoBehaviour
         if (relay == null) relay = GetComponent<PlayerInputRelay>();
         if (playerInput == null) playerInput = GetComponent<PlayerInput>();
         if (playerCam == null) playerCam = FindAnyObjectByType<PlayerCam>();
-
         if (gravityDir == Vector3.zero) gravityDir = Vector3.down;
     }
 
@@ -59,9 +57,9 @@ public class PlayerGravity : MonoBehaviour
         // Are we upside down relative to world down?
         bool isUpsideDown = Vector3.Dot(Vector3.down, -orientation.up) < 0;
 
-        if (accelerometer.z > 9f && !isUpsideDown)
+        if (accelerometer.z > 9f && isUpsideDown)
             RequestInvert(true);
-        else if (accelerometer.z < -9f && isUpsideDown)
+        else if (accelerometer.z < -9f && !isUpsideDown)
             RequestInvert(true);
         else
             RequestInvert(false);
@@ -72,79 +70,76 @@ public class PlayerGravity : MonoBehaviour
         invertRequested = value;
     }
 
-    // Keep your naming consistent:
-    // If your movement script calls UpdateGravity(), keep it.
-    // Otherwise rename this to Tick().
     public void UpdateGravity()
     {
         ApplyCustomGravity();
-        InvertGravityDirection();
+        // InvertKeyBoardGravityDirection();
     }
 
     private void ApplyCustomGravity()
     {
         if (data == null) return;
 
-        // IDENTICAL: no extra gravity on slopes (your original behavior)
         if (sensor == null || !sensor.IsGrounded || !sensor.OnSlope)
         {
             rb.AddForce(gravityDir * 9.81f * data.gravityMultiplier, ForceMode.Acceleration);
         }
     }
 
-    private void InvertGravityDirection()
+    private void InvertGyroGravityDirection()
     {
-        if (isRotating) return;
-
         if (!hasInvertRequest && invertRequested)
         {
             gravityDir = -gravityDir;
-            StartCoroutine(SmoothRotate());
         }
 
         hasInvertRequest = invertRequested;
     }
 
-    private IEnumerator SmoothRotate()
+    private void InvertKeyBoardGravityDirection()
     {
-        if (data == null)
-            yield break;
-
-        isRotating = true;
-
-        // Kept for identical behavior. Phase 2 removes this and makes it state-driven.
-        var playerMap = playerInput != null ? playerInput.actions.FindActionMap("Player") : null;
-        if (playerMap != null) playerMap.Disable();
-
-        float remaining = targetRotation;
-
-        while (remaining > 0f)
-        {
-            float step = data.rotationSpeed * Time.fixedDeltaTime;
-            step = Mathf.Min(step, remaining);
-
-            Quaternion deltaRotation = Quaternion.Euler(0f, 0f, step);
-
-            if (cameraPosition != null)
-                cameraPosition.Rotate(Vector3.forward, step, Space.Self);
-
-            if (playerCam != null)
-                playerCam.rollZ += step;
-
-            rb.MoveRotation(rb.rotation * deltaRotation);
-
-            remaining -= step;
-            yield return new WaitForFixedUpdate();
-        }
-
-        if (playerMap != null) playerMap.Enable();
-
-        isRotating = false;
+        gravityDir = -gravityDir;
     }
+
+    // private IEnumerator SmoothRotate()
+    // {
+    //     if (data == null)
+    //         yield break;
+    //
+    //     isRotating = true;
+    //
+    //     // Kept for identical behavior. Phase 2 removes this and makes it state-driven.
+    //     var playerMap = playerInput != null ? playerInput.actions.FindActionMap("Player") : null;
+    //     if (playerMap != null) playerMap.Disable();
+    //
+    //     float remaining = targetRotation;
+    //
+    //     while (remaining > 0f)
+    //     {
+    //         float step = data.rotationSpeed * Time.fixedDeltaTime;
+    //         step = Mathf.Min(step, remaining);
+    //
+    //         Quaternion deltaRotation = Quaternion.Euler(0f, 0f, step);
+    //
+    //         if (cameraPosition != null)
+    //             cameraPosition.Rotate(Vector3.forward, step, Space.Self);
+    //
+    //         if (playerCam != null)
+    //             playerCam.rollZ += step;
+    //
+    //         rb.MoveRotation(rb.rotation * deltaRotation);
+    //
+    //         remaining -= step;
+    //         yield return new WaitForFixedUpdate();
+    //     }
+    //
+    //     if (playerMap != null) playerMap.Enable();
+    //
+    //     isRotating = false;
+    // }
 
     private void ResetGravity()
     {
-        StopAllCoroutines();
 
         invertRequested = false;
         hasInvertRequest = false;

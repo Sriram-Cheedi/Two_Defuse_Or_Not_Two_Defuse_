@@ -4,16 +4,18 @@ using UnityEngine;
 public class PlayerCameraHandler : MonoBehaviour
 {
     [SerializeField] private CapsuleCollider controller;
-    [SerializeField] private Transform cameraPosition;
+    [SerializeField] public Transform cameraPosition;
+    [SerializeField] public PlayerCam playerCam;
 
     private void Awake()
     {
         if (controller == null) controller = GetComponent<CapsuleCollider>();
+        if (playerCam == null) playerCam = FindAnyObjectByType<PlayerCam>();
     }
 
     private void LateUpdate()
     {
-        if (controller == null || cameraPosition == null) return;
+        if (controller == null || cameraPosition == null ||  playerCam == null) return;
 
         // Identical to your old CamFollow()
         float bottomLocal = controller.center.y - controller.height / 2.0f;

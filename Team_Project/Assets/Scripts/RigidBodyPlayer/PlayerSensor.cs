@@ -10,11 +10,12 @@ public class PlayerSensor : MonoBehaviour
     public bool OnSlope { get; private set; }
     public bool OnMovingPlatform { get; private set; }
     public bool OnFlip { get; private set; }
+    public bool InGravityZone;
 
     public Vector3 ConnectionVelocity { get; private set; }
     public RaycastHit GroundHit => slopeHit;
 
-    private RaycastHit slopeHit;
+    public RaycastHit slopeHit;
 
     private Rigidbody connectedBody;
     private Rigidbody previousConnectedBody;

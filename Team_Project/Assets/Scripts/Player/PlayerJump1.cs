@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerJump : MonoBehaviour
+public class PlayerJump1 : MonoBehaviour
 {
     public float jumpForce = 7f;
     public float gravity = -20f;

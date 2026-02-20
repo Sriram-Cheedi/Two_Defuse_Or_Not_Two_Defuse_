@@ -5,44 +5,53 @@ using Vector3 = UnityEngine.Vector3;
 [RequireComponent(typeof(Rigidbody))]
 public class RigidBodyMovement : MonoBehaviour
 {
-    [Header("Data")]
-    [SerializeField] private MovementData data;
+    [Header("Data")] [SerializeField] public MovementData data;
 
-    [Header("Modules")]
-    [SerializeField] private PlayerSensor sensor;
-    [SerializeField] private PlayerGravity gravity;
+    [Header("Modules")] [SerializeField] public PlayerSensor sensor;
+    [SerializeField] public PlayerGravity gravity;
     [SerializeField] private PlayerCrouch crouch;
+    [SerializeField] public PlayerCameraHandler cameraHandler;
+    [SerializeField] public PlayerJump jump;
 
-    [Header("Movement (runtime)")]
-    [SerializeField] private float moveSpeed; // runtime (set from data)
+    private PlayerBaseState currentState;
+    public PlayerGroundState GroundState;
+    public PlayerAirborneState AirborneState;
+    public PlayerSlopeState SlopeState;
+    public PlayerFlipState FlipState;
+    public PlayerConnectionState ConnectionState;
 
-    [Header("Setup")]
-    [SerializeField] private CapsuleCollider controller;
+    [Header("Movement (runtime)")] [SerializeField]
+    public float moveSpeed; // runtime (set from data)
 
-    [Header("Camera")]
-    public Transform orientation;
+    [Header("Setup")] [SerializeField] private CapsuleCollider controller;
+
+    [Header("Camera")] public Transform orientation;
     [SerializeField] private PlayerCam playerCam;
 
-    [Header("External")]
-    private API_Provider _API_Provider = API_Provider.Instance;
+    [Header("External")] private API_Provider _API_Provider = API_Provider.Instance;
     private API_Controller_Interface _activeHardware;
     private PlayerInputRelay relay;
 
     public Rigidbody rb;
 
     private Vector2 cachedMove;
-    private bool isCrouchPressed;
+    public bool isCrouchPressed;
 
-    private float horizontalInput;
-    private float verticalInput;
+    public float horizontalInput;
+    public float verticalInput;
 
-    private Vector3 movementDir;
+    public Vector3 movementDir;
     private bool readyToJump = true;
 
     private void Awake()
     {
         InitializeComponents();
         relay = GetComponent<PlayerInputRelay>();
+        GroundState = new PlayerGroundState(this);
+        AirborneState = new PlayerAirborneState(this);
+        SlopeState = new PlayerSlopeState(this);
+        FlipState = new PlayerFlipState(this);
+        ConnectionState = new PlayerConnectionState(this);
         ValidateDependencies();
     }
 
@@ -51,10 +60,12 @@ public class RigidBodyMovement : MonoBehaviour
         if (sensor == null) sensor = GetComponent<PlayerSensor>();
         if (gravity == null) gravity = GetComponent<PlayerGravity>();
         if (crouch == null) crouch = GetComponent<PlayerCrouch>();
+        if(cameraHandler == null) cameraHandler = GetComponent<PlayerCameraHandler>();
+        if (jump == null) jump = GetComponent<PlayerJump>();
 
         controller = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
-
+        // _activeHardware = _API_Provider.ActiveAPIController;
         if (orientation == null) orientation = transform.Find("Orientation");
         if (playerCam == null) playerCam = FindAnyObjectByType<PlayerCam>();
         if (relay == null) relay = GetComponent<PlayerInputRelay>();
@@ -74,6 +85,7 @@ public class RigidBodyMovement : MonoBehaviour
         if (gravity == null) Debug.LogError("RigidBodyMovement: No PlayerGravity on player", this);
         if (sensor == null) Debug.LogError("RigidBodyMovement: No PlayerSensor on player", this);
         if (crouch == null) Debug.LogError("RigidBodyMovement: No PlayerCrouch on player", this);
+        if (jump == null)  Debug.LogError("RigidBodyMovement: No PlayerJump on player", this);
     }
 
     public void ResetPlayer()
@@ -82,25 +94,32 @@ public class RigidBodyMovement : MonoBehaviour
         if (orientation != null) orientation.rotation = Quaternion.Euler(0, 0, 0);
         rb.linearVelocity = Vector3.zero;
         readyToJump = true;
+        currentState = GroundState;
     }
 
     private void Start()
     {
         rb.useGravity = false;
         rb.freezeRotation = true;
-
+        currentState = GroundState;
+        currentState.EnterState();
         if (data != null) moveSpeed = data.walkSpeed;
     }
 
     private void OnEnable()
     {
+
         if (_activeHardware != null)
+        {
             _activeHardware.OnImuChanged += RotateLevel;
+        }
+
 
         if (relay != null)
         {
             relay.Move += HandleMove;
-            relay.Jump += HandleJump;
+            relay.JumpPressed += HandleJump;
+            relay.JumpCanceled += HandleJumpCut;
             relay.Crouch += HandleCrouch;
             relay.InvertGravity += HandleGravityInverted;
             relay.RespawnRequested += ResetPlayer;
@@ -115,17 +134,19 @@ public class RigidBodyMovement : MonoBehaviour
         if (relay != null)
         {
             relay.Move -= HandleMove;
-            relay.Jump -= HandleJump;
+            relay.JumpPressed -= HandleJump;
+            relay.JumpCanceled -= HandleJumpCut;
             relay.Crouch -= HandleCrouch;
             relay.InvertGravity -= HandleGravityInverted;
             relay.RespawnRequested -= ResetPlayer;
         }
     }
-    
+
     private void RotateLevel(Vector3 gyro, Vector3 accelerometer)
     {
+        Debug.Log("RotateLevel");
         if (gravity == null || sensor == null) return;
-        gravity.ProcessAccelerometer(accelerometer, sensor.OnFlip, orientation);
+        gravity.ProcessAccelerometer(accelerometer, sensor.InGravityZone, orientation);
     }
 
     private void HandleMove(Vector2 value) => cachedMove = value;
@@ -134,19 +155,26 @@ public class RigidBodyMovement : MonoBehaviour
 
     private void HandleGravityInverted(bool inverted)
     {
-        if (gravity != null) gravity.RequestInvert(inverted);
+        if (gravity == null) return;
+        if (sensor.InGravityZone)
+        {
+            gravity.RequestInvert(inverted);
+        }
     }
 
     private void HandleJump()
     {
         if (data == null) return;
-
-        if (readyToJump && sensor.IsGrounded && !sensor.OnSlope)
+        jump.SetJumpBuffer();
+        if (jump.readyToJump && jump.coyoteTimeCounter > 0f && jump.jumpBufferCounter > 0f)
         {
-            readyToJump = false;
-            Jump();
-            Invoke(nameof(ResetJump), data.jumpCooldown);
+            jump.ExecuteJump();
         }
+    }
+
+    private void HandleJumpCut()
+    {
+        jump.HandleJumpCute();
     }
 
     private void MyInput()
@@ -155,62 +183,43 @@ public class RigidBodyMovement : MonoBehaviour
         verticalInput = cachedMove.y;
     }
 
-    private void ApplyMovement()
+    public void ApplyMovement(float targetSpeed, float acceleration, bool connected)
     {
         if (data == null) return;
-
-        bool isGrounded = sensor.IsGrounded;
-        bool onSlope = sensor.OnSlope;
-        bool onMovingPlatform = sensor.OnMovingPlatform;
         Vector3 connectionVelocity = sensor.ConnectionVelocity;
-        RaycastHit slopeHit = sensor.GroundHit;
 
         movementDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        Vector3 platformVelocity = connected ? connectionVelocity : Vector3.zero;
 
-        if (onSlope && isGrounded)
-        {
-            Vector3 slopDir = Vector3.ProjectOnPlane(Vector3.down, slopeHit.normal).normalized;
-            Vector3 sidewayDir = Vector3.Cross(slopeHit.normal, slopDir).normalized;
+        Vector3 v = rb.linearVelocity;
+        Vector3 relativeVelocity = v - platformVelocity;
 
-            movementDir = sidewayDir * horizontalInput;
+        Vector3 desiredRelativeVelocity = movementDir.sqrMagnitude > 0.0001f
+            ? movementDir.normalized * targetSpeed
+            : Vector3.zero;
+        
+        float maxDelta = acceleration * Time.fixedDeltaTime;
 
-            Vector3 desiredRelativeVelocity = movementDir.sqrMagnitude > 0.0001f
-                ? movementDir.normalized * data.sideWayMoveSpeed
-                : Vector3.zero;
+        float newX = Mathf.MoveTowards(relativeVelocity.x, desiredRelativeVelocity.x, maxDelta);
+        float newZ = Mathf.MoveTowards(relativeVelocity.z, desiredRelativeVelocity.z, maxDelta);
 
-            Vector3 slopVelocity = slopDir * data.slopeSpeed;
-            rb.linearVelocity = desiredRelativeVelocity + slopVelocity;
-        }
-        else
-        {
-            Vector3 platformVelocity = (onMovingPlatform && isGrounded) ? connectionVelocity : Vector3.zero;
-
-            Vector3 v = rb.linearVelocity;
-            Vector3 relativeVelocity = v - platformVelocity;
-
-            Vector3 desiredRelativeVelocity = movementDir.sqrMagnitude > 0.0001f
-                ? movementDir.normalized * moveSpeed
-                : Vector3.zero;
-
-            float acceleration = isGrounded ? data.groundAcceleration : data.airAcceleration;
-            float maxDelta = acceleration * Time.fixedDeltaTime;
-
-            float newX = Mathf.MoveTowards(relativeVelocity.x, desiredRelativeVelocity.x, maxDelta);
-            float newZ = Mathf.MoveTowards(relativeVelocity.z, desiredRelativeVelocity.z, maxDelta);
-
-            relativeVelocity = new Vector3(newX, relativeVelocity.y, newZ);
-            rb.linearVelocity = relativeVelocity + platformVelocity;
-        }
+        relativeVelocity = new Vector3(newX, relativeVelocity.y, newZ);
+        rb.linearVelocity = relativeVelocity + platformVelocity;
     }
 
-    private void StateHandler()
+    public void ApplySlopeMovement(Vector3 surfaceNormal, float horizontalInput)
     {
-        if (data == null) return;
+        Vector3 slopDir = Vector3.ProjectOnPlane(Vector3.down, surfaceNormal).normalized;
+        Vector3 sidewayDir = Vector3.Cross(surfaceNormal, slopDir).normalized;
 
-        if (isCrouchPressed && sensor.IsGrounded)
-            moveSpeed = data.crouchSpeed;
-        else if (sensor.IsGrounded)
-            moveSpeed = data.walkSpeed;
+        movementDir = sidewayDir * horizontalInput;
+
+        Vector3 desiredRelativeVelocity = movementDir.sqrMagnitude > 0.0001f
+            ? movementDir.normalized * data.sideWayMoveSpeed
+            : Vector3.zero;
+
+        Vector3 slopVelocity = slopDir * data.slopeSpeed;
+        rb.linearVelocity = desiredRelativeVelocity + slopVelocity;
     }
 
     private void Jump()
@@ -226,12 +235,24 @@ public class RigidBodyMovement : MonoBehaviour
     private void FixedUpdate()
     {
         sensor.UpdateSensor(rb);
-
-        if (gravity != null) gravity.UpdateGravity();
-        if (crouch != null) crouch.Tick(isCrouchPressed);
-
+        gravity.UpdateGravity();
+        crouch.UpdateCrouch(isCrouchPressed);
         MyInput();
-        StateHandler();
-        ApplyMovement();
+        currentState.FixedUpdateState();
     }
+
+    public void Update()
+    {
+        jump.UpdateJumpState();
+        currentState.UpdateState();
+    }
+
+    public void TransitionToState(PlayerBaseState newState)
+    {
+        if (newState == currentState) return;
+        currentState.ExitState();
+        currentState = newState;
+        currentState.EnterState();
+    }
+    
 }

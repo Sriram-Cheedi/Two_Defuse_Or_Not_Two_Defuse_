@@ -148,7 +148,7 @@ public class RigidBodyMovement_Legacy : MonoBehaviour
         if (relay != null)
         {
             relay.Move += HandleMove;
-            relay.Jump += HandleJump;
+            relay.JumpPressed += HandleJump;
             relay.Crouch += HandleCrouch;
             relay.InvertGravity += HandleGravityInverted;
             relay.RespawnRequested += ResetPlayer;
@@ -162,7 +162,7 @@ public class RigidBodyMovement_Legacy : MonoBehaviour
         if (relay != null)
         {
             relay.Move -= HandleMove;
-            relay.Jump -= HandleJump;
+            relay.JumpPressed -= HandleJump;
             relay.Crouch -= HandleCrouch;
             relay.InvertGravity -= HandleGravityInverted;
             relay.RespawnRequested -= ResetPlayer;

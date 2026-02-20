@@ -77,6 +77,6 @@ public class DestroyDoor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // GetButtonsValues();
+        GetButtonsValues();
     }
 }

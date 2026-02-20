@@ -22,7 +22,9 @@ MonoBehaviour:
   springForce: 45
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   groundCheckDistance: 0.2
+  sideWayMoveSpeed: 30
+  slopeSpeed: 30
   camDownSpeed: 5
-  rotationSpeed: 20
+  rotationSpeed: 200
