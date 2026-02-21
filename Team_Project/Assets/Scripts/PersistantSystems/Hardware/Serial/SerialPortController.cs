@@ -41,7 +41,7 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
         {
             if (Time.realtimeSinceStartup >= reconnectAgainTimer)
             {
-                reconnectAgainTimer = Time.realtimeSinceStartup + reconnectAgainTimer;
+                reconnectAgainTimer = Time.realtimeSinceStartup + reconnectTimer;
                 Connect();
             }
             return;
