@@ -1,3 +1,4 @@
+using RigidBodyPlayer.Movement;
 using UnityEngine;
 
 public class PlayerSlopeState : PlayerBaseState
@@ -22,10 +23,13 @@ public class PlayerSlopeState : PlayerBaseState
 
     public override void FixedUpdateState()
     {
-        Hub.ApplySlopeMovement(Hub.sensor.GroundHit.normal, Hub.horizontalInput);
+        IMovementStrategy strategy = MovementStrategyFactory.GetStrategy(Hub);
+        strategy.ApplyMovement(Hub);
     }
 
     public override void ExitState()
     {
+        float sideVelocity = Vector3.Dot(Hub.rb.linearVelocity, Hub.slopeSideWayDir);
+        Hub.rb.linearVelocity -= Hub.slopeSideWayDir * sideVelocity;
     }
 }

@@ -1,3 +1,4 @@
+using RigidBodyPlayer.Movement;
 using UnityEngine;
 
 public class PlayerGroundState : PlayerBaseState
@@ -37,9 +38,16 @@ public class PlayerGroundState : PlayerBaseState
 
     public override void FixedUpdateState()
     {
-        float speed = Hub.isCrouchPressed ? Hub.data.crouchSpeed : Hub.data.walkSpeed;
-        Hub.ApplyMovement(speed, Hub.data.groundAcceleration, false);
-        
+        IMovementStrategy strategy = MovementStrategyFactory.GetStrategy(Hub);
+        strategy.ApplyMovement(Hub);
     }
-    public override void ExitState(){}
+
+    public override void ExitState()
+    {
+        float horizontalVelocity = Vector3.Dot(Hub.rb.linearVelocity, Vector3.right);
+        if (horizontalVelocity > 0f)
+        {
+            Hub.rb.linearVelocity -= Hub.rb.transform.right * horizontalVelocity;
+        }
+    }
 }

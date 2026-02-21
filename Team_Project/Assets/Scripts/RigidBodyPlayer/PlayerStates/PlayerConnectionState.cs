@@ -1,3 +1,4 @@
+using RigidBodyPlayer.Movement;
 using UnityEngine;
 
 public class PlayerConnectionState : PlayerBaseState
@@ -32,8 +33,8 @@ public class PlayerConnectionState : PlayerBaseState
 
     public override void FixedUpdateState()
     {
-        float speed = Hub.isCrouchPressed ? Hub.data.crouchSpeed : Hub.data.walkSpeed;
-        Hub.ApplyMovement(speed, Hub.data.groundAcceleration, true);
+        IMovementStrategy strategy = MovementStrategyFactory.GetStrategy(Hub);
+        strategy.ApplyMovement(Hub);
     }
 
     public override void ExitState()

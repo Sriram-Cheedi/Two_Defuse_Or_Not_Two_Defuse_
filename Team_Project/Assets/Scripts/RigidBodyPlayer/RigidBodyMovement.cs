@@ -15,6 +15,8 @@ public class RigidBodyMovement : MonoBehaviour
     
     public bool CanJump;
     public bool CanFlipGravity;
+    public Vector3 slopeDir;
+    public Vector3 slopeSideWayDir;
 
     private PlayerBaseState currentState;
     public PlayerGroundState GroundState;
@@ -250,16 +252,16 @@ public class RigidBodyMovement : MonoBehaviour
 
     public void ApplySlopeMovement(Vector3 surfaceNormal, float horizontalInput)
     {
-        Vector3 slopDir = Vector3.ProjectOnPlane(Vector3.down, surfaceNormal).normalized;
-        Vector3 sidewayDir = Vector3.Cross(surfaceNormal, slopDir).normalized;
+        slopeDir = Vector3.ProjectOnPlane(Vector3.down, surfaceNormal).normalized;
+        slopeSideWayDir = Vector3.Cross(surfaceNormal, slopeDir).normalized;
 
-        movementDir = sidewayDir * horizontalInput;
+        movementDir = slopeSideWayDir * horizontalInput;
 
         Vector3 desiredRelativeVelocity = movementDir.sqrMagnitude > 0.0001f
             ? movementDir.normalized * data.sideWayMoveSpeed
             : Vector3.zero;
 
-        Vector3 slopVelocity = slopDir * data.slopeSpeed;
+        Vector3 slopVelocity = slopeDir * data.slopeSpeed;
         rb.linearVelocity = desiredRelativeVelocity + slopVelocity;
     }
 

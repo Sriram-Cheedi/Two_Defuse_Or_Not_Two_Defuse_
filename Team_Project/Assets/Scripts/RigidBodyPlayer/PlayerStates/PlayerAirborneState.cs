@@ -1,3 +1,4 @@
+using RigidBodyPlayer.Movement;
 using UnityEngine;
 
 public class PlayerAirborneState : PlayerBaseState
@@ -9,7 +10,6 @@ public class PlayerAirborneState : PlayerBaseState
     public override void EnterState()
     {
         Hub.CanJump = false;
-        Hub.CanFlipGravity = true;
     }
     public override void ExitState(){}
 
@@ -28,11 +28,7 @@ public class PlayerAirborneState : PlayerBaseState
         }else if (Hub.sensor.OnPlasticSurface)
         {
             Hub.TransitionToState(Hub.PlasticState);
-        }
-        else if (Hub.gravity.invertRequested && Hub.CanFlipGravity)
-        {
-            Hub.TransitionToState(Hub.FlipState);
-        }else if (Hub.sensor.IsGrounded)
+        } else if (Hub.sensor.IsGrounded)
         {
             Hub.TransitionToState(Hub.GroundState);
         }
@@ -40,6 +36,7 @@ public class PlayerAirborneState : PlayerBaseState
 
     public override void FixedUpdateState()
     {
-        Hub.ApplyMovement(Hub.data.walkSpeed, Hub.data.groundAcceleration, false);
+        IMovementStrategy strategy = MovementStrategyFactory.GetStrategy(Hub);
+        strategy.ApplyMovement(Hub);
     }
 }
