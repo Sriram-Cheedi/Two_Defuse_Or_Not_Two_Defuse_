@@ -307,7 +307,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 663282717236737945}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e4232e9a8b63dc942a5bef482339cf83, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -415,6 +415,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Game.Main::PlayerJump
   coyoteTimeCounter: 0
+  jumpBufferCounter: 0
   readyToJump: 0
 --- !u!1 &3710490422605466897
 GameObject:

@@ -5,7 +5,12 @@ public class PlayerAirborneState : PlayerBaseState
     public PlayerAirborneState(RigidBodyMovement hub) : base(hub)
     {
     }
-    public override void EnterState(){}
+
+    public override void EnterState()
+    {
+        Hub.CanJump = false;
+        Hub.CanFlipGravity = true;
+    }
     public override void ExitState(){}
 
     public override void UpdateState()
@@ -17,12 +22,19 @@ public class PlayerAirborneState : PlayerBaseState
         {
             Hub.TransitionToState(Hub.ConnectionState);
         }
-        else if (Hub.sensor.IsGrounded)
+        else if (Hub.sensor.OnMetalSurface)
         {
-            Hub.TransitionToState(Hub.GroundState);
-        }else if (Hub.gravity.invertRequested && Hub.sensor.InGravityZone)
+            Hub.TransitionToState(Hub.MetalState);
+        }else if (Hub.sensor.OnPlasticSurface)
+        {
+            Hub.TransitionToState(Hub.PlasticState);
+        }
+        else if (Hub.gravity.invertRequested && Hub.CanFlipGravity)
         {
             Hub.TransitionToState(Hub.FlipState);
+        }else if (Hub.sensor.IsGrounded)
+        {
+            Hub.TransitionToState(Hub.GroundState);
         }
     }
 

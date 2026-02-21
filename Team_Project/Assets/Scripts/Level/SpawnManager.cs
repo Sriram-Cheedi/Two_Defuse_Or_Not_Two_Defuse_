@@ -13,7 +13,6 @@ public class SpawnManager : MonoBehaviour
     {
         if (relay != null) 
         {
-            // Subscribe to the "ThingHappened" event
             relay.RespawnRequested += MovePlayerToRespawn; 
         }
     }
@@ -22,7 +21,6 @@ public class SpawnManager : MonoBehaviour
     {
         if (relay != null) 
         {
-            // Unsubscribe to prevent memory leaks or "ghost" calls
             relay.RespawnRequested -= MovePlayerToRespawn; 
         }
     }

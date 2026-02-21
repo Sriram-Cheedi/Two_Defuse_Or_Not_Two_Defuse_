@@ -9,7 +9,7 @@ public class PlayerSlopeState : PlayerBaseState
 
     public override void EnterState()
     {
-        
+        Hub.CanJump = false;
     }
 
     public override void UpdateState()

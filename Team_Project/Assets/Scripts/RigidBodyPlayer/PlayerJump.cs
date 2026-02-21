@@ -45,7 +45,7 @@ public class PlayerJump : MonoBehaviour
         Hub.TransitionToState(Hub.AirborneState);
     }
 
-    public void HandleJumpCute()
+    public void HandleJumpCut()
     {
         float verticalVelocity = Vector3.Dot(Hub.rb.linearVelocity, Hub.rb.transform.up);
         if (verticalVelocity > 0f)
@@ -63,6 +63,7 @@ public class PlayerJump : MonoBehaviour
     private void ResetJump()
     {
         readyToJump = false;
+        
         coyoteTimeCounter = 0f;
         jumpBufferCounter = 0f;
         Vector3 localUp = Hub.rb.transform.up;

@@ -12,11 +12,16 @@ public class RigidBodyMovement : MonoBehaviour
     [SerializeField] private PlayerCrouch crouch;
     [SerializeField] public PlayerCameraHandler cameraHandler;
     [SerializeField] public PlayerJump jump;
+    
+    public bool CanJump;
+    public bool CanFlipGravity;
 
     private PlayerBaseState currentState;
     public PlayerGroundState GroundState;
     public PlayerAirborneState AirborneState;
     public PlayerSlopeState SlopeState;
+    public PlayerMetalState MetalState;
+    public PlayerPlasticState  PlasticState;
     public PlayerFlipState FlipState;
     public PlayerConnectionState ConnectionState;
 
@@ -46,13 +51,21 @@ public class RigidBodyMovement : MonoBehaviour
     private void Awake()
     {
         InitializeComponents();
+        InitiaizeStates();
         relay = GetComponent<PlayerInputRelay>();
+        
+        ValidateDependencies();
+    }
+
+    private void InitiaizeStates()
+    {
         GroundState = new PlayerGroundState(this);
         AirborneState = new PlayerAirborneState(this);
         SlopeState = new PlayerSlopeState(this);
         FlipState = new PlayerFlipState(this);
+        MetalState = new PlayerMetalState(this);
+        PlasticState = new PlayerPlasticState(this);
         ConnectionState = new PlayerConnectionState(this);
-        ValidateDependencies();
     }
 
     private void InitializeComponents()
@@ -94,16 +107,37 @@ public class RigidBodyMovement : MonoBehaviour
         if (orientation != null) orientation.rotation = Quaternion.Euler(0, 0, 0);
         rb.linearVelocity = Vector3.zero;
         readyToJump = true;
-        currentState = GroundState;
+        CheckInitialState();
     }
 
     private void Start()
     {
         rb.useGravity = false;
         rb.freezeRotation = true;
-        currentState = GroundState;
+        CheckInitialState();
         currentState.EnterState();
         if (data != null) moveSpeed = data.walkSpeed;
+    }
+
+    private void CheckInitialState()
+    {
+        if (sensor.OnMetalSurface)
+        {
+            currentState = MetalState;
+        }
+        if (!sensor.IsGrounded)
+        {
+            currentState = AirborneState;
+        }
+
+        if (sensor.IsGrounded)
+        {
+            currentState = GroundState;
+        }
+        if (sensor.OnPlasticSurface)
+        {
+            currentState = PlasticState;
+        }
     }
 
     private void OnEnable()
@@ -156,7 +190,8 @@ public class RigidBodyMovement : MonoBehaviour
     private void HandleGravityInverted(bool inverted)
     {
         if (gravity == null) return;
-        if (sensor.InGravityZone)
+        Debug.Log("can Flip" + CanFlipGravity);
+        if (CanFlipGravity)
         {
             gravity.RequestInvert(inverted);
         }
@@ -166,7 +201,9 @@ public class RigidBodyMovement : MonoBehaviour
     {
         if (data == null) return;
         jump.SetJumpBuffer();
-        if (jump.readyToJump && jump.coyoteTimeCounter > 0f && jump.jumpBufferCounter > 0f)
+        Debug.Log("ready to jump" + jump.readyToJump + "coyote"+ jump.coyoteTimeCounter +"buffer"+  jump.jumpBufferCounter + "canjump" + CanJump);
+        
+        if (jump.readyToJump && jump.coyoteTimeCounter > 0f && jump.jumpBufferCounter > 0f && CanJump)
         {
             jump.ExecuteJump();
         }
@@ -174,7 +211,7 @@ public class RigidBodyMovement : MonoBehaviour
 
     private void HandleJumpCut()
     {
-        jump.HandleJumpCute();
+        jump.HandleJumpCut();
     }
 
     private void MyInput()
@@ -183,6 +220,10 @@ public class RigidBodyMovement : MonoBehaviour
         verticalInput = cachedMove.y;
     }
 
+    public static float GetVerticalVelocity(Rigidbody rb, Vector3 upDirection) {
+        return Vector3.Dot(rb.linearVelocity, upDirection);
+    }
+    
     public void ApplyMovement(float targetSpeed, float acceleration, bool connected)
     {
         if (data == null) return;

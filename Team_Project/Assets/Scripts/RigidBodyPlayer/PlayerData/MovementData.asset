@@ -20,6 +20,8 @@ MonoBehaviour:
   jumpCooldown: 0.25
   gravityMultiplier: 2
   springForce: 45
+  coyoteTime: 0.15
+  jumpBuffer: 0.2
   groundLayer:
     serializedVersion: 2
     m_Bits: 64

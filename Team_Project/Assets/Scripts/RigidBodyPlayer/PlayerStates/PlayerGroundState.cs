@@ -8,21 +8,31 @@ public class PlayerGroundState : PlayerBaseState
 
     public override void EnterState()
     {
+        Hub.CanJump = true;
         Hub.jump.readyToJump = true;
     }
 
     public override void UpdateState()
     {
+        if (Hub.sensor.OnPlasticSurface)
+        {
+            Hub.TransitionToState(Hub.PlasticState);
+        }
+
         if (!Hub.sensor.IsGrounded)
         {
             Hub.TransitionToState(Hub.AirborneState);
         }
-
-        if (Hub.gravity.invertRequested && Hub.sensor.InGravityZone)
-        {
-            Hub.TransitionToState(Hub.FlipState);
-        }
         
+        if (Hub.sensor.OnMovingPlatform)
+        {
+            Hub.TransitionToState(Hub.ConnectionState);
+        }
+
+        if (Hub.gravity.invertRequested && Hub.CanFlipGravity)
+        {
+            Hub.TransitionToState(Hub.FlipState);   
+        }
     }
 
     public override void FixedUpdateState()

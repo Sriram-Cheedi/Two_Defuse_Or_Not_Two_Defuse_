@@ -7,6 +7,8 @@ public class PlayerSensor : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
 
     public bool IsGrounded { get; private set; }
+    public bool OnMetalSurface { get; private set; }
+    public bool OnPlasticSurface { get; private set; }
     public bool OnSlope { get; private set; }
     public bool OnMovingPlatform { get; private set; }
     public bool OnFlip { get; private set; }
@@ -48,12 +50,16 @@ public class PlayerSensor : MonoBehaviour
             OnSlope = hit.collider.CompareTag("Slide");
             OnMovingPlatform = hit.collider.CompareTag("MovingPlatform");
             OnFlip = hit.collider.CompareTag("FlipSection");
+            OnMetalSurface = hit.collider.CompareTag("MetalSurface");
+            OnPlasticSurface = hit.collider.CompareTag("PlasticSurface");
             connectedBody = hit.rigidbody;
         }
         else
         {
             IsGrounded = false;
             OnSlope = false;
+            OnMetalSurface = false;
+            OnPlasticSurface = false;
             OnMovingPlatform = false;
             OnFlip = false;
             connectedBody = null;

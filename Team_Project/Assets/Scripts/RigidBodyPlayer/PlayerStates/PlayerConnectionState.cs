@@ -9,7 +9,7 @@ public class PlayerConnectionState : PlayerBaseState
 
     public override void EnterState()
     {
-        
+        Hub.CanJump = true;
     }
 
     public override void UpdateState()
@@ -17,6 +17,16 @@ public class PlayerConnectionState : PlayerBaseState
         if (!Hub.sensor.IsGrounded)
         {
             Hub.TransitionToState(Hub.AirborneState);
+        }
+
+        if (Hub.sensor.OnMetalSurface)
+        {
+            Hub.TransitionToState(Hub.MetalState);
+        }
+
+        if (Hub.sensor.OnPlasticSurface)
+        {
+            Hub.TransitionToState(Hub.PlasticState);
         }
     }
 
