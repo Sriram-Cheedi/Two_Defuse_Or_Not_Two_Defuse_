@@ -23,10 +23,8 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
     
     private float pingBombTimer = 0.5f;
     private float pongTimeoutSeconds = 2.0f;
-    private float lastPingTime = -999f;
-    private float lastPongTime = -999f;
-
-    
+    private float lastPingTime;
+    private float lastPongTime;
     
     public void Start() { }
     public void Awake()
@@ -240,7 +238,6 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
             Debug.LogError("Could not open port: " + error.Message);
             Disconnect();
             return false;
-
         }
         
     }

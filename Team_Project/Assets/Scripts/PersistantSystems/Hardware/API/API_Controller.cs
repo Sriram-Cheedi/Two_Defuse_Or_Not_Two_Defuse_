@@ -83,6 +83,12 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         {
             Debug.Log("Setting Handle Message for Real Serial Controller");
             ActivePortController.Received += HandleMessage;
+            var serialPortController = ActivePortController as SerialPortController;
+            if (serialPortController != null)
+            {
+                serialPortController.bombDisconnected += HandleDisconnect;
+                serialPortController.bombReconnected += HandleReconnect;
+            }
         }
         else
         {
@@ -101,7 +107,31 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         if (ActivePortController != null)
         {
             ActivePortController.Received -= HandleMessage;
+            var serialPortController = ActivePortController as SerialPortController;
+            if (serialPortController != null)
+            {
+                serialPortController.bombDisconnected -= HandleDisconnect;
+                serialPortController.bombReconnected -= HandleReconnect;
+            }
             ActivePortController.OnApplicationQuit();
+        }
+    }
+    
+    private void HandleDisconnect()
+    {
+        Debug.LogWarning("Hardware disconnected");
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnHardwareDisconnect();
+        }
+    }
+
+    private void HandleReconnect()
+    {
+        Debug.LogWarning("Hardware reconnected");
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnHardwareReconnect();
         }
     }
 
