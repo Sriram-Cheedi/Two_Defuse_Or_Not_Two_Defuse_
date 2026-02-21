@@ -23,7 +23,7 @@ public class PlayerSlopeState : PlayerBaseState
 
     public override void FixedUpdateState()
     {
-        IMovementStrategy strategy = MovementStrategyFactory.GetStrategy(Hub);
+        IMovementStrategy strategy = MovementStrategyFactory.GetMovementStrategy(Hub);
         strategy.ApplyMovement(Hub);
     }
 

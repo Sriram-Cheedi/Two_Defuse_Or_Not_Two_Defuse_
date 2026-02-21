@@ -1,3 +1,4 @@
+using RigidBodyPlayer.Jump;
 using RigidBodyPlayer.Movement;
 using UnityEngine;
 
@@ -33,8 +34,10 @@ public class PlayerConnectionState : PlayerBaseState
 
     public override void FixedUpdateState()
     {
-        IMovementStrategy strategy = MovementStrategyFactory.GetStrategy(Hub);
-        strategy.ApplyMovement(Hub);
+        IMovementStrategy moveStrategy = MovementStrategyFactory.GetMovementStrategy(Hub);
+        moveStrategy.ApplyMovement(Hub);
+        IJumpStrategy jumpStrategy = MovementStrategyFactory.GetJumpStrategy(Hub);
+        jumpStrategy.ExecuteJump(Hub);
     }
 
     public override void ExitState()

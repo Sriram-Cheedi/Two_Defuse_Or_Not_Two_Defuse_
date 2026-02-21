@@ -11,6 +11,8 @@ public class MovementData : ScriptableObject
 
     [Header("Jumping & Gravity")]
     public float jumpForce = 11.5f;
+    public float jumpForceOnMetal = 3f;
+    public float jumpForceOnPlastic = 11.5f;
     public float jumpCooldown = 0.25f;
     public float gravityMultiplier = 2.0f;
     public float springForce = 45f;

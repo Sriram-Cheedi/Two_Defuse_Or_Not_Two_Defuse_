@@ -1,4 +1,6 @@
-﻿namespace RigidBodyPlayer.Movement
+﻿using RigidBodyPlayer.Jump;
+
+namespace RigidBodyPlayer.Movement
 {
     public class MovementStrategyFactory
     {
@@ -6,8 +8,20 @@
         private static readonly IMovementStrategy Air = new AirMovementStrategy();
         private static readonly IMovementStrategy Slope  = new SlopeMovementStrategy();
         private static readonly IMovementStrategy MovingPlayform = new ConnectedMovementStrategy();
+        
+        private static readonly IJumpStrategy METAL = new MetalJumpStrategy();
+        private static readonly IJumpStrategy PLASTIC = new PlasticJumpStrategy();
+        
+        public static IJumpStrategy GetJumpStrategy(RigidBodyMovement hub)
+        {
+            if (hub.sensor.OnMetalSurface)
+            {
+                return METAL;
+            }
+            return PLASTIC;
+        }
 
-        public static IMovementStrategy GetStrategy(RigidBodyMovement hub)
+        public static IMovementStrategy GetMovementStrategy(RigidBodyMovement hub)
         {
             if (!hub.sensor.IsGrounded)
             {

@@ -1,3 +1,5 @@
+using RigidBodyPlayer.Jump;
+using RigidBodyPlayer.Movement;
 using UnityEngine;
 
 public class PlayerPlasticState : PlayerGroundState

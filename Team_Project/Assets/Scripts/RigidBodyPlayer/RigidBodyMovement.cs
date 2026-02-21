@@ -1,3 +1,5 @@
+using RigidBodyPlayer.Jump;
+using RigidBodyPlayer.Movement;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -205,15 +207,18 @@ public class RigidBodyMovement : MonoBehaviour
         jump.SetJumpBuffer();
         Debug.Log("ready to jump" + jump.readyToJump + "coyote"+ jump.coyoteTimeCounter +"buffer"+  jump.jumpBufferCounter + "canjump" + CanJump);
         
-        if (jump.readyToJump && jump.coyoteTimeCounter > 0f && jump.jumpBufferCounter > 0f && CanJump)
-        {
-            jump.ExecuteJump();
-        }
+        // if (jump.readyToJump && jump.coyoteTimeCounter > 0f && jump.jumpBufferCounter > 0f && CanJump)
+        // {
+        //     jump.ExecuteJump();
+        // }
+        
     }
 
     private void HandleJumpCut()
     {
-        jump.HandleJumpCut();
+        // jump.HandleJumpCut();
+        IJumpStrategy strategy = MovementStrategyFactory.GetJumpStrategy(this);
+        strategy.ApplyJumpCut(this);
     }
 
     private void MyInput()

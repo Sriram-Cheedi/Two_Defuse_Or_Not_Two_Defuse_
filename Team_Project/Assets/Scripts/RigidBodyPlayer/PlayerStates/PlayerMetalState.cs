@@ -1,3 +1,5 @@
+using RigidBodyPlayer.Jump;
+using RigidBodyPlayer.Movement;
 using UnityEngine;
 
 public class PlayerMetalState : PlayerGroundState
@@ -7,7 +9,7 @@ public class PlayerMetalState : PlayerGroundState
     }
     public override void EnterState()
     {
-        Hub.CanJump = false;
+        Hub.CanJump = true;
         Hub.jump.readyToJump = true;
         Hub.CanFlipGravity = false;
     }

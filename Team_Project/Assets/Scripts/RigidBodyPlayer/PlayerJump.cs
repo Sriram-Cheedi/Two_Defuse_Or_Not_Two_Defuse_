@@ -37,10 +37,10 @@ public class PlayerJump : MonoBehaviour
         jumpBufferCounter = Hub.data.jumpBuffer;
     }
 
-    public void ExecuteJump()
+    public void OnJumpExecuted()
     {
         ResetJump();
-        Hub.rb.AddForce(transform.up * Hub.data.jumpForce, ForceMode.Impulse);
+        // Hub.rb.AddForce(transform.up * Hub.data.jumpForce, ForceMode.Impulse);
         StartCoroutine(JumpCooldownRoutine());
         Hub.TransitionToState(Hub.AirborneState);
     }
@@ -63,11 +63,10 @@ public class PlayerJump : MonoBehaviour
     private void ResetJump()
     {
         readyToJump = false;
-        
         coyoteTimeCounter = 0f;
         jumpBufferCounter = 0f;
-        Vector3 localUp = Hub.rb.transform.up;
-        Vector3 verticalVelocity = Vector3.Project(Hub.rb.linearVelocity, localUp);
-        Hub.rb.linearVelocity -= verticalVelocity;
+        // Vector3 localUp = Hub.rb.transform.up;
+        // Vector3 verticalVelocity = Vector3.Project(Hub.rb.linearVelocity, localUp);
+        // Hub.rb.linearVelocity -= verticalVelocity;
     }
 }
