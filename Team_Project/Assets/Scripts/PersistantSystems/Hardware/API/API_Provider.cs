@@ -12,7 +12,10 @@ public class API_Provider : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); 
+            if (Application.isPlaying)
+            {
+                DontDestroyOnLoad(gameObject);
+            }
         }
         else
         {
