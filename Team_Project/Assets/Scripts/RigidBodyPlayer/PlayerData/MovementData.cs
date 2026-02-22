@@ -28,6 +28,7 @@ public class MovementData : ScriptableObject
     public float slopeSpeed = 10f;
 
     [Header("Visuals")]
-    public float camDownSpeed = 5f;
+    public float crouchTransitionSpeed = 5f;
+    public float crouchHeightMultiplier = 0.5f;
     public float rotationSpeed = 200f;
 }

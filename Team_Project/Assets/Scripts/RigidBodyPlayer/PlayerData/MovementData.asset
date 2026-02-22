@@ -17,7 +17,7 @@ MonoBehaviour:
   groundAcceleration: 35
   airAcceleration: 20
   jumpForce: 11.5
-  jumpForceOnMetal: 11.5
+  jumpForceOnMetal: 3
   jumpForceOnPlastic: 11.5
   jumpCooldown: 0.25
   gravityMultiplier: 2

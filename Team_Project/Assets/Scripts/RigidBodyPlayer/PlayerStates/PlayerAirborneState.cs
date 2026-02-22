@@ -9,7 +9,7 @@ public class PlayerAirborneState : PlayerBaseState
 
     public override void EnterState()
     {
-        Hub.CanJump = false;
+        Hub.canJump = false;
     }
     public override void ExitState(){}
 

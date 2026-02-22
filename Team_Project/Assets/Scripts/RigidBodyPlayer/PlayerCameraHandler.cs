@@ -1,19 +1,29 @@
+using RigidBodyPlayer.Modules;
 using UnityEngine;
 
 [RequireComponent(typeof(CapsuleCollider))]
-public class PlayerCameraHandler : MonoBehaviour
+public class PlayerCameraHandler : MonoBehaviour, IPlayerModule
 {
     [SerializeField] private CapsuleCollider controller;
     [SerializeField] public Transform cameraPosition;
     [SerializeField] public PlayerCam playerCam;
-
-    private void Awake()
+    public void Initialize(RigidBodyMovement hub)
     {
         if (controller == null) controller = GetComponent<CapsuleCollider>();
         if (playerCam == null) playerCam = FindAnyObjectByType<PlayerCam>();
     }
 
-    private void LateUpdate()
+    public void Tick()
+    {
+        
+    }
+
+    public void FixedTick()
+    {
+        
+    }
+
+    public void LateTick()
     {
         if (controller == null || cameraPosition == null ||  playerCam == null) return;
 

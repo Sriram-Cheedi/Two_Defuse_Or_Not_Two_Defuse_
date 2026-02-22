@@ -1,37 +1,32 @@
 using System.Collections;
+using RigidBodyPlayer.Modules;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody))]
-public class PlayerGravity : MonoBehaviour
+public class PlayerGravity : MonoBehaviour, IPlayerModule
 {
-    [Header("Data")]
-    [SerializeField] private MovementData data;
+    private RigidBodyMovement Hub;
 
     [Header("Refs")]
     [SerializeField] private PlayerSensor sensor;
     [SerializeField] private PlayerInputRelay relay;
-    [SerializeField] private PlayerInput playerInput;      // kept if you still disable action map (Phase 2 will remove)
+    [SerializeField] private PlayerInput playerInput;
     [SerializeField] private Transform cameraPosition;
     [SerializeField] private PlayerCam playerCam;
 
     [Header("Rotation")]
     [SerializeField] private float targetRotation = 180f;
 
-    private Rigidbody rb;
-
     public Vector3 gravityDir = Vector3.down;
     public bool invertRequested;
     private bool hasInvertRequest;
-    private bool isRotating;
-
-    public bool IsRotating => isRotating;
-
-    private void Awake()
+    
+    public void Initialize(RigidBodyMovement hub)
     {
-        rb = GetComponent<Rigidbody>();
-        rb.useGravity = false;
-
+        Hub = hub;
+        Hub.rb.useGravity = false;
+        if (relay == null) relay = GetComponent<PlayerInputRelay>();
+        if (relay != null) relay.RespawnRequested += ResetGravity;
         if (sensor == null) sensor = GetComponent<PlayerSensor>();
         if (relay == null) relay = GetComponent<PlayerInputRelay>();
         if (playerInput == null) playerInput = GetComponent<PlayerInput>();
@@ -39,14 +34,28 @@ public class PlayerGravity : MonoBehaviour
         if (gravityDir == Vector3.zero) gravityDir = Vector3.down;
     }
 
-    private void OnEnable()
+    public void Tick()
     {
-        if (relay == null) relay = GetComponent<PlayerInputRelay>();
-        if (relay != null) relay.RespawnRequested += ResetGravity;
+        
     }
 
-    private void OnDisable()
+    public void FixedTick()
     {
+        ApplyCustomGravity();
+    }
+
+    public void LateTick()
+    {
+        
+    }
+
+    private void OnEnable()
+    {
+        
+    }
+    private void OnDestroy()
+    {
+        var relay = GetComponent<PlayerInputRelay>();
         if (relay != null) relay.RespawnRequested -= ResetGravity;
     }
     
@@ -78,11 +87,11 @@ public class PlayerGravity : MonoBehaviour
 
     private void ApplyCustomGravity()
     {
-        if (data == null) return;
+        if (Hub.data == null) return;
 
         if (sensor == null || !sensor.IsGrounded || !sensor.OnSlope)
         {
-            rb.AddForce(gravityDir * 9.81f * data.gravityMultiplier, ForceMode.Acceleration);
+            Hub.rb.AddForce(gravityDir * 9.81f * Hub.data.gravityMultiplier, ForceMode.Acceleration);
         }
     }
 
@@ -94,11 +103,6 @@ public class PlayerGravity : MonoBehaviour
         }
 
         hasInvertRequest = invertRequested;
-    }
-
-    private void InvertKeyBoardGravityDirection()
-    {
-        gravityDir = -gravityDir;
     }
 
     // private IEnumerator SmoothRotate()
@@ -143,11 +147,10 @@ public class PlayerGravity : MonoBehaviour
 
         invertRequested = false;
         hasInvertRequest = false;
-        isRotating = false;
 
         gravityDir = Vector3.down;
 
-        rb.rotation = Quaternion.identity;
+        Hub.rb.rotation = Quaternion.identity;
 
         if (cameraPosition != null)
             cameraPosition.localRotation = Quaternion.identity;

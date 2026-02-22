@@ -9,8 +9,8 @@ public class PlayerPlasticState : PlayerGroundState
     }
     public override void EnterState()
     {
-        Hub.CanJump = true;
+        Hub.canJump = true;
         Hub.jump.readyToJump = true;
-        Hub.CanFlipGravity = true;
+        Hub.canFlipGravity = true;
     }
 }

@@ -11,7 +11,7 @@ public class PlayerConnectionState : PlayerBaseState
 
     public override void EnterState()
     {
-        Hub.CanJump = true;
+        Hub.canJump = true;
     }
 
     public override void UpdateState()

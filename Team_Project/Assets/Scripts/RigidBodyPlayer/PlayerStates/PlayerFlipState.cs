@@ -11,7 +11,7 @@ public class PlayerFlipState : PlayerBaseState
     public override void EnterState()
     {
         Hub.gravity.gravityDir = -Hub.gravity.gravityDir;
-        Hub.CanJump = false;
+        Hub.canJump = false;
         remaining = targetRotation;
     }
 

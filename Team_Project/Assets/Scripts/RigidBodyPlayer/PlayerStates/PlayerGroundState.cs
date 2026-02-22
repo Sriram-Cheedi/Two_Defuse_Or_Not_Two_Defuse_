@@ -10,7 +10,7 @@ public class PlayerGroundState : PlayerBaseState
 
     public override void EnterState()
     {
-        Hub.CanJump = true;
+        Hub.canJump = true;
         Hub.jump.readyToJump = true;
     }
 
@@ -31,7 +31,7 @@ public class PlayerGroundState : PlayerBaseState
             Hub.TransitionToState(Hub.ConnectionState);
         }
 
-        if (Hub.gravity.invertRequested && Hub.CanFlipGravity)
+        if (Hub.gravity.invertRequested && Hub.canFlipGravity)
         {
             Hub.TransitionToState(Hub.FlipState);   
         }

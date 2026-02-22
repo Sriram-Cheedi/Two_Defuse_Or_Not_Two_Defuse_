@@ -1,21 +1,20 @@
 using System.Collections;
+using RigidBodyPlayer.Modules;
 using UnityEngine;
 
-public class PlayerJump : MonoBehaviour
+public class PlayerJump : MonoBehaviour, IPlayerModule
 {
     public float coyoteTimeCounter;
     public float jumpBufferCounter;
     public bool readyToJump;
-    private PlayerInputRelay relay;
     private RigidBodyMovement Hub;
-
-    private void Awake()
-    {
-        if (Hub == null) Hub = GetComponent<RigidBodyMovement>();
-        if (relay == null) relay = GetComponent<PlayerInputRelay>();
-    }
     
-    public void UpdateJumpState()
+    public void Initialize(RigidBodyMovement hub)
+    {
+        Hub = hub;
+    }
+
+    public void Tick()
     {
         if (Hub.sensor.IsGrounded)
         {
@@ -32,6 +31,17 @@ public class PlayerJump : MonoBehaviour
         }
     }
 
+    public void FixedTick()
+    {
+        
+    }
+
+    public void LateTick()
+    {
+        
+    }
+    
+
     public void SetJumpBuffer()
     {
         jumpBufferCounter = Hub.data.jumpBuffer;
@@ -40,18 +50,8 @@ public class PlayerJump : MonoBehaviour
     public void OnJumpExecuted()
     {
         ResetJump();
-        // Hub.rb.AddForce(transform.up * Hub.data.jumpForce, ForceMode.Impulse);
         StartCoroutine(JumpCooldownRoutine());
         Hub.TransitionToState(Hub.AirborneState);
-    }
-
-    public void HandleJumpCut()
-    {
-        float verticalVelocity = Vector3.Dot(Hub.rb.linearVelocity, Hub.rb.transform.up);
-        if (verticalVelocity > 0f)
-        {
-            Hub.rb.linearVelocity -= transform.up * (verticalVelocity * 0.5f);
-        }
     }
     
     private IEnumerator JumpCooldownRoutine()
@@ -65,8 +65,5 @@ public class PlayerJump : MonoBehaviour
         readyToJump = false;
         coyoteTimeCounter = 0f;
         jumpBufferCounter = 0f;
-        // Vector3 localUp = Hub.rb.transform.up;
-        // Vector3 verticalVelocity = Vector3.Project(Hub.rb.linearVelocity, localUp);
-        // Hub.rb.linearVelocity -= verticalVelocity;
     }
 }

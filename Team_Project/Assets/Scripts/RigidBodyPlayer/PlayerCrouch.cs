@@ -1,13 +1,14 @@
+using RigidBodyPlayer.Modules;
 using UnityEngine;
 
 [RequireComponent(typeof(CapsuleCollider))]
-public class PlayerCrouch : MonoBehaviour
+public class PlayerCrouch : MonoBehaviour, IPlayerModule
 {
     [Header("Refs")]
     [SerializeField] private CapsuleCollider controller;
 
-    [Header("Tuning (copied from old script)")]
-    [SerializeField] private float camDownSpeed = 5f;
+    private RigidBodyMovement Hub;
+    
 
     // moved fields
     private float standCenterY;
@@ -16,22 +17,32 @@ public class PlayerCrouch : MonoBehaviour
     private Vector3 crouchOrigin;
     private Vector3 standOrigin;
 
-    private void Awake()
+    public void Initialize(RigidBodyMovement hub)
     {
         if (controller == null) controller = GetComponent<CapsuleCollider>();
-
-        // IDENTICAL setup from your old Awake
+        Hub = hub;
+        
         standHeight = controller.height;
         standCenterY = controller.center.y;
-        crouchHeight = controller.height / 2f;
+        crouchHeight = controller.height * Hub.data.crouchHeightMultiplier;
 
         SetStandCenter();
         SetCrouchCenter();
     }
 
-    public void UpdateCrouch(bool isCrouchPressed)
+    public void Tick()
     {
-        SetCrouch(isCrouchPressed);
+        SetCrouch(Hub.isCrouchPressed);
+    }
+
+    public void FixedTick()
+    {
+        
+    }
+
+    public void LateTick()
+    {
+        
     }
 
     private void SetCrouchCenter()
@@ -52,13 +63,13 @@ public class PlayerCrouch : MonoBehaviour
     {
         if (isCrouch)
         {
-            controller.height = Mathf.Lerp(controller.height, crouchHeight, camDownSpeed * Time.deltaTime);
-            controller.center = Vector3.Lerp(controller.center, crouchOrigin, camDownSpeed * Time.deltaTime);
+            controller.height = Mathf.Lerp(controller.height, crouchHeight, Hub.data.crouchTransitionSpeed * Time.deltaTime);
+            controller.center = Vector3.Lerp(controller.center, crouchOrigin, Hub.data.crouchTransitionSpeed * Time.deltaTime);
         }
         else
         {
-            controller.height = Mathf.Lerp(controller.height, standHeight, camDownSpeed * Time.deltaTime);
-            controller.center = Vector3.Lerp(controller.center, standOrigin, camDownSpeed * Time.deltaTime);
+            controller.height = Mathf.Lerp(controller.height, standHeight, Hub.data.crouchTransitionSpeed * Time.deltaTime);
+            controller.center = Vector3.Lerp(controller.center, standOrigin, Hub.data.crouchTransitionSpeed * Time.deltaTime);
         }
     }
 }
