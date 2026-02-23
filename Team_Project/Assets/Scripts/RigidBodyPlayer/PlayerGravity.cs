@@ -1,5 +1,6 @@
 using System.Collections;
 using RigidBodyPlayer.Modules;
+using RigidBodyPlayer.PlayerData;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -89,7 +90,7 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     {
         if (Hub.data == null) return;
 
-        if (sensor == null || !sensor.IsGrounded || !sensor.OnSlope)
+        if (sensor == null || !sensor.IsGrounded || sensor.CurrentSurface != SurfaceType.Slope)
         {
             Hub.rb.AddForce(gravityDir * 9.81f * Hub.data.gravityMultiplier, ForceMode.Acceleration);
         }

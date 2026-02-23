@@ -1,4 +1,5 @@
 ﻿using RigidBodyPlayer.Jump;
+using RigidBodyPlayer.PlayerData;
 
 namespace RigidBodyPlayer.Movement
 {
@@ -14,7 +15,7 @@ namespace RigidBodyPlayer.Movement
         
         public static IJumpStrategy GetJumpStrategy(RigidBodyMovement hub)
         {
-            if (hub.sensor.OnMetalSurface)
+            if (hub.sensor.CurrentSurface == SurfaceType.Metal)
             {
                 return METAL;
             }
@@ -26,7 +27,7 @@ namespace RigidBodyPlayer.Movement
             if (!hub.sensor.IsGrounded)
             {
                 return Air;
-            }else if (hub.sensor.OnSlope)
+            }else if (hub.sensor.CurrentSurface == SurfaceType.Slope)
             {
                 return Slope;
             }else if (hub.sensor.OnMovingPlatform)

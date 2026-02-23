@@ -2,6 +2,7 @@ using System;
 using RigidBodyPlayer.Jump;
 using RigidBodyPlayer.Modules;
 using RigidBodyPlayer.Movement;
+using RigidBodyPlayer.PlayerData;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -57,12 +58,12 @@ public class RigidBodyMovement : MonoBehaviour
     {
         InitializeComponents();
         InitializeModules();
-        InitiaizeStates();
+        InitializeStates();
         
         ValidateDependencies();
     }
 
-    private void InitiaizeStates()
+    private void InitializeStates()
     {
         GroundState = new PlayerGroundState(this);
         AirborneState = new PlayerAirborneState(this);
@@ -131,18 +132,26 @@ public class RigidBodyMovement : MonoBehaviour
 
     private void CheckInitialState()
     {
-        if (sensor.OnMetalSurface)
+        if (!sensor.IsGrounded)
         {
-            currentState = MetalState;
-        }else if (!sensor.IsGrounded)
+            TransitionToState(AirborneState);
+            return;
+        }
+
+        switch (sensor.CurrentSurface)
         {
-            currentState = AirborneState;
-        }else if (sensor.OnPlasticSurface)
-        {
-            currentState = PlasticState;
-        }else
-        {
-            currentState = GroundState;
+            case SurfaceType.Metal:
+                TransitionToState(MetalState);
+                break;
+            case SurfaceType.Plastic:
+                TransitionToState(MetalState);
+                break;
+            case SurfaceType.Slope:
+                TransitionToState(SlopeState);
+                break;
+            default:
+                TransitionToState(GroundState);
+                break;
         }
     }
 
@@ -186,7 +195,7 @@ public class RigidBodyMovement : MonoBehaviour
     {
         Debug.Log("RotateLevel");
         if (gravity == null || sensor == null) return;
-        gravity.ProcessAccelerometer(accelerometer, sensor.OnPlasticSurface, orientation);
+        gravity.ProcessAccelerometer(accelerometer, sensor.CurrentSurface == SurfaceType.Plastic, orientation);
     }
 
     private void HandleMove(Vector2 value) => cachedMove = value;

@@ -1,4 +1,5 @@
 using RigidBodyPlayer.Movement;
+using RigidBodyPlayer.PlayerData;
 using UnityEngine;
 
 public class PlayerAirborneState : PlayerBaseState
@@ -15,22 +16,30 @@ public class PlayerAirborneState : PlayerBaseState
 
     public override void UpdateState()
     {
-        if (Hub.sensor.OnSlope)
+        if (!Hub.sensor.IsGrounded)
         {
-            Hub.TransitionToState(Hub.SlopeState);
-        }else if (Hub.sensor.OnMovingPlatform)
+            return;
+        }
+        if (Hub.sensor.OnMovingPlatform)
         {
             Hub.TransitionToState(Hub.ConnectionState);
+            return;
         }
-        else if (Hub.sensor.OnMetalSurface)
+
+        switch (Hub.sensor.CurrentSurface)
         {
-            Hub.TransitionToState(Hub.MetalState);
-        }else if (Hub.sensor.OnPlasticSurface)
-        {
-            Hub.TransitionToState(Hub.PlasticState);
-        } else if (Hub.sensor.IsGrounded)
-        {
-            Hub.TransitionToState(Hub.GroundState);
+            case SurfaceType.Metal:
+                Hub.TransitionToState(Hub.MetalState);
+                break;
+            case SurfaceType.Plastic:
+                Hub.TransitionToState(Hub.PlasticState);
+                break;
+            case SurfaceType.Slope:
+                Hub.TransitionToState(Hub.SlopeState);
+                break;
+            default:
+                Hub.TransitionToState(Hub.GroundState);
+                break;
         }
     }
 

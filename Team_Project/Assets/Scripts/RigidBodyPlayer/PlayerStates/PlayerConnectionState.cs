@@ -1,5 +1,6 @@
 using RigidBodyPlayer.Jump;
 using RigidBodyPlayer.Movement;
+using RigidBodyPlayer.PlayerData;
 using UnityEngine;
 
 public class PlayerConnectionState : PlayerBaseState
@@ -19,16 +20,27 @@ public class PlayerConnectionState : PlayerBaseState
         if (!Hub.sensor.IsGrounded)
         {
             Hub.TransitionToState(Hub.AirborneState);
+            return;
+        }
+        if (Hub.sensor.OnMovingPlatform)
+        {
+            return;
         }
 
-        if (Hub.sensor.OnMetalSurface)
+        switch (Hub.sensor.CurrentSurface)
         {
-            Hub.TransitionToState(Hub.MetalState);
-        }
-
-        if (Hub.sensor.OnPlasticSurface)
-        {
-            Hub.TransitionToState(Hub.PlasticState);
+            case SurfaceType.Metal:
+                Hub.TransitionToState(Hub.MetalState);
+                break;
+            case SurfaceType.Plastic:
+                Hub.TransitionToState(Hub.PlasticState);
+                break;
+            case SurfaceType.Slope:
+                Hub.TransitionToState(Hub.SlopeState);
+                break;
+            default:
+                Hub.TransitionToState(Hub.GroundState);
+                break;
         }
     }
 

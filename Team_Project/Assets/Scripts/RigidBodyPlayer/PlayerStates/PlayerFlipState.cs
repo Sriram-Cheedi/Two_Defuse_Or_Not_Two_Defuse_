@@ -47,9 +47,11 @@ public class PlayerFlipState : PlayerBaseState
         if (Hub.sensor.IsGrounded)
         {
             Hub.TransitionToState(Hub.GroundState);
+            return;
         }else if (!Hub.sensor.IsGrounded)
         {
             Hub.TransitionToState(Hub.AirborneState);
+            return;
         }
     }
 

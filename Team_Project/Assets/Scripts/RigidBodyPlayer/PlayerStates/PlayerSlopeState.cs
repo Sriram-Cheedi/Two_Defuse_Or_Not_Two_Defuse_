@@ -18,6 +18,7 @@ public class PlayerSlopeState : PlayerBaseState
         if (!Hub.sensor.IsGrounded)
         {
             Hub.TransitionToState(Hub.AirborneState);
+            return;
         }
     }
 

@@ -1,5 +1,6 @@
 using System;
 using RigidBodyPlayer.Modules;
+using RigidBodyPlayer.PlayerData;
 using UnityEngine;
 
 public class PlayerSensor : MonoBehaviour, IPlayerModule
@@ -8,11 +9,10 @@ public class PlayerSensor : MonoBehaviour, IPlayerModule
     [SerializeField] private LayerMask groundLayer;
 
     public bool IsGrounded { get; private set; }
-    public bool OnMetalSurface { get; private set; }
-    public bool OnPlasticSurface { get; private set; }
-    public bool OnSlope { get; private set; }
     public bool OnMovingPlatform { get; private set; }
     private RigidBodyMovement Hub;
+
+    public SurfaceType CurrentSurface { get; private set; }
 
     public Vector3 ConnectionVelocity { get; private set; }
     public RaycastHit GroundHit => slopeHit;
@@ -46,11 +46,6 @@ public class PlayerSensor : MonoBehaviour, IPlayerModule
     {
     }
 
-    public void UpdateSensor(Rigidbody rb)
-    {
-        
-    }
-
     private void GroundCheck()
     {
         float radius = controller.radius * 0.95f;
@@ -61,18 +56,22 @@ public class PlayerSensor : MonoBehaviour, IPlayerModule
         {
             IsGrounded = true;
             slopeHit = hit;
-            OnSlope = hit.collider.CompareTag("Slide");
-            OnMovingPlatform = hit.collider.CompareTag("MovingPlatform");
-            OnMetalSurface = hit.collider.CompareTag("MetalSurface");
-            OnPlasticSurface = hit.collider.CompareTag("PlasticSurface");
             connectedBody = hit.rigidbody;
+            if (hit.collider.TryGetComponent(out SurfaceIdentity identity))
+            {
+                CurrentSurface = identity.type;
+                OnMovingPlatform = identity.isMovingPlatform;
+            }
+            else
+            {
+                CurrentSurface = SurfaceType.Default;
+                OnMovingPlatform = false;
+            }
         }
         else
         {
             IsGrounded = false;
-            OnSlope = false;
-            OnMetalSurface = false;
-            OnPlasticSurface = false;
+            CurrentSurface = SurfaceType.Default;
             OnMovingPlatform = false;
             connectedBody = null;
         }
