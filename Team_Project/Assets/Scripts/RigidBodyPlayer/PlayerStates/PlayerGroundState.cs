@@ -50,8 +50,6 @@ public class PlayerGroundState : PlayerBaseState
                 Hub.TransitionToState(Hub.GroundState);
                 break;
         }
-
-        
     }
 
     public override void FixedUpdateState()

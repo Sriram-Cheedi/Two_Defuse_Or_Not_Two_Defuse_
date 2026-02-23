@@ -10,6 +10,7 @@ public class PlayerFlipState : PlayerBaseState
 
     public override void EnterState()
     {
+        Hub.rb.linearVelocity = Vector3.zero;
         Hub.gravity.gravityDir = -Hub.gravity.gravityDir;
         Hub.canJump = false;
         remaining = targetRotation;

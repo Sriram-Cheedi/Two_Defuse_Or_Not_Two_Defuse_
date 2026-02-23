@@ -13,4 +13,5 @@ public class PlayerMetalState : PlayerGroundState
         Hub.jump.readyToJump = true;
         Hub.canFlipGravity = false;
     }
+    
 }

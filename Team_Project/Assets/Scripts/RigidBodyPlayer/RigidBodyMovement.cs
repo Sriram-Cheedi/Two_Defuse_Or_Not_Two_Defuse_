@@ -39,7 +39,7 @@ public class RigidBodyMovement : MonoBehaviour
     [Header("Camera")] public Transform orientation;
     [SerializeField] private PlayerCam playerCam;
 
-    [Header("External")] private API_Provider _API_Provider = API_Provider.Instance;
+    [Header("External")]
     private API_Controller_Interface _activeHardware;
     private PlayerInputRelay relay;
 
@@ -59,7 +59,6 @@ public class RigidBodyMovement : MonoBehaviour
         InitializeComponents();
         InitializeModules();
         InitializeStates();
-        
         ValidateDependencies();
     }
 
@@ -79,7 +78,6 @@ public class RigidBodyMovement : MonoBehaviour
         controller = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
         if (relay == null) relay = GetComponent<PlayerInputRelay>();
-        // _activeHardware = _API_Provider.ActiveAPIController;
         if (orientation == null) orientation = transform.Find("Orientation");
         if (playerCam == null) playerCam = FindAnyObjectByType<PlayerCam>();
 
@@ -126,6 +124,14 @@ public class RigidBodyMovement : MonoBehaviour
 
     private void Start()
     {
+        if (_activeHardware == null && API_Provider.Instance != null)
+        {
+            _activeHardware = API_Provider.Instance.ActiveAPIController;
+            if (_activeHardware != null)
+            {
+                _activeHardware.OnImuChanged += RotateLevel;
+            }
+        }
         CheckInitialState();
         currentState.EnterState();
     }
@@ -157,6 +163,10 @@ public class RigidBodyMovement : MonoBehaviour
 
     private void OnEnable()
     {
+        if (_activeHardware == null)
+        {
+            _activeHardware = API_Provider.Instance.ActiveAPIController;
+        }
 
         if (_activeHardware != null)
         {
@@ -195,7 +205,7 @@ public class RigidBodyMovement : MonoBehaviour
     {
         Debug.Log("RotateLevel");
         if (gravity == null || sensor == null) return;
-        gravity.ProcessAccelerometer(accelerometer, sensor.CurrentSurface == SurfaceType.Plastic, orientation);
+        gravity.ProcessAccelerometer(accelerometer, orientation);
     }
 
     private void HandleMove(Vector2 value) => cachedMove = value;

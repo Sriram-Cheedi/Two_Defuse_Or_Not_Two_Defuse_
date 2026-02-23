@@ -60,9 +60,9 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
         if (relay != null) relay.RespawnRequested -= ResetGravity;
     }
     
-    public void ProcessAccelerometer(Vector3 accelerometer, bool canFlip, Transform orientation)
+    public void ProcessAccelerometer(Vector3 accelerometer, Transform orientation)
     {
-        if (!canFlip || orientation == null) return;
+        if (orientation == null) return;
 
         // Are we upside down relative to world down?
         bool isUpsideDown = Vector3.Dot(Vector3.down, -orientation.up) < 0;
@@ -96,15 +96,15 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
         }
     }
 
-    private void InvertGyroGravityDirection()
-    {
-        if (!hasInvertRequest && invertRequested)
-        {
-            gravityDir = -gravityDir;
-        }
-
-        hasInvertRequest = invertRequested;
-    }
+    // private void InvertGyroGravityDirection()
+    // {
+    //     if (!hasInvertRequest && invertRequested)
+    //     {
+    //         gravityDir = -gravityDir;
+    //     }
+    //
+    //     hasInvertRequest = invertRequested;
+    // }
 
     // private IEnumerator SmoothRotate()
     // {
