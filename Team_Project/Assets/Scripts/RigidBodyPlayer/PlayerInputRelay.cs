@@ -107,8 +107,8 @@ public class PlayerInputRelay : MonoBehaviour
 
     private void OnNumberInput(InputAction.CallbackContext ctx)
     {
+        if (!ctx.ReadValueAsButton()) return;
         string keyname = ctx.control.name;
-        
         char lastChar = keyname[keyname.Length - 1];
         Debug.Log(lastChar);
 
