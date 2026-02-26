@@ -8,6 +8,7 @@ public class MovementData : ScriptableObject
     public float crouchSpeed = 5f;
     public float groundAcceleration = 35f;
     public float airAcceleration = 15f;
+    public float airApexAcceleration = 25f;
 
     [Header("Jumping & Gravity")]
     public float jumpForceOnMetal = 11.5f;

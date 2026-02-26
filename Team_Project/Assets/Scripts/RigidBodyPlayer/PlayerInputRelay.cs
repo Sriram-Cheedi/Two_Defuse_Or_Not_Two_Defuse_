@@ -10,12 +10,12 @@ public class PlayerInputRelay : MonoBehaviour
     public event Action<Vector2> Move;
     public event Action<Vector2> Look;
     public event Action JumpPressed;
-    public event Action JumpCanceled;
     public event Action<bool> Crouch;
     public event Action<bool> InvertGravity;
     public event Action<int> NumberPressed;
     public event Action RespawnRequested;
-    private InputAction move, look, jump, crouch, invertGravity;
+    public event Action GuessSubmitted;
+    private InputAction move, look, jump, crouch, invertGravity, enter;
     private InputAction keypressNumbers;
 
     public Vector2 MoveValue { get; private set; }
@@ -34,6 +34,7 @@ public class PlayerInputRelay : MonoBehaviour
         crouch = input.actions["Crouch"];
         invertGravity = input.actions["InvertGravity"];
         keypressNumbers = input.actions["NumKey"];
+        enter = input.actions["Enter"];
     }
 
     private void OnEnable()
@@ -54,6 +55,9 @@ public class PlayerInputRelay : MonoBehaviour
         invertGravity.canceled += OnInvertGravity;
         
         keypressNumbers.performed += OnNumberInput;
+        
+        enter.performed += OnEnter;
+        enter.canceled += OnEnter;
     }
 
     private void OnDisable()
@@ -74,6 +78,9 @@ public class PlayerInputRelay : MonoBehaviour
         invertGravity.canceled -= OnInvertGravity;
         
         keypressNumbers.performed -= OnNumberInput;
+        
+        enter.performed -= OnEnter;
+        enter.canceled -= OnEnter;
     }
 
     private void OnMove(InputAction.CallbackContext ctx)
@@ -91,7 +98,6 @@ public class PlayerInputRelay : MonoBehaviour
     private void OnJump(InputAction.CallbackContext ctx)
     {
         if (ctx.performed) JumpPressed?.Invoke();
-        if (ctx.canceled) JumpCanceled?.Invoke();
     }
 
     private void OnCrouch(InputAction.CallbackContext ctx)
@@ -120,9 +126,16 @@ public class PlayerInputRelay : MonoBehaviour
             NumberPressed?.Invoke(digit);
         }
     }
+    
+    private void OnEnter(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed) GuessSubmitted?.Invoke();
+    }
 
     public void CallRepawn()
     {
         RespawnRequested?.Invoke();
     }
+
+    
 }

@@ -68,19 +68,19 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
         float relativeVerticalVelocity = GetRelativeVerticalVelocity();
         float baseGravityMagnitude = Physics.gravity.magnitude;
 
-        if (relativeVerticalVelocity > 0f)
+        if (!Hub.IsJumpHeld && relativeVerticalVelocity > 0f)
         {
-            return Physics.gravity.magnitude * Hub.data.fallMultiplier;
+            return baseGravityMagnitude * Hub.data.fallMultiplier;
         }
         
         if (!Hub.IsJumpHeld && relativeVerticalVelocity < 0f)
         {
-            return Physics.gravity.magnitude * Hub.data.jumpCutMultiplier;
+            return baseGravityMagnitude * Hub.data.jumpCutMultiplier;
         }
         
         if (!Hub.sensor.IsGrounded && Mathf.Abs(relativeVerticalVelocity)  < Hub.data.apexThreshold)
         {
-            return Physics.gravity.magnitude * Hub.data.apexGravityMultiplier;
+            return baseGravityMagnitude * Hub.data.apexGravityMultiplier;
         }
         
         return baseGravityMagnitude * Hub.data.gravityMultiplier;

@@ -104,6 +104,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Enter",
+                    "type": "Button",
+                    "id": "8049761e-2c03-41c2-bef8-4bd0b010a56a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -621,6 +630,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse;Gamepad",
                     "action": "NumKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fe92088d-317d-4f8f-ba9d-592a8ef28388",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse;Gamepad",
+                    "action": "Enter",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

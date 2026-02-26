@@ -15,13 +15,14 @@ MonoBehaviour:
   walkSpeed: 10
   crouchSpeed: 5
   groundAcceleration: 35
-  airAcceleration: 20
+  airAcceleration: 15
+  airApexAcceleration: 20
   jumpForceOnMetal: 3
   jumpForceOnPlastic: 11.5
   jumpCutMultiplier: 5
-  apexGravityMultiplier: 0.5
+  apexGravityMultiplier: 1
   apexThreshold: 0.5
-  fallMultiplier: 1.5
+  fallMultiplier: 3
   jumpCooldown: 0.25
   gravityMultiplier: 2
   coyoteTime: 0.15

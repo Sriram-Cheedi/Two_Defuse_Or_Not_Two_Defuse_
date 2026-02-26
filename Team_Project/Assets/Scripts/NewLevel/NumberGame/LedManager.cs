@@ -36,6 +36,7 @@ public class LedManager : MonoBehaviour
         if (relay != null)
         {
             relay.NumberPressed += HandleDigitInput;
+            relay.GuessSubmitted += SetMaterial;
         }
     }
     
@@ -44,6 +45,7 @@ public class LedManager : MonoBehaviour
         if (relay != null)
         {
             relay.NumberPressed -= HandleDigitInput;
+            relay.GuessSubmitted -= SetMaterial;
         }
     }
     
@@ -57,7 +59,6 @@ public class LedManager : MonoBehaviour
         int updatedDigit = (++guess[index]) % 10;
         guess[index] = updatedDigit;
         digitManager.SetDigits(index, updatedDigit);
-        SetMaterial();
     }
 
     private void DigitCorrect(bool[] solutionSlotUsed, bool[] guessSlotUsed)
