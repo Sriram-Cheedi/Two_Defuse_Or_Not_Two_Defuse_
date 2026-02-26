@@ -14,24 +14,29 @@ public class GameManager : MonoBehaviour
     public enum GameState { Menu, Playing, GameOver }
     public GameState currentState = GameState.Menu;
     [Header("Warning")]
-     private AudioSource WarningAudio;
-
+    private AudioSource WarningAudio;
+    
+    
+    private bool pause = false;
+    private float PreviousTimeScale = 1f;
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);   
         }
         else
         {
             Destroy(gameObject);
         }
+        WarningAudio = GetComponent<AudioSource>();
+        
     }
     public void Update()
     {
-        WarningAudio = GetComponent<AudioSource>();
 
-        if (bombTimer > 0.0f &&  currentState == GameState.Playing)
+        if (bombTimer > 0.0f &&  currentState == GameState.Playing && !pause)
         {
             bombTimer -= Time.deltaTime;
             if (currentState == GameState.Playing && bombTimer <= 5f && bombTimer > 0f)
@@ -44,8 +49,6 @@ public class GameManager : MonoBehaviour
                 if (WarningAudio.isPlaying)
                     WarningAudio.Stop();
             }
-
-        
             if (bombTimer <= 0 && currentState != GameState.GameOver)
             {
                 EndGame();
@@ -72,14 +75,49 @@ public class GameManager : MonoBehaviour
         currentState = GameState.GameOver;
         SceneManager.LoadScene("Explode");
         StartCoroutine(GameoverAnimation());
-        
-        
-        
     }
 
     IEnumerator GameoverAnimation()
     {
         yield return new WaitForSeconds(1.0f);
         SceneManager.LoadScene("GameOver");
+    }
+    
+    public void OnHardwareDisconnect()
+    {
+        if (pause)
+        {
+            return;
+        }
+        pause = true;
+        PreviousTimeScale = Time.timeScale;
+        Time.timeScale = 0f;
+        if (WarningAudio != null && WarningAudio.isPlaying)
+        {
+            WarningAudio.Stop();
+        }
+    }
+
+    public void OnHardwareReconnect()
+    {
+        if (!pause)
+        {
+            return;
+        }
+        pause = false;
+        if (PreviousTimeScale == 0f)
+        {
+            Time.timeScale = 1f;
+        }
+        else
+        {
+            Time.timeScale = PreviousTimeScale;
+        }
+        try
+        {
+            API_Provider.Instance.ActiveAPIController.TimerSet((int)bombTimer);
+            API_Provider.Instance.ActiveAPIController.TimerOnOff(1);
+        }
+        catch { }
     }
 }

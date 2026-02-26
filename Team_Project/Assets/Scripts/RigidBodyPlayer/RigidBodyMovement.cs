@@ -1,427 +1,288 @@
-using System.Collections;
+using System;
+using RigidBodyPlayer.Jump;
+using RigidBodyPlayer.Modules;
+using RigidBodyPlayer.Movement;
+using RigidBodyPlayer.PlayerData;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
+[RequireComponent(typeof(Rigidbody))]
 public class RigidBodyMovement : MonoBehaviour
 {
-    [Header("Movement")] 
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float sideWayMoveSpeed = 50f;
-    [SerializeField] private float walkSpeed = 10;
-    [SerializeField] private float sprintSpeed = 13;
-    [SerializeField] private float crouchSpeed = 5f;
-    [SerializeField] private float groundAcceleration = 35f;
-    
-    [Header("Ground Check")]
-    [SerializeField] private LayerMask groundLayer;
-    private bool isGrounded;
-    
-    [Header("Setup")]
-    [SerializeField] private PlayerInput playerInput;
-    [SerializeField] private CapsuleCollider controller;
-    
-    [Header("Slope")]
-    private RaycastHit slopeHit;
-    [SerializeField] private float slopeSpeed = 10f;
-    private bool readyToJump = true;
-    
-    [Header("Camera")]
-    public Transform orientation;
-    [SerializeField] private Transform cameraPosition;
-    [SerializeField] private PlayerCam playerCam;
-    [SerializeField] private float targetRotation = 180f;
-    [SerializeField] private float camDownSpeed = 5;
-    private float standCenterY;
-    private float standHeight;
-    private float crouchHeight;
-    private Vector3 crouchOrigin;
-    private Vector3 standOrigin;
-    
-    [Header("Air Control")]
-    [SerializeField] private float jumpForce = 11.5f;
-    [SerializeField] private float springForce = 45f;
-    [SerializeField] private float jumpCooldown = 0.25f;
-    [SerializeField] private float airAcceleration = 15;
-    [SerializeField] private float rotationSpeed = 20f;
-    [SerializeField] float gravityMultiplier = 2.0f;
-    
-    [Header("External")]
-    private API_Provider _API_Provider = API_Provider.Instance;
-    private API_Controller_Interface _activeHardware;
-    
-    private Vector3 connectionVelocity;
-    private Vector3 connectionWorldPosition;
-    private Vector3 connectionLocalPosition;
-    private Rigidbody connectedBody;
-    private Rigidbody previousConnectedBody;
-    public Rigidbody rb;
-    
-    private bool isCrouchPressed;
-    private bool isSprintPressed;
-    private bool invertGravity;
-    private bool hasInvertGravity;
-    private bool isRotating;
-    private bool onFlip;
-    private bool onSlope;
-    private bool onMovingPlatform;
-    
-    private float remainingRotation;
-    private float step;
-    
-    private float horizontalInput;
-    private float verticalInput;
-    private Vector2 moveInput;
+    [Header("Data")] [SerializeField] public MovementData data;
 
-    Vector3 gravityDir = Physics.gravity.normalized;
-    Vector3 movementDir;
+    [Header("Modules")] [SerializeField] public PlayerSensor sensor;
+    [SerializeField] public PlayerGravity gravity;
+    [SerializeField] private PlayerCrouch crouch;
+    [SerializeField] public PlayerCameraHandler cameraHandler;
+    [SerializeField] public PlayerJump jump;
+    
+    public bool canJump;
+    public bool canFlipGravity;
+    public Vector3 slopeDir;
+    public Vector3 slopeSideWayDir;
+
+    private PlayerBaseState currentState;
+    public PlayerGroundState GroundState;
+    public PlayerAirborneState AirborneState;
+    public PlayerSlopeState SlopeState;
+    public PlayerMetalState MetalState;
+    public PlayerPlasticState  PlasticState;
+    public PlayerFlipState FlipState;
+    public PlayerConnectionState ConnectionState;
+    
+    public IJumpStrategy currentJumpStrategy;
+    public IMovementStrategy currentMovementStrategy;
+
+    private IPlayerModule[] modules;
+
+    [Header("Setup")] [SerializeField] private CapsuleCollider controller;
+
+    [Header("Camera")] public Transform orientation;
+    [SerializeField] private PlayerCam playerCam;
+
+    [Header("External")]
+    private API_Controller_Interface _activeHardware;
+    private PlayerInputRelay relay;
+
+    public Rigidbody rb;
+
+    private Vector2 cachedMove;
+    public bool isCrouchPressed;
+
+    public float horizontalInput;
+    public float verticalInput;
+
+    public Vector3 movementDir;
+    private bool readyToJump = true;
 
     private void Awake()
     {
+        InitializeComponents();
+        InitializeModules();
+        InitializeStates();
+        ValidateDependencies();
+    }
+
+    private void InitializeStates()
+    {
+        GroundState = new PlayerGroundState(this);
+        AirborneState = new PlayerAirborneState(this);
+        SlopeState = new PlayerSlopeState(this);
+        FlipState = new PlayerFlipState(this);
+        MetalState = new PlayerMetalState(this);
+        PlasticState = new PlayerPlasticState(this);
+        ConnectionState = new PlayerConnectionState(this);
+    }
+
+    private void InitializeComponents()
+    {
         controller = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
-        playerInput = GetComponent<PlayerInput>();
-        standHeight = controller.height;
-        standCenterY = controller.center.y;
-        camDownSpeed = 5.0f;
-        crouchHeight = controller.height / 2f;
-        _activeHardware = _API_Provider.ActiveAPIController;
-        hasInvertGravity = false;
-        isRotating = false;
-        SetStandCenter();
-        SetCrouchCenter();
+        if (relay == null) relay = GetComponent<PlayerInputRelay>();
+        if (orientation == null) orientation = transform.Find("Orientation");
+        if (playerCam == null) playerCam = FindAnyObjectByType<PlayerCam>();
+
+        rb.useGravity = false;
+        rb.freezeRotation = true;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+    }
+
+    private void InitializeModules()
+    {
+        if (sensor == null) sensor = GetComponent<PlayerSensor>();
+        if (gravity == null) gravity = GetComponent<PlayerGravity>();
+        if (crouch == null) crouch = GetComponent<PlayerCrouch>();
+        if (cameraHandler == null) cameraHandler = GetComponent<PlayerCameraHandler>();
+        if (jump == null) jump = GetComponent<PlayerJump>();
+        
+        modules = GetComponentsInChildren<IPlayerModule>();
+        foreach (var module in modules)
+        {
+            module.Initialize(this);
+        }
+    }
+
+    private void ValidateDependencies()
+    {
+        if (data == null) Debug.LogError("RigidBodyMovement: MovementData not assigned!", this);
+        if (rb == null) Debug.LogError($"RigidBodyMovement: No Rigidbody on {gameObject.name}", this);
+        if (controller == null) Debug.LogError($"RigidBodyMovement: No CapsuleCollider on {gameObject.name}", this);
+        if (orientation == null) Debug.LogError("RigidBodyMovement: No Orientation child found", this);
+        if (relay == null) Debug.LogError("RigidBodyMovement: No PlayerInputRelay on player", this);
+        if (gravity == null) Debug.LogError("RigidBodyMovement: No PlayerGravity on player", this);
+        if (sensor == null) Debug.LogError("RigidBodyMovement: No PlayerSensor on player", this);
+        if (crouch == null) Debug.LogError("RigidBodyMovement: No PlayerCrouch on player", this);
+        if (jump == null)  Debug.LogError("RigidBodyMovement: No PlayerJump on player", this);
     }
 
     public void ResetPlayer()
     {
-        hasInvertGravity = false;
-        invertGravity = false;
-        isRotating = false;
-        playerCam.rollZ = 0;
-        orientation.rotation = Quaternion.Euler(0, 0, 0);
-        rb.rotation = Quaternion.Euler(0, 0, 0);
+        if (playerCam != null) playerCam.rollZ = 0f;
+        if (orientation != null) orientation.rotation = Quaternion.Euler(0, 0, 0);
         rb.linearVelocity = Vector3.zero;
-        gravityDir = Vector3.down;
+        CheckInitialState();
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        rb.useGravity = false;
-        rb.freezeRotation = true;
-        moveSpeed = walkSpeed;
+        if (_activeHardware == null && API_Provider.Instance != null)
+        {
+            _activeHardware = API_Provider.Instance.ActiveAPIController;
+            if (_activeHardware != null)
+            {
+                _activeHardware.OnImuChanged += RotateLevel;
+            }
+        }
+        CheckInitialState();
+        currentState.EnterState();
     }
+
+    private void CheckInitialState()
+    {
+        if (!sensor.IsGrounded)
+        {
+            TransitionToState(AirborneState);
+            return;
+        }
+
+        switch (sensor.CurrentSurface)
+        {
+            case SurfaceType.Metal:
+                TransitionToState(MetalState);
+                break;
+            case SurfaceType.Plastic:
+                TransitionToState(MetalState);
+                break;
+            case SurfaceType.Slope:
+                TransitionToState(SlopeState);
+                break;
+            default:
+                TransitionToState(GroundState);
+                break;
+        }
+    }
+
     private void OnEnable()
     {
-        if (API_Provider.Instance.ActiveAPIController != null)
-            API_Provider.Instance.ActiveAPIController.OnImuChanged += RotateLevel;
+        if (_activeHardware == null)
+        {
+            _activeHardware = API_Provider.Instance.ActiveAPIController;
+        }
+
+        if (_activeHardware != null)
+        {
+            _activeHardware.OnImuChanged += RotateLevel;
+        }
+
+
+        if (relay != null)
+        {
+            relay.Move += HandleMove;
+            relay.JumpPressed += HandleJump;
+            // relay.JumpCanceled += HandleJumpCut;
+            relay.Crouch += HandleCrouch;
+            relay.InvertGravity += HandleGravityInverted;
+            relay.RespawnRequested += ResetPlayer;
+        }
     }
 
     private void OnDisable()
     {
-        if (API_Provider.Instance.ActiveAPIController != null)
-            API_Provider.Instance.ActiveAPIController.OnImuChanged -= RotateLevel;
+        if (_activeHardware != null)
+            _activeHardware.OnImuChanged -= RotateLevel;
+
+        if (relay != null)
+        {
+            relay.Move -= HandleMove;
+            relay.JumpPressed -= HandleJump;
+            // relay.JumpCanceled -= HandleJumpCut;
+            relay.Crouch -= HandleCrouch;
+            relay.InvertGravity -= HandleGravityInverted;
+            relay.RespawnRequested -= ResetPlayer;
+        }
     }
 
     private void RotateLevel(Vector3 gyro, Vector3 accelerometer)
     {
+        Debug.Log("RotateLevel");
+        if (gravity == null || sensor == null) return;
+        gravity.ProcessAccelerometer(accelerometer, orientation);
+    }
 
-        // Flip gravity direction (so jump/gravity math stays consistent with sign)
-        // gravity = -gravity;
-        // Rotate the player (or level) around Z, as you had
-        if (accelerometer.z > 9f && Vector3.Dot(Vector3.down, -orientation.transform.up) < 0 && onFlip)
+    private void HandleMove(Vector2 value) => cachedMove = value;
+
+    private void HandleCrouch(bool pressed) => isCrouchPressed = pressed;
+
+    private void HandleGravityInverted(bool inverted)
+    {
+        if (gravity == null) return;
+        // Debug.Log("can Flip" + canFlipGravity);
+        if (canFlipGravity)
         {
-            invertGravity = true;
-        }
-        else if (accelerometer.z < -9f && Vector3.Dot(Vector3.down, -orientation.transform.up) > 0 && onFlip)
-        {
-            invertGravity = true;
-        }
-        else
-        {
-            invertGravity = false;
+            gravity.RequestInvert(inverted);
         }
     }
+
+    private void HandleJump()
+    {
+        if (data == null) return;
+        jump.SetJumpBuffer();
+        // Debug.Log("ready to jump" + jump.readyToJump + "coyote"+ jump.coyoteTimeCounter +"buffer"+  jump.jumpBufferCounter + "canjump" + canJump);
+    }
+
+    // private void HandleJumpCut()
+    // {
+    //     IJumpStrategy strategy = MovementStrategyFactory.GetJumpStrategy(this);
+    //     strategy?.ApplyJumpCut(this);
+    // }
+
+    public bool IsJumpHeld => relay.IsJumpHeld;
 
     private void MyInput()
     {
-        horizontalInput = moveInput.x;
-        verticalInput = moveInput.y;
+        horizontalInput = cachedMove.x;
+        verticalInput = cachedMove.y;
     }
 
-    public void OnMove(InputAction.CallbackContext ctx)
-    {
-        moveInput = ctx.ReadValue<Vector2>();
-    }
-
-    public void OnCrouch(InputAction.CallbackContext ctx)
-    {
-        if (ctx.performed)
-        {
-            isCrouchPressed = true;
-        }
-
-        if (ctx.canceled)
-        {
-            isCrouchPressed = false;
-        }
-    }
-
-    public void OnInvertGravity(InputAction.CallbackContext ctx)
-    {
-        if (ctx.performed)
-        {
-            invertGravity = true;
-        }
-
-        if (ctx.canceled)
-        {
-            invertGravity = false;
-        }
-    }
-
-    private void Spring()
-    {
-
-        if (Physics.Raycast(controller.bounds.center, Vector3.down, out RaycastHit hit, controller.bounds.extents.y + 0.2f, groundLayer)
-            && hit.collider.CompareTag("Spring"))
-        {
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-            rb.AddForce(transform.up * springForce, ForceMode.Impulse);
-        }
-    }
-
-    private void SetCrouchCenter()
-    {
-        float bottomLocal = standCenterY - (standHeight * 0.5f);
-        float newCenterY = bottomLocal + crouchHeight / 2f;
-        crouchOrigin = new Vector3(controller.center.x, newCenterY, controller.center.z);
-    }
-
-    private void SetStandCenter()
-    {
-        float bottomLocal = standCenterY - (standHeight * 0.5f);
-        float newCenterY = bottomLocal + standHeight / 2f;
-        standOrigin = new Vector3(controller.center.x, newCenterY, controller.center.z);
-    }
-
-    private void SetCrouch(bool isCrouch)
-    {
-
-        if (isCrouch)
-        {
-            controller.height = Mathf.Lerp(controller.height, crouchHeight, camDownSpeed * Time.deltaTime);
-            controller.center = Vector3.Lerp(controller.center, crouchOrigin, camDownSpeed * Time.deltaTime);
-        }
-        else
-        {
-            controller.height = Mathf.Lerp(controller.height, standHeight, camDownSpeed * Time.deltaTime);
-            controller.center = Vector3.Lerp(controller.center, standOrigin, camDownSpeed * Time.deltaTime);
-        }
-    }
-
-    private void ApplyMovement()
-    {
-        //get user input
-        movementDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
-        Vector3 desiredRelativeVelocity;
-        if (onSlope && isGrounded)
-        {
-            Vector3 slopDir = Vector3.ProjectOnPlane(Vector3.down, slopeHit.normal).normalized;
-            Vector3 sidewayDir = Vector3.Cross(slopeHit.normal, slopDir).normalized;
-            movementDir = sidewayDir * horizontalInput;
-            desiredRelativeVelocity = movementDir.sqrMagnitude > 0.0001f ? movementDir.normalized * sideWayMoveSpeed : Vector3.zero;
-            Vector3 slopVelocity = slopDir * slopeSpeed;
-            rb.linearVelocity = desiredRelativeVelocity + slopVelocity;
-        }
-        else
-        {
-            Vector3 platformVelocity = (onMovingPlatform && isGrounded) ? connectionVelocity : Vector3.zero;
-            Vector3 v = rb.linearVelocity;
-            Vector3 relativeVelocity = v - platformVelocity;
-            desiredRelativeVelocity = movementDir.sqrMagnitude > 0.0001f ? movementDir.normalized * moveSpeed : Vector3.zero;
-            float acceleration = isGrounded ? groundAcceleration : airAcceleration;
-            float maxDelta = acceleration * Time.fixedDeltaTime;
-            float newX = Mathf.MoveTowards(relativeVelocity.x, desiredRelativeVelocity.x, maxDelta);
-            float newZ = Mathf.MoveTowards(relativeVelocity.z, desiredRelativeVelocity.z, maxDelta);
-            relativeVelocity = new Vector3(newX, relativeVelocity.y, newZ);
-            rb.linearVelocity = relativeVelocity + platformVelocity;
-        }
-
-    }
-
-    private void StateHandler()
-    {
-        if (isGrounded && isSprintPressed)
-        {
-            moveSpeed = sprintSpeed;
-        }
-        else if (isCrouchPressed && isGrounded)
-        {
-            moveSpeed = crouchSpeed;
-        }
-        else if (isGrounded)
-        {
-            moveSpeed = walkSpeed;
-        }
-
-    }
-
-    private void ApplyCustomGravity()
-    {
-        if (!isGrounded || !onSlope)
-        {
-            rb.AddForce(gravityDir * 9.81f * gravityMultiplier, ForceMode.Acceleration);
-        }
-    }
-
-    private void InvertGravityDirection()
-    {
-        if (isRotating)
-        {
-            return;
-        }
-        if (!hasInvertGravity && invertGravity)
-        {
-            gravityDir = -gravityDir;
-            StartCoroutine(SmoothRotate());
-        }
-
-        hasInvertGravity = invertGravity;
-    }
-
-   IEnumerator SmoothRotate()
-{
-    isRotating = true;
-    var playerMap = playerInput.actions.FindActionMap("Player");
-    playerMap.Disable();
-
-    remainingRotation = targetRotation;
-
-    while (remainingRotation > 0f)
-    {
-        float step = rotationSpeed * Time.fixedDeltaTime;
-        step = Mathf.Min(step, remainingRotation);
-
-        Quaternion deltaRotation = Quaternion.Euler(0f, 0f, step);
-
-        rb.MoveRotation(rb.rotation * deltaRotation);
-
-        // IMPORTANT: drive rollZ from actual rb rotation, normalized (no huge numbers)
-        float z = rb.rotation.eulerAngles.z;
-        playerCam.rollZ = Mathf.DeltaAngle(0f, z);
-
-        remainingRotation -= step;
-        yield return new WaitForFixedUpdate();
-    }
-
-    playerMap.Enable();
-    isRotating = false;
-}
-
-
-    public void OnJump(InputAction.CallbackContext ctx)
-    {
-        if (ctx.performed && readyToJump && isGrounded && !onSlope)
-        {
-            readyToJump = false;
-            Jump();
-            Invoke(nameof(ResetJump), jumpCooldown);
-        }
-    }
-
-    public void OnSprint(InputAction.CallbackContext ctx)
-    {
-        if (ctx.started)
-        {
-            isSprintPressed = true;
-        }
-
-        if (ctx.canceled)
-        {
-            isSprintPressed = false;
-        }
-    }
-
-    private void Jump()
-    {
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-    }
-
-    private void ResetJump()
-    {
-        readyToJump = true;
-    }
-    private void CamFollow()
-    {
-        float bottomLocal = controller.center.y - controller.height / 2.0f;
-        float cameraCenterY = bottomLocal + controller.height;
-        cameraPosition.transform.localPosition = new Vector3(cameraPosition.transform.localPosition.x, 
-            cameraCenterY,cameraPosition.transform.localPosition.z);
-    }
-    
     private void FixedUpdate()
     {
-        previousConnectedBody = connectedBody;
-        GroudCheck();
-        UpdateConnectionState();
-        Spring();
-        ApplyCustomGravity();
-
-        SetCrouch(isCrouchPressed);
         MyInput();
-        StateHandler();
-        ApplyMovement();
-        InvertGravityDirection();
-        
-        CamFollow();
+        foreach (var module in modules)
+        {
+            module.FixedTick();
+        }
+        currentState?.FixedUpdateState();
+        currentMovementStrategy = MovementStrategyFactory.GetMovementStrategy(this);
+        currentMovementStrategy.ApplyMovement(this);
+        currentJumpStrategy = MovementStrategyFactory.GetJumpStrategy(this);
+        currentJumpStrategy.ExecuteJump(this);
     }
 
-    private void UpdateConnectionState()
+    public void Update()
     {
-        connectionVelocity = Vector3.zero;
-        if (!isGrounded || connectedBody == null)
+        foreach (var module in modules)
         {
-            return;
+            module.Tick();
         }
-        if (connectedBody == previousConnectedBody)
-        {
-            Vector3 newWorldPoint = connectedBody.transform.TransformPoint(connectionLocalPosition);
-            Vector3 movement = newWorldPoint - connectionWorldPosition;
-            connectionVelocity = movement / Time.fixedDeltaTime;
-        }
-
-        connectionWorldPosition = rb.position;
-        connectionLocalPosition = connectedBody.transform.InverseTransformPoint(connectionWorldPosition);
+        currentState?.UpdateState();
     }
-    private void GroudCheck()
+
+    public void LateUpdate()
     {
-        Vector3 origin = controller.bounds.center;
-        float rayLength = controller.bounds.extents.y + 0.2f;
-
-        if (Physics.Raycast(origin, -rb.transform.up, out RaycastHit hit, rayLength, groundLayer))
+        foreach (var module in modules)
         {
-            isGrounded = true;
-            slopeHit = hit;
-            onSlope = hit.collider.CompareTag("Slide");
-            onMovingPlatform = hit.collider.CompareTag("MovingPlatform");
-            onFlip = hit.collider.CompareTag("FlipSection");
-            connectedBody = hit.rigidbody;
-        }
-        else
-        {
-            isGrounded = false;
-            onSlope = false;
-            onMovingPlatform = false;
-            onFlip = false;
-            connectedBody  = null;
+            module.LateTick();
         }
     }
 
-    private void LateUpdate()
+    public void TransitionToState(PlayerBaseState newState)
     {
-        
+        if (newState == currentState) return;
+        currentState?.ExitState();
+        currentState = newState;
+        currentState?.EnterState();
     }
+    
 }

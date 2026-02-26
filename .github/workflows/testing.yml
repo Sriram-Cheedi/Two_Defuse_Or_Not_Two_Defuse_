@@ -19,13 +19,14 @@ concurrency:
 jobs:
   test:
     name: Run Unity Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Free Disk Space
         run: |
           sudo rm -rf /usr/share/dotnet
           sudo rm -rf /usr/local/lib/android
-          docker system prune -af
+          sudo systemctl restart docker || true
+          docker system prune -af || true
           
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -68,16 +69,29 @@ jobs:
           projectPath: Team_Project
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Diagnostics (on failure)
+        if: failure()
+        run: |
+          set -x
+          docker --version || true
+          docker info || true
+          df -h || true
+          df -i || true
+          free -h || true
+          sudo journalctl -u docker --no-pager -n 200 || true
+          dmesg -T | tail -n 120 || true
+
   build:
       name: Build project
       needs: test
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-22.04
       steps:
         - name: Free Disk Space
           run: |
             sudo rm -rf /usr/share/dotnet
             sudo rm -rf /usr/local/lib/android
-            docker system prune -af
+            sudo systemctl restart docker || true
+            docker system prune -af || true  
             
         - name: Checkout repository
           uses: actions/checkout@v4

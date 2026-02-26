@@ -98,8 +98,17 @@
                 },
                 {
                     "name": "NumKey",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "ab1bea68-5ccf-48a3-ab5d-44081dd32e3d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Enter",
+                    "type": "Button",
+                    "id": "8049761e-2c03-41c2-bef8-4bd0b010a56a",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -571,6 +580,17 @@
                 },
                 {
                     "name": "",
+                    "id": "2830a26c-a01e-4b7c-9aa0-84802f8f53f0",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse;Gamepad",
+                    "action": "NumKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "15c7702c-b062-46c7-8969-ee63529db6de",
                     "path": "<Keyboard>/numpad1",
                     "interactions": "",
@@ -599,6 +619,28 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse;Gamepad",
                     "action": "NumKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "00a837ec-235f-4d68-80fe-6e4c4a238ef6",
+                    "path": "<Keyboard>/numpad4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse;Gamepad",
+                    "action": "NumKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fe92088d-317d-4f8f-ba9d-592a8ef28388",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse;Gamepad",
+                    "action": "Enter",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

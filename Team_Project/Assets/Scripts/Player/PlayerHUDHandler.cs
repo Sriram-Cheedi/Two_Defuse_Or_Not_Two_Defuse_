@@ -6,10 +6,13 @@ public class PlayerHUDHandler : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
     public GameObject time_bars;
-
+    
     public void Update()
     {
-
+        if (GameManager.Instance == null)
+        {
+            return;
+        }
         if (GameManager.Instance != null)
         {
             timerText.text = GameManager.Instance.bombTimer.ToString("F2");
