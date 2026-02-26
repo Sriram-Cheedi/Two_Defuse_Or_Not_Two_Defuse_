@@ -31,6 +31,9 @@ public class RigidBodyMovement : MonoBehaviour
     public PlayerPlasticState  PlasticState;
     public PlayerFlipState FlipState;
     public PlayerConnectionState ConnectionState;
+    
+    public IJumpStrategy currentJumpStrategy;
+    public IMovementStrategy currentMovementStrategy;
 
     private IPlayerModule[] modules;
 
@@ -178,7 +181,7 @@ public class RigidBodyMovement : MonoBehaviour
         {
             relay.Move += HandleMove;
             relay.JumpPressed += HandleJump;
-            relay.JumpCanceled += HandleJumpCut;
+            // relay.JumpCanceled += HandleJumpCut;
             relay.Crouch += HandleCrouch;
             relay.InvertGravity += HandleGravityInverted;
             relay.RespawnRequested += ResetPlayer;
@@ -194,7 +197,7 @@ public class RigidBodyMovement : MonoBehaviour
         {
             relay.Move -= HandleMove;
             relay.JumpPressed -= HandleJump;
-            relay.JumpCanceled -= HandleJumpCut;
+            // relay.JumpCanceled -= HandleJumpCut;
             relay.Crouch -= HandleCrouch;
             relay.InvertGravity -= HandleGravityInverted;
             relay.RespawnRequested -= ResetPlayer;
@@ -229,12 +232,13 @@ public class RigidBodyMovement : MonoBehaviour
         // Debug.Log("ready to jump" + jump.readyToJump + "coyote"+ jump.coyoteTimeCounter +"buffer"+  jump.jumpBufferCounter + "canjump" + canJump);
     }
 
-    private void HandleJumpCut()
-    {
-        // jump.HandleJumpCut();
-        IJumpStrategy strategy = MovementStrategyFactory.GetJumpStrategy(this);
-        strategy?.ApplyJumpCut(this);
-    }
+    // private void HandleJumpCut()
+    // {
+    //     IJumpStrategy strategy = MovementStrategyFactory.GetJumpStrategy(this);
+    //     strategy?.ApplyJumpCut(this);
+    // }
+
+    public bool IsJumpHeld => relay.IsJumpHeld;
 
     private void MyInput()
     {
@@ -250,6 +254,10 @@ public class RigidBodyMovement : MonoBehaviour
             module.FixedTick();
         }
         currentState?.FixedUpdateState();
+        currentMovementStrategy = MovementStrategyFactory.GetMovementStrategy(this);
+        currentMovementStrategy.ApplyMovement(this);
+        currentJumpStrategy = MovementStrategyFactory.GetJumpStrategy(this);
+        currentJumpStrategy.ExecuteJump(this);
     }
 
     public void Update()

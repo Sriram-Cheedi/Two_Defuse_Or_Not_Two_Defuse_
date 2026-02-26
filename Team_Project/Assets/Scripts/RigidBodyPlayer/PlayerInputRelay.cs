@@ -22,6 +22,7 @@ public class PlayerInputRelay : MonoBehaviour
     public Vector2 LookValue { get; private set; }
     public bool CrouchValue { get; private set; }
     public bool InvertGravityValue { get; private set; }
+    public bool IsJumpHeld => jump.IsPressed();
 
     void Awake()
     {

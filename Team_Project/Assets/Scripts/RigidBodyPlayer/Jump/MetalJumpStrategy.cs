@@ -13,6 +13,10 @@ namespace RigidBodyPlayer.Jump
                 hub.rb.linearVelocity -= verticalVelocity;
                 hub.rb.AddForce(hub.transform.up * hub.data.jumpForceOnMetal, ForceMode.Impulse);
                 hub.jump.OnJumpExecuted();
+                // if (!isJumpHeld)
+                // {
+                //     ApplyJumpCut(hub);
+                // }
             }
         }
 

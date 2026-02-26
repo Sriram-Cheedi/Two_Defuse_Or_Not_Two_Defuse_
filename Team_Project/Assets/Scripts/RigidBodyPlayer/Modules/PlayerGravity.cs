@@ -9,7 +9,6 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     private RigidBodyMovement Hub;
 
     [Header("Refs")]
-    [SerializeField] private PlayerSensor sensor;
     [SerializeField] private PlayerInputRelay relay;
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private Transform cameraPosition;
@@ -18,7 +17,8 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     [Header("Rotation")]
     [SerializeField] private float targetRotation = 180f;
 
-    public Vector3 gravityDir = Vector3.down;
+    private Vector3 gravityDir = Vector3.down;
+    private float gravityMangitude = Physics.gravity.magnitude;
     public bool invertRequested;
     private bool hasInvertRequest;
     
@@ -28,7 +28,6 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
         Hub.rb.useGravity = false;
         if (relay == null) relay = GetComponent<PlayerInputRelay>();
         if (relay != null) relay.RespawnRequested += ResetGravity;
-        if (sensor == null) sensor = GetComponent<PlayerSensor>();
         if (relay == null) relay = GetComponent<PlayerInputRelay>();
         if (playerInput == null) playerInput = GetComponent<PlayerInput>();
         if (playerCam == null) playerCam = FindAnyObjectByType<PlayerCam>();
@@ -37,7 +36,6 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
 
     public void Tick()
     {
-        
     }
 
     public void FixedTick()
@@ -54,6 +52,40 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     {
         
     }
+
+    public void InvertGravityDirection()
+    {
+        gravityDir = -gravityDir;
+    }
+
+    private float GetRelativeVerticalVelocity()
+    {
+        return Vector3.Dot(Hub.rb.linearVelocity, gravityDir.normalized);
+    }
+
+    private float CalculateGravityMagnitude()
+    {
+        float relativeVerticalVelocity = GetRelativeVerticalVelocity();
+        float baseGravityMagnitude = Physics.gravity.magnitude;
+
+        if (relativeVerticalVelocity > 0f)
+        {
+            return Physics.gravity.magnitude * Hub.data.fallMultiplier;
+        }
+        
+        if (!Hub.IsJumpHeld && relativeVerticalVelocity < 0f)
+        {
+            return Physics.gravity.magnitude * Hub.data.jumpCutMultiplier;
+        }
+        
+        if (!Hub.sensor.IsGrounded && Mathf.Abs(relativeVerticalVelocity)  < Hub.data.apexThreshold)
+        {
+            return Physics.gravity.magnitude * Hub.data.apexGravityMultiplier;
+        }
+        
+        return baseGravityMagnitude * Hub.data.gravityMultiplier;
+    }
+    
     private void OnDestroy()
     {
         var relay = GetComponent<PlayerInputRelay>();
@@ -79,73 +111,36 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     {
         invertRequested = value;
     }
-
-    public void UpdateGravity()
-    {
-        ApplyCustomGravity();
-        // InvertKeyBoardGravityDirection();
-    }
-
+    
     private void ApplyCustomGravity()
     {
         if (Hub.data == null) return;
-
-        if (sensor == null || !sensor.IsGrounded || sensor.CurrentSurface != SurfaceType.Slope)
+        float gravityMagnitude = CalculateGravityMagnitude();
+        if (Hub.sensor == null || !Hub.sensor.IsGrounded || Hub.sensor.CurrentSurface != SurfaceType.Slope)
         {
-            Hub.rb.AddForce(gravityDir * 9.81f * Hub.data.gravityMultiplier, ForceMode.Acceleration);
+            Hub.rb.AddForce(gravityDir * gravityMagnitude, ForceMode.Acceleration);
         }
     }
 
-    // private void InvertGyroGravityDirection()
-    // {
-    //     if (!hasInvertRequest && invertRequested)
-    //     {
-    //         gravityDir = -gravityDir;
-    //     }
-    //
-    //     hasInvertRequest = invertRequested;
-    // }
+    private void ApexHang()
+    {
+        float relativeVerticalVelocity = GetRelativeVerticalVelocity();
+        if (!Hub.sensor.IsGrounded && Mathf.Abs(relativeVerticalVelocity)  < Hub.data.apexThreshold)
+        {
+            gravityMangitude = Physics.gravity.magnitude * Hub.data.apexGravityMultiplier;
+        }else if (relativeVerticalVelocity > 0f)
+        {
+            gravityMangitude = Physics.gravity.magnitude * Hub.data.fallMultiplier;
+        }
+    }
 
-    // private IEnumerator SmoothRotate()
-    // {
-    //     if (data == null)
-    //         yield break;
-    //
-    //     isRotating = true;
-    //
-    //     // Kept for identical behavior. Phase 2 removes this and makes it state-driven.
-    //     var playerMap = playerInput != null ? playerInput.actions.FindActionMap("Player") : null;
-    //     if (playerMap != null) playerMap.Disable();
-    //
-    //     float remaining = targetRotation;
-    //
-    //     while (remaining > 0f)
-    //     {
-    //         float step = data.rotationSpeed * Time.fixedDeltaTime;
-    //         step = Mathf.Min(step, remaining);
-    //
-    //         Quaternion deltaRotation = Quaternion.Euler(0f, 0f, step);
-    //
-    //         if (cameraPosition != null)
-    //             cameraPosition.Rotate(Vector3.forward, step, Space.Self);
-    //
-    //         if (playerCam != null)
-    //             playerCam.rollZ += step;
-    //
-    //         rb.MoveRotation(rb.rotation * deltaRotation);
-    //
-    //         remaining -= step;
-    //         yield return new WaitForFixedUpdate();
-    //     }
-    //
-    //     if (playerMap != null) playerMap.Enable();
-    //
-    //     isRotating = false;
-    // }
+    private void HandleJumpCut()
+    {
+        
+    }
 
     private void ResetGravity()
     {
-
         invertRequested = false;
         hasInvertRequest = false;
 

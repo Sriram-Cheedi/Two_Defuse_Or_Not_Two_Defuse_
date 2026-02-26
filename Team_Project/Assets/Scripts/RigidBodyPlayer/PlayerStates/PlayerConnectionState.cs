@@ -46,10 +46,6 @@ public class PlayerConnectionState : PlayerBaseState
 
     public override void FixedUpdateState()
     {
-        IMovementStrategy moveStrategy = MovementStrategyFactory.GetMovementStrategy(Hub);
-        moveStrategy.ApplyMovement(Hub);
-        IJumpStrategy jumpStrategy = MovementStrategyFactory.GetJumpStrategy(Hub);
-        jumpStrategy.ExecuteJump(Hub);
     }
 
     public override void ExitState()

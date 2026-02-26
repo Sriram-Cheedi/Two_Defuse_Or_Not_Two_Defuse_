@@ -16,19 +16,18 @@ MonoBehaviour:
   crouchSpeed: 5
   groundAcceleration: 35
   airAcceleration: 20
-  jumpForce: 11.5
   jumpForceOnMetal: 3
   jumpForceOnPlastic: 11.5
+  jumpCutMultiplier: 5
+  apexGravityMultiplier: 0.5
+  apexThreshold: 0.5
+  fallMultiplier: 1.5
   jumpCooldown: 0.25
   gravityMultiplier: 2
-  springForce: 45
   coyoteTime: 0.15
   jumpBuffer: 0.2
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  groundCheckDistance: 0.2
   sideWayMoveSpeed: 30
   slopeSpeed: 30
-  camDownSpeed: 5
+  crouchTransitionSpeed: 5
+  crouchHeightMultiplier: 0.5
   rotationSpeed: 200
