@@ -97,7 +97,7 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
         if (orientation == null) return;
 
         // Are we upside down relative to world down?
-        bool isUpsideDown = Vector3.Dot(Vector3.down, -orientation.up) < 0;
+        bool isUpsideDown = Vector3.Dot(Vector3.up, orientation.up) < 0;
 
         if (accelerometer.z > 9f && isUpsideDown)
             RequestInvert(true);

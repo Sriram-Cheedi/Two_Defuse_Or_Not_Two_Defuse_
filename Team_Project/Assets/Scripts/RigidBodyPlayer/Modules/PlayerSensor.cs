@@ -10,9 +10,11 @@ public class PlayerSensor : MonoBehaviour, IPlayerModule
 
     public bool IsGrounded { get; private set; }
     public bool OnMovingPlatform { get; private set; }
+    public bool OnSlope { get; private set; }
     private RigidBodyMovement Hub;
 
     public SurfaceType CurrentSurface { get; private set; }
+    private SurfaceType PreviousSurface;
 
     public Vector3 ConnectionVelocity { get; private set; }
     public RaycastHit GroundHit => slopeHit;
@@ -35,6 +37,13 @@ public class PlayerSensor : MonoBehaviour, IPlayerModule
     {
     }
 
+    public SurfaceType GetPreviousSurface() => PreviousSurface;
+
+    public void SetPreviousSurface(SurfaceType value)
+    {
+        PreviousSurface = value;
+    }
+    
     public void FixedTick()
     {
         previousConnectedBody = connectedBody;

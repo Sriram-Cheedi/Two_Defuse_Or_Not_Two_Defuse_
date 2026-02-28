@@ -159,7 +159,6 @@ public class RigidBodyMovement : MonoBehaviour
                 TransitionToState(SlopeState);
                 break;
             default:
-                TransitionToState(GroundState);
                 break;
         }
     }
@@ -181,7 +180,6 @@ public class RigidBodyMovement : MonoBehaviour
         {
             relay.Move += HandleMove;
             relay.JumpPressed += HandleJump;
-            // relay.JumpCanceled += HandleJumpCut;
             relay.Crouch += HandleCrouch;
             relay.InvertGravity += HandleGravityInverted;
             relay.RespawnRequested += ResetPlayer;
@@ -197,7 +195,6 @@ public class RigidBodyMovement : MonoBehaviour
         {
             relay.Move -= HandleMove;
             relay.JumpPressed -= HandleJump;
-            // relay.JumpCanceled -= HandleJumpCut;
             relay.Crouch -= HandleCrouch;
             relay.InvertGravity -= HandleGravityInverted;
             relay.RespawnRequested -= ResetPlayer;
@@ -229,14 +226,7 @@ public class RigidBodyMovement : MonoBehaviour
     {
         if (data == null) return;
         jump.SetJumpBuffer();
-        // Debug.Log("ready to jump" + jump.readyToJump + "coyote"+ jump.coyoteTimeCounter +"buffer"+  jump.jumpBufferCounter + "canjump" + canJump);
     }
-
-    // private void HandleJumpCut()
-    // {
-    //     IJumpStrategy strategy = MovementStrategyFactory.GetJumpStrategy(this);
-    //     strategy?.ApplyJumpCut(this);
-    // }
 
     public bool IsJumpHeld => relay.IsJumpHeld;
 

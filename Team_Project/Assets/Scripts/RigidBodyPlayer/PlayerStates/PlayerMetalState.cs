@@ -1,5 +1,6 @@
 using RigidBodyPlayer.Jump;
 using RigidBodyPlayer.Movement;
+using RigidBodyPlayer.PlayerData;
 using UnityEngine;
 
 public class PlayerMetalState : PlayerGroundState
@@ -12,6 +13,11 @@ public class PlayerMetalState : PlayerGroundState
         Hub.canJump = true;
         Hub.jump.readyToJump = true;
         Hub.canFlipGravity = false;
+    }
+
+    public override void ExitState()
+    {
+        Hub.sensor.SetPreviousSurface(SurfaceType.Metal);
     }
     
 }
