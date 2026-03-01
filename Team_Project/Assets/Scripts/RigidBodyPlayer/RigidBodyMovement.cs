@@ -211,7 +211,7 @@ public class RigidBodyMovement : MonoBehaviour
     {
         Debug.Log("RotateLevel");
         if (gravity == null || sensor == null) return;
-        gravity.ProcessAccelerometer(accelerometer, orientation);
+        gravity.ProcessAccelerometer(accelerometer);
     }
 
     // private void ProcessAccelerometer()

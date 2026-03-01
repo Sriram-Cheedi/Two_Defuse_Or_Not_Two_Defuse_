@@ -99,10 +99,8 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
         // if (relay != null) relay.RespawnRequested -= ResetGravity;
     }
     
-    public void ProcessAccelerometer(Vector3 accelerometer, Transform orientation)
+    public void ProcessAccelerometer(Vector3 accelerometer)
     {
-        if (orientation == null) return;
-
         // Are we upside down relative to world down?
         Debug.Log("ProcessAccelerometer" + (accelerometer.z ));
         float a = Hub.data.gravityAlpha;
@@ -111,11 +109,14 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
         else filteredAcceleration = a * accelerometer + (1 - a) * filteredAcceleration;
         Vector3 g = filteredAcceleration.normalized;
         
-        float upVsGravity = Vector3.Dot(orientation.up, g);
-        bool shouldInvert = upVsGravity > 0.9f;
-        if (shouldInvert != invertRequested)
+        float upVsGravity = Vector3.Dot(Hub.rb.transform.up, g);
+        if (upVsGravity > 0.9f || upVsGravity < -0.9f)
         {
-            RequestInvert(shouldInvert);
+            RequestInvert(true);
+        }
+        else
+        {
+            RequestInvert(false);
         }
     }
 
