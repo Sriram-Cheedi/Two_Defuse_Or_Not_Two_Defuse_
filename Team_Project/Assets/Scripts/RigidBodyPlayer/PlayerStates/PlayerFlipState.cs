@@ -69,6 +69,7 @@ public class PlayerFlipState : PlayerBaseState
                 Hub.TransitionToState(Hub.SlopeState);
                 break;
             default:
+                Hub.TransitionToState(Hub.GroundState);
                 break;
         }
     }

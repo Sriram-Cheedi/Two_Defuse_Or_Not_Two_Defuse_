@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2888518755595322529}
-  - component: {fileID: 4563155690376841267}
+  - component: {fileID: 2622722917396897692}
   m_Layer: 7
   m_Name: ElectricityArc
   m_TagString: Untagged
@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1353311046831151966}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.714, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -37,7 +37,7 @@ Transform:
   - {fileID: 1155913655919853962}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &4563155690376841267
+--- !u!82 &2622722917396897692
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -52,14 +52,14 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  MinDistance: 1.5321116
+  MaxDistance: 5.141556
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -94,7 +94,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -197,7 +197,7 @@ Transform:
   m_GameObject: {fileID: 7177728284459469830}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.48, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -228,16 +228,16 @@ VisualEffect:
       m_Array: []
     m_Vector3f:
       m_Array:
-      - m_Value: {x: -3, y: 3.428, z: 0}
+      - m_Value: {x: -3, y: 1.714, z: 0}
         m_Name: Pos1
         m_Overridden: 1
-      - m_Value: {x: 0.968, y: 3.428, z: 0}
+      - m_Value: {x: 0.968, y: 1.714, z: 0}
         m_Name: Pos2
         m_Overridden: 1
-      - m_Value: {x: 1.839, y: 3.428, z: 0}
+      - m_Value: {x: 1.839, y: 1.714, z: 0}
         m_Name: Pos3
         m_Overridden: 1
-      - m_Value: {x: 4, y: 3.428, z: 0}
+      - m_Value: {x: 4, y: 1.714, z: 0}
         m_Name: Pos4
         m_Overridden: 1
     m_Vector4f:

@@ -27,7 +27,7 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
         Hub = hub;
         Hub.rb.useGravity = false;
         if (relay == null) relay = GetComponent<PlayerInputRelay>();
-        if (relay != null) relay.RespawnRequested += ResetGravity;
+        // if (relay != null) relay.RespawnRequested += ResetGravity;
         if (relay == null) relay = GetComponent<PlayerInputRelay>();
         if (playerInput == null) playerInput = GetComponent<PlayerInput>();
         if (playerCam == null) playerCam = FindAnyObjectByType<PlayerCam>();
@@ -56,6 +56,11 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     public void InvertGravityDirection()
     {
         gravityDir = -gravityDir;
+    }
+
+    public void SetGravityDirection(Vector3 direction)
+    {
+        gravityDir = direction;
     }
 
     private float GetRelativeVerticalVelocity()
@@ -89,7 +94,7 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     private void OnDestroy()
     {
         var relay = GetComponent<PlayerInputRelay>();
-        if (relay != null) relay.RespawnRequested -= ResetGravity;
+        // if (relay != null) relay.RespawnRequested -= ResetGravity;
     }
     
     public void ProcessAccelerometer(Vector3 accelerometer, Transform orientation)
@@ -97,7 +102,8 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
         if (orientation == null) return;
 
         // Are we upside down relative to world down?
-        bool isUpsideDown = Vector3.Dot(Vector3.up, orientation.up) < 0;
+        Debug.Log("ProcessAccelerometer" + (accelerometer.z ));
+        bool isUpsideDown = Vector3.Dot(Vector3.up, orientation.up) < -0.95f;
 
         if (accelerometer.z > 9f && isUpsideDown)
             RequestInvert(true);

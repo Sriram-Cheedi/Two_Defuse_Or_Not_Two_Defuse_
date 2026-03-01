@@ -139,7 +139,7 @@ public class RigidBodyMovement : MonoBehaviour
         currentState.EnterState();
     }
 
-    private void CheckInitialState()
+    public void CheckInitialState()
     {
         if (!sensor.IsGrounded)
         {
@@ -159,6 +159,7 @@ public class RigidBodyMovement : MonoBehaviour
                 TransitionToState(SlopeState);
                 break;
             default:
+                TransitionToState(GroundState);
                 break;
         }
     }
@@ -182,8 +183,13 @@ public class RigidBodyMovement : MonoBehaviour
             relay.JumpPressed += HandleJump;
             relay.Crouch += HandleCrouch;
             relay.InvertGravity += HandleGravityInverted;
-            relay.RespawnRequested += ResetPlayer;
+            // relay.RespawnRequested += ResetPlayer;
         }
+    }
+
+    public PlayerCam GetPlayerCam()
+    {
+        return playerCam;
     }
 
     private void OnDisable()
@@ -197,7 +203,7 @@ public class RigidBodyMovement : MonoBehaviour
             relay.JumpPressed -= HandleJump;
             relay.Crouch -= HandleCrouch;
             relay.InvertGravity -= HandleGravityInverted;
-            relay.RespawnRequested -= ResetPlayer;
+            // relay.RespawnRequested -= ResetPlayer;
         }
     }
 
@@ -207,6 +213,12 @@ public class RigidBodyMovement : MonoBehaviour
         if (gravity == null || sensor == null) return;
         gravity.ProcessAccelerometer(accelerometer, orientation);
     }
+
+    // private void ProcessAccelerometer()
+    // {
+    //     Debug.Log("gyro: " + _activeHardware.getAccelerometerValue);
+    //     gravity.ProcessAccelerometer(_activeHardware.getAccelerometerValue, orientation);
+    // }
 
     private void HandleMove(Vector2 value) => cachedMove = value;
 

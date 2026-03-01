@@ -49,8 +49,8 @@ public class PlayerJump : MonoBehaviour, IPlayerModule
 
     public void OnJumpExecuted()
     {
-        ResetJump();
         StartCoroutine(JumpCooldownRoutine());
+        ResetJump();
         Hub.TransitionToState(Hub.AirborneState);
     }
     

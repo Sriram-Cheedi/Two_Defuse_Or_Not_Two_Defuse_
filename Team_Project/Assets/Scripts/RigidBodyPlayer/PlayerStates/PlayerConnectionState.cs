@@ -46,6 +46,7 @@ public class PlayerConnectionState : PlayerBaseState
                 Hub.TransitionToState(Hub.SlopeState);
                 break;
             default:
+                Hub.TransitionToState(Hub.GroundState);
                 break;
         }
     }

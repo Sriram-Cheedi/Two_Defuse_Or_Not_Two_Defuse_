@@ -22,6 +22,11 @@ public class PlayerAirborneState : PlayerBaseState
             Hub.TransitionToState(Hub.FlipState);   
             return;
         }
+
+        if (!Hub.sensor.IsGrounded)
+        {
+            return;
+        }
         
         if (Hub.sensor.OnMovingPlatform)
         {
@@ -41,6 +46,7 @@ public class PlayerAirborneState : PlayerBaseState
                 Hub.TransitionToState(Hub.SlopeState);
                 break;
             default:
+                Hub.TransitionToState(Hub.GroundState);
                 break;
         }
     }

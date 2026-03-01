@@ -35,13 +35,26 @@ public class PlayerSensor : MonoBehaviour, IPlayerModule
 
     public void Tick()
     {
+        switch (CurrentSurface)
+        {
+            case SurfaceType.Metal:
+                Debug.Log("Current Surface : Metal");
+                break;
+            case SurfaceType.Plastic:
+                Debug.Log("Current Surface : Plastic");
+                break;
+            default:
+                Debug.Log("Current Surface : Default");
+                break;
+        }
+        
     }
 
     public SurfaceType GetPreviousSurface() => PreviousSurface;
 
     public void SetPreviousSurface(SurfaceType value)
     {
-        PreviousSurface = value;
+        PreviousSurface = value;    
     }
     
     public void FixedTick()
@@ -61,7 +74,7 @@ public class PlayerSensor : MonoBehaviour, IPlayerModule
         Vector3 origin = controller.bounds.center;
         float rayLength = controller.bounds.extents.y - radius + 0.2f;
 
-        if (Physics.SphereCast(origin, radius, -Hub.rb.transform.up, out RaycastHit hit, rayLength, groundLayer))
+        if (Physics.SphereCast(origin, radius, -Hub.rb.transform.up, out RaycastHit hit, rayLength, groundLayer, QueryTriggerInteraction.Ignore))
         {
             IsGrounded = true;
             slopeHit = hit;
@@ -79,8 +92,8 @@ public class PlayerSensor : MonoBehaviour, IPlayerModule
         }
         else
         {
-            IsGrounded = false;
             CurrentSurface = SurfaceType.Default;
+            IsGrounded = false;
             OnMovingPlatform = false;
             connectedBody = null;
         }
