@@ -21,6 +21,7 @@ public class MovementData : ScriptableObject
     public float gravityMultiplier = 2.0f;
     public float coyoteTime = 0.15f;
     public float jumpBuffer = 0.15f;
+    public float gravityAlpha = 0.1f;
     
 
     [Header("Slope")]

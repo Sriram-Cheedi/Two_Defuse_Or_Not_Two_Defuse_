@@ -13,7 +13,9 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private Transform cameraPosition;
     [SerializeField] private PlayerCam playerCam;
-
+    
+    private Vector3 filteredAcceleration = Vector3.zero;
+    
     [Header("Rotation")]
     [SerializeField] private float targetRotation = 180f;
 
@@ -103,14 +105,18 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
 
         // Are we upside down relative to world down?
         Debug.Log("ProcessAccelerometer" + (accelerometer.z ));
-        bool isUpsideDown = Vector3.Dot(Vector3.up, orientation.up) < -0.95f;
-
-        if (accelerometer.z > 9f && isUpsideDown)
-            RequestInvert(true);
-        else if (accelerometer.z < -9f && !isUpsideDown)
-            RequestInvert(true);
-        else
-            RequestInvert(false);
+        float a = Hub.data.gravityAlpha;
+        //smooth signal
+        if(filteredAcceleration == Vector3.zero) filteredAcceleration = accelerometer;
+        else filteredAcceleration = a * accelerometer + (1 - a) * filteredAcceleration;
+        Vector3 g = filteredAcceleration.normalized;
+        
+        float upVsGravity = Vector3.Dot(orientation.up, g);
+        bool shouldInvert = upVsGravity > 0.9f;
+        if (shouldInvert != invertRequested)
+        {
+            RequestInvert(shouldInvert);
+        }
     }
 
     public void RequestInvert(bool value)
