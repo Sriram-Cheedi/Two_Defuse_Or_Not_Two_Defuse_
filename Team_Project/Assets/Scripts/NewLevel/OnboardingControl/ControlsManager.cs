@@ -16,7 +16,7 @@ public class ControlsManager : MonoBehaviour
     private void Start()
     {
         HideCards();
-        StartCoroutine(MovementAndCrouchingCards());
+        // StartCoroutine(MovementAndCrouchingCards());
     }
 
     IEnumerator MovementAndCrouchingCards()
