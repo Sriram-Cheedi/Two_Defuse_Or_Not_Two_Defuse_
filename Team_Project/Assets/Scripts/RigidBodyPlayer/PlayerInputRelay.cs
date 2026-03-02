@@ -15,8 +15,10 @@ public class PlayerInputRelay : MonoBehaviour
     public event Action<int> NumberPressed;
     public event Action RespawnRequested;
     public event Action GuessSubmitted;
-    private InputAction move, look, jump, crouch, invertGravity, enter;
+    private InputAction move, look, jump, crouch, invertGravity, enter, click;
     private InputAction keypressNumbers;
+
+    [SerializeField] private LayerMask interactableLayer;
 
     public Vector2 MoveValue { get; private set; }
     public Vector2 LookValue { get; private set; }
@@ -28,6 +30,7 @@ public class PlayerInputRelay : MonoBehaviour
     {
         input =  GetComponent<PlayerInput>();
         
+        click = input.actions["Attack"];
         move = input.actions["Move"];
         look = input.actions["Look"];
         jump = input.actions["Jump"];
@@ -39,6 +42,8 @@ public class PlayerInputRelay : MonoBehaviour
 
     private void OnEnable()
     {
+        click.performed += OnClick;
+
         move.performed += OnMove;
         move.canceled += OnMove;
         
@@ -62,6 +67,8 @@ public class PlayerInputRelay : MonoBehaviour
 
     private void OnDisable()
     {
+        click.performed -= OnClick;
+        
         move.performed -= OnMove;
         move.canceled -= OnMove;
         
@@ -81,6 +88,17 @@ public class PlayerInputRelay : MonoBehaviour
         
         enter.performed -= OnEnter;
         enter.canceled -= OnEnter;
+    }
+
+    private void OnClick(InputAction.CallbackContext ctx)
+    {
+        Vector2 screenPosition = Mouse.current.position.ReadValue();
+        Ray ray = Camera.main.ScreenPointToRay(screenPosition);
+        
+        if (Physics.Raycast(ray, out RaycastHit hit, 10f))
+        {
+            hit.collider.GetComponent<Interactible_Interface>()?.Interact(hit);
+        }
     }
 
     private void OnMove(InputAction.CallbackContext ctx)
