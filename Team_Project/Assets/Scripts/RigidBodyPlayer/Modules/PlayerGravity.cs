@@ -103,14 +103,22 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     {
         // Are we upside down relative to world down?
         Debug.Log("ProcessAccelerometer" + (accelerometer.z ));
+        if (accelerometer.z < -12f || accelerometer.z > 12f) 
+        {
+            // Phone is moving too fast! Ignore the input this frame so we don't accidentally flip.
+            return; 
+        }
         float a = Hub.data.gravityAlpha;
         //smooth signal
         if(filteredAcceleration == Vector3.zero) filteredAcceleration = accelerometer;
         else filteredAcceleration = a * accelerometer + (1 - a) * filteredAcceleration;
         Vector3 g = filteredAcceleration.normalized;
         
-        float upVsGravity = Vector3.Dot(Hub.rb.transform.up, g);
-        if (upVsGravity > 0.9f || upVsGravity < -0.9f)
+        bool isUpsideDown = Vector3.Dot(Hub.rb.transform.up, Vector3.down) > 0.95f;
+        if (g.z < -0.9f && !isUpsideDown)
+        {
+            RequestInvert(true);
+        }else if (g.z > 0.9f && isUpsideDown)
         {
             RequestInvert(true);
         }
