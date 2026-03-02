@@ -40,13 +40,14 @@ private:
     std::vector<uint32_t> pixelBuffer = {Color(255, 0, 0), Color(255, 0, 0), Color(255, 0, 0), Color(255, 0, 0)}; 
     std::atomic<int> state{0};  // 0 = Not Started, 1 = In Progress, 2 = Complete, 3 = Failed (Resetting)
     std::atomic<int> pressedButton{-1};
-    std::vector<int> correctSequence;
+    std::vector<int> correctSequence = {0, 1, 2, 3};
 
     Threads::Mutex resetingMutex; //Protects Correct Sequence
     Threads::Mutex pixelBufferMutex; //Protects pixelBuffer
     // --------------------------
 
     // EXTERNAL THREAD FUNCTIONS
+    void disable();   // Turn off module
     void reset();     // Reset Module to the initial state
     void complete();  // Auto complete the module 
     void buttonPressed(std::string btnName, int state);
