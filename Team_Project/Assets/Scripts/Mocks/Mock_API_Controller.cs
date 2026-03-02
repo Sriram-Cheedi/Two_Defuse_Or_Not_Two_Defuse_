@@ -16,6 +16,8 @@ public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
     public Vector3 getAccelerometerValue => _accelValue;
     public bool getHasAccelerometer => _hasAccel;
     public Dictionary<string, int> getComponentStateManager => _componentStateManager;
+    
+    [SerializeField] public int mockSSMStatus = 0;
 
     public void InitializeSelf()
     {
@@ -55,6 +57,7 @@ public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
     public void TimerSet(int seconds) => Debug.Log($"MOCK: Timer Set to {seconds}s");
     public void ResetHardware(string header) => Debug.Log($"MOCK: Reset: {header}");
     public int GetDigital(string h) => 0;
+    public int GetSSMStatus() => mockSSMStatus;
     public Vector3 GetAccel() => _accelValue;
     public int GetSwitch(string id) => 0;
     public int GetLed(string id) => 0;
