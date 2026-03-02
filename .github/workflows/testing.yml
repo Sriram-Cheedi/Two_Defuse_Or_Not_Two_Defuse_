@@ -72,6 +72,8 @@ jobs:
         with:
           projectPath: Team_Project
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+          coverageOptions: ''
+          customParameters: '-force-glcore'
 
       - name: Diagnostics (on failure)
         if: failure()
