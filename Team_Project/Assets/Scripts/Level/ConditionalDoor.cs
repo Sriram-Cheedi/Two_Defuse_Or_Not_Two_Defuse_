@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
 
 public class ConditionalDoor : MonoBehaviour
 {
@@ -14,21 +16,28 @@ public class ConditionalDoor : MonoBehaviour
 
     [SerializeField] private string linkedPuzzle = "SSM";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
+
     void Start()
     {
         left_door = GameObject.Find("Door_Left");
         right_door = GameObject.Find("Door_Right");
+
+        if (PuzzleManager.Instance != null && PuzzleManager.Instance._puzzleTriggers.ContainsKey("SSM"))
+        {
+            PuzzleManager.Instance._puzzleTriggers[linkedPuzzle].OnSuccess += OpenDoorWrapper; 
+        }
+    }
+
+    private void OnDisable()
+    {
+        PuzzleManager.Instance._puzzleTriggers[linkedPuzzle].OnSuccess -= OpenDoorWrapper;
     }
 
     // Update is called once per frame
-    void Update()
+    private void OpenDoorWrapper()
     {
         if (!_isOpen)
-        {
-            _puzzleCompleted = PuzzleManager.Instance.checkPuzzleStatus(linkedPuzzle) == 2;
-        }
-
-        if (_puzzleCompleted && !_isOpen)
         {
             StartCoroutine(OpenDoors());
             _isOpen = true;
