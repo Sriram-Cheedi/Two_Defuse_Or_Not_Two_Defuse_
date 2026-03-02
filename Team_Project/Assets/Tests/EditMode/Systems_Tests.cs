@@ -16,10 +16,7 @@ public class API_StructureTests
     {
         _puzzleParent = new GameObject();
         _puzzleManager = _puzzleParent.AddComponent<PuzzleManager>();
-
-        GameObject keypadObject = new GameObject();
-        _puzzleManager.SSMKeypad = keypadObject.AddComponent<NavKeypad.Keypad>();
-
+        
         MethodInfo awakeMethod = typeof(PuzzleManager).GetMethod("Awake", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
         awakeMethod.Invoke(_puzzleManager, null);
 
