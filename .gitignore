@@ -2,6 +2,7 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
+.DS_Store
 .vscode/
 artifacts/
 
@@ -104,6 +105,7 @@ Team_Project/.idea/
 
 .vscode/
 
+Hardware/ControllerV0.1/src/Team_Project.code-workspace
 
 # For PCBs designed using KiCad: https://www.kicad.org/
 # Format documentation: https://kicad.org/help/file-formats/
@@ -145,3 +147,4 @@ fp-info-cache
 
 # Local project settings
 *.kicad_prl
+Assets/_Recovery/

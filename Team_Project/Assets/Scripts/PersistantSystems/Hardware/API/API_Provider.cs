@@ -12,16 +12,21 @@ public class API_Provider : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            if (Application.isPlaying)
+            {
+                DontDestroyOnLoad(gameObject);
+            }
         }
         else
         {
             Destroy(gameObject);
         }
+    }
 
+    private void Start()
+    {
         if (useMockHardware)
         {
-
-            Debug.Log("TEST");
             GameObject mockChild = new GameObject("Mock_API_Controller");
             mockChild.transform.SetParent(this.transform);
 
@@ -33,11 +38,9 @@ public class API_Provider : MonoBehaviour
             child.transform.SetParent(this.transform);
 
             ActiveAPIController = child.AddComponent<API_Controller>();
-
-            Debug.Log("<color=green>API Provider: Initializing REAL mode.</color>");
-
-            ActiveAPIController.Initialize();
         }
+        ActiveAPIController.InitializeSelf();
+        ActiveAPIController.InitializeHardware();
     }
 
     public void Update()
