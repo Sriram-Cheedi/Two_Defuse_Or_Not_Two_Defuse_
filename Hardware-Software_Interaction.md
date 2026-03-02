@@ -25,7 +25,7 @@ cmd: function x y z ...
 
 | Command                            | Code                | Response             | Notes                                                                                  |
 |------------------------------------|---------------------|----------------------|----------------------------------------------------------------------------------------|
-| Get Status of Simon Says           | $SSM:status#        | $SSM:status _state_# | State: 0 = Not Started, 1 = In Progress, 2 = Complete                                  |
+| Get Status of Simon Says           | $SSM:status#        | $SSM:status _state_# | State: 0 = Off, 1 = In Progress, 2 = Complete                                  |
 | Set Status of Simon Says           | $SSM:set _state_#   | None                 | See above                                                                              |
 | Reset Simon Says with new sequence | $SSM:set _sequence_# | None                 | Sequence of format "seq1 seq2 seq3 seq4 ..." where each element is a single digit 0-3 e.g. $SSM:set 0 1 2 3# |
 
