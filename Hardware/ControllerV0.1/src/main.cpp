@@ -18,8 +18,8 @@ Imu gyro = Imu("IMU", serialController);
 
 Button btn1 = Button("BTN1", 38, serialController);
 Button btn2 = Button("BTN2", 39, serialController);
-Button btn3 = Button("BTN3", 41, serialController);
-
+Button btn3 = Button("BTN3", 40, serialController);
+Button btn4 = Button("BTN4", 41, serialController);
 
 numberGameModule ngm = numberGameModule("NGM",3,5,4,{6,7,8,9,10}, serialController);
 //fishingModule fgm = fishingModule("FGM",36,35,34,13,serialController);
@@ -63,6 +63,7 @@ void setup() {
   components.push_back(&ssm);
   components.push_back(&ngm);
   //components.push_back(&fgm);
+
 }
 
 void loop() {
@@ -74,6 +75,7 @@ void loop() {
   btn1.update();
   btn2.update();
   btn3.update(); 
+  btn4.update();
 
   timer.updateDisplay();
   gyro.update();

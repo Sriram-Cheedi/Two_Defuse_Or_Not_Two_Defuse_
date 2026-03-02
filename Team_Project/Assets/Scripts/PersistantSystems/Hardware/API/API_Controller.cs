@@ -238,6 +238,11 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
             }
         }
 
+        if (header == "SSM" && command == "status")
+        {
+            hardwareState.componentStates["SSM"] = int.Parse(value);
+        }
+
         if (!hardwareState.componentStates.ContainsKey(header))
         {
             return;
@@ -271,6 +276,11 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public int GetLed(string id)
     {
         return hardwareState.componentStates["LED" + id];
+    }
+
+    public int GetSSMStatus()
+    {
+        return hardwareState.componentStates["SSM"];
     }
 
     public void SendSetSeq(string header, int[] seq)

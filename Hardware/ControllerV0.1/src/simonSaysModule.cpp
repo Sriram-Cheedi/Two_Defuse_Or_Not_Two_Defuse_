@@ -35,10 +35,6 @@ void SimonSaysModule::update(){
 
 void SimonSaysModule::buttonPressed(std::string btnName, int btnState){
 
-    if((currentRound == 1) && (state.load(std::memory_order_acquire) != 1)) {
-        state.store(1, std::memory_order_release);
-    }
-
     int index = stoi(btnName.substr(3));
 
     if(btnState == HIGH){
@@ -59,6 +55,8 @@ void SimonSaysModule::set(std::vector<std::string> args) {
         int newState = stoi(args[0]);
 
         if(newState == 0){
+            disable();
+        }else if (newState == 1){
             reset();
         }else if (newState == 2){
             complete();
@@ -70,7 +68,7 @@ void SimonSaysModule::set(std::vector<std::string> args) {
             correctSequence.push_back(stoi(arg));
         }
 
-        reset();
+        disable();
     }
 
     resetingMutex.unlock();
@@ -80,9 +78,7 @@ void SimonSaysModule::status() {
     serialController.serialWrite(name, std::to_string(state.load(std::memory_order_acquire)));
 }
 
-void SimonSaysModule::reset(){
-
-
+void SimonSaysModule::disable(){
 
     if(threadID != -1){
         threads.kill(threadID);
@@ -90,6 +86,20 @@ void SimonSaysModule::reset(){
     }
 
     state.store(0, std::memory_order_release);
+    currentRound = 1;
+
+    setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)});    
+}
+
+
+void SimonSaysModule::reset(){
+
+    if(threadID != -1){
+        threads.kill(threadID);
+        threadID = -1;
+    }
+
+    state.store(1, std::memory_order_release);
     currentRound = 1;
 
     threadID = threads.addThread(loopTrampoline, this, 8192);
@@ -114,7 +124,7 @@ int SimonSaysModule::getInputSequence(){
 
     std::vector<int> inputSequence = std::vector<int>();
 
-    while(millis() - startTime < 4000){
+    while(millis() - startTime < 3000){
 
         for(auto& btn : buttons){
             
@@ -216,6 +226,8 @@ void SimonSaysModule::completeSequence(){
 
             setPixelBuffer({strip.Color(0, 30, 0), strip.Color(0, 30, 0), strip.Color(0, 30, 0), strip.Color(0, 30, 0)});
 
+            waitUntil = millis() + 100;
+            while (millis() < waitUntil) threads.yield();
         }
 
         
@@ -226,6 +238,9 @@ void SimonSaysModule::loop(){
 
     while(true){
 
+
+        setPixelBuffer({strip.Color(5, 0, 0), strip.Color(5, 0, 0), strip.Color(5, 0, 0), strip.Color(5, 0, 0)});
+
         for(size_t i = 0; i < currentRound; i++){
 
             resetingMutex.lock();
@@ -234,22 +249,26 @@ void SimonSaysModule::loop(){
 
             resetingMutex.unlock();
 
-            uint32_t waitUntil = millis() + 500;
+            uint32_t waitUntil = millis() + 250;
             while (millis() < waitUntil) threads.yield();
 
-            setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)});
+            setPixelBuffer({strip.Color(5, 0, 0), strip.Color(5, 0, 0), strip.Color(5, 0, 0), strip.Color(5, 0, 0)});
 
             if( i < currentRound - 1){
-                waitUntil = millis() + 200;
+                waitUntil = millis() + 100;
                 while (millis() < waitUntil) threads.yield();
             }
         }
+
+        setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)});
 
         int result = getInputSequence();
 
         if(result == 2){
             resetingMutex.lock();
             if(currentRound < correctSequence.size()){
+                uint32_t waitUntil = millis() + 500;
+                while (millis() < waitUntil) threads.yield();
                 currentRound++;
             }else{
 
@@ -293,7 +312,6 @@ void SimonSaysModule::loop(){
             waitUntil = millis() + 500;
             while (millis() < waitUntil) threads.yield();
 
-            state.store(0, std::memory_order_release);
             currentRound = 1;
         }
     }

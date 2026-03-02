@@ -2,9 +2,13 @@ name: Test project
 
 on:
   push:
+    paths:
+        - 'Team_Project/**'
     branches:
       - main 
   pull_request:
+    paths:
+        - 'Team_Project/**'
     types: [opened, reopened, synchronize]
 
 permissions:
@@ -68,6 +72,8 @@ jobs:
         with:
           projectPath: Team_Project
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+          coverageOptions: ''
+          customParameters: '-force-glcore'
 
       - name: Diagnostics (on failure)
         if: failure()

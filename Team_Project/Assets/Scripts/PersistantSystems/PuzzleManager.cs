@@ -1,16 +1,27 @@
 using System;
+using System.Collections.Generic;
 using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public class PuzzleEvents
+{
+    public Action OnSuccess;
+    public Action OnFailure;
+}
+
 public class PuzzleManager : MonoBehaviour
 {
     public static PuzzleManager Instance { get; private set; }
-
-    public NavKeypad.Keypad SSMKeypad;
-
+    
     int[] SSMSeq = new int[6];
-
+    
+    public Dictionary<string, PuzzleEvents> _puzzleTriggers;
+    // public Dictionary<string, int> _puzzleStates;
+    
+    
+    private int currentSequenceIndex = 0;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -21,29 +32,60 @@ public class PuzzleManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
+        _puzzleTriggers = new Dictionary<string, PuzzleEvents>();
+        _puzzleTriggers["SSM"] = new PuzzleEvents();
+        
+        GenerateSSMSequence();
     }
-
-    public int[] GenerateSSMSequence()
+    
+    // =============  SSM FUNCTIONS ===================
+    
+    public void CheckSSMButtonPress(int pressedValue)
     {
-        SSMSeq = new int[] { 0, 1, 2, 0, 2, 3 };
-        Debug.Log("Inside Generate Sequence");
-
-        if (SSMKeypad != null)
+        if (pressedValue == SSMSeq[currentSequenceIndex])
         {
-            SSMKeypad.InitializeKeypadCode(SSMSeq);
+            Debug.Log("Correct!" + pressedValue);
+            currentSequenceIndex++;
+
+            if (currentSequenceIndex >= SSMSeq.Length)
+            {
+                PuzzleSolved("SSM");
+            }
         }
         else
         {
-            Debug.LogWarning("PuzzleManager: No SSMKeypad assigned! Sequence generated but not sent to hardware.");
-        }
+            Debug.Log("Wrong button! Resetting sequence.");
+            _puzzleTriggers["SSM"].OnFailure?.Invoke();
+            
+            _puzzleTriggers["NGM"].OnSuccess?.Invoke();
 
+            ResetPuzzle("SSM");
+        }
+    }
+    
+    public int[] GenerateSSMSequence()
+    {
+        SSMSeq = new int[] { 0, 1 };
+        Debug.Log("Inside Generate Sequence");
         return SSMSeq;
     }
-
-    public void Update()
+    
+    private void ResetSSMSequence()
     {
-
+        currentSequenceIndex = 0;
     }
-
-    public void Start() { }
+    
+    // ============ General Functions ================
+    // When we implement multiple SSM Doors we will need to reset SSM Puzzle state and generate new sequence
+    private void PuzzleSolved(string name)
+    {
+        Debug.Log("PUZZLE SOLVED! Unlocking door...");
+        _puzzleTriggers[name].OnSuccess?.Invoke();
+    }
+    
+    private void ResetPuzzle(string name)
+    {
+        if (name == "SSM") currentSequenceIndex = 0;
+    }
 }

@@ -2,11 +2,6 @@
 	(version 20250114)
 	(generator "eeschema")
 	(generator_version "9.0")
-<<<<<<< HEAD
-	(uuid "f286e069-1d6c-4e07-ba55-ef486a3b71c6")
-	(paper "A4")
-	(lib_symbols)
-=======
 	(uuid "6645a9cf-330e-4f59-9cb4-0d1951e143a7")
 	(paper "A4")
 	(lib_symbols
@@ -552,193 +547,6 @@
 					(at 0 -2.54 90)
 					(length 0.762)
 					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "LED:IR204A"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 1.016)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "D"
-				(at 0.508 1.778 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Value" "IR204A"
-				(at -1.016 -2.794 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" "LED_THT:LED_D3.0mm_IRBlack"
-				(at 0 4.445 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "http://www.everlight.com/file/ProductFile/IR204-A.pdf"
-				(at -1.27 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Infrared LED , 3mm LED package"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "opto IR LED"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "LED*3.0mm*IRBlack*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "IR204A_0_1"
-				(polyline
-					(pts
-						(xy -2.54 1.27) (xy -2.54 -1.27)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -2.413 1.651) (xy -0.889 3.175) (xy -0.889 2.667) (xy -0.889 3.175) (xy -1.397 3.175)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.143 1.651) (xy 0.381 3.175) (xy 0.381 2.667)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 1.27) (xy -2.54 0) (xy 0 -1.27) (xy 0 1.27)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 0) (xy -2.54 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.381 3.175) (xy -0.127 3.175)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "IR204A_1_1"
-				(pin passive line
-					(at -5.08 0 0)
-					(length 2.54)
-					(name "K"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 2.54 0 180)
-					(length 2.54)
-					(name "A"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1534,6 +1342,12 @@
 		)
 	)
 	(junction
+		(at 215.9 50.8)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "14d6f353-e596-4a19-92e7-bf5f7003a997")
+	)
+	(junction
 		(at 113.03 80.01)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1546,34 +1360,10 @@
 		(uuid "394ca90f-bd58-4cb7-b70f-cfeec8b1d65a")
 	)
 	(junction
-		(at 209.55 160.02)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "3dcdc7bb-cca3-4c44-94bb-a17c3990402b")
-	)
-	(junction
 		(at 241.3 50.8)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "41ddc55a-3a04-4b58-9012-218f2972d48c")
-	)
-	(junction
-		(at 130.81 115.57)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "4228a2eb-936e-45e1-abf6-46f138e09aff")
-	)
-	(junction
-		(at 193.04 160.02)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "4996db74-5c87-405b-adb6-ddaa180f9aa9")
-	)
-	(junction
-		(at 144.78 118.11)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "55c1f44f-5fe0-4ae7-b4f4-8b25260218e6")
 	)
 	(junction
 		(at 144.78 77.47)
@@ -1586,18 +1376,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "58dd32c4-fcfb-4ef9-9591-5b9326a763aa")
-	)
-	(junction
-		(at 62.23 158.75)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "6233b6ed-0ba1-48b9-a9af-8695ce245ee3")
-	)
-	(junction
-		(at 154.94 160.02)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "63276392-e219-4119-9435-6bb961bf1daa")
 	)
 	(junction
 		(at 113.03 50.8)
@@ -1618,12 +1396,6 @@
 		(uuid "7c574fb2-8c3f-40e9-a453-b33f2d66c0ae")
 	)
 	(junction
-		(at 62.23 137.16)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "80c0750f-c738-45ad-87c1-3179487dba35")
-	)
-	(junction
 		(at 113.03 64.77)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1636,34 +1408,10 @@
 		(uuid "92406311-3cbb-4b57-b7a3-7925e8b6d567")
 	)
 	(junction
-		(at 160.02 160.02)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "97a92304-a79a-4839-bab7-2e6148d4e344")
-	)
-	(junction
-		(at 187.96 160.02)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "98cdd9e3-cd74-4b9f-9444-50e13867d2d8")
-	)
-	(junction
 		(at 62.23 82.55)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "9aac035d-e3fa-4b8b-aef9-44c5d21c29f4")
-	)
-	(junction
-		(at 204.47 160.02)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "b7115b4a-bfb6-4759-8084-fb2146375cc4")
-	)
-	(junction
-		(at 113.03 140.97)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "b9d82d38-a7a6-4b9a-b4f2-0eb1cca23541")
 	)
 	(junction
 		(at 113.03 105.41)
@@ -1677,57 +1425,19 @@
 		(color 0 0 0 0)
 		(uuid "cd0c7805-4546-47ae-a923-abf3533232ca")
 	)
-	(junction
-		(at 176.53 160.02)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "db1eb66a-2027-4e02-b8ea-870342fd48c7")
-	)
-	(junction
-		(at 113.03 120.65)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "f181786f-20b4-4779-a37a-98b9cb66a551")
-	)
-	(junction
-		(at 171.45 160.02)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "f2043b37-72f2-406d-b608-56ca6ef8b8ca")
-	)
 	(wire
 		(pts
-			(xy 232.41 71.12) (xy 232.41 68.58)
+			(xy 191.77 30.48) (xy 191.77 33.02)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "01c58c74-514e-474a-91b0-bd69b63acf84")
+		(uuid "04e3ddbe-8381-4553-aba4-9f7083d0edb8")
 	)
 	(wire
 		(pts
-			(xy 113.03 140.97) (xy 113.03 156.21)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "027f59f2-c5ce-4c43-924c-ab1084ae4c79")
-	)
-	(wire
-		(pts
-			(xy 171.45 128.27) (xy 171.45 143.51)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "05a83bad-75d3-49e4-97b8-717ea1e9f8fb")
-	)
-	(wire
-		(pts
-			(xy 260.35 68.58) (xy 259.08 68.58)
+			(xy 260.35 60.96) (xy 259.08 60.96)
 		)
 		(stroke
 			(width 0)
@@ -1744,16 +1454,6 @@
 			(type default)
 		)
 		(uuid "064b3209-1839-4d92-afa7-a4d41434c341")
-	)
-	(wire
-		(pts
-			(xy 80.01 156.21) (xy 80.01 162.56)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0674c1b9-411f-4bc7-9402-5f141fced377")
 	)
 	(wire
 		(pts
@@ -1777,6 +1477,26 @@
 	)
 	(wire
 		(pts
+			(xy 194.31 30.48) (xy 215.9 30.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0caea869-e6e8-4776-8b07-47a0755052ed")
+	)
+	(wire
+		(pts
+			(xy 194.31 33.02) (xy 191.77 33.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0d5366fa-d37e-47ad-beca-174468a8daee")
+	)
+	(wire
+		(pts
 			(xy 130.81 115.57) (xy 130.81 74.93)
 		)
 		(stroke
@@ -1784,16 +1504,6 @@
 			(type default)
 		)
 		(uuid "0f3694c2-c72b-41b7-944b-915a66c5f0ed")
-	)
-	(wire
-		(pts
-			(xy 187.96 130.81) (xy 187.96 143.51)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0f9fa1a8-ef46-43be-a091-931392fdb019")
 	)
 	(wire
 		(pts
@@ -1807,16 +1517,6 @@
 	)
 	(wire
 		(pts
-			(xy 209.55 156.21) (xy 209.55 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "15213da2-be3d-4535-a1a5-0389ac1581c8")
-	)
-	(wire
-		(pts
 			(xy 144.78 118.11) (xy 144.78 77.47)
 		)
 		(stroke
@@ -1827,23 +1527,13 @@
 	)
 	(wire
 		(pts
-			(xy 62.23 123.19) (xy 62.23 137.16)
+			(xy 113.03 50.8) (xy 215.9 50.8)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "16d176b7-3acd-49ec-bc03-2e8993a7cb8a")
-	)
-	(wire
-		(pts
-			(xy 204.47 160.02) (xy 209.55 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "17066de6-d319-48b4-845b-afe6db96f58a")
+		(uuid "161813d4-da84-4412-9df1-59a1f3b1d556")
 	)
 	(wire
 		(pts
@@ -1857,36 +1547,6 @@
 	)
 	(wire
 		(pts
-			(xy 246.38 45.72) (xy 246.38 68.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "17ac03f5-bae1-4686-9fec-00aef995c34d")
-	)
-	(wire
-		(pts
-			(xy 111.76 123.19) (xy 116.84 123.19)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "18515c4c-0dad-4314-9560-bcf44e120eba")
-	)
-	(wire
-		(pts
-			(xy 184.15 45.72) (xy 246.38 45.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "19227672-16b1-4a44-a36b-cc13b9865cd6")
-	)
-	(wire
-		(pts
 			(xy 48.26 57.15) (xy 48.26 30.48)
 		)
 		(stroke
@@ -1894,6 +1554,16 @@
 			(type default)
 		)
 		(uuid "198e0eab-3866-4fa0-9269-196672db428b")
+	)
+	(wire
+		(pts
+			(xy 208.28 64.77) (xy 227.33 64.77)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "19c2f68a-6c9c-4905-9dcc-99780a7afc27")
 	)
 	(wire
 		(pts
@@ -1927,16 +1597,6 @@
 	)
 	(wire
 		(pts
-			(xy 49.53 148.59) (xy 49.53 129.54)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1d8e7c90-e14d-4dae-8f0b-cb7f6cce47a9")
-	)
-	(wire
-		(pts
 			(xy 130.81 35.56) (xy 130.81 74.93)
 		)
 		(stroke
@@ -1944,16 +1604,6 @@
 			(type default)
 		)
 		(uuid "1ea32518-1e7b-4191-a48f-2758e21826bb")
-	)
-	(wire
-		(pts
-			(xy 227.33 71.12) (xy 227.33 50.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "21bba46f-443a-47fd-b125-b617e9876e07")
 	)
 	(wire
 		(pts
@@ -1977,13 +1627,13 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 140.97) (xy 69.85 140.97)
+			(xy 189.23 43.18) (xy 273.05 43.18)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "238c4161-3794-4f46-9742-a758620824a3")
+		(uuid "243520de-ed4d-44e8-9214-41aaa5045722")
 	)
 	(wire
 		(pts
@@ -2017,26 +1667,6 @@
 	)
 	(wire
 		(pts
-			(xy 114.3 148.59) (xy 114.3 137.16)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "277b2b55-b10d-427b-982d-92c4ebf89f07")
-	)
-	(wire
-		(pts
-			(xy 31.75 128.27) (xy 171.45 128.27)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2896904d-4c74-40f7-8e21-7add75b2cada")
-	)
-	(wire
-		(pts
 			(xy 254 50.8) (xy 254 71.12)
 		)
 		(stroke
@@ -2044,16 +1674,6 @@
 			(type default)
 		)
 		(uuid "2a6b9447-74bd-40fa-8412-5018cfa64613")
-	)
-	(wire
-		(pts
-			(xy 111.76 151.13) (xy 130.81 151.13)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2c871ea3-4f28-4795-876d-a27132e6f779")
 	)
 	(wire
 		(pts
@@ -2077,17 +1697,7 @@
 	)
 	(wire
 		(pts
-			(xy 171.45 160.02) (xy 176.53 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "30d429e1-0f17-48d6-acf4-f17957f993c5")
-	)
-	(wire
-		(pts
-			(xy 233.68 46.99) (xy 233.68 68.58)
+			(xy 233.68 46.99) (xy 233.68 66.04)
 		)
 		(stroke
 			(width 0)
@@ -2107,16 +1717,6 @@
 	)
 	(wire
 		(pts
-			(xy 62.23 158.75) (xy 62.23 137.16)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "33dfef54-e86e-4853-81ed-1c1c4db2d30c")
-	)
-	(wire
-		(pts
 			(xy 113.03 64.77) (xy 113.03 80.01)
 		)
 		(stroke
@@ -2124,16 +1724,6 @@
 			(type default)
 		)
 		(uuid "34969ab8-b9db-4e18-a575-27d3326d1ee2")
-	)
-	(wire
-		(pts
-			(xy 181.61 30.48) (xy 181.61 46.99)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "35c4516b-72d5-435f-9a01-0dbc1b8da2ab")
 	)
 	(wire
 		(pts
@@ -2147,43 +1737,13 @@
 	)
 	(wire
 		(pts
-			(xy 171.45 156.21) (xy 171.45 160.02)
+			(xy 233.68 69.85) (xy 233.68 73.66)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "39c599cc-630a-4741-aa53-778b338c1ddb")
-	)
-	(wire
-		(pts
-			(xy 81.28 158.75) (xy 62.23 158.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "39ec29de-35ae-4b48-9acb-da5442340e4a")
-	)
-	(wire
-		(pts
-			(xy 247.65 68.58) (xy 246.38 68.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3a750ca4-85e2-4aad-b4f6-a5d6bf746a2e")
-	)
-	(wire
-		(pts
-			(xy 241.3 71.12) (xy 245.11 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3abaf4cc-869e-47e8-8d05-0fbcad5bd9a5")
+		(uuid "3b611323-c5e5-4310-86a3-ad96c7e9e553")
 	)
 	(wire
 		(pts
@@ -2207,33 +1767,13 @@
 	)
 	(wire
 		(pts
-			(xy 187.96 156.21) (xy 187.96 160.02)
+			(xy 189.23 30.48) (xy 189.23 43.18)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "3eba8001-8d50-4d57-a674-e71d75c27ddf")
-	)
-	(wire
-		(pts
-			(xy 13.97 127) (xy 160.02 127)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3f418a51-7d91-405b-b788-0f3cc26c68df")
-	)
-	(wire
-		(pts
-			(xy 69.85 140.97) (xy 69.85 133.35)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3fd85626-e2a6-48d9-8020-86d63b9dfc4e")
+		(uuid "475f5fd5-a897-4245-a276-5bd8e0f0e398")
 	)
 	(wire
 		(pts
@@ -2247,26 +1787,6 @@
 	)
 	(wire
 		(pts
-			(xy 189.23 30.48) (xy 189.23 43.18)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "49c8d537-6b1d-41aa-842f-25dc460cc0a4")
-	)
-	(wire
-		(pts
-			(xy 147.32 162.56) (xy 147.32 142.24)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4a313987-dc06-4102-964f-09cf48cc075d")
-	)
-	(wire
-		(pts
 			(xy 167.64 96.52) (xy 167.64 95.25)
 		)
 		(stroke
@@ -2277,7 +1797,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 55.88) (xy 217.17 55.88)
+			(xy 76.2 55.88) (xy 203.2 55.88)
 		)
 		(stroke
 			(width 0)
@@ -2287,33 +1807,13 @@
 	)
 	(wire
 		(pts
-			(xy 69.85 133.35) (xy 204.47 133.35)
+			(xy 227.33 64.77) (xy 227.33 50.8)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "502e4f6a-3f97-4eac-b611-91aa78323255")
-	)
-	(wire
-		(pts
-			(xy 176.53 156.21) (xy 176.53 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "536f767a-e508-407f-ba9d-bb77b9952bea")
-	)
-	(wire
-		(pts
-			(xy 114.3 137.16) (xy 62.23 137.16)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "54238bf2-8c1b-4043-bf34-59d5f80eac23")
+		(uuid "4edccf7b-5430-4d16-99a3-b2edd544f506")
 	)
 	(wire
 		(pts
@@ -2327,23 +1827,23 @@
 	)
 	(wire
 		(pts
-			(xy 209.55 160.02) (xy 278.13 160.02)
+			(xy 233.68 73.66) (xy 241.3 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "54e29a3b-df82-4636-90bb-64c989f3775e")
+	)
+	(wire
+		(pts
+			(xy 152.4 160.02) (xy 278.13 160.02)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "5651e302-a1eb-42c2-955d-12ea9a5d6fe8")
-	)
-	(wire
-		(pts
-			(xy 13.97 153.67) (xy 81.28 153.67)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "58451206-00a5-4457-8303-3f319d22556c")
 	)
 	(wire
 		(pts
@@ -2397,16 +1897,6 @@
 	)
 	(wire
 		(pts
-			(xy 154.94 142.24) (xy 154.94 143.51)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6097c06e-dd30-499a-b18c-37b119029820")
-	)
-	(wire
-		(pts
 			(xy 81.28 82.55) (xy 62.23 82.55)
 		)
 		(stroke
@@ -2417,16 +1907,6 @@
 	)
 	(wire
 		(pts
-			(xy 111.76 148.59) (xy 114.3 148.59)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "658fa347-3a05-486d-aa25-ec01ad084a2a")
-	)
-	(wire
-		(pts
 			(xy 114.3 113.03) (xy 114.3 101.6)
 		)
 		(stroke
@@ -2434,16 +1914,6 @@
 			(type default)
 		)
 		(uuid "65e20164-36f7-40bc-8deb-b62ab7a66f80")
-	)
-	(wire
-		(pts
-			(xy 111.76 143.51) (xy 118.11 143.51)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "665d7d33-877a-4034-8e16-6486d90bbd22")
 	)
 	(wire
 		(pts
@@ -2467,17 +1937,7 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 160.02) (xy 154.94 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6b55ab2f-e695-4542-9b4c-3d4f13b2b020")
-	)
-	(wire
-		(pts
-			(xy 274.32 68.58) (xy 273.05 68.58)
+			(xy 274.32 55.88) (xy 273.05 55.88)
 		)
 		(stroke
 			(width 0)
@@ -2494,16 +1954,6 @@
 			(type default)
 		)
 		(uuid "6d4d3605-62ba-40e0-8fb7-8012a92032bd")
-	)
-	(wire
-		(pts
-			(xy 67.31 130.81) (xy 187.96 130.81)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6dfd63a7-cc91-484b-bebc-560847f7dcae")
 	)
 	(wire
 		(pts
@@ -2527,46 +1977,6 @@
 	)
 	(wire
 		(pts
-			(xy 68.58 132.08) (xy 193.04 132.08)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "75bddde6-0a3a-4e82-98b1-b1eb4422e731")
-	)
-	(wire
-		(pts
-			(xy 184.15 30.48) (xy 184.15 45.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "76490209-50cd-4afc-9759-4f8aa53bf184")
-	)
-	(wire
-		(pts
-			(xy 227.33 71.12) (xy 229.87 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7957e38a-733b-41df-95e1-b109dcd49343")
-	)
-	(wire
-		(pts
-			(xy 81.28 156.21) (xy 80.01 156.21)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "79b34f4a-82e4-4e5b-bafb-bbf5e9e494f9")
-	)
-	(wire
-		(pts
 			(xy 267.97 72.39) (xy 271.78 72.39)
 		)
 		(stroke
@@ -2574,6 +1984,16 @@
 			(type default)
 		)
 		(uuid "7a173d37-da9b-412b-b0aa-723f251aaf09")
+	)
+	(wire
+		(pts
+			(xy 186.69 44.45) (xy 259.08 44.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7ba10cf8-1a99-4a0d-b23e-9fff569ceb38")
 	)
 	(wire
 		(pts
@@ -2587,23 +2007,23 @@
 	)
 	(wire
 		(pts
-			(xy 111.76 153.67) (xy 144.78 153.67)
+			(xy 208.28 71.12) (xy 208.28 64.77)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "7e41bfbf-06f0-456b-848f-e752d9efd761")
+		(uuid "7db9f51f-e287-496d-b161-679af226a6ff")
 	)
 	(wire
 		(pts
-			(xy 209.55 134.62) (xy 209.55 143.51)
+			(xy 215.9 33.02) (xy 215.9 50.8)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "82b50eec-14fe-4ea9-bf93-dd2212616c27")
+		(uuid "817c704c-29a2-4eff-80d8-077b9fa0eea0")
 	)
 	(wire
 		(pts
@@ -2617,17 +2037,7 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 129.54) (xy 176.53 143.51)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "84e4233b-83d8-4d4a-b5e7-0bb8742eaa85")
-	)
-	(wire
-		(pts
-			(xy 62.23 166.37) (xy 62.23 158.75)
+			(xy 62.23 123.19) (xy 62.23 166.37)
 		)
 		(stroke
 			(width 0)
@@ -2637,7 +2047,7 @@
 	)
 	(wire
 		(pts
-			(xy 260.35 68.58) (xy 260.35 71.12)
+			(xy 260.35 60.96) (xy 260.35 71.12)
 		)
 		(stroke
 			(width 0)
@@ -2654,36 +2064,6 @@
 			(type default)
 		)
 		(uuid "86ea8369-68fa-42a5-91e6-670c9db0a074")
-	)
-	(wire
-		(pts
-			(xy 111.76 156.21) (xy 113.03 156.21)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "86fcd0d0-3bef-40a7-b96f-aba1898c55b5")
-	)
-	(wire
-		(pts
-			(xy 81.28 143.51) (xy 68.58 143.51)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "871921eb-7302-4599-a58a-c75480694c33")
-	)
-	(wire
-		(pts
-			(xy 130.81 151.13) (xy 130.81 115.57)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "883b1f66-8e08-4c94-bb5d-bd822fb47c71")
 	)
 	(wire
 		(pts
@@ -2717,6 +2097,16 @@
 	)
 	(wire
 		(pts
+			(xy 184.15 30.48) (xy 184.15 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8be16a63-0095-4e93-96e9-5125aa524654")
+	)
+	(wire
+		(pts
 			(xy 111.76 110.49) (xy 116.84 110.49)
 		)
 		(stroke
@@ -2744,16 +2134,6 @@
 			(type default)
 		)
 		(uuid "8fa5a8f3-10cc-45e2-ad46-de7a27119064")
-	)
-	(wire
-		(pts
-			(xy 176.53 160.02) (xy 187.96 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "91e69509-1aa5-4b51-83fd-0530ac57b96e")
 	)
 	(wire
 		(pts
@@ -2787,23 +2167,13 @@
 	)
 	(wire
 		(pts
-			(xy 247.65 68.58) (xy 247.65 71.12)
+			(xy 224.79 71.12) (xy 224.79 69.85)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "9762bfed-0955-4b4a-bb1d-1010f2900ee0")
-	)
-	(wire
-		(pts
-			(xy 232.41 68.58) (xy 233.68 68.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "979421e1-db0d-4e1f-8a40-893ea5d55410")
+		(uuid "962f8ade-d45f-4e64-911d-1f1d9ff9596c")
 	)
 	(wire
 		(pts
@@ -2827,36 +2197,6 @@
 	)
 	(wire
 		(pts
-			(xy 13.97 153.67) (xy 13.97 127)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9fdff428-6213-4d15-9c94-55ba4bac5764")
-	)
-	(wire
-		(pts
-			(xy 144.78 153.67) (xy 144.78 118.11)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a036cf16-ef5d-4808-8039-88b9cf167f3d")
-	)
-	(wire
-		(pts
-			(xy 116.84 146.05) (xy 111.76 146.05)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a0d49b12-5b2d-4a76-823e-a44fbcd54845")
-	)
-	(wire
-		(pts
 			(xy 50.8 50.8) (xy 50.8 46.99)
 		)
 		(stroke
@@ -2864,16 +2204,6 @@
 			(type default)
 		)
 		(uuid "a1e9b4d9-421c-4b91-986c-8831a03cd2aa")
-	)
-	(wire
-		(pts
-			(xy 160.02 156.21) (xy 160.02 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a397c716-e41f-48a3-baec-426a639c6c35")
 	)
 	(wire
 		(pts
@@ -2907,16 +2237,6 @@
 	)
 	(wire
 		(pts
-			(xy 204.47 133.35) (xy 204.47 143.51)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a6a8e695-6b3c-48e6-af3c-653364272a39")
-	)
-	(wire
-		(pts
 			(xy 62.23 101.6) (xy 62.23 123.19)
 		)
 		(stroke
@@ -2937,7 +2257,7 @@
 	)
 	(wire
 		(pts
-			(xy 273.05 43.18) (xy 273.05 68.58)
+			(xy 273.05 43.18) (xy 273.05 55.88)
 		)
 		(stroke
 			(width 0)
@@ -2967,13 +2287,13 @@
 	)
 	(wire
 		(pts
-			(xy 204.47 160.02) (xy 193.04 160.02)
+			(xy 181.61 30.48) (xy 181.61 46.99)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "b1f93b48-94d3-4b07-a08a-f8950ecd72d0")
+		(uuid "b06b6875-2f45-4ced-9f8f-0b32e0e84c2b")
 	)
 	(wire
 		(pts
@@ -3027,16 +2347,6 @@
 	)
 	(wire
 		(pts
-			(xy 186.69 30.48) (xy 186.69 44.45)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ba0e6f5f-cebb-4b3c-8c65-11455ec831de")
-	)
-	(wire
-		(pts
 			(xy 168.91 46.99) (xy 168.91 30.48)
 		)
 		(stroke
@@ -3044,6 +2354,16 @@
 			(type default)
 		)
 		(uuid "ba8a2c26-5596-4477-91bd-4660c6749a69")
+	)
+	(wire
+		(pts
+			(xy 181.61 46.99) (xy 233.68 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bc6a82cb-a509-4e9a-82a3-a94d5d14468c")
 	)
 	(wire
 		(pts
@@ -3057,6 +2377,16 @@
 	)
 	(wire
 		(pts
+			(xy 186.69 30.48) (xy 186.69 44.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bd2ac1f2-7f1e-4913-826b-973ef2238acd")
+	)
+	(wire
+		(pts
 			(xy 78.74 110.49) (xy 78.74 96.52)
 		)
 		(stroke
@@ -3064,16 +2394,6 @@
 			(type default)
 		)
 		(uuid "bd989884-d28c-40e4-8472-3e344be85761")
-	)
-	(wire
-		(pts
-			(xy 81.28 151.13) (xy 31.75 151.13)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bfea7c3b-99bd-49be-84c9-b0441e28cf15")
 	)
 	(wire
 		(pts
@@ -3087,13 +2407,13 @@
 	)
 	(wire
 		(pts
-			(xy 80.01 162.56) (xy 147.32 162.56)
+			(xy 246.38 45.72) (xy 246.38 67.31)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "c11543d0-8d27-4aa1-ab89-1581e7c387bb")
+		(uuid "c03bf9c3-d04a-4b7f-9173-db4a6d412eaf")
 	)
 	(wire
 		(pts
@@ -3104,6 +2424,16 @@
 			(type default)
 		)
 		(uuid "c174abcb-9a25-4f03-80fa-dcef49e9c883")
+	)
+	(wire
+		(pts
+			(xy 194.31 30.48) (xy 194.31 33.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c249ae8e-b046-4af2-9b86-786214e0f2ca")
 	)
 	(wire
 		(pts
@@ -3147,26 +2477,6 @@
 	)
 	(wire
 		(pts
-			(xy 118.11 134.62) (xy 209.55 134.62)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c713b964-bce8-4694-a79f-9a37bf3f5ab1")
-	)
-	(wire
-		(pts
-			(xy 160.02 127) (xy 160.02 143.51)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c8630a50-62d9-4f07-bdec-8d1fe91c80ee")
-	)
-	(wire
-		(pts
 			(xy 144.78 77.47) (xy 111.76 77.47)
 		)
 		(stroke
@@ -3187,43 +2497,13 @@
 	)
 	(wire
 		(pts
-			(xy 186.69 44.45) (xy 259.08 44.45)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ca632902-806d-4a33-a6c2-dcfdd081e8b9")
-	)
-	(wire
-		(pts
-			(xy 217.17 87.63) (xy 195.58 87.63)
+			(xy 203.2 87.63) (xy 195.58 87.63)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "cb765a4d-734e-4d72-81f7-334e08695eed")
-	)
-	(wire
-		(pts
-			(xy 160.02 160.02) (xy 171.45 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cb8017f5-5187-4b40-ba9f-f1504ca8e102")
-	)
-	(wire
-		(pts
-			(xy 204.47 156.21) (xy 204.47 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cba4c93c-918b-4c65-9b1b-e692659c1ad5")
 	)
 	(wire
 		(pts
@@ -3237,13 +2517,13 @@
 	)
 	(wire
 		(pts
-			(xy 181.61 46.99) (xy 233.68 46.99)
+			(xy 227.33 67.31) (xy 246.38 67.31)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "cd56976d-7cf0-4dfa-ab3e-b9cc85d6bdbe")
+		(uuid "cd37c6e7-2c7b-449d-9c9e-6413f313e5bb")
 	)
 	(wire
 		(pts
@@ -3287,27 +2567,17 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 148.59) (xy 49.53 148.59)
+			(xy 210.82 71.12) (xy 212.09 71.12)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "d026bda3-a4c2-49a4-a55d-05452bbe6179")
+		(uuid "d2774fe5-5882-4e7e-8a17-8126731f982a")
 	)
 	(wire
 		(pts
-			(xy 154.94 156.21) (xy 154.94 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d0a25438-b11a-4c87-bac7-1495163d2be7")
-	)
-	(wire
-		(pts
-			(xy 274.32 68.58) (xy 274.32 72.39)
+			(xy 274.32 55.88) (xy 274.32 72.39)
 		)
 		(stroke
 			(width 0)
@@ -3317,7 +2587,7 @@
 	)
 	(wire
 		(pts
-			(xy 259.08 44.45) (xy 259.08 68.58)
+			(xy 259.08 44.45) (xy 259.08 60.96)
 		)
 		(stroke
 			(width 0)
@@ -3327,37 +2597,7 @@
 	)
 	(wire
 		(pts
-			(xy 31.75 151.13) (xy 31.75 128.27)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d59b9c1a-860f-42ad-a62c-260726a29a26")
-	)
-	(wire
-		(pts
-			(xy 193.04 156.21) (xy 193.04 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d5ff99da-28ad-4759-9a26-42dddd0cb2f1")
-	)
-	(wire
-		(pts
-			(xy 154.94 160.02) (xy 160.02 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d6c51f3a-a8a2-4325-848a-7a90ec381a62")
-	)
-	(wire
-		(pts
-			(xy 241.3 71.12) (xy 241.3 50.8)
+			(xy 241.3 73.66) (xy 241.3 50.8)
 		)
 		(stroke
 			(width 0)
@@ -3387,16 +2627,6 @@
 	)
 	(wire
 		(pts
-			(xy 147.32 142.24) (xy 154.94 142.24)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "db2a7e5c-d92b-453f-b461-a71f8e7f5b2a")
-	)
-	(wire
-		(pts
 			(xy 62.23 48.26) (xy 62.23 57.15)
 		)
 		(stroke
@@ -3417,16 +2647,6 @@
 	)
 	(wire
 		(pts
-			(xy 49.53 129.54) (xy 176.53 129.54)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "dd4ef2b3-403e-4f33-b464-e00e00347a05")
-	)
-	(wire
-		(pts
 			(xy 154.94 90.17) (xy 162.56 90.17)
 		)
 		(stroke
@@ -3434,16 +2654,6 @@
 			(type default)
 		)
 		(uuid "de631ec7-f82b-43a9-9d61-e29219182ee7")
-	)
-	(wire
-		(pts
-			(xy 113.03 50.8) (xy 227.33 50.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e0c43a26-dd14-465d-ba90-e7f86d31fee2")
 	)
 	(wire
 		(pts
@@ -3467,16 +2677,6 @@
 	)
 	(wire
 		(pts
-			(xy 118.11 143.51) (xy 118.11 134.62)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e781a5d3-21b0-42c8-9fee-1b42bd9be1ca")
-	)
-	(wire
-		(pts
 			(xy 199.39 60.96) (xy 199.39 95.25)
 		)
 		(stroke
@@ -3497,6 +2697,16 @@
 	)
 	(wire
 		(pts
+			(xy 212.09 66.04) (xy 233.68 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e8c3f70f-8fbe-488e-ba87-f8f0b5103211")
+	)
+	(wire
+		(pts
 			(xy 74.93 77.47) (xy 81.28 77.47)
 		)
 		(stroke
@@ -3504,16 +2714,6 @@
 			(type default)
 		)
 		(uuid "e8d07243-6c99-44c3-84d7-3701affc5c40")
-	)
-	(wire
-		(pts
-			(xy 111.76 140.97) (xy 113.03 140.97)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "eaafed44-db9a-4711-aab4-f6fd148cbcdd")
 	)
 	(wire
 		(pts
@@ -3537,7 +2737,7 @@
 	)
 	(wire
 		(pts
-			(xy 217.17 55.88) (xy 217.17 87.63)
+			(xy 203.2 55.88) (xy 203.2 87.63)
 		)
 		(stroke
 			(width 0)
@@ -3547,23 +2747,23 @@
 	)
 	(wire
 		(pts
-			(xy 193.04 132.08) (xy 193.04 143.51)
+			(xy 215.9 50.8) (xy 227.33 50.8)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "f045fbf2-64ab-4655-b261-d9a8f97e7d32")
+		(uuid "ed1adfeb-2803-427f-a0cc-ae822f0fd463")
 	)
 	(wire
 		(pts
-			(xy 68.58 143.51) (xy 68.58 132.08)
+			(xy 227.33 67.31) (xy 227.33 71.12)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "f1458840-842d-455f-8e86-bb563f138f2b")
+		(uuid "f133eb94-5e08-4d2e-a90a-5d6c1e88ef30")
 	)
 	(wire
 		(pts
@@ -3577,33 +2777,13 @@
 	)
 	(wire
 		(pts
-			(xy 116.84 123.19) (xy 116.84 146.05)
+			(xy 212.09 66.04) (xy 212.09 71.12)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "f5b642b0-fc29-4374-8355-a1bef60e322e")
-	)
-	(wire
-		(pts
-			(xy 187.96 160.02) (xy 193.04 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f606e6fe-0164-4ccc-8d7d-f285776f87c4")
-	)
-	(wire
-		(pts
-			(xy 189.23 43.18) (xy 273.05 43.18)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f71badcb-b360-409c-9f80-97b0aa4afb32")
+		(uuid "f43bde65-106b-4801-893c-b711bd2646e4")
 	)
 	(wire
 		(pts
@@ -3617,26 +2797,6 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 146.05) (xy 67.31 146.05)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f72c1aef-7402-4312-982f-82b39fd23f7f")
-	)
-	(wire
-		(pts
-			(xy 67.31 146.05) (xy 67.31 130.81)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f84252bb-712c-4c47-a216-950039a4bc66")
-	)
-	(wire
-		(pts
 			(xy 115.57 72.39) (xy 115.57 48.26)
 		)
 		(stroke
@@ -3647,13 +2807,23 @@
 	)
 	(wire
 		(pts
-			(xy 113.03 120.65) (xy 113.03 140.97)
+			(xy 224.79 69.85) (xy 233.68 69.85)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "fcb4d429-944c-4024-81aa-89f94b8708b0")
+		(uuid "fa93d814-3ecd-4426-b75e-a29189d52fba")
+	)
+	(wire
+		(pts
+			(xy 184.15 45.72) (xy 246.38 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fd04c0f5-5dc4-41be-b1fa-48e0dc878aec")
 	)
 	(wire
 		(pts
@@ -3714,76 +2884,6 @@
 			(justify left bottom)
 		)
 		(uuid "f14638aa-100e-4488-9f37-39862f5a8ade")
-	)
-	(symbol
-		(lib_id "Device:R_Small")
-		(at 193.04 146.05 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "02df8a20-b2bc-4d77-a586-5c9caa33ce45")
-		(property "Reference" "R6"
-			(at 192.024 146.05 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "R_Small"
-			(at 195.58 147.3199 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 193.04 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 193.04 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
-			(at 193.04 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "8584f0e2-6139-47da-b0b6-0b3edd12e3f5")
-		)
-		(pin "2"
-			(uuid "0333ec3f-0e0e-4421-9973-c832916fad5c")
-		)
-		(instances
-			(project "Number-Game-Circuit"
-				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "R6")
-					(unit 1)
-				)
-			)
-		)
 	)
 	(symbol
 		(lib_id "Device:R_Small")
@@ -3850,6 +2950,154 @@
 			(project "Number-Game-Circuit"
 				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
 					(reference "R18")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "DTS-62N-V:DTS-62N-V")
+		(at 248.92 33.02 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "0a3520f6-d67c-4f39-933e-4bd75a8df667")
+		(property "Reference" "S5"
+			(at 231.902 32.258 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "DTS-62N-V"
+			(at 233.6799 26.67 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "DTS62NV"
+			(at 219.71 -61.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://akizukidenshi.com/download/ds/cosland/DTS-6-V.PDF"
+			(at 219.71 -161.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "Tactile Switches Through Hole 6*6"
+			(at 248.92 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" "7"
+			(at 219.71 -361.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "Diptronics"
+			(at 219.71 -461.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "DTS-62N-V"
+			(at 219.71 -561.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "113-DTS-62N-V"
+			(at 219.71 -661.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Diptronics/DTS-62N-V?qs=gTYE2QTfZfSKTB5KYn%252Brkw%3D%3D"
+			(at 219.71 -761.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Arrow Part Number" ""
+			(at 219.71 -861.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Arrow Price/Stock" ""
+			(at 219.71 -961.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "5c1c81ad-8ca6-43c2-a893-a3ddacb24b97")
+		)
+		(pin "3"
+			(uuid "cf3fd8a8-bf36-4b99-af15-a35bba657665")
+		)
+		(pin "4"
+			(uuid "fc023b66-95c4-4eec-8ddb-fb44898a9ed6")
+		)
+		(pin "2"
+			(uuid "b99b6228-4b0e-49c1-8e41-cf00a510e2af")
+		)
+		(instances
+			(project "Number-Game-Circuit"
+				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
+					(reference "S5")
 					(unit 1)
 				)
 			)
@@ -4026,78 +3274,8 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R_Small")
-		(at 160.02 146.05 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "1643ab1f-d97d-4783-9a89-1f30c1b4cd5a")
-		(property "Reference" "R2"
-			(at 159.004 146.05 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "R_Small"
-			(at 162.56 147.3199 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 160.02 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 160.02 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
-			(at 160.02 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "a6721ec9-a84f-477e-b6c1-ac91fa39c69e")
-		)
-		(pin "2"
-			(uuid "14424f92-bb1e-401c-a641-1e06e8bf09dd")
-		)
-		(instances
-			(project "Number-Game-Circuit"
-				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "R2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "DTS-62N-V:DTS-62N-V")
-		(at 245.11 104.14 90)
+		(at 224.79 104.14 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4105,7 +3283,7 @@
 		(dnp no)
 		(uuid "1792bc28-fe86-40c6-9ee4-f9c10c1ea278")
 		(property "Reference" "S2"
-			(at 245.872 87.122 90)
+			(at 225.552 87.122 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4114,7 +3292,7 @@
 			)
 		)
 		(property "Value" "DTS-62N-V"
-			(at 251.46 88.8999 90)
+			(at 231.14 88.8999 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4124,7 +3302,7 @@
 			)
 		)
 		(property "Footprint" "DTS62NV"
-			(at 340.03 74.93 0)
+			(at 319.71 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4134,7 +3312,7 @@
 			)
 		)
 		(property "Datasheet" "http://akizukidenshi.com/download/ds/cosland/DTS-6-V.PDF"
-			(at 440.03 74.93 0)
+			(at 419.71 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4144,7 +3322,7 @@
 			)
 		)
 		(property "Description" "Tactile Switches Through Hole 6*6"
-			(at 245.11 104.14 0)
+			(at 224.79 104.14 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4153,7 +3331,7 @@
 			)
 		)
 		(property "Height" "7"
-			(at 640.03 74.93 0)
+			(at 619.71 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4163,7 +3341,7 @@
 			)
 		)
 		(property "Manufacturer_Name" "Diptronics"
-			(at 740.03 74.93 0)
+			(at 719.71 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4173,7 +3351,7 @@
 			)
 		)
 		(property "Manufacturer_Part_Number" "DTS-62N-V"
-			(at 840.03 74.93 0)
+			(at 819.71 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4183,7 +3361,7 @@
 			)
 		)
 		(property "Mouser Part Number" "113-DTS-62N-V"
-			(at 940.03 74.93 0)
+			(at 919.71 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4193,7 +3371,7 @@
 			)
 		)
 		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Diptronics/DTS-62N-V?qs=gTYE2QTfZfSKTB5KYn%252Brkw%3D%3D"
-			(at 1040.03 74.93 0)
+			(at 1019.71 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4203,7 +3381,7 @@
 			)
 		)
 		(property "Arrow Part Number" ""
-			(at 1140.03 74.93 0)
+			(at 1119.71 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4213,7 +3391,7 @@
 			)
 		)
 		(property "Arrow Price/Stock" ""
-			(at 1240.03 74.93 0)
+			(at 1219.71 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4238,76 +3416,6 @@
 			(project "Number-Game-Circuit"
 				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
 					(reference "S2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_Small")
-		(at 154.94 146.05 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "2915bbdf-0fd9-4d03-b11d-ff6cd6028062")
-		(property "Reference" "R1"
-			(at 153.924 146.05 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "R_Small"
-			(at 157.48 147.3199 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 154.94 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 154.94 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
-			(at 154.94 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "7b98658a-cfdb-4605-8d1c-e89be3be753b")
-		)
-		(pin "2"
-			(uuid "7636e49b-1287-4435-b6da-4307ad2715ea")
-		)
-		(instances
-			(project ""
-				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "R1")
 					(unit 1)
 				)
 			)
@@ -4378,538 +3486,6 @@
 			(project "Number-Game-Circuit"
 				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
 					(reference "R14")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "LED:IR204A")
-		(at 204.47 151.13 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "3d5a361f-ae96-406c-a66c-85585caaa4a4")
-		(property "Reference" "D7"
-			(at 199.898 149.86 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "IR204A"
-			(at 207.01 153.5429 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "LED_THT:LED_D3.0mm_IRBlack"
-			(at 200.025 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.everlight.com/file/ProductFile/IR204-A.pdf"
-			(at 204.47 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Infrared LED , 3mm LED package"
-			(at 204.47 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "6e95a66b-72d0-48b0-b094-99bf1ef72c89")
-		)
-		(pin "2"
-			(uuid "f8d01d4c-7af9-4fab-bf0d-8de5407061db")
-		)
-		(instances
-			(project "Number-Game-Circuit"
-				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "D7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "LED:IR204A")
-		(at 154.94 151.13 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "41ca795e-023e-430a-8961-3ec0949694d8")
-		(property "Reference" "D1"
-			(at 150.368 149.86 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "IR204A"
-			(at 157.48 153.5429 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "LED_THT:LED_D3.0mm_IRBlack"
-			(at 150.495 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.everlight.com/file/ProductFile/IR204-A.pdf"
-			(at 154.94 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Infrared LED , 3mm LED package"
-			(at 154.94 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "1e2f3cae-7a7d-4e46-ac72-82d3571294a8")
-		)
-		(pin "2"
-			(uuid "800f47b7-ddc2-4364-a203-a06fa523448d")
-		)
-		(instances
-			(project ""
-				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "D1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_Small")
-		(at 176.53 146.05 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "4e704075-43c6-4157-a8b8-b15d7ffb9ee3")
-		(property "Reference" "R4"
-			(at 175.514 146.05 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "R_Small"
-			(at 179.07 147.3199 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 176.53 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 176.53 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
-			(at 176.53 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "bec82139-67fa-468c-9954-51433f148f19")
-		)
-		(pin "2"
-			(uuid "dc6de4ec-07d1-4f76-972e-ebd8438f859e")
-		)
-		(instances
-			(project "Number-Game-Circuit"
-				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "R4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "LED:IR204A")
-		(at 160.02 151.13 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "4ea6ccb4-6e7b-4940-99df-4327ed29697c")
-		(property "Reference" "D2"
-			(at 155.448 149.86 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "IR204A"
-			(at 162.56 153.5429 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "LED_THT:LED_D3.0mm_IRBlack"
-			(at 155.575 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.everlight.com/file/ProductFile/IR204-A.pdf"
-			(at 160.02 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Infrared LED , 3mm LED package"
-			(at 160.02 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "5b50734f-3b8d-4a82-bf1e-af36e03c34aa")
-		)
-		(pin "2"
-			(uuid "c8a780b8-a9ca-4e98-bd64-80fb22fcd31b")
-		)
-		(instances
-			(project "Number-Game-Circuit"
-				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "D2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "LED:IR204A")
-		(at 193.04 151.13 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "51773478-9435-4a06-b3a3-e8cd39a2c108")
-		(property "Reference" "D6"
-			(at 188.468 149.86 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "IR204A"
-			(at 195.58 153.5429 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "LED_THT:LED_D3.0mm_IRBlack"
-			(at 188.595 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.everlight.com/file/ProductFile/IR204-A.pdf"
-			(at 193.04 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Infrared LED , 3mm LED package"
-			(at 193.04 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "4ed4a8f6-3763-44bb-9b04-72d09005d76c")
-		)
-		(pin "2"
-			(uuid "1844215b-1415-4483-a9bb-f6c63fc8a3f7")
-		)
-		(instances
-			(project "Number-Game-Circuit"
-				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "D6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "SamacSys_Parts:SN74HC595N")
-		(at 81.28 140.97 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "60a2cf32-51f9-4e33-a1e2-b6d336b8742b")
-		(property "Reference" "IC3"
-			(at 96.52 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SN74HC595N"
-			(at 96.52 135.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "DIP794W53P254L1930H508Q16N"
-			(at 107.95 235.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/sn74hc595.pdf"
-			(at 107.95 335.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Description" "8-Bit Shift Registers With 3-State Output Registers"
-			(at 81.28 140.97 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Height" "5.08"
-			(at 107.95 535.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Name" "Texas Instruments"
-			(at 107.95 635.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Part_Number" "SN74HC595N"
-			(at 107.95 735.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Mouser Part Number" "595-SN74HC595N"
-			(at 107.95 835.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/SN74HC595N?qs=IEl3ej0IqwBTHkYa8XPoMQ%3D%3D"
-			(at 107.95 935.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Arrow Part Number" "SN74HC595N"
-			(at 107.95 1035.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Arrow Price/Stock" "https://www.arrow.com/en/products/sn74hc595n/texas-instruments?utm_currency=USD&region=nac"
-			(at 107.95 1135.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(pin "13"
-			(uuid "ef0cd8f8-c502-448d-b960-4cec6a5b70c4")
-		)
-		(pin "11"
-			(uuid "0b8defeb-98ba-40ce-845f-41c2a2fbad48")
-		)
-		(pin "9"
-			(uuid "19b5a8a2-a7b3-4328-a760-029c12afc380")
-		)
-		(pin "10"
-			(uuid "ea1fac9d-c212-4e61-88de-740fbeee5ca7")
-		)
-		(pin "15"
-			(uuid "56997b98-eeb7-461e-9252-22588958078d")
-		)
-		(pin "12"
-			(uuid "6b490e77-8de5-4b92-9668-2ed976741791")
-		)
-		(pin "16"
-			(uuid "b5d0973f-f261-4658-b8bd-52c0740cb916")
-		)
-		(pin "14"
-			(uuid "999189c5-7bfb-46ea-9680-7b07cd929d67")
-		)
-		(pin "3"
-			(uuid "eb012547-a138-45ca-82df-b674c2eee664")
-		)
-		(pin "8"
-			(uuid "57cc9f02-9619-4799-b6a3-f40be71abb34")
-		)
-		(pin "6"
-			(uuid "0cac0b80-4787-4011-af85-70558664fb51")
-		)
-		(pin "2"
-			(uuid "27595e95-d463-4d25-ad01-429f0c522d20")
-		)
-		(pin "5"
-			(uuid "9c9fb198-f90c-4b06-ba71-9689a028a88f")
-		)
-		(pin "1"
-			(uuid "7c5a8bb6-8558-48a2-8f5b-ebfee4dcef57")
-		)
-		(pin "4"
-			(uuid "e3a30566-af86-4735-b487-6bb70fa3689b")
-		)
-		(pin "7"
-			(uuid "f99e05fb-6fbb-4456-94fa-483885988449")
-		)
-		(instances
-			(project ""
-				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "IC3")
 					(unit 1)
 				)
 			)
@@ -5099,146 +3675,6 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small")
-		(at 187.96 146.05 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "67b21852-4fb1-48fe-adb8-f04a77d85f36")
-		(property "Reference" "R5"
-			(at 186.69 146.05 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "R_Small"
-			(at 190.5 147.3199 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 187.96 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 187.96 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
-			(at 187.96 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "530a3458-08d0-4a9d-a0f4-23aa5ed32afa")
-		)
-		(pin "2"
-			(uuid "da29a7f9-06ff-4a04-acb9-aa5fee779bbd")
-		)
-		(instances
-			(project "Number-Game-Circuit"
-				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "R5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "LED:IR204A")
-		(at 171.45 151.13 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "68fe4cc7-bf11-4dba-914e-97c56f711708")
-		(property "Reference" "D3"
-			(at 166.878 149.86 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "IR204A"
-			(at 173.99 153.5429 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "LED_THT:LED_D3.0mm_IRBlack"
-			(at 167.005 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.everlight.com/file/ProductFile/IR204-A.pdf"
-			(at 171.45 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Infrared LED , 3mm LED package"
-			(at 171.45 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "9adbb24f-5fa6-4e59-af9a-4df5f1b50628")
-		)
-		(pin "2"
-			(uuid "b28aba8d-2d51-4576-b314-75115002dd04")
-		)
-		(instances
-			(project "Number-Game-Circuit"
-				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "D3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_Small")
 		(at 165.1 85.09 90)
 		(unit 1)
 		(exclude_from_sim no)
@@ -5302,146 +3738,6 @@
 			(project "Number-Game-Circuit"
 				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
 					(reference "R17")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_Small")
-		(at 204.47 146.05 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "9644443d-903b-44d7-ba9c-bd3295c3c506")
-		(property "Reference" "R7"
-			(at 203.454 146.05 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "R_Small"
-			(at 207.01 147.3199 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 204.47 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 204.47 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
-			(at 204.47 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "ba43aa17-b2d6-4ac9-9019-dcb1746d4d84")
-		)
-		(pin "2"
-			(uuid "2cfb8a7e-aabc-4eb5-93e1-eb2d83bc49bc")
-		)
-		(instances
-			(project "Number-Game-Circuit"
-				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "R7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_Small")
-		(at 209.55 146.05 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "9c5516f9-457d-4c1a-9294-ecd5bb6ba6b8")
-		(property "Reference" "R8"
-			(at 208.534 146.05 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "R_Small"
-			(at 212.09 147.3199 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 209.55 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 209.55 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, small symbol"
-			(at 209.55 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "8498b4f8-71fa-4d23-be45-313a78391e86")
-		)
-		(pin "2"
-			(uuid "9d7ad094-fd6c-4a3a-947d-4b0f6b2ac1a7")
-		)
-		(instances
-			(project "Number-Game-Circuit"
-				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "R8")
 					(unit 1)
 				)
 			)
@@ -5663,76 +3959,6 @@
 			(project ""
 				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
 					(reference "J1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "LED:IR204A")
-		(at 176.53 151.13 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "b5db1995-0820-4eb7-85e4-4f08bbecb1ce")
-		(property "Reference" "D4"
-			(at 171.958 149.86 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "IR204A"
-			(at 179.07 153.5429 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "LED_THT:LED_D3.0mm_IRBlack"
-			(at 172.085 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.everlight.com/file/ProductFile/IR204-A.pdf"
-			(at 176.53 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Infrared LED , 3mm LED package"
-			(at 176.53 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "a1b7a94b-791a-4593-bc3d-9bec90a18d7d")
-		)
-		(pin "2"
-			(uuid "e2e05ab3-432e-407b-882e-6d4244dde959")
-		)
-		(instances
-			(project "Number-Game-Circuit"
-				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "D4")
 					(unit 1)
 				)
 			)
@@ -5992,7 +4218,7 @@
 	)
 	(symbol
 		(lib_id "DTS-62N-V:DTS-62N-V")
-		(at 229.87 104.14 90)
+		(at 208.28 104.14 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6000,7 +4226,7 @@
 		(dnp no)
 		(uuid "c5141338-8653-45a7-9988-5e9d5954de86")
 		(property "Reference" "S1"
-			(at 230.632 87.122 90)
+			(at 209.042 87.122 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6009,7 +4235,7 @@
 			)
 		)
 		(property "Value" "DTS-62N-V"
-			(at 236.22 88.8999 90)
+			(at 214.63 88.8999 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6019,7 +4245,7 @@
 			)
 		)
 		(property "Footprint" "DTS62NV"
-			(at 324.79 74.93 0)
+			(at 303.2 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6029,7 +4255,7 @@
 			)
 		)
 		(property "Datasheet" "http://akizukidenshi.com/download/ds/cosland/DTS-6-V.PDF"
-			(at 424.79 74.93 0)
+			(at 403.2 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6039,7 +4265,7 @@
 			)
 		)
 		(property "Description" "Tactile Switches Through Hole 6*6"
-			(at 229.87 104.14 0)
+			(at 208.28 104.14 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6048,7 +4274,7 @@
 			)
 		)
 		(property "Height" "7"
-			(at 624.79 74.93 0)
+			(at 603.2 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6058,7 +4284,7 @@
 			)
 		)
 		(property "Manufacturer_Name" "Diptronics"
-			(at 724.79 74.93 0)
+			(at 703.2 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6068,7 +4294,7 @@
 			)
 		)
 		(property "Manufacturer_Part_Number" "DTS-62N-V"
-			(at 824.79 74.93 0)
+			(at 803.2 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6078,7 +4304,7 @@
 			)
 		)
 		(property "Mouser Part Number" "113-DTS-62N-V"
-			(at 924.79 74.93 0)
+			(at 903.2 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6088,7 +4314,7 @@
 			)
 		)
 		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Diptronics/DTS-62N-V?qs=gTYE2QTfZfSKTB5KYn%252Brkw%3D%3D"
-			(at 1024.79 74.93 0)
+			(at 1003.2 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6098,7 +4324,7 @@
 			)
 		)
 		(property "Arrow Part Number" ""
-			(at 1124.79 74.93 0)
+			(at 1103.2 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6108,7 +4334,7 @@
 			)
 		)
 		(property "Arrow Price/Stock" ""
-			(at 1224.79 74.93 0)
+			(at 1203.2 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6133,76 +4359,6 @@
 			(project ""
 				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
 					(reference "S1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "LED:IR204A")
-		(at 209.55 151.13 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "ca202e56-34af-432b-80aa-1fd244e76a89")
-		(property "Reference" "D8"
-			(at 204.978 149.86 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "IR204A"
-			(at 212.09 153.5429 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "LED_THT:LED_D3.0mm_IRBlack"
-			(at 205.105 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.everlight.com/file/ProductFile/IR204-A.pdf"
-			(at 209.55 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Infrared LED , 3mm LED package"
-			(at 209.55 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "c04ef543-47c7-46c8-8743-040662e93d3a")
-		)
-		(pin "2"
-			(uuid "6fd8d83c-f7d6-4bc2-a751-91e008b1f86a")
-		)
-		(instances
-			(project "Number-Game-Circuit"
-				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "D8")
 					(unit 1)
 				)
 			)
@@ -6935,7 +5091,6 @@
 			)
 		)
 	)
->>>>>>> 507cc054c19821dd5869d040e62c10fbf5f1cb6b
 	(sheet_instances
 		(path "/"
 			(page "1")
