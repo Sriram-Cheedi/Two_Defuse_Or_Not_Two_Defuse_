@@ -33,8 +33,8 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public Dictionary<string, int> getComponentStateManager => hardwareState.componentStates;
     private void OnDestroy() => Exit();
 
-    public void Awake() 
-    { 
+    public void Awake()
+    {
         hardwareState = new HardwareState();
         hardwareState.componentStates = new Dictionary<string, int>();
         hardwareState.gyroValue = Vector3.zero; ;
@@ -44,8 +44,9 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     /// Initializes Local dictionary of all connected hardware components to 0 (off).
     /// Passes in the serialController and connects its 'Received' action to the HandleMessage function.
     /// </summary>
-    public void Initialize()
+    public void InitializeSelf()
     {
+        Debug.Log("<color=green>API Provider: Initializing REAL mode.</color>");
 
         hardwareState.componentStates["BTN1"] = 0;
         hardwareState.componentStates["BTN2"] = 0;
@@ -56,10 +57,14 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         hardwareState.componentStates["SWT1"] = 0;
         hardwareState.componentStates["SWT2"] = 0;
         hardwareState.componentStates["SWT3"] = 0;
-        
+
         hardwareState.componentStates["LED1"] = 0;
         hardwareState.componentStates["LED2"] = 0;
         hardwareState.componentStates["LED3"] = 0;
+
+        hardwareState.componentStates["SSM"] = 0;
+
+
 
         //hardwareState.componentStates["SWT1"] = 0;
         //hardwareState.componentStates["SWT2"] = 0;
@@ -78,6 +83,12 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         {
             Debug.Log("Setting Handle Message for Real Serial Controller");
             ActivePortController.Received += HandleMessage;
+            var serialPortController = ActivePortController as SerialPortController;
+            if (serialPortController != null)
+            {
+                serialPortController.bombDisconnected += HandleDisconnect;
+                serialPortController.bombReconnected += HandleReconnect;
+            }
         }
         else
         {
@@ -85,12 +96,42 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         }
     }
 
+
+    public void InitializeHardware()
+    {
+        Debug.Log("<color=green>Initializing REAL Hardware...</color>");
+    }
+
     void Exit()
     {
         if (ActivePortController != null)
         {
             ActivePortController.Received -= HandleMessage;
+            var serialPortController = ActivePortController as SerialPortController;
+            if (serialPortController != null)
+            {
+                serialPortController.bombDisconnected -= HandleDisconnect;
+                serialPortController.bombReconnected -= HandleReconnect;
+            }
             ActivePortController.OnApplicationQuit();
+        }
+    }
+    
+    private void HandleDisconnect()
+    {
+        Debug.LogWarning("Hardware disconnected");
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnHardwareDisconnect();
+        }
+    }
+
+    private void HandleReconnect()
+    {
+        Debug.LogWarning("Hardware reconnected");
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnHardwareReconnect();
         }
     }
 
@@ -197,6 +238,11 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
             }
         }
 
+        if (header == "SSM" && command == "status")
+        {
+            hardwareState.componentStates["SSM"] = int.Parse(value);
+        }
+
         if (!hardwareState.componentStates.ContainsKey(header))
         {
             return;
@@ -230,6 +276,24 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public int GetLed(string id)
     {
         return hardwareState.componentStates["LED" + id];
+    }
+
+    public int GetSSMStatus()
+    {
+        return hardwareState.componentStates["SSM"];
+    }
+
+    public void SendSetSeq(string header, int[] seq)
+    {
+        string strseq = "";
+        for (int i = 0; i < seq.Length; i++)
+        {
+            strseq += seq[i] + " ";
+        }
+        strseq = strseq.Substring(0, strseq.Length - 1);
+
+        string message = "$" + header + ":set " + strseq + "#";
+        ActivePortController.SendToArduino(message);
     }
 
     public void SendSet(string header, int value)

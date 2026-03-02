@@ -1,15 +1,36 @@
-using System;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private GameObject player;
     [SerializeField] private RigidBodyMovement rm;
     [SerializeField] public GameObject respawnPoint;
-
-    public void Respawn()
+    private PlayerInputRelay relay;
+    private void Awake()
     {
-        player.transform.position = respawnPoint.transform.position;
-        rm.ResetPlayer();
+        relay = Object.FindAnyObjectByType<PlayerInputRelay>();
     }
+    private void OnEnable()
+    {
+        if (relay != null) 
+        {
+            relay.RespawnRequested += MovePlayerToRespawn; 
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (relay != null) 
+        {
+            relay.RespawnRequested -= MovePlayerToRespawn; 
+        }
+    }
+
+    public void MovePlayerToRespawn()
+    {
+        if (rm != null)
+        {
+            rm.rb.position = respawnPoint.transform.position;
+        }
+    }
+
 }

@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour
     {
         moveInput = ctx.ReadValue<Vector2>();
     }
-
+    
     public void OnJump(InputAction.CallbackContext ctx)
     {
         if (ctx.performed && !IsObstacleAbove())

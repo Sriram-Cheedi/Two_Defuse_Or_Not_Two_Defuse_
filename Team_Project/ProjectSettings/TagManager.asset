@@ -10,6 +10,12 @@ TagManager:
   - MovingPlatform
   - HardwareProvider
   - FlipSection
+  - GridSpawn
+  - GridManager
+  - Orientation
+  - CameraPosition
+  - MetalSurface
+  - PlasticSurface
   layers:
   - Default
   - TransparentFX
@@ -18,7 +24,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
+  - Interactable
   - 
   - 
   - 
