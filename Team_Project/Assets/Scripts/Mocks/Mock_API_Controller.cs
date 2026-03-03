@@ -7,6 +7,9 @@ public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
     public event Action<string, int> OnInputChanged;
     public event Action<Vector3> OnGyroChanged;
     public event Action<Vector3, Vector3> OnImuChanged;
+    
+    public event Action<int[]> OnNGMSubmit;
+    public event Action<int[]> OnNGMChanged;
 
     private Dictionary<string, int> _componentStateManager = new Dictionary<string, int>();
     [SerializeField] private Vector3 _gyroValue = Vector3.zero;

@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Unity.VectorGraphics;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
 
 public class PuzzleData
 {
@@ -25,8 +24,6 @@ public class PuzzleManager : MonoBehaviour
     
     public Dictionary<string, PuzzleData> puzzleDatas;
     
-    private int currentSequenceIndex = 0;
-
     private DigitManager NGMdigitManager; 
     
     // Shit which is getting moved
@@ -52,8 +49,8 @@ public class PuzzleManager : MonoBehaviour
         puzzleDatas["SSM"] = new PuzzleData();
         puzzleDatas["NGM"] = new PuzzleData();
         
-        puzzleDatas["SSM"].correctSequence = GenerateSequence(4);
-        puzzleDatas["NGM"].correctSequence = GenerateSequence(4);
+        puzzleDatas["SSM"].correctSequence = GenerateSequence(4, 3);
+        puzzleDatas["NGM"].correctSequence = GenerateSequence(4, 9);
         
         puzzleDatas["NGM"].guessSequence = new int[4];
     }
@@ -65,6 +62,10 @@ public class PuzzleManager : MonoBehaviour
         
         API_Provider.Instance.ActiveAPIController.SendSetSeq("NGM", puzzleDatas["NGM"].correctSequence);
         API_Provider.Instance.ActiveAPIController.SendSetSeq("SSM", puzzleDatas["SSM"].correctSequence);
+        
+        API_Provider.Instance.ActiveAPIController.OnNGMChanged += HandleButtonPress;
+        API_Provider.Instance.ActiveAPIController.OnNGMSubmit += SetMaterialHARDWARE;
+
     }
     
     private void OnEnable()
@@ -84,6 +85,9 @@ public class PuzzleManager : MonoBehaviour
             relay.NumberPressed -= HandleDigitInput;
             relay.GuessSubmitted -= SetMaterial;
         }
+        
+        API_Provider.Instance.ActiveAPIController.OnNGMChanged -= HandleButtonPress;
+        API_Provider.Instance.ActiveAPIController.OnNGMSubmit -= SetMaterialHARDWARE;
     }
     
     
@@ -91,13 +95,12 @@ public class PuzzleManager : MonoBehaviour
     
     public void CheckSSMButtonPress(int pressedValue)
     {
-        PuzzleData SSM_Data =  puzzleDatas["SSM"];
-        if (pressedValue == SSM_Data.correctSequence[SSM_Data.currentSequenceIndex])
+        if (pressedValue ==  puzzleDatas["SSM"].correctSequence[puzzleDatas["SSM"].currentSequenceIndex])
         {
             Debug.Log("Correct!" + pressedValue);
-            currentSequenceIndex++;
+            puzzleDatas["SSM"].currentSequenceIndex++;
 
-            if (currentSequenceIndex >= SSM_Data.correctSequence.Length)
+            if (puzzleDatas["SSM"].currentSequenceIndex >=  puzzleDatas["SSM"].correctSequence.Length)
             {
                 Debug.Log("SSM Complate" + pressedValue);
                 PuzzleSolved("SSM");
@@ -113,6 +116,19 @@ public class PuzzleManager : MonoBehaviour
     }
     
     // =============  NGM FUNCTIONS ===================
+    private void HandleButtonPress(int[] array)
+    {
+        if (puzzleDatas["NGM"].completed) return;
+        puzzleDatas["NGM"].guessSequence = array;
+        for (int i = 0; i < array.Length; i++)
+        {
+            Debug.Log("array values :" + array[i]);
+            int updatedDigit = array[i];
+            puzzleDatas["NGM"].guessSequence[i] = updatedDigit;
+            NGMdigitManager.SetDigits(i, updatedDigit);
+        }
+        
+    }
     
     private void HandleDigitInput(int digit)
     {
@@ -124,6 +140,19 @@ public class PuzzleManager : MonoBehaviour
         puzzleDatas["NGM"].guessSequence[index] = updatedDigit;
         NGMdigitManager.SetDigits(index, updatedDigit);
     }
+    
+    private void SetMaterialHARDWARE(int[] array)
+    {
+        puzzleDatas["NGM"].guessSequence = array;
+
+        Debug.Log("Guess Submitted... Setting Material");
+        bool[] solutionSlotUsed = new bool[4];
+        bool[] guessSlotUsed = new bool[4];
+        DigitCorrect(solutionSlotUsed, guessSlotUsed);
+        DigitMisplaced(solutionSlotUsed, guessSlotUsed);
+        DigitWrong(guessSlotUsed);
+    }
+    
     
     private void SetMaterial()
     {
@@ -193,9 +222,16 @@ public class PuzzleManager : MonoBehaviour
     // ============ General Functions ================
     // When we implement multiple SSM Doors we will need to reset SSM Puzzle state and generate new sequence
     
-    public int[] GenerateSequence(int length)
+    public int[] GenerateSequence(int length, int maxValue)
     {
-        int[] Seq = new int[] { 0, 1 , 4 , 4};
+        System.Random rng = new System.Random();
+        int[] Seq = new int[length];
+        
+        for (int i = 0; i < length; i++)
+        {
+            Seq[i] = rng.Next(0 ,maxValue);
+        }
+        
         return Seq;
     }
     
@@ -207,6 +243,6 @@ public class PuzzleManager : MonoBehaviour
     
     private void ResetPuzzle(string name)
     {
-        if (name == "SSM") currentSequenceIndex = 0;
+        if (name == "SSM") puzzleDatas[name].currentSequenceIndex = 0;
     }
 }

@@ -94,7 +94,7 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
                     lastPongTime = Time.realtimeSinceStartup;
                     continue;
                 }
-                Debug.Log("Message Received: " + message);
+                Debug.Log("<color=green>Message Received: </color>" + message);
                 Received?.Invoke(message);
 
             }
@@ -130,7 +130,7 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
         try
         {
             _serialPort.Write(message);
-            Debug.Log("Sent: " + message);
+            Debug.Log("<color=orange>Message Sent: </color>" + message);
         }
         catch (Exception e)
         {

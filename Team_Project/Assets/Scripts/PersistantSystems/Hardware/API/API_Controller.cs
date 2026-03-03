@@ -150,6 +150,8 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
     public void HandleMessage(string message)
     {
+        
+        
         if (string.IsNullOrWhiteSpace(message))
         {
             return;
@@ -261,19 +263,19 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
             if (parts[0] == "0")
             {
-                for (int i = 1; i < hardwareState.currentHardwareNGMValues.Length; i++)
+                for (int i = 1; i < parts.Length; i++)
                 {
-                    hardwareState.currentHardwareNGMValues[i] = int.Parse(parts[i]);
+                    hardwareState.currentHardwareNGMValues[i - 1] = int.Parse(parts[i]);
                 }
                 OnNGMChanged?.Invoke(hardwareState.currentHardwareNGMValues);
             }
             else
             {
-                for (int i = 1; i < hardwareState.LastNGMSubmissionValues.Length; i++)
+                for (int i = 1; i < parts.Length; i++)
                 {
-                    hardwareState.LastNGMSubmissionValues[i] = int.Parse(parts[i]);
+                    hardwareState.LastNGMSubmissionValues[i - 1] = int.Parse(parts[i]);
                 }
-                OnNGMChanged?.Invoke(hardwareState.LastNGMSubmissionValues);
+                OnNGMSubmit?.Invoke(hardwareState.LastNGMSubmissionValues);
             }
         }
 
