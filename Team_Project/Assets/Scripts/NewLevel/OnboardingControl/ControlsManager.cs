@@ -8,6 +8,7 @@ public class ControlsManager : MonoBehaviour
     public GameObject crouchCard;
     public GameObject mouseCard;
     public GameObject jumpCard;
+    public GameObject DifficultyCard;
 
     [Header("Timing")]
     public float delay = 1.5f;
@@ -69,6 +70,11 @@ public class ControlsManager : MonoBehaviour
         if (jumpCard)
         {
             jumpCard.SetActive(false);
+        }
+
+        if (DifficultyCard)
+        {
+            DifficultyCard.SetActive(false);
         }
     }
 }
