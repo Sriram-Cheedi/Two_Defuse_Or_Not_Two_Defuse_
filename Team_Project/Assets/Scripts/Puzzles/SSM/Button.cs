@@ -3,9 +3,10 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 
-public class Button_Interact : MonoBehaviour, Interactible_Interface
+public class Button : MonoBehaviour, Interactible_Interface
 {
-    [SerializeField] private int button_number;   
+    [SerializeField] private int button_number; 
+    
     [SerializeField] public Material _materialON;
     [SerializeField] public Material _materialOFF;
     [SerializeField] public Material _incorrectMaterial;
@@ -20,14 +21,14 @@ public class Button_Interact : MonoBehaviour, Interactible_Interface
 
     void Start()
     {
-        PuzzleManager.Instance._puzzleTriggers["SSM"].OnFailure += FlashRed;
-        PuzzleManager.Instance._puzzleTriggers["SSM"].OnSuccess += DisableInteraction;
+        PuzzleManager.Instance.puzzleDatas["SSM"].OnFailure += FlashRed;
+        PuzzleManager.Instance.puzzleDatas["SSM"].OnSuccess += DisableInteraction;
     }
 
     private void OnDisable()
     {
-        PuzzleManager.Instance._puzzleTriggers["SSM"].OnFailure -= FlashRed;
-        PuzzleManager.Instance._puzzleTriggers["SSM"].OnSuccess -= DisableInteraction;
+        PuzzleManager.Instance.puzzleDatas["SSM"].OnFailure -= FlashRed;
+        PuzzleManager.Instance.puzzleDatas["SSM"].OnSuccess -= DisableInteraction;
     }
     
     private void DisableInteraction()

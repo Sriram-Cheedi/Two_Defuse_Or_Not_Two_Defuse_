@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-public class DestroyDoor : MonoBehaviour
+public class Spark_Disable : MonoBehaviour
 {
     [SerializeField] private GameObject[] doors;
     [SerializeField] private LevelData levelData;

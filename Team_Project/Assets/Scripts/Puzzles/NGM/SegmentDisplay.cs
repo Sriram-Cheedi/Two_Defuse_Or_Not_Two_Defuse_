@@ -3,8 +3,10 @@ using UnityEngine;
 public class SegmentDisplay : MonoBehaviour
 {
     public Renderer[] segmentRenderers;
+    
     public Material matOn;
     public Material matOff;
+    
     private int testdigit = 1;
 
     private readonly int[,] code =
@@ -28,15 +30,5 @@ public class SegmentDisplay : MonoBehaviour
         {
             segmentRenderers[i].material = code[digit, i] == 1 ?  matOn : matOff;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // if(testdigit < 0 || testdigit > 9) return; 
-        // for (int i = 0; i < segmentRenderers.Length; i++)
-        // {
-        //     segmentRenderers[i].material = code[testdigit, i] == 1 ?  matOn : matOff;
-        // }
     }
 }

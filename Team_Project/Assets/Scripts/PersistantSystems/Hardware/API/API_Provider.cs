@@ -21,10 +21,7 @@ public class API_Provider : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-
-    private void Start()
-    {
+        
         if (useMockHardware)
         {
             GameObject mockChild = new GameObject("Mock_API_Controller");

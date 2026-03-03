@@ -70760,15 +70760,15 @@ PrefabInstance:
       objectReference: {fileID: 13400000, guid: e4232e9a8b63dc942a5bef482339cf83, type: 2}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -201.61
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -7.01
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -71303,14 +71303,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Game.Main::LedManager
   digitManager: {fileID: 0}
+  solution: 00000000000000000000000000000000
+  guess: 00000000000000000000000000000000
   ledRenderers:
   - {fileID: 1420573023}
   - {fileID: 1635067394}
   - {fileID: 119964484}
   - {fileID: 1899179681}
+  relay: {fileID: 0}
   matCorrect: {fileID: 2100000, guid: ccaadc1b656a9eb4485cb20631ea8525, type: 2}
   matMisplaced: {fileID: 2100000, guid: bfbf5a606a2182f49bc9ddfedc674819, type: 2}
   matDefault: {fileID: 2100000, guid: e9f0e1120b773884dbda97b1a2927b2d, type: 2}
+  isSolved: 0
 --- !u!4 &273275684
 Transform:
   m_ObjectHideFlags: 0
@@ -74197,7 +74201,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1072000277}
   m_Father: {fileID: 855333638}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &416495091
@@ -74212,6 +74217,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 524ddabe8b4fb4592bce470520b01a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game.Main::PuzzleManager
+  ledRenderers:
+  - {fileID: 1420573023}
+  - {fileID: 1635067394}
+  - {fileID: 119964484}
+  - {fileID: 1899179681}
+  matCorrect: {fileID: 2100000, guid: ccaadc1b656a9eb4485cb20631ea8525, type: 2}
+  matMisplaced: {fileID: 2100000, guid: bfbf5a606a2182f49bc9ddfedc674819, type: 2}
+  matDefault: {fileID: 2100000, guid: e9f0e1120b773884dbda97b1a2927b2d, type: 2}
 --- !u!1001 &416607792
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -75360,21 +75373,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1662683733730751631, guid: be23368a412e8458b9ea32945cd3af5f, type: 3}
   m_PrefabInstance: {fileID: 1743482761}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &492221651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 492221646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fc590654541469183b4bdfdc3d75099, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Game.Main::OpenDoor
-  targetPosition: {x: 0, y: 0, z: 0}
-  speed: 5
-  isLeft: 0
 --- !u!54 &492221652
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -76210,21 +76208,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1662683733730751625, guid: be23368a412e8458b9ea32945cd3af5f, type: 3}
   m_PrefabInstance: {fileID: 1743482761}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &570230735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 570230730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fc590654541469183b4bdfdc3d75099, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Game.Main::OpenDoor
-  targetPosition: {x: 0, y: 0, z: 0}
-  speed: 5
-  isLeft: 1
 --- !u!54 &570230736
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -78680,7 +78663,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1149282691}
+    m_TransformParent: {fileID: 847179234}
     m_Modifications:
     - target: {fileID: 3661789964286770098, guid: f0046190b18524a5ebf0af395cbb358b, type: 3}
       propertyPath: m_Name
@@ -78700,15 +78683,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4150799601241645320, guid: f0046190b18524a5ebf0af395cbb358b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -152.59283
+      value: 0.7050171
       objectReference: {fileID: 0}
     - target: {fileID: 4150799601241645320, guid: f0046190b18524a5ebf0af395cbb358b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 360.007
+      value: 350.271
       objectReference: {fileID: 0}
     - target: {fileID: 4150799601241645320, guid: f0046190b18524a5ebf0af395cbb358b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.5448456
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4150799601241645320, guid: f0046190b18524a5ebf0af395cbb358b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -81186,6 +81169,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1622587719}
+  - {fileID: 712236319}
+  - {fileID: 904445358}
   m_Father: {fileID: 1149282691}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &848489196 stripped
@@ -81939,7 +81924,7 @@ GameObject:
   - component: {fileID: 904445360}
   - component: {fileID: 904445359}
   m_Layer: 0
-  m_Name: SSM_stand
+  m_Name: SSM_Stand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81954,11 +81939,11 @@ Transform:
   m_GameObject: {fileID: 904445357}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -152.63031, y: 359.24164, z: 5.5316315}
+  m_LocalPosition: {x: 0.6675415, y: 349.50565, z: -0.013214111}
   m_LocalScale: {x: 0.73367006, y: 0.71801853, z: 0.51218355}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1149282691}
+  m_Father: {fileID: 847179234}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &904445359
 CapsuleCollider:
@@ -85639,11 +85624,11 @@ Transform:
   m_GameObject: {fileID: 1072000275}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1166.3763, y: -61.90351, z: 492.25485}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -998.27277, y: 9.725845, z: 509.95627}
+  m_LocalScale: {x: 0.46923003, y: 0.48260182, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1747002369}
+  m_Father: {fileID: 416495090}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1073517243
 GameObject:
@@ -86632,8 +86617,6 @@ Transform:
   m_Children:
   - {fileID: 847179234}
   - {fileID: 1747002369}
-  - {fileID: 904445358}
-  - {fileID: 712236319}
   - {fileID: 1838561025}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -169551,7 +169534,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1662683733730751623, guid: be23368a412e8458b9ea32945cd3af5f, type: 3}
       propertyPath: m_Name
-      value: Conditional_Door
+      value: SSM_Controlled_Door
       objectReference: {fileID: 0}
     - target: {fileID: 2110399202515673747, guid: be23368a412e8458b9ea32945cd3af5f, type: 3}
       propertyPath: m_Enabled
@@ -240639,7 +240622,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2110399202515673747, guid: be23368a412e8458b9ea32945cd3af5f, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2110399202515673747, guid: be23368a412e8458b9ea32945cd3af5f, type: 3}
       propertyPath: linkedPuzzle
@@ -240651,13 +240634,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1662683733730751625, guid: be23368a412e8458b9ea32945cd3af5f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 570230735}
-    - targetCorrespondingSourceObject: {fileID: 1662683733730751625, guid: be23368a412e8458b9ea32945cd3af5f, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 570230736}
-    - targetCorrespondingSourceObject: {fileID: 1662683733730751631, guid: be23368a412e8458b9ea32945cd3af5f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 492221651}
     - targetCorrespondingSourceObject: {fileID: 1662683733730751631, guid: be23368a412e8458b9ea32945cd3af5f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 492221652}
@@ -240716,7 +240693,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1616865808}
-  - {fileID: 1072000277}
   - {fileID: 273275684}
   - {fileID: 687672954}
   - {fileID: 848489196}

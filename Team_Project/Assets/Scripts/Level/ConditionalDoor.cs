@@ -24,12 +24,12 @@ public class ConditionalDoor : MonoBehaviour
         right_door = transform.Find("Door_Right").gameObject;
         
         Debug.Log("LINKING TO : " + linkedPuzzle);
-        PuzzleManager.Instance._puzzleTriggers[linkedPuzzle].OnSuccess += OpenDoorWrapper; 
+        PuzzleManager.Instance.puzzleDatas[linkedPuzzle].OnSuccess += OpenDoorWrapper; 
     }
 
     private void OnDisable()
     {
-        PuzzleManager.Instance._puzzleTriggers[linkedPuzzle].OnSuccess -= OpenDoorWrapper;
+        PuzzleManager.Instance.puzzleDatas[linkedPuzzle].OnSuccess -= OpenDoorWrapper;
     }
 
     // Update is called once per frame
