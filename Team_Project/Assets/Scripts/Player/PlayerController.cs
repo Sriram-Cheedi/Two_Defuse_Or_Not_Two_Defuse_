@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
@@ -15,8 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float defaultSpeed = 12f;
     [SerializeField] private float speed;
     [SerializeField] private float slideSpeed = 12f;
-    [SerializeField] private float terminalDownVelocity = -30f;
-    [SerializeField] private float terminalUpVelocity = -30f;
+    [SerializeField] private float terminalVelocity = -30f;
 
     [Header("Jump")]
     [SerializeField] private float jumpHeight = 2f;
@@ -310,7 +310,7 @@ public class PlayerController : MonoBehaviour
         // Apply gravity
 
         
-        verticalVelocity = Mathf.Max(verticalVelocity, terminalDownVelocity);
+        verticalVelocity = Mathf.Max(verticalVelocity, terminalVelocity);
 
         Vector3 move = horizontalMove + Vector3.up * verticalVelocity;
         CollisionFlags flags = controller.Move(move * Time.deltaTime);

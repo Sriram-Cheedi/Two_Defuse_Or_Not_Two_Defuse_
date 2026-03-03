@@ -77,16 +77,6 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
         hardwareState.componentStates["SSM"] = 0;
 
-
-
-        //hardwareState.componentStates["SWT1"] = 0;
-        //hardwareState.componentStates["SWT2"] = 0;
-        //hardwareState.componentStates["SWT3"] = 0;
-
-        //hardwareState.componentStates["LED1"] = 0;
-        //hardwareState.componentStates["LED2"] = 0;
-        //hardwareState.componentStates["LED3"] = 0;
-
         GameObject child = new GameObject("Serial_Port_Controller");
         child.transform.SetParent(this.transform);
         ActivePortController = child.AddComponent<SerialPortController>();

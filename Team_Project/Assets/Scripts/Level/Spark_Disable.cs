@@ -10,14 +10,10 @@ public class Spark_Disable : MonoBehaviour
     private API_Controller_Interface _activeHardware;
     private bool[] buttonsPressed;
     private PlayerInputRelay relay;
+    
     private void Awake()
     {
         buttonsPressed = new bool[doors.Length];
-    }
-
-    private void Start()
-    {
-        _activeHardware = API_Provider.Instance.ActiveAPIController;
     }
 
     private void OnEnable()

@@ -166,17 +166,11 @@ public class RigidBodyMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        if (_activeHardware == null)
-        {
-            _activeHardware = API_Provider.Instance.ActiveAPIController;
-        }
-
         if (_activeHardware != null)
         {
-            _activeHardware.OnImuChanged += RotateLevel;
+            API_Provider.Instance.ActiveAPIController.OnImuChanged += RotateLevel;
         }
-
-
+        
         if (relay != null)
         {
             relay.Move += HandleMove;

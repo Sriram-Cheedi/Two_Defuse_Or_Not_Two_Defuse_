@@ -52,13 +52,12 @@ public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
         OnGyroChanged?.Invoke(_gyroValue);
     }
 
-    public void HandleMessage(string message) => Debug.Log($"MOCK: Handle Message");
-
-    public void SendSet(string header, int value) => Debug.Log("MOCK: SendSet: " + header + ":set " + value + "#");
-    public void SendSetSeq(string header, int[] value) => Debug.Log("MOCK: SendSetSeq: " + header + ":set " + value + "#");
+    public void HandleMessage(string message) => Debug.Log($"<color=orange>MOCK: Handle Message</color>");
+    public void SendSet(string header, int value) => Debug.Log("<color=orange>MOCK: SendSet: </color>" + header + ":set " + value + "#");
+    public void SendSetSeq(string header, int[] value) => Debug.Log("<color=orange>MOCK: SendSetSeq: </color>" + header + ":set " + value + "#");
     public int GetButton(string id) => _componentStateManager.ContainsKey("BTN" + id) ? _componentStateManager["BTN" + id] : 0;
-    public void TimerSet(int seconds) => Debug.Log($"MOCK: Timer Set to {seconds}s");
-    public void ResetHardware(string header) => Debug.Log($"MOCK: Reset: {header}");
+    public void TimerSet(int seconds) => Debug.Log("<color=orange>MOCK: Timer Set: </color>" + seconds);
+    public void ResetHardware(string header) => Debug.Log("<color=orange>MOCK: Reset: </color>" + header);
     public int GetDigital(string h) => 0;
     public int GetSSMStatus() => mockSSMStatus;
     public Vector3 GetAccel() => _accelValue;

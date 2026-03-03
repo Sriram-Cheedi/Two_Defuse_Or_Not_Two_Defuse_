@@ -35,7 +35,6 @@ public class PuzzleManager : MonoBehaviour
     
     private void Awake()
     {
-        Debug.Log("Puzzle Manager Initialised.");
         if (Instance == null)
         {
             Instance = this;
