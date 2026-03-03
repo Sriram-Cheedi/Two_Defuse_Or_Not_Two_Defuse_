@@ -18,14 +18,24 @@ numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, 
 
 
 void numberGameModule::set(std::vector<std::string> args){
-    //implement methods for unity to reset the game.
-    //need to learn more about how the api works before i can do that.
-    //int num = stoi(args[0]);
-    
+    //set format: $NGM:set X X X X
+    secretNumber[0] = stoi(args[0]);
+    secretNumber[1] = stoi(args[1]);
+    secretNumber[2] = stoi(args[2]);
+    secretNumber[3] = stoi(args[3]);
 }
 
 void numberGameModule::status(){
-    serialController.serialWrite(name, std::to_string(state));
+    //$NGM:status number1 number2 number3 number4
+    //$NGM:submit number1 number2 number3 number4
+    //send status format: name,status,XXXX
+    //NGM:status X X X X X
+    std::vector<std::string> args = {std::to_string(state),
+                                    std::to_string(secretNumber[0]),
+                                    std::to_string(secretNumber[1]),
+                                    std::to_string(secretNumber[2]),
+                                    std::to_string(secretNumber[3])};
+    serialController.serialWrite(name, args);
 }
 
 void numberGameModule::setupGame(){
@@ -75,49 +85,25 @@ void numberGameModule::buttonCheck(std::string btnName, int btnState){
             if(digitsBuffer[index] > 9){
                 digitsBuffer[index] = 0;
             }
+            buttonUpdate = now;
         }
-        buttonUpdate = now;
     }
 }
 
 void numberGameModule::checkGuess(std::string btnName, int btnState) {
-    if(btnState == HIGH){
-        // Reset LED states
-        ledStates = 0b00000000;
-        int correctPositions = 0;
-        bool secretUsed[4] = {false, false, false, false};
-        bool guessUsed[4] = {false, false, false, false};
-        
-        //Green LED
-        for (int i = 0; i < 4; i++) {
-            //Checks what digits are in the correct place
-            if (digitsBuffer[i] == secretNumber[i]) {
-                correctPositions++;
-                //selects the correct led to be lit up using the ledPosition array created in the header file.
-                //column 1 is for green LEDs because that matches the physical layout of the game since they are the right most LEDs.
-                ledStates |= (1 << ledPositions[i][1]);
-                secretUsed[i] = true;
-                guessUsed[i] = true;
-            }
-        }
-        //Orange LED
-        for (int i = 0; i < 4; i++) {
-            //Checks what digits are correct but in the wrong position.
-            if (!guessUsed[i]) {
-                for (int j = 0; j < 4; j++) {
-                    if (!secretUsed[j] && digitsBuffer[i] == secretNumber[j]) {
-                        //selects the correct led to be lit up using the ledPosition array created in the header file.
-                        //column 0 is for orange LEDs because that matches the physical layout of the game since they are the left most LEDs.
-                        ledStates |= (1 << ledPositions[i][0]);
-                        secretUsed[j] = true;
-                        guessUsed[i] = true;
-                        break;
-                    }
-                }
-            }
-        }
-        if(correctPositions == 4){
-            state = 2;
+    const unsigned long debounceDelay = 500;
+    unsigned long now = millis();
+    if(now - submitUpdate > debounceDelay){
+        if(btnState == HIGH){
+            int oldState = state;
+            state = 1;
+            status();
+            state = oldState;
+            if(secretNumber[0] == digitsBuffer[0] && 
+                secretNumber[1] == digitsBuffer[1] && 
+                secretNumber[2] == digitsBuffer[2] && 
+                secretNumber[3] == digitsBuffer[3]) state = 2;
+            submitUpdate = now;
         }
     }
 }
@@ -126,6 +112,7 @@ void numberGameModule::update(){
     //only check for game updates every 200 micro seconds
     unsigned long now = micros();
     if (now - lastUpdate < refreshInterval) return;
+    status();
     lastUpdate = now;
     for(auto& btn : buttons){
         if(state != 2){
@@ -135,8 +122,6 @@ void numberGameModule::update(){
     //start writing to the shift registers
     digitalWrite(latchPin, LOW);
     if (currentDigit < 4){
-        //LED display
-        shiftOut(dataPin, clockPin, LSBFIRST, ledStates);
         //Which digit is being displayed
         shiftOut(dataPin, clockPin, LSBFIRST, digit_encodings[currentDigit]);
         //The number being displayed

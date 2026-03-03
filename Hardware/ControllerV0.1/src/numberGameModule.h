@@ -12,27 +12,20 @@
 class numberGameModule : public Component {
 
 private:
-    int state = 0; // 0 = Not Started, 1 = In Progress, 2 = Complete, 3 = Failed (Resetting)
+    int state = 0; // 0 = In Progress, 1 = Submission, 2 = Complete
 
     const int dataPin;
     const int clockPin;
     const int latchPin;
     const std::array<int,5> buttonPins; //First 4 button are used to increment the display numbers. Button 5 will be the submit button.
     std::vector<Button> buttons;
-
-    uint8_t ledStates = 0b00000000;
     int secretNumber[4];
-    const uint8_t ledPositions[4][2] = {
-        {0,1},
-        {2,3},
-        {4,5},
-        {6,7},
-    };
 
     SerialController serialController;
 
     unsigned long lastUpdate = 0;
     unsigned long buttonUpdate = 0;
+    unsigned long submitUpdate = 0;
     const unsigned int refreshInterval = 200;
     uint8_t currentDigit = 0; 
     int digitsBuffer[4] = {0,0,0,0};
