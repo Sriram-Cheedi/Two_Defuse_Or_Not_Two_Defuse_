@@ -24,7 +24,7 @@ public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
 
     public void InitializeSelf()
     {
-        Debug.Log("<color=orange>MOCK: Initializing Simulated Controlller...</color>");
+        // Debug.Log("<color=orange>MOCK: Initializing Simulated Controlller...</color>");
 
         _componentStateManager["BTN1"] = 0;
         _componentStateManager["BTN2"] = 0;
