@@ -30,8 +30,8 @@ MonoBehaviour:
   coyoteTime: 0.15
   jumpBuffer: 0.2
   gravityAlpha: 0.1
-  sideWayMoveSpeed: 30
-  slopeSpeed: 30
+  sideWayMoveSpeed: 15
+  slopeSpeed: 20
   crouchTransitionSpeed: 5
   crouchHeightMultiplier: 0.5
   rotationSpeed: 200
