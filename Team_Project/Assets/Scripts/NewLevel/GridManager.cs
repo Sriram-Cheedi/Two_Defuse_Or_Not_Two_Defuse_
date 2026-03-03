@@ -20,8 +20,8 @@ public class GridManager : MonoBehaviour
     public CrackFloor[] floors;
     GameObject floorPrefab;
     public GameObject spawnPoint;
-    float offsetToSpawn = 10.0f;
-    private Vector3 grizScale = new Vector3(17.0f, 1.0f, 17.0f);
+    float offsetToSpawn = 20.0f;
+    private Vector3 grizScale = new Vector3(15.0f, 1.0f, 15.0f);
     public Material myMat;
     private PlayerInputRelay relay;
 
@@ -32,7 +32,7 @@ public class GridManager : MonoBehaviour
     
     public void Start()
     {
-        spawnPoint =  GameObject.FindGameObjectWithTag("GridSpawn");
+        // spawnPoint =  GameObject.FindGameObjectWithTag("GridSpawn");
         // safeUnsafeProbabilty = 0.6f;
         GridGeneration();
         BuildPath();
@@ -121,8 +121,8 @@ public class GridManager : MonoBehaviour
             {
                 floors[y * gridSize + x].transform.localScale = grizScale;
                 Vector3 offsetGrid = floors[y * gridSize + x].GetComponent<Collider>().bounds.size;
-                offsetGrid.x += 2.0f;
-                offsetGrid.z += 2.0f;
+                offsetGrid.x += 0.0f;
+                offsetGrid.z += 0.0f;
 
                 floors[y * gridSize + x].transform.position = new Vector3(startPosX + offsetGrid.x * x,startPosY,startPosZ+ offsetGrid.z * y);
             }

@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
         if (currentState == GameState.Playing) return;
 
         currentState = GameState.Playing;
-        SceneManager.LoadScene("StartLevel");
+        SceneManager.LoadScene("MatScene");
     }
 
     public void EndGame()

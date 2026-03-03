@@ -1,3 +1,4 @@
+using RigidBodyPlayer.PlayerData;
 using UnityEngine;
 
 public class PlayerFlipState : PlayerBaseState
@@ -45,14 +46,31 @@ public class PlayerFlipState : PlayerBaseState
 
     private void ExitLogicState()
     {
-        if (Hub.sensor.IsGrounded)
-        {
-            Hub.TransitionToState(Hub.GroundState);
-            return;
-        }else if (!Hub.sensor.IsGrounded)
+        if (!Hub.sensor.IsGrounded)
         {
             Hub.TransitionToState(Hub.AirborneState);
             return;
+        }
+        if (Hub.sensor.OnMovingPlatform)
+        {
+            Hub.TransitionToState(Hub.ConnectionState);
+            return;
+        }
+
+        switch (Hub.sensor.CurrentSurface)
+        {
+            case SurfaceType.Metal:
+                Hub.TransitionToState(Hub.MetalState);
+                break;
+            case SurfaceType.Plastic:
+                Hub.TransitionToState(Hub.PlasticState);
+                break;
+            case SurfaceType.Slope:
+                Hub.TransitionToState(Hub.SlopeState);
+                break;
+            default:
+                Hub.TransitionToState(Hub.GroundState);
+                break;
         }
     }
 

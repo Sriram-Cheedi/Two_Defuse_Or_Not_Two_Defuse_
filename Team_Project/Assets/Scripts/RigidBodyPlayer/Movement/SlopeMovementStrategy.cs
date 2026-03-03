@@ -7,7 +7,7 @@ namespace RigidBodyPlayer.Movement
         public void ApplyMovement(RigidBodyMovement hub)
         {
             Vector3 surfaceNormal = hub.sensor.GroundHit.normal;
-            hub.slopeDir = Vector3.ProjectOnPlane(Vector3.down, surfaceNormal).normalized;
+            hub.slopeDir = Vector3.ProjectOnPlane(-hub.rb.transform.up, surfaceNormal).normalized;
             hub.slopeSideWayDir = Vector3.Cross(surfaceNormal, hub.slopeDir).normalized;
 
             hub.movementDir = hub.slopeSideWayDir * hub.horizontalInput;

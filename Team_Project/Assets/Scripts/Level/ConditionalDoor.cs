@@ -14,19 +14,17 @@ public class ConditionalDoor : MonoBehaviour
     
     private float moveDistance = 2.0f;
 
-    [SerializeField] private string linkedPuzzle = "SSM";
+    [SerializeField] private string linkedPuzzle = "SET VALUE PLEASE";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     
 
     void Start()
     {
-        left_door = GameObject.Find("Door_Left");
-        right_door = GameObject.Find("Door_Right");
-
-        if (PuzzleManager.Instance != null && PuzzleManager.Instance._puzzleTriggers.ContainsKey("SSM"))
-        {
-            PuzzleManager.Instance._puzzleTriggers[linkedPuzzle].OnSuccess += OpenDoorWrapper; 
-        }
+        left_door = transform.Find("Door_Left").gameObject;
+        right_door = transform.Find("Door_Right").gameObject;
+        
+        Debug.Log("LINKING TO : " + linkedPuzzle);
+        PuzzleManager.Instance._puzzleTriggers[linkedPuzzle].OnSuccess += OpenDoorWrapper; 
     }
 
     private void OnDisable()
@@ -37,15 +35,19 @@ public class ConditionalDoor : MonoBehaviour
     // Update is called once per frame
     private void OpenDoorWrapper()
     {
+        Debug.Log("Checking Already Open");
+
         if (!_isOpen)
         {
             StartCoroutine(OpenDoors());
-            _isOpen = true;
+            _isOpen = true; 
         }
     }
     
     IEnumerator OpenDoors()
     {
+        Debug.Log("Opening Doors for: " + linkedPuzzle);
+        
         float elapsed = 0;
         float duration = 1.0f;
     
@@ -54,6 +56,9 @@ public class ConditionalDoor : MonoBehaviour
     
         Vector3 leftTarget = leftStart + transform.forward * moveDistance;
         Vector3 rightTarget = rightStart - transform.forward * moveDistance;
+        
+        Debug.Log("POSITIONS" + leftStart);
+        Debug.Log("POSITIONS" +rightStart);
 
         while (elapsed < duration)
         {
@@ -66,6 +71,9 @@ public class ConditionalDoor : MonoBehaviour
     
         left_door.transform.position = leftTarget;
         right_door.transform.position = rightTarget;
+        
+        Debug.Log("POSITIONS" + left_door.transform.position);
+        Debug.Log("POSITIONS" + right_door.transform.position);
     }
     
 }

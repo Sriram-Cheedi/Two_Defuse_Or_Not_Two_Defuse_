@@ -13,17 +13,17 @@
 
 SerialController serialController = SerialController();
 
-TimerModule timer = TimerModule("TMR", 29, 27, 28, serialController);
+TimerModule timer = TimerModule("TMR", 30, 32, 31, serialController);
 Imu gyro = Imu("IMU", serialController);
 
-Button btn1 = Button("BTN1", 38, serialController);
-Button btn2 = Button("BTN2", 39, serialController);
-Button btn3 = Button("BTN3", 40, serialController);
-Button btn4 = Button("BTN4", 41, serialController);
+Button btn1 = Button("BTN1", 9, serialController);
+Button btn2 = Button("BTN2", 10, serialController);
+Button btn3 = Button("BTN3", 11, serialController);
+Button btn4 = Button("BTN4", 12, serialController);
 
-numberGameModule ngm = numberGameModule("NGM",3,5,4,{6,7,8,9,10}, serialController);
+numberGameModule ngm = numberGameModule("NGM",33,35,34,{36,37,38,39,40}, serialController);
 //fishingModule fgm = fishingModule("FGM",36,35,34,13,serialController);
-SimonSaysModule ssm = SimonSaysModule("SSM", {11, 12, 24, 25}, 6,  serialController);
+SimonSaysModule ssm = SimonSaysModule("SSM", {27, 26, 25, 24}, 0,  serialController);
 
 std::vector<Component*> components;
 
@@ -63,6 +63,8 @@ void setup() {
   components.push_back(&ssm);
   components.push_back(&ngm);
   //components.push_back(&fgm);
+
+  analogWrite(26, HIGH);  //Power Pin for SSM buttons
 
 }
 
