@@ -46,11 +46,7 @@ public class API_StructureTests
 
         // This calls the private awake method
         MethodInfo awakeMethod = typeof(API_Provider).GetMethod("Awake", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-        MethodInfo startMethod = typeof(API_Provider).GetMethod("Start", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-
         awakeMethod.Invoke(_provider, null);
-        startMethod.Invoke(_provider, null);
-
         Assert.IsInstanceOf<Mock_API_Controller>(_provider.ActiveAPIController, "Provider should assign a Mock controller when useMockHardware is true.");
     }
 
