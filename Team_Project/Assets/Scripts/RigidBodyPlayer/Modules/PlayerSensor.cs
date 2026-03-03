@@ -38,7 +38,7 @@ public class PlayerSensor : MonoBehaviour, IPlayerModule
         switch (CurrentSurface)
         {
             case SurfaceType.Metal:
-                Debug.Log("Current Surface : Metal");
+                Debug.Log("CurrentSurfacerrent Surface : Metal");
                 break;
             case SurfaceType.Plastic:
                 Debug.Log("Current Surface : Plastic");
