@@ -23,11 +23,15 @@ public class LedManager : MonoBehaviour
 
     private void Start()
     {
+        GenerateRandomSolution();
+    }
+
+    private void GenerateRandomSolution()
+    {
         for (int i = 0; i < solution.Length; i++)
         {
             solution[i] = Random.Range(0, 10);
         }
-        SetMaterial();
     }
     
     private void OnEnable()

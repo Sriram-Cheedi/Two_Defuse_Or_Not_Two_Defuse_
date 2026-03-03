@@ -6,15 +6,18 @@ using UnityEngine.InputSystem.Controls;
 public class DestroyDoor : MonoBehaviour
 {
     [SerializeField] private GameObject[] doors;
-    [SerializeField] private float delay = 1f;
-    private API_Provider _API_Provider = API_Provider.Instance;
+    [SerializeField] private LevelData levelData;
     private API_Controller_Interface _activeHardware;
     private bool[] buttonsPressed;
     private PlayerInputRelay relay;
     private void Awake()
     {
-        _activeHardware = _API_Provider.ActiveAPIController;
-        buttonsPressed = new bool[3];
+        buttonsPressed = new bool[doors.Length];
+    }
+
+    private void Start()
+    {
+        _activeHardware = API_Provider.Instance.ActiveAPIController;
     }
 
     private void OnEnable()
@@ -36,13 +39,14 @@ public class DestroyDoor : MonoBehaviour
 
     private void GetButtonsValues()
     {
+        if (_activeHardware == null) return;
         for (int i = 0; i < buttonsPressed.Length; i++)
         {
             int buttonId = i + 1;
             int buttonValue = API_Provider.Instance.ActiveAPIController.GetButton(buttonId.ToString());
             if (buttonValue == 1)
             {
-                DisableDoorForSeconds(doors[i], 1f);
+                DisableDoorForSeconds(doors[i], levelData.doorDelay);
                 doors[i].SetActive(false);
             }
         }
@@ -56,10 +60,9 @@ public class DestroyDoor : MonoBehaviour
             GameObject targetDoor = doors[index];
             if (targetDoor != null && targetDoor.activeSelf)
             {
-                DisableDoorForSeconds(targetDoor, 1f);
+                DisableDoorForSeconds(targetDoor, levelData.doorDelay);
                 targetDoor.SetActive(false);
             }
-            
         }
     }
 

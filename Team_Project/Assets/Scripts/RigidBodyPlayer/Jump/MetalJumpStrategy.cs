@@ -20,13 +20,13 @@ namespace RigidBodyPlayer.Jump
             }
         }
 
-        public void ApplyJumpCut(RigidBodyMovement hub)
-        {
-            float verticalVelocity = Vector3.Dot(hub.rb.linearVelocity, hub.rb.transform.up);
-            if (verticalVelocity > 0f)
-            {
-                hub.rb.linearVelocity -= hub.rb.transform.up * (verticalVelocity * 0.5f);
-            }
-        }
+        // public void ApplyJumpCut(RigidBodyMovement hub)
+        // {
+        //     float verticalVelocity = Vector3.Dot(hub.rb.linearVelocity, hub.rb.transform.up);
+        //     if (verticalVelocity > 0f)
+        //     {
+        //         hub.rb.linearVelocity -= hub.rb.transform.up * (verticalVelocity * 0.5f);
+        //     }
+        // }
     }
 }

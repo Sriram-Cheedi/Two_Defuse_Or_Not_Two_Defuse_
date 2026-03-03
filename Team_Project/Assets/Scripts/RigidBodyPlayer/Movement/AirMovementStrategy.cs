@@ -7,7 +7,6 @@ namespace RigidBodyPlayer.Movement
         public void ApplyMovement(RigidBodyMovement hub)
         {
             if (hub.data == null) return;
-            if (hub.data == null) return;
             Vector3 movementDir = hub.orientation.forward * hub.verticalInput + hub.orientation.right * hub.horizontalInput;
             Vector3 velocity = hub.rb.linearVelocity;
             float speed = hub.data.walkSpeed;

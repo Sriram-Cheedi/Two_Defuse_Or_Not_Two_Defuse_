@@ -11,15 +11,23 @@ public class PlayerAirborneState : PlayerBaseState
     public override void EnterState()
     {
         Hub.canJump = false;
+        Hub.canFlipGravity= Hub.sensor.GetPreviousSurface() == SurfaceType.Plastic;
     }
     public override void ExitState(){}
 
     public override void UpdateState()
     {
+        if (Hub.gravity.invertRequested && Hub.canFlipGravity)
+        {
+            Hub.TransitionToState(Hub.FlipState);   
+            return;
+        }
+
         if (!Hub.sensor.IsGrounded)
         {
             return;
         }
+        
         if (Hub.sensor.OnMovingPlatform)
         {
             Hub.TransitionToState(Hub.ConnectionState);

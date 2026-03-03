@@ -13,6 +13,10 @@ public class MovingPlatform : MonoBehaviour
     [SerializeField] private Transform platform;
     private Vector3 targetPosition;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void Awake()
+    {
+        platform = GetComponent<Transform>();
+    }
     void Start()
     {
         platform.position = pointA.position;

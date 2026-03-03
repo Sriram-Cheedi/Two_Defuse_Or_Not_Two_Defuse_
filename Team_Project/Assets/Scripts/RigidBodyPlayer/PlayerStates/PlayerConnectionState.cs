@@ -22,6 +22,13 @@ public class PlayerConnectionState : PlayerBaseState
             Hub.TransitionToState(Hub.AirborneState);
             return;
         }
+        
+        if (Hub.gravity.invertRequested && Hub.canFlipGravity)
+        {
+            Hub.TransitionToState(Hub.FlipState);   
+            return;
+        }
+        
         if (Hub.sensor.OnMovingPlatform)
         {
             return;

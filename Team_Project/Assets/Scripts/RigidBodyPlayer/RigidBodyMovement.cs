@@ -139,7 +139,7 @@ public class RigidBodyMovement : MonoBehaviour
         currentState.EnterState();
     }
 
-    private void CheckInitialState()
+    public void CheckInitialState()
     {
         if (!sensor.IsGrounded)
         {
@@ -181,11 +181,15 @@ public class RigidBodyMovement : MonoBehaviour
         {
             relay.Move += HandleMove;
             relay.JumpPressed += HandleJump;
-            // relay.JumpCanceled += HandleJumpCut;
             relay.Crouch += HandleCrouch;
             relay.InvertGravity += HandleGravityInverted;
-            relay.RespawnRequested += ResetPlayer;
+            // relay.RespawnRequested += ResetPlayer;
         }
+    }
+
+    public PlayerCam GetPlayerCam()
+    {
+        return playerCam;
     }
 
     private void OnDisable()
@@ -197,10 +201,9 @@ public class RigidBodyMovement : MonoBehaviour
         {
             relay.Move -= HandleMove;
             relay.JumpPressed -= HandleJump;
-            // relay.JumpCanceled -= HandleJumpCut;
             relay.Crouch -= HandleCrouch;
             relay.InvertGravity -= HandleGravityInverted;
-            relay.RespawnRequested -= ResetPlayer;
+            // relay.RespawnRequested -= ResetPlayer;
         }
     }
 
@@ -208,8 +211,14 @@ public class RigidBodyMovement : MonoBehaviour
     {
         Debug.Log("RotateLevel");
         if (gravity == null || sensor == null) return;
-        gravity.ProcessAccelerometer(accelerometer, orientation);
+        gravity.ProcessAccelerometer(accelerometer);
     }
+
+    // private void ProcessAccelerometer()
+    // {
+    //     Debug.Log("gyro: " + _activeHardware.getAccelerometerValue);
+    //     gravity.ProcessAccelerometer(_activeHardware.getAccelerometerValue, orientation);
+    // }
 
     private void HandleMove(Vector2 value) => cachedMove = value;
 
@@ -229,14 +238,7 @@ public class RigidBodyMovement : MonoBehaviour
     {
         if (data == null) return;
         jump.SetJumpBuffer();
-        // Debug.Log("ready to jump" + jump.readyToJump + "coyote"+ jump.coyoteTimeCounter +"buffer"+  jump.jumpBufferCounter + "canjump" + canJump);
     }
-
-    // private void HandleJumpCut()
-    // {
-    //     IJumpStrategy strategy = MovementStrategyFactory.GetJumpStrategy(this);
-    //     strategy?.ApplyJumpCut(this);
-    // }
 
     public bool IsJumpHeld => relay.IsJumpHeld;
 

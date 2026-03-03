@@ -24,6 +24,7 @@ public class PuzzleManager : MonoBehaviour
     
     private void Awake()
     {
+        Debug.Log("Puzzle Manager Initialised.");
         if (Instance == null)
         {
             Instance = this;
@@ -35,6 +36,7 @@ public class PuzzleManager : MonoBehaviour
         
         _puzzleTriggers = new Dictionary<string, PuzzleEvents>();
         _puzzleTriggers["SSM"] = new PuzzleEvents();
+        _puzzleTriggers["NGM"] = new PuzzleEvents();
         
         GenerateSSMSequence();
     }
@@ -50,6 +52,7 @@ public class PuzzleManager : MonoBehaviour
 
             if (currentSequenceIndex >= SSMSeq.Length)
             {
+                Debug.Log("SSM Complate" + pressedValue);
                 PuzzleSolved("SSM");
             }
         }
@@ -57,8 +60,6 @@ public class PuzzleManager : MonoBehaviour
         {
             Debug.Log("Wrong button! Resetting sequence.");
             _puzzleTriggers["SSM"].OnFailure?.Invoke();
-            
-            _puzzleTriggers["NGM"].OnSuccess?.Invoke();
 
             ResetPuzzle("SSM");
         }
@@ -80,7 +81,6 @@ public class PuzzleManager : MonoBehaviour
     // When we implement multiple SSM Doors we will need to reset SSM Puzzle state and generate new sequence
     private void PuzzleSolved(string name)
     {
-        Debug.Log("PUZZLE SOLVED! Unlocking door...");
         _puzzleTriggers[name].OnSuccess?.Invoke();
     }
     

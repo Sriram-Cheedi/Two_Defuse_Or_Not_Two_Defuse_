@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::MovementData
   walkSpeed: 10
   crouchSpeed: 5
+  gridSpeed: 7
   groundAcceleration: 35
   airAcceleration: 15
   airApexAcceleration: 20
   jumpForceOnMetal: 3
   jumpForceOnPlastic: 11.5
+  jumpForceOnSemiConductor: 8.5
   jumpCutMultiplier: 5
   apexGravityMultiplier: 1
   apexThreshold: 0.5
@@ -27,8 +29,9 @@ MonoBehaviour:
   gravityMultiplier: 2
   coyoteTime: 0.15
   jumpBuffer: 0.2
-  sideWayMoveSpeed: 30
-  slopeSpeed: 30
+  gravityAlpha: 0.1
+  sideWayMoveSpeed: 15
+  slopeSpeed: 20
   crouchTransitionSpeed: 5
   crouchHeightMultiplier: 0.5
   rotationSpeed: 200

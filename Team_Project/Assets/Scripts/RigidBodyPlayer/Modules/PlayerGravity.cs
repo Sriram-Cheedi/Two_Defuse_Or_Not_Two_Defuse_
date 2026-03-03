@@ -13,7 +13,9 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private Transform cameraPosition;
     [SerializeField] private PlayerCam playerCam;
-
+    
+    private Vector3 filteredAcceleration = Vector3.zero;
+    
     [Header("Rotation")]
     [SerializeField] private float targetRotation = 180f;
 
@@ -27,7 +29,7 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
         Hub = hub;
         Hub.rb.useGravity = false;
         if (relay == null) relay = GetComponent<PlayerInputRelay>();
-        if (relay != null) relay.RespawnRequested += ResetGravity;
+        // if (relay != null) relay.RespawnRequested += ResetGravity;
         if (relay == null) relay = GetComponent<PlayerInputRelay>();
         if (playerInput == null) playerInput = GetComponent<PlayerInput>();
         if (playerCam == null) playerCam = FindAnyObjectByType<PlayerCam>();
@@ -56,6 +58,11 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     public void InvertGravityDirection()
     {
         gravityDir = -gravityDir;
+    }
+
+    public void SetGravityDirection(Vector3 direction)
+    {
+        gravityDir = direction;
     }
 
     private float GetRelativeVerticalVelocity()
@@ -89,22 +96,36 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     private void OnDestroy()
     {
         var relay = GetComponent<PlayerInputRelay>();
-        if (relay != null) relay.RespawnRequested -= ResetGravity;
+        // if (relay != null) relay.RespawnRequested -= ResetGravity;
     }
     
-    public void ProcessAccelerometer(Vector3 accelerometer, Transform orientation)
+    public void ProcessAccelerometer(Vector3 accelerometer)
     {
-        if (orientation == null) return;
-
         // Are we upside down relative to world down?
-        bool isUpsideDown = Vector3.Dot(Vector3.down, -orientation.up) < 0;
-
-        if (accelerometer.z > 9f && isUpsideDown)
+        Debug.Log("ProcessAccelerometer" + (accelerometer.z ));
+        if (accelerometer.z < -12f || accelerometer.z > 12f) 
+        {
+            // Phone is moving too fast! Ignore the input this frame so we don't accidentally flip.
+            return; 
+        }
+        float a = Hub.data.gravityAlpha;
+        //smooth signal
+        if(filteredAcceleration == Vector3.zero) filteredAcceleration = accelerometer;
+        else filteredAcceleration = a * accelerometer + (1 - a) * filteredAcceleration;
+        Vector3 g = filteredAcceleration.normalized;
+        
+        bool isUpsideDown = Vector3.Dot(Hub.rb.transform.up, Vector3.down) > 0.95f;
+        if (g.z < -0.9f && !isUpsideDown)
+        {
             RequestInvert(true);
-        else if (accelerometer.z < -9f && !isUpsideDown)
+        }else if (g.z > 0.9f && isUpsideDown)
+        {
             RequestInvert(true);
+        }
         else
+        {
             RequestInvert(false);
+        }
     }
 
     public void RequestInvert(bool value)

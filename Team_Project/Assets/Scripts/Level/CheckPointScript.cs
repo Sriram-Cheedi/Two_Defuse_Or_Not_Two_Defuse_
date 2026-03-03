@@ -4,6 +4,7 @@ public class CheckPointScript : MonoBehaviour
 {
     [SerializeField]private SpawnManager spawnManager;
     private BoxCollider respawnCollider;
+    public bool isUpsideDown;
 
     void Awake()
     {
@@ -15,8 +16,8 @@ public class CheckPointScript : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            spawnManager.respawnPoint = this.gameObject;
-            respawnCollider.enabled = false;
+            spawnManager.respawnPoint = this;
+            // respawnCollider.enabled = false;
         }
     }
 
