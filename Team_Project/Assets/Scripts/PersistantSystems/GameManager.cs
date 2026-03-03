@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     
     private bool pause = false;
     private float PreviousTimeScale = 1f;
+    
     private void Awake()
     {
         if (Instance == null)

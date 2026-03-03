@@ -9,6 +9,9 @@ struct HardwareState
     public Vector3 gyroValue;
     public Vector3 accelerometerValue;
     public bool hasAccelerometer;
+    
+    public int[] currentHardwareNGMValues;
+    public int[] LastNGMSubmissionValues;
 }
 
 public class API_Controller : MonoBehaviour, API_Controller_Interface
@@ -19,7 +22,10 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public event Action<string, int> OnInputChanged;
     public event Action<Vector3> OnGyroChanged;
     public event Action<Vector3, Vector3> OnImuChanged;
-
+    
+    public event Action<int[]> OnNGMSubmit;
+    public event Action<int[]> OnNGMChanged;
+    
     // Local saved hardware values
     private HardwareState hardwareState;
 
@@ -31,6 +37,10 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public Vector3 getAccelerometerValue => hardwareState.accelerometerValue;
     public bool getHasAccelerometer => hardwareState.hasAccelerometer;
     public Dictionary<string, int> getComponentStateManager => hardwareState.componentStates;
+    public int[] GetcurrentHardwareNGMValues => hardwareState.currentHardwareNGMValues;
+    public int[] GetLastNGMSubmissionValues => hardwareState.LastNGMSubmissionValues;
+    
+    
     private void OnDestroy() => Exit();
 
     public void Awake()
@@ -39,6 +49,9 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         hardwareState.componentStates = new Dictionary<string, int>();
         hardwareState.gyroValue = Vector3.zero; ;
         hardwareState.hasAccelerometer = false;
+
+        hardwareState.currentHardwareNGMValues = new int[4];
+        hardwareState.LastNGMSubmissionValues = new int[4];
     }
     /// <summary>
     /// Initializes Local dictionary of all connected hardware components to 0 (off).
@@ -137,6 +150,8 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
     public void HandleMessage(string message)
     {
+        
+        
         if (string.IsNullOrWhiteSpace(message))
         {
             return;
@@ -235,6 +250,32 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
             OnImuChanged?.Invoke(hardwareState.gyroValue, hardwareState.accelerometerValue);
             {
                 return;
+            }
+        }
+
+        if (header == "NGM" && command == "status")
+        {
+            string[] parts = value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length != 5)
+            {
+                return;
+            }
+
+            if (parts[0] == "0")
+            {
+                for (int i = 1; i < parts.Length; i++)
+                {
+                    hardwareState.currentHardwareNGMValues[i - 1] = int.Parse(parts[i]);
+                }
+                OnNGMChanged?.Invoke(hardwareState.currentHardwareNGMValues);
+            }
+            else
+            {
+                for (int i = 1; i < parts.Length; i++)
+                {
+                    hardwareState.LastNGMSubmissionValues[i - 1] = int.Parse(parts[i]);
+                }
+                OnNGMSubmit?.Invoke(hardwareState.LastNGMSubmissionValues);
             }
         }
 

@@ -21,21 +21,18 @@ public class API_Provider : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-
-    private void Start()
-    {
+        
         if (useMockHardware)
         {
             GameObject mockChild = new GameObject("Mock_API_Controller");
-            mockChild.transform.SetParent(this.transform);
+            mockChild.transform.SetParent(transform);
 
             ActiveAPIController = mockChild.AddComponent<Mock_API_Controller>();
         }
         else
         {
             GameObject child = new GameObject("API_Controller");
-            child.transform.SetParent(this.transform);
+            child.transform.SetParent(transform);
 
             ActiveAPIController = child.AddComponent<API_Controller>();
         }
