@@ -29,9 +29,9 @@ private:
     byte drawingMemory[16*3];
     byte displayMemory[16*12];
 
-    WS2812Serial strip = WS2812Serial(4, drawingMemory, displayMemory, 1, WS2812_GRB);
+    WS2812Serial strip = WS2812Serial(4, drawingMemory, displayMemory, 29, WS2812_GRB);
 
-    std::vector<uint32_t> colourMap = {Color(255, 0, 0), Color(0, 255, 0), Color(0, 0, 255), Color(255, 0, 255)};
+    std::vector<uint32_t> colourMap = {Color(255, 255, 0), Color(0, 255, 0), Color(255, 0, 0), Color(0, 0, 255)};
 
     // SSM THREAD ONLY VARIABLES
     size_t currentRound;

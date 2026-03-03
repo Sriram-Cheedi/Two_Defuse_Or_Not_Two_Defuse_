@@ -8,9 +8,6 @@ TimerModule::TimerModule(std::string name, int dataPin, int clockPin, int latchP
     pinMode(dataPin, OUTPUT);
     pinMode(clockPin, OUTPUT);
     pinMode(latchPin, OUTPUT);
-    pinMode(41, OUTPUT);
-
-    digitalWrite(41, HIGH);
 
 }
 
