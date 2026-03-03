@@ -2,7 +2,7 @@
 
 namespace RigidBodyPlayer.PlayerData
 {
-    public enum SurfaceType { Default, Metal, Plastic, Slope }
+    public enum SurfaceType { Default, Metal, Plastic, Slope, SemiConductor }
     [AddComponentMenu("RigidBodyPlayer/Surface Identity")]
     public class SurfaceIdentity : MonoBehaviour
     {

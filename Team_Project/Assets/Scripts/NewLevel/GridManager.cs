@@ -121,8 +121,8 @@ public class GridManager : MonoBehaviour
             {
                 floors[y * gridSize + x].transform.localScale = grizScale;
                 Vector3 offsetGrid = floors[y * gridSize + x].GetComponent<Collider>().bounds.size;
-                offsetGrid.x += 4.0f;
-                offsetGrid.z += 4.0f;
+                offsetGrid.x += 0.0f;
+                offsetGrid.z += 0.0f;
 
                 floors[y * gridSize + x].transform.position = new Vector3(startPosX + offsetGrid.x * x,startPosY,startPosZ+ offsetGrid.z * y);
             }

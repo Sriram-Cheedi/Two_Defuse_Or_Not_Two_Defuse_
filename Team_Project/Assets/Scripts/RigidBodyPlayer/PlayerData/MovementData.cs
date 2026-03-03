@@ -6,6 +6,7 @@ public class MovementData : ScriptableObject
     [Header("Speeds")]
     public float walkSpeed = 10f;
     public float crouchSpeed = 5f;
+    public float gridSpeed = 7f;
     public float groundAcceleration = 35f;
     public float airAcceleration = 15f;
     public float airApexAcceleration = 25f;
@@ -13,6 +14,7 @@ public class MovementData : ScriptableObject
     [Header("Jumping & Gravity")]
     public float jumpForceOnMetal = 11.5f;
     public float jumpForceOnPlastic = 11.5f;
+    public float jumpForceOnSemiConductor = 7f;
     public float jumpCutMultiplier = 3f;
     public float apexGravityMultiplier = 0.8f;
     public float apexThreshold = 0.5f;

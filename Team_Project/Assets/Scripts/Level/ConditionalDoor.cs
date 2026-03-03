@@ -23,6 +23,7 @@ public class ConditionalDoor : MonoBehaviour
         left_door = GameObject.Find("Door_Left");
         right_door = GameObject.Find("Door_Right");
 
+        
         if (PuzzleManager.Instance != null && PuzzleManager.Instance._puzzleTriggers.ContainsKey("SSM"))
         {
             PuzzleManager.Instance._puzzleTriggers[linkedPuzzle].OnSuccess += OpenDoorWrapper; 

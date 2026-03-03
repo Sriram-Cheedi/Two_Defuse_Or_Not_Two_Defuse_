@@ -43,6 +43,9 @@ public class PlayerSensor : MonoBehaviour, IPlayerModule
             case SurfaceType.Plastic:
                 Debug.Log("Current Surface : Plastic");
                 break;
+            case SurfaceType.SemiConductor:
+                Debug.Log("Current Surface : SemiConductor");
+                break;
             default:
                 Debug.Log("Current Surface : Default");
                 break;
