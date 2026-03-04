@@ -15,6 +15,10 @@ public class Spark_Disable : MonoBehaviour
     {
         buttonsPressed = new bool[doors.Length];
     }
+    private void Start()
+    {
+        _activeHardware = API_Provider.Instance.ActiveAPIController;
+    }
 
     private void OnEnable()
     {
@@ -40,6 +44,7 @@ public class Spark_Disable : MonoBehaviour
         {
             int buttonId = i + 1;
             int buttonValue = API_Provider.Instance.ActiveAPIController.GetButton(buttonId.ToString());
+            Debug.Log("debug button" + buttonId + " : " + buttonValue);
             if (buttonValue == 1)
             {
                 DisableDoorForSeconds(doors[i], levelData.doorDelay);

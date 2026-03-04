@@ -48,7 +48,7 @@ public class PuzzleManager : MonoBehaviour
         puzzleDatas["SSM"] = new PuzzleData();
         puzzleDatas["NGM"] = new PuzzleData();
         
-        puzzleDatas["SSM"].correctSequence = GenerateSequence(4, 3);
+        puzzleDatas["SSM"].correctSequence = GenerateSequence(6, 3);
         puzzleDatas["NGM"].correctSequence = GenerateSequence(4, 9);
         
         puzzleDatas["NGM"].guessSequence = new int[4];
