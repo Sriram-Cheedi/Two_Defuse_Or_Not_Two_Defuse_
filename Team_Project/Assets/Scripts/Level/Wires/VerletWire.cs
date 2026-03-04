@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-// [RequireComponent(typeof(LineRenderer))]
 
 public class VerletWire : MonoBehaviour
 {
@@ -51,11 +50,9 @@ public class VerletWire : MonoBehaviour
     public int pointSkip = 1;
     private int MyIndex => allwires.IndexOf(this);
     
-    [Header("Bending wire ")]
-    [Range(0f, 1f)] public float bendStiffness = 0.08f; 
-    [Range(0, 10)] public int bendPasses = 1;         
+      
     
-    [Header("Self Collision (wire vs itself)")]
+    [Header("Self Collision")]
     public bool selfCollision = true;
     [Range(2, 20)] public int selfCollisionSkipNear = 6;
     [Range(0, 4)] public int selfCollisionPasses = 1;     
@@ -181,33 +178,7 @@ public class VerletWire : MonoBehaviour
         }
     }
     
-    private void SolveBend()
-    {
-        if (bendStiffness <= 0f) return;
-
-        float rest = segmentLength * 2f;
-
-        for (int i = 2; i < points - 1; i++)
-        {
-            Vector3 p0 = RopePoint[i - 1];
-            Vector3 p1 = RopePoint[i];
-            Vector3 p2 = RopePoint[i + 1];
-
-            Vector3 d = p2 - p0;
-            float dist = d.magnitude;
-            if (dist < 1e-6f) continue;
-
-            float diff = (dist - rest) / dist;
-
-            Vector3 corr = d * diff * bendStiffness;
-
-            RopePoint[i - 1] += corr * 0.5f;
-            RopePoint[i + 1] -= corr * 0.5f;
-
-            Vector3 midTarget = (RopePoint[i - 1] + RopePoint[i + 1]) * 0.5f;
-            RopePoint[i] = Vector3.Lerp(RopePoint[i], midTarget, bendStiffness * 0.25f);
-        }
-    }
+    
     
     private void SolveRopeRope()
     {
@@ -372,15 +343,10 @@ public class VerletWire : MonoBehaviour
                     RopePoint[i + 1] -= AdjacentRopeDistance * difference * 0.5f;
                 }
             }
-
-            for (int b = 0; b < bendPasses; b++)
-            {
-                SolveBend();
-            }
             SolveCeiling();
             SolveleftCeiling();
         }
-        for (int p = 0; p < ropeRopePasses; p++)
+        for (int point = 0; point < ropeRopePasses; point++)
 		{
             
             SolveRopeRope();
