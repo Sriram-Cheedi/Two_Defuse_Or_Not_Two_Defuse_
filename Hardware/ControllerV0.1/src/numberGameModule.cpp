@@ -23,6 +23,8 @@ void numberGameModule::set(std::vector<std::string> args){
     secretNumber[1] = stoi(args[1]);
     secretNumber[2] = stoi(args[2]);
     secretNumber[3] = stoi(args[3]);
+    state = 0;
+    digitsBuffer = {0,0,0,0};
 }
 
 void numberGameModule::status(){
@@ -31,10 +33,10 @@ void numberGameModule::status(){
     //send status format: name,status,XXXX
     //NGM:status X X X X X
     std::vector<std::string> args = {std::to_string(state),
-                                    std::to_string(secretNumber[0]),
-                                    std::to_string(secretNumber[1]),
-                                    std::to_string(secretNumber[2]),
-                                    std::to_string(secretNumber[3])};
+                                    std::to_string(digitsBuffer[0]),
+                                    std::to_string(digitsBuffer[1]),
+                                    std::to_string(digitsBuffer[2]),
+                                    std::to_string(digitsBuffer[3])};
     serialController.serialWrite(name, args);
 }
 
@@ -86,6 +88,7 @@ void numberGameModule::buttonCheck(std::string btnName, int btnState){
                 digitsBuffer[index] = 0;
             }
             buttonUpdate = now;
+            status();
         }
     }
 }
@@ -112,7 +115,6 @@ void numberGameModule::update(){
     //only check for game updates every 200 micro seconds
     unsigned long now = micros();
     if (now - lastUpdate < refreshInterval) return;
-    status();
     lastUpdate = now;
     for(auto& btn : buttons){
         if(state != 2){
