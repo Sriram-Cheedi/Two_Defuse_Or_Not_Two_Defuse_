@@ -35,7 +35,6 @@ public class PuzzleManager : MonoBehaviour
     
     private void Awake()
     {
-        Debug.Log("Puzzle Manager Initialised.");
         if (Instance == null)
         {
             Instance = this;
@@ -49,7 +48,7 @@ public class PuzzleManager : MonoBehaviour
         puzzleDatas["SSM"] = new PuzzleData();
         puzzleDatas["NGM"] = new PuzzleData();
         
-        puzzleDatas["SSM"].correctSequence = GenerateSequence(4, 3);
+        puzzleDatas["SSM"].correctSequence = GenerateSequence(6, 3);
         puzzleDatas["NGM"].correctSequence = GenerateSequence(4, 9);
         
         puzzleDatas["NGM"].guessSequence = new int[4];

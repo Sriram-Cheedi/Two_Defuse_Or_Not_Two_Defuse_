@@ -10,11 +10,11 @@ public class Spark_Disable : MonoBehaviour
     private API_Controller_Interface _activeHardware;
     private bool[] buttonsPressed;
     private PlayerInputRelay relay;
+    
     private void Awake()
     {
         buttonsPressed = new bool[doors.Length];
     }
-
     private void Start()
     {
         _activeHardware = API_Provider.Instance.ActiveAPIController;
@@ -44,6 +44,7 @@ public class Spark_Disable : MonoBehaviour
         {
             int buttonId = i + 1;
             int buttonValue = API_Provider.Instance.ActiveAPIController.GetButton(buttonId.ToString());
+            Debug.Log("debug button" + buttonId + " : " + buttonValue);
             if (buttonValue == 1)
             {
                 DisableDoorForSeconds(doors[i], levelData.doorDelay);

@@ -41,12 +41,11 @@ public class GridManager : MonoBehaviour
         {
             if (!floor.willBreak)
             {
-                Debug.Log(floor.gridX + "," + floor.gridY);
+                // Debug.Log(floor.gridX + "," + floor.gridY);
                 count++;
 
             }
         }
-        Debug.Log("----------------------------");
 
         foreach (var floor in floors)
         {
@@ -63,7 +62,6 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-        Debug.Log(count);
         for (int y = 0; y < gridSize; y++)
         {
             var sb = new System.Text.StringBuilder();
@@ -78,7 +76,7 @@ public class GridManager : MonoBehaviour
                     sb.Append("0");
                 }
             }
-            Debug.Log(sb.ToString());
+            // Debug.Log(sb.ToString());
         }
     }
 

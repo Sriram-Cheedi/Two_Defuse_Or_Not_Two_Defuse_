@@ -16,8 +16,8 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     
     private Vector3 filteredAcceleration = Vector3.zero;
     
-    [Header("Rotation")]
-    [SerializeField] private float targetRotation = 180f;
+    // [Header("Rotation")]
+    // [SerializeField] private float targetRotation = 180f;
 
     private Vector3 gravityDir = Vector3.down;
     private float gravityMangitude = Physics.gravity.magnitude;
