@@ -72392,6 +72392,64 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8910885411050920841, guid: 0039a86d90a22fd44b90be46ec2a5508, type: 3}
   m_PrefabInstance: {fileID: 1727314377}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &322524218
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 322524219}
+  - component: {fileID: 322524220}
+  m_Layer: 0
+  m_Name: NGM_Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &322524219
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322524218}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 416495090}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &322524220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322524218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d94955d3e6c749dca3f68f508914421b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.NGM_Controller
+  relay: {fileID: 1993744313}
+  ledRenderers:
+  - {fileID: 1420573023}
+  - {fileID: 1635067394}
+  - {fileID: 119964484}
+  - {fileID: 1899179681}
+  ledDisplays:
+  - {fileID: 1372132478}
+  - {fileID: 1355613784}
+  - {fileID: 1503267765}
+  - {fileID: 1776566229}
+  matCorrect: {fileID: 2100000, guid: ccaadc1b656a9eb4485cb20631ea8525, type: 2}
+  matMisplaced: {fileID: 2100000, guid: bfbf5a606a2182f49bc9ddfedc674819, type: 2}
+  matDefault: {fileID: 2100000, guid: e829ce4ab7910fe4888c9e6f22812fc6, type: 2}
 --- !u!1001 &337762867
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -74519,7 +74577,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1072000277}
+  - {fileID: 1226350078}
+  - {fileID: 322524219}
   m_Father: {fileID: 855333638}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &416495091
@@ -74534,14 +74593,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 524ddabe8b4fb4592bce470520b01a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game.Main::PuzzleManager
-  ledRenderers:
-  - {fileID: 1420573023}
-  - {fileID: 1635067394}
-  - {fileID: 119964484}
-  - {fileID: 1899179681}
-  matCorrect: {fileID: 2100000, guid: ccaadc1b656a9eb4485cb20631ea8525, type: 2}
-  matMisplaced: {fileID: 2100000, guid: bfbf5a606a2182f49bc9ddfedc674819, type: 2}
-  matDefault: {fileID: 2100000, guid: e9f0e1120b773884dbda97b1a2927b2d, type: 2}
+  ssm_controller: {fileID: 1226350079}
+  ngm_controller: {fileID: 322524220}
 --- !u!1001 &416607792
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79033,6 +79086,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 847179234}
     m_Modifications:
+    - target: {fileID: 2868580367481246450, guid: f0046190b18524a5ebf0af395cbb358b, type: 3}
+      propertyPath: ssm_controller
+      value: 
+      objectReference: {fileID: 1226350079}
     - target: {fileID: 3661789964286770098, guid: f0046190b18524a5ebf0af395cbb358b, type: 3}
       propertyPath: m_Name
       value: SSM_Puzzle
@@ -79089,6 +79146,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 45
       objectReference: {fileID: 0}
+    - target: {fileID: 4179988171779650991, guid: f0046190b18524a5ebf0af395cbb358b, type: 3}
+      propertyPath: ssm_controller
+      value: 
+      objectReference: {fileID: 1226350079}
+    - target: {fileID: 6196841328022757334, guid: f0046190b18524a5ebf0af395cbb358b, type: 3}
+      propertyPath: ssm_controller
+      value: 
+      objectReference: {fileID: 1226350079}
+    - target: {fileID: 7983879488823564332, guid: f0046190b18524a5ebf0af395cbb358b, type: 3}
+      propertyPath: ssm_controller
+      value: 
+      objectReference: {fileID: 1226350079}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -79290,7 +79359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 341c9b60cd86c405d944500e7eec2c32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game.Main::API_Provider
-  useMockHardware: 0
+  useMockHardware: 1
 --- !u!4 &740190520
 Transform:
   m_ObjectHideFlags: 0
@@ -86251,56 +86320,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3659791929425181395, guid: 55b6eb5bffec98a4db98522d8beec7dc, type: 3}
   m_PrefabInstance: {fileID: 1065053502}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1072000275
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1072000277}
-  - component: {fileID: 1072000276}
-  m_Layer: 0
-  m_Name: DigitManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1072000276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1072000275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cb44f46598bbe84e8a11d83df9d87f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Game.Main::DigitManager
-  displays:
-  - {fileID: 1372132478}
-  - {fileID: 1355613784}
-  - {fileID: 1503267765}
-  - {fileID: 1776566229}
-  guess: 01000000010000000200000002000000
---- !u!4 &1072000277
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1072000275}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -998.27277, y: 9.725845, z: 509.95627}
-  m_LocalScale: {x: 0.46923003, y: 0.48260182, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 416495090}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1073517243
 GameObject:
   m_ObjectHideFlags: 0
@@ -88917,6 +88936,50 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1552700415}
   m_SourcePrefab: {fileID: 100100000, guid: 470d9c455c9fb9e4eaafe71b316fb746, type: 3}
+--- !u!1 &1226350077
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1226350078}
+  - component: {fileID: 1226350079}
+  m_Layer: 0
+  m_Name: SSM_Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1226350078
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226350077}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 416495090}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1226350079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226350077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7eccd5a32534082a2a77b187436d664, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.SSM_Controller
 --- !u!1 &1239015559 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1622759311606414570, guid: ba64be3c7c768b54e80eee7b2f0e8f6b, type: 3}
@@ -170547,6 +170610,10 @@ PrefabInstance:
       propertyPath: linkedPuzzle
       value: SSM
       objectReference: {fileID: 0}
+    - target: {fileID: 2110399202515673747, guid: be23368a412e8458b9ea32945cd3af5f, type: 3}
+      propertyPath: puzzleObject
+      value: 
+      objectReference: {fileID: 1226350077}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -241771,6 +241838,10 @@ PrefabInstance:
       propertyPath: linkedPuzzle
       value: NGM
       objectReference: {fileID: 0}
+    - target: {fileID: 2110399202515673747, guid: be23368a412e8458b9ea32945cd3af5f, type: 3}
+      propertyPath: puzzleObject
+      value: 
+      objectReference: {fileID: 322524218}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -310459,6 +310530,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
   m_PrefabInstance: {fileID: 247220557}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1993744313 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7876283661210264369, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
+  m_PrefabInstance: {fileID: 247220557}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8040292d407782441b17d6489dbd0a3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::PlayerInputRelay
 --- !u!4 &1996692470 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8655552927881128998, guid: 3429eca19f1707842b11114bf0d068ff, type: 3}
