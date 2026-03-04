@@ -9,6 +9,8 @@ public class ControlsManager : MonoBehaviour
     public GameObject mouseCard;
     public GameObject jumpCard;
     public GameObject DifficultyCard;
+    public GameObject jumpRestrictionCard;
+    public GameObject gravityCard;
 
     [Header("Timing")]
     public float delay = 1.5f;
@@ -75,6 +77,16 @@ public class ControlsManager : MonoBehaviour
         if (DifficultyCard)
         {
             DifficultyCard.SetActive(false);
+        }
+
+        if (jumpRestrictionCard)
+        {
+            jumpRestrictionCard.SetActive(false);
+        }
+
+        if (gravityCard)
+        {
+            gravityCard.SetActive(false);
         }
     }
 }
