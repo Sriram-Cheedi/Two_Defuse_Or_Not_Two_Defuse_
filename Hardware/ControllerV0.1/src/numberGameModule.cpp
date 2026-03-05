@@ -25,6 +25,7 @@ void numberGameModule::set(std::vector<std::string> args){
     secretNumber[3] = stoi(args[3]);
     state = 0;
     digitsBuffer = {0,0,0,0};
+    ledEnabled = true;
 }
 
 void numberGameModule::status(){
@@ -122,12 +123,12 @@ void numberGameModule::update(){
             btn.update(); 
         }
     }
-    /* unsigned long ledNow = millis();
+    unsigned long ledNow = millis();
     if (ledNow - ledUpdate > 300){
         ledUpdate = ledNow;
          
         ledOn = !ledOn;
-    } */
+    }
 
 
     //start writing to the shift registers

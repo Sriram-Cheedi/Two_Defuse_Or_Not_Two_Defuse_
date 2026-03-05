@@ -28,7 +28,7 @@ private:
     unsigned long submitUpdate = 0;
     unsigned long ledUpdate = 0;
     bool ledOn = false;
-    bool ledEnabled = true;
+    bool ledEnabled = false;
     const unsigned int refreshInterval = 200;
     uint8_t currentDigit = 0; 
     std::array<int,4> digitsBuffer = {0,0,0,0};
