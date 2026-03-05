@@ -17,20 +17,21 @@ public class VerletWire : MonoBehaviour
     {
         allwires.Remove(this); 
     }
-    public Transform anchor;
+    public Transform anchor1;
+    public Transform anchor2;
     public WireGravity gravitySource;
     [Header("Ceiling Collision")]
     public bool ceilingCollision = true;
     public float ropeRadius = 0.25f;  
     public BoxCollider ceilingBox;
     
-    [Header("Ceiling Collision")]
+    [Header("leftWall Collision")]
     public bool leftWallCollision = true;
     public BoxCollider leftBox;
     
     [Header("Rope")]
-    public int points = 50;
-    public float segmentLength = 0.5f;
+    public int points = 35;
+    public float segmentLength = 0.4f;
     [Header("Feel")]
     [Range(0f, 0.2f)] public float damping = 0.02f;
     [Range(1, 30)] public int iterations = 12;
@@ -40,7 +41,7 @@ public class VerletWire : MonoBehaviour
     [Header("Wire Look")]
     public LineRenderer copperLR;
     public float exposedTipLength = 0.08f;   
-    public float insulatedWidth = 0.5f;
+    public float insulatedWidth = 0.12f;
     public float copperWidth = 0.012f;
     public Material insulatedMat;
     public Material copperMat;
@@ -49,9 +50,7 @@ public class VerletWire : MonoBehaviour
     [Range(0, 4)] public int ropeRopePasses = 1; 
     public int pointSkip = 1;
     private int MyIndex => allwires.IndexOf(this);
-    
-      
-    
+
     [Header("Self Collision")]
     public bool selfCollision = true;
     [Range(2, 20)] public int selfCollisionSkipNear = 6;
@@ -98,7 +97,6 @@ public class VerletWire : MonoBehaviour
         }
     }
     public int PointCount => RopePoint != null ? RopePoint.Length : 0;
-
     public Vector3 GetPoint(int i)
     {
         if (RopePoint == null || RopePoint.Length == 0) return Vector3.zero;
@@ -114,14 +112,19 @@ public class VerletWire : MonoBehaviour
         }
         RopePoint = new Vector3[points];
         RopePointOld = new Vector3[points];
+        Vector3 start = anchor1.position;
+        Vector3 end = anchor2.position;
+        float distance = Vector3.Distance(anchor1.position, anchor2.position);
+        
+       
         for (int i = 0; i < points; i++)
         {
-            Vector3 pos = anchor.position + Vector3.down * (segmentLength * i);
+            float t = (float)i / (points - 1);
+            Vector3 pos = Vector3.Lerp(start, end, t);
             RopePoint[i] = pos;
             RopePointOld[i] = pos;
         }
         lr.positionCount = points;
-        ApplyThickness();
     }
     
     private void SolveCeiling()
@@ -151,18 +154,18 @@ public class VerletWire : MonoBehaviour
         }
     }
     
-    private void SolveleftCeiling()
+    private void SolveLeftWall()
     {
-        if (!ceilingCollision)
+        if (!leftWallCollision)
         {
             return;
         }
 
         float maxY;
 
-        if (ceilingBox != null)
+        if (leftBox != null)
         {
-            maxY = ceilingBox.bounds.min.x - ropeRadius;
+            maxY = leftBox.bounds.min.x - ropeRadius;
         }
         else
         {
@@ -278,19 +281,7 @@ public class VerletWire : MonoBehaviour
             }
         }
     }
-    private void ApplyThickness()
-    {
-        if (lr != null)
-        {
-            lr.startWidth = insulatedWidth;
-            lr.endWidth = insulatedWidth;
-        }
-        if (copperLR != null)
-        {
-            copperLR.startWidth = copperWidth;
-            copperLR.endWidth = copperWidth;
-        }
-    }
+
     private void UpdateCopperTip()
     {
         if (copperLR == null || RopePoint == null || points < 2)
@@ -321,17 +312,17 @@ public class VerletWire : MonoBehaviour
             RopePointOld[i] = RopePoint[i];
             RopePoint[i] = RopePoint[i] + velocity + gravity * (Time.fixedDeltaTime * Time.fixedDeltaTime);
         }
-        RopePoint[0] = anchor.position;
-        RopePoint[1] = anchor.position + anchor.TransformDirection(Vector3.down) * segmentLength;
+        RopePoint[0] = anchor1.position;
+        RopePoint[points - 1] = anchor2.position;
         for (int it = 0; it < iterations; it++)
         {
-            RopePoint[0] = anchor.position;
+            RopePoint[0] = anchor1.position;
+            RopePoint[points - 1] = anchor2.position;
             for (int i = 0; i < points - 1; i++)
             {
                 Vector3 AdjacentRopeDistance = RopePoint[i + 1] - RopePoint[i];
                 float distance = AdjacentRopeDistance.magnitude;
                 if (distance < 0.0001f) continue;
-
                 float difference = (distance - segmentLength) / distance;
                 if (i == 0)
                 {
@@ -344,11 +335,10 @@ public class VerletWire : MonoBehaviour
                 }
             }
             SolveCeiling();
-            SolveleftCeiling();
+            SolveLeftWall();
         }
         for (int point = 0; point < ropeRopePasses; point++)
 		{
-            
             SolveRopeRope();
 		}
 
