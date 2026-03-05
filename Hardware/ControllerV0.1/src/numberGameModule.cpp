@@ -114,6 +114,7 @@ void numberGameModule::checkGuess(std::string btnName, int btnState) {
 void numberGameModule::update(){
     //only check for game updates every 200 micro seconds
     unsigned long now = micros();
+
     if (now - lastUpdate < refreshInterval) return;
     lastUpdate = now;
     for(auto& btn : buttons){
@@ -121,11 +122,23 @@ void numberGameModule::update(){
             btn.update(); 
         }
     }
+    /* unsigned long ledNow = millis();
+    if (ledNow - ledUpdate > 300){
+        ledUpdate = ledNow;
+         
+        ledOn = !ledOn;
+    } */
+
+
     //start writing to the shift registers
     digitalWrite(latchPin, LOW);
     if (currentDigit < 4){
         //Which digit is being displayed
-        shiftOut(dataPin, clockPin, LSBFIRST, digit_encodings[currentDigit]);
+        if((ledOn && ledEnabled) || state == 2){
+            shiftOut(dataPin, clockPin, LSBFIRST, digit_encodings_led_on[currentDigit]);
+        }else{
+            shiftOut(dataPin, clockPin, LSBFIRST, digit_encodings_led_off[currentDigit]);
+        }
         //The number being displayed
         shiftOut(dataPin, clockPin, LSBFIRST, segment_encodings[digitsBuffer[currentDigit]]);
         currentDigit++;
