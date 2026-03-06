@@ -19,7 +19,7 @@ MonoBehaviour:
   airAcceleration: 15
   airApexAcceleration: 20
   jumpForceOnMetal: 3
-  jumpForceOnPlastic: 11.5
+  jumpForceOnPlastic: 10
   jumpForceOnSemiConductor: 8.5
   jumpCutMultiplier: 5
   apexGravityMultiplier: 1
@@ -34,4 +34,4 @@ MonoBehaviour:
   slopeSpeed: 20
   crouchTransitionSpeed: 5
   crouchHeightMultiplier: 0.5
-  rotationSpeed: 200
+  rotationSpeed: 300
