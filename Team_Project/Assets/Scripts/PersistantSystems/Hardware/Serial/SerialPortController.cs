@@ -30,6 +30,7 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
     public void Awake()
     {
         Debug.Log("SerialPortController Awake on: " + gameObject.name);
+        Debug.Log("SerialPortController instance: " + gameObject.GetInstanceID());
         Connect();
 
     }
