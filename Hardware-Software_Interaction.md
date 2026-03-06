@@ -27,7 +27,15 @@ cmd: function x y z ...
 |------------------------------------|---------------------|----------------------|----------------------------------------------------------------------------------------|
 | Get Status of Simon Says           | $SSM:status#        | $SSM:status _state_# | State: 0 = Off, 1 = In Progress, 2 = Complete                                  |
 | Set Status of Simon Says           | $SSM:set _state_#   | None                 | See above                                                                              |
-| Reset Simon Says with new sequence | $SSM:set _sequence_# | None                 | Sequence of format "seq1 seq2 seq3 seq4 ..." where each element is a single digit 0-3 e.g. $SSM:set 0 1 2 3# |
+| Reset Simon Says with new sequence | $SSM:set _sequence_#| None                | Sequence of format "seq1 seq2 seq3 seq4 ..." where each element is a single digit 0-3 e.g. $SSM:set 0 1 2 3#. Sets state to 0. |
+
+## Number Game
+
+| Command                            | Code                | Response             | Notes                                                                                  |
+|------------------------------------|---------------------|----------------------|----------------------------------------------------------------------------------------|
+| Get Status of number game          | $NGM:status#        | $NGM:status _submitting_ _dig1_ _dig2_ _dig3_ _dig4_# | Submitting: 0 = no, 1 = yes                           |
+| Set Status of number game          | $NGM:set _state_#   | None                 | See above                                                                              |
+| Reset number game with new sequence| $NGM:set _sequence_#| None                 | Sequence of format "dig1 dig2 dig3 dig4" where each element is a single digit 0-9. Sets state to 0. |
 
 ## Asynchronous Minigames
 
