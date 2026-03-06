@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb99bfebc7b4d864ab6fbddafbf146c2, type: 3}
   m_Name: MovementData
   m_EditorClassIdentifier: Game.Main::MovementData
-  walkSpeed: 10
-  crouchSpeed: 5
+  walkSpeed: 8
+  crouchSpeed: 3
   gridSpeed: 7
   groundAcceleration: 35
   airAcceleration: 15
   airApexAcceleration: 20
   jumpForceOnMetal: 3
-  jumpForceOnPlastic: 10
+  jumpForceOnPlastic: 9.5
   jumpForceOnSemiConductor: 8.5
   jumpCutMultiplier: 5
   apexGravityMultiplier: 1
@@ -30,7 +30,7 @@ MonoBehaviour:
   coyoteTime: 0.15
   jumpBuffer: 0.2
   gravityAlpha: 0.1
-  sideWayMoveSpeed: 15
+  sideWayMoveSpeed: 10
   slopeSpeed: 20
   crouchTransitionSpeed: 5
   crouchHeightMultiplier: 0.5
