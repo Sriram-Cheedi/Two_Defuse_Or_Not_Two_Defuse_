@@ -27,6 +27,8 @@ SimonSaysModule ssm = SimonSaysModule("SSM", {27, 26, 25, 24}, 0,  serialControl
 void enableSSM(std::string btnName, int btnState) {
   if(btnState == 0){
     ssm.enable();
+  }else{
+    ssm.disable();
   }
 }
 

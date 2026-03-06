@@ -56,6 +56,7 @@ void SimonSaysModule::set(std::vector<std::string> args) {
 
         if(newState == 0){
             disable();
+            state.store(0, std::memory_order_release);
         }else if (newState == 1){
             reset();
         }else if (newState == 2){
@@ -90,6 +91,8 @@ void SimonSaysModule::disable(){
 
 void SimonSaysModule::enable(){
     
+    if(state.load(std::memory_order_acquire) == 0) return;
+
     if(threadID != -1){
         threads.kill(threadID);
         threadID = -1;
