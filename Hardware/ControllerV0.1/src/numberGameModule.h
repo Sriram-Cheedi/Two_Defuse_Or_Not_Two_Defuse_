@@ -12,8 +12,8 @@
 class numberGameModule : public Component {
 
 private:
-    int state = 0; // 0 = In Progress, 1 = Submission, 2 = Complete
-
+    int state = 0; // 0 = Off, 1 = On, 2 = Complete
+    int submitting = 0; // 0 = Not submitting, 1 = Submitting
     const int dataPin;
     const int clockPin;
     const int latchPin;
@@ -28,10 +28,11 @@ private:
     unsigned long submitUpdate = 0;
     unsigned long ledUpdate = 0;
     bool ledOn = false;
-    bool ledEnabled = false;
     const unsigned int refreshInterval = 200;
     uint8_t currentDigit = 0; 
     std::array<int,4> digitsBuffer = {0,0,0,0};
+
+    bool disabled = true;
 
     //common anode segment encoding
     const uint8_t segment_encodings[10] = {
@@ -66,11 +67,12 @@ public:
     numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, std::array<int,5> buttonPins, SerialController serialController);
     void set(std::vector<std::string> args) override;
     void status() override;
-    void setupGame();
     void checkGuess(std::string btnName, int btnState);
     void buttonCheck(std::string btnName, int btnState);
     void update();
-  
+    void disable();
+    void reset();
+    void complete();
 };
 
 #endif
