@@ -19,11 +19,18 @@ Imu gyro = Imu("IMU", serialController);
 Button btn1 = Button("BTN1", 9, serialController);
 Button btn2 = Button("BTN2", 10, serialController);
 Button btn3 = Button("BTN3", 11, serialController);
-Button btn4 = Button("BTN4", 12, serialController);
 
 numberGameModule ngm = numberGameModule("NGM",33,35,34,{36,37,38,39,40}, serialController);
 //fishingModule fgm = fishingModule("FGM",36,35,34,13,serialController);
 SimonSaysModule ssm = SimonSaysModule("SSM", {27, 26, 25, 24}, 0,  serialController);
+
+void enableSSM(std::string btnName, int btnState) {
+  if(btnState == 0){
+    ssm.enable();
+  }
+}
+
+Button btn4("BTN4", 12, serialController, enableSSM);
 
 std::vector<Component*> components;
 

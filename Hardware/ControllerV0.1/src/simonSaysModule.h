@@ -47,7 +47,7 @@ private:
     // --------------------------
 
     // EXTERNAL THREAD FUNCTIONS
-    void disable();   // Turn off module
+    void off();   // Turn off module
     void reset();     // Reset Module to the initial state
     void complete();  // Auto complete the module 
     void buttonPressed(std::string btnName, int state);
@@ -71,7 +71,8 @@ public:
     SimonSaysModule(std::string name, std::vector<int> buttonPins, int rgbPin, SerialController serialController);
 
     void update(); //Called from main loop
-
+    void enable();
+    void disable();
     void set(std::vector<std::string> args) override; //Called from serialController (main loop)
     void status() override; //Called from serialController (main loop)
 

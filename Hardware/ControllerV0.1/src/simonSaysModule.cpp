@@ -85,12 +85,18 @@ void SimonSaysModule::disable(){
         threadID = -1;
     }
 
-    state.store(0, std::memory_order_release);
-    currentRound = 1;
-
     setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)});    
 }
 
+void SimonSaysModule::enable(){
+    
+    if(threadID != -1){
+        threads.kill(threadID);
+        threadID = -1;
+    }
+    
+    threadID = threads.addThread(loopTrampoline, this, 8192);
+}
 
 void SimonSaysModule::reset(){
 
@@ -106,15 +112,6 @@ void SimonSaysModule::reset(){
 }
 
 void SimonSaysModule::complete(){
-
-    setPixelBuffer({strip.Color(0, 255, 0), strip.Color(0, 255, 0), strip.Color(0, 255, 0), strip.Color(0, 255, 0)});
-
-    if(threadID != -1){
-        threads.kill(threadID);
-        threadID = -1;
-    }
-
-    currentRound = 1;
     state.store(2, std::memory_order_release);
 }
 
@@ -238,6 +235,7 @@ void SimonSaysModule::loop(){
 
     while(true){
 
+        if(state.load(std::memory_order_acquire) == 2) completeSequence();
 
         setPixelBuffer({strip.Color(5, 0, 0), strip.Color(5, 0, 0), strip.Color(5, 0, 0), strip.Color(5, 0, 0)});
 
@@ -272,7 +270,6 @@ void SimonSaysModule::loop(){
                 currentRound++;
             }else{
 
-                currentRound = 1;
                 state.store(2, std::memory_order_release);
                 
                 resetingMutex.unlock();
