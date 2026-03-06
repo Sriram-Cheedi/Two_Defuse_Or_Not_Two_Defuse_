@@ -1,10 +1,13 @@
 using System;
 using System.Collections;
+using Puzzles.Controllers;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 
 public class Button : MonoBehaviour, Interactible_Interface
 {
+    [SerializeField] SSM_Controller ssm_controller;
+    
     [SerializeField] private int button_number; 
     
     [SerializeField] public Material _materialON;
@@ -19,16 +22,16 @@ public class Button : MonoBehaviour, Interactible_Interface
         _renderer = GetComponent<Renderer>();
     }
 
-    void Start()
+    private void OnEnable()
     {
-        PuzzleManager.Instance.puzzleDatas["SSM"].OnFailure += FlashRed;
-        PuzzleManager.Instance.puzzleDatas["SSM"].OnSuccess += DisableInteraction;
+        ssm_controller.data.OnFailure += FlashRed;
+        ssm_controller.data.OnSuccess += DisableInteraction;
     }
 
     private void OnDisable()
     {
-        PuzzleManager.Instance.puzzleDatas["SSM"].OnFailure -= FlashRed;
-        PuzzleManager.Instance.puzzleDatas["SSM"].OnSuccess -= DisableInteraction;
+        ssm_controller.data.OnFailure -= FlashRed;
+        ssm_controller.data.OnSuccess -= DisableInteraction;
     }
     
     private void DisableInteraction()
@@ -42,7 +45,7 @@ public class Button : MonoBehaviour, Interactible_Interface
     public void Interact(RaycastHit hit)
     {
         StartCoroutine(HighlightSelected());
-        PuzzleManager.Instance.CheckSSMButtonPress(button_number);
+        ssm_controller.CheckSSMButtonPress(button_number);
     }
     
     private void FlashRed()

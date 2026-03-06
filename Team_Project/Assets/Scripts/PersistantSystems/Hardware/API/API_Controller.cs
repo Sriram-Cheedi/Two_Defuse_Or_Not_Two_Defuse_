@@ -17,8 +17,7 @@ struct HardwareState
 public class API_Controller : MonoBehaviour, API_Controller_Interface
 {
     public I_SerialPortController ActivePortController { get; private set; }
-
-
+    
     public event Action<string, int> OnInputChanged;
     public event Action<Vector3> OnGyroChanged;
     public event Action<Vector3, Vector3> OnImuChanged;
