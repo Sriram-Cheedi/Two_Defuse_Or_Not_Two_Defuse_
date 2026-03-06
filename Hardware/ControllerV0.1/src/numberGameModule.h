@@ -32,8 +32,6 @@ private:
     uint8_t currentDigit = 0; 
     std::array<int,4> digitsBuffer = {0,0,0,0};
 
-    bool disabled = true;
-
     //common anode segment encoding
     const uint8_t segment_encodings[10] = {
         0b11111100, // 0

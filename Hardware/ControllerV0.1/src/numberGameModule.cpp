@@ -27,7 +27,6 @@ void numberGameModule::disable(){
     digitalWrite(latchPin, HIGH);
     
     state = 0;
-    disabled = true;
 }
 
 void numberGameModule::reset(){
@@ -38,7 +37,6 @@ void numberGameModule::reset(){
     digitsBuffer[3] = 0;
 
     state = 1; 
-    disabled = false;
 }
 
 void numberGameModule::complete(){
@@ -49,7 +47,6 @@ void numberGameModule::complete(){
     digitsBuffer[3] = secretNumber[3];
 
     state = 2;
-    disabled = false;
 }
 
 void numberGameModule::set(std::vector<std::string> args){
@@ -130,7 +127,7 @@ void numberGameModule::update(){
     if (now - lastUpdate < refreshInterval) return;
     lastUpdate = now;
 
-    if(disabled) return;
+    if(state == 0) return;
 
     for(auto& btn : buttons){
         if(state != 2){
