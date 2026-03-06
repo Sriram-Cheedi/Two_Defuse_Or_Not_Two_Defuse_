@@ -23,9 +23,6 @@ void numberGameModule::disable(){
     digitalWrite(latchPin, LOW);
     shiftOut(dataPin, clockPin, LSBFIRST, 0b11111110);
     shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
-    currentDigit++;
-    
-    
     //end writing to the shift registers
     digitalWrite(latchPin, HIGH);
     
