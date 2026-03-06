@@ -21,16 +21,11 @@ void numberGameModule::disable(){
     
     //start writing to the shift registers
     digitalWrite(latchPin, LOW);
-    if (currentDigit < 4){
-        //Which digit is being displayed
-        shiftOut(dataPin, clockPin, LSBFIRST, 0b11111110);
-        //The number being displayed
-        shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
-        currentDigit++;
-    }
-    else{
-        currentDigit = 0;
-    }
+    shiftOut(dataPin, clockPin, LSBFIRST, 0b11111110);
+    shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+    currentDigit++;
+    
+    
     //end writing to the shift registers
     digitalWrite(latchPin, HIGH);
     
