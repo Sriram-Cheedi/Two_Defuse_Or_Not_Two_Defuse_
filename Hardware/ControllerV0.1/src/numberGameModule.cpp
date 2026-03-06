@@ -26,6 +26,7 @@ void numberGameModule::disable(){
     //end writing to the shift registers
     digitalWrite(latchPin, HIGH);
     
+    state = 0;
     disabled = true;
 }
 
