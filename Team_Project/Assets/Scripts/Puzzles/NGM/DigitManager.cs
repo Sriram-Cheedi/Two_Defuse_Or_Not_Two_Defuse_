@@ -9,12 +9,7 @@ public class DigitManager : MonoBehaviour
     {
         guess = new int[4] {0,0,0,0};
     }
-
-    public int[] GetDigits()
-    {
-        return guess;
-    }
-
+    
     public void SetDigits(int index, int value)
     {
         guess[index] = value;
@@ -28,4 +23,15 @@ public class DigitManager : MonoBehaviour
             displays[i].SetNumber(guess[i]);
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
