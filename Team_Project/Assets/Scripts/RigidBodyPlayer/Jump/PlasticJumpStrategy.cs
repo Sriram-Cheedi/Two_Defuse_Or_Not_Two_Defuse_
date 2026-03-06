@@ -6,8 +6,8 @@ namespace RigidBodyPlayer.Jump
     {
         public void ExecuteJump(RigidBodyMovement hub)
         {
-            if (hub.jump.readyToJump && hub.jump.coyoteTimeCounter > 0f && hub.jump.jumpBufferCounter > 0f &&
-                hub.canJump)
+            if (hub.jump.readyToJump && hub.jump.CoyoteTimeCounter > 0f && hub.jump.JumpBufferCounter > 0f &&
+                hub.jump.canJump)
             {
                 Vector3 localUp = hub.rb.transform.up;
                 Vector3 verticalVelocity = Vector3.Project(hub.rb.linearVelocity, localUp);
@@ -16,14 +16,5 @@ namespace RigidBodyPlayer.Jump
                 hub.jump.OnJumpExecuted();
             }
         }
-
-        // public void ApplyJumpCut(RigidBodyMovement hub)
-        // {
-        //     float verticalVelocity = Vector3.Dot(hub.rb.linearVelocity, hub.rb.transform.up);
-        //     if (verticalVelocity > 0f)
-        //     {
-        //         hub.rb.linearVelocity -= hub.rb.transform.up * (verticalVelocity * 0.5f);
-        //     }
-        // }
     }
 }

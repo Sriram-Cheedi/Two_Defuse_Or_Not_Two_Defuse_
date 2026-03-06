@@ -1,25 +1,26 @@
 using RigidBodyPlayer.Movement;
 using RigidBodyPlayer.PlayerData;
+using RigidBodyPlayer.PlayerStates;
 using UnityEngine;
 
 public class PlayerAirborneState : PlayerBaseState
 {
-    public PlayerAirborneState(RigidBodyMovement hub) : base(hub)
+    public PlayerAirborneState(RigidBodyMovement hub) : base(hub, PlayerState.Airborne)
     {
     }
 
     public override void EnterState()
     {
-        Hub.canJump = false;
-        Hub.canFlipGravity= Hub.sensor.GetPreviousSurface() == SurfaceType.Plastic;
+        Hub.jump.canJump = false;
+        Hub.gravity.canFlipGravity = Hub.sensor.GetPreviousSurface() == SurfaceType.Plastic;
     }
     public override void ExitState(){}
 
     public override void UpdateState()
     {
-        if (Hub.gravity.invertRequested && Hub.canFlipGravity)
+        if (Hub.gravity.invertRequested && Hub.gravity.canFlipGravity)
         {
-            Hub.TransitionToState(Hub.FlipState);   
+            Hub.stateMachine.QueueNextState(PlayerState.Flip);
             return;
         }
 
@@ -27,27 +28,10 @@ public class PlayerAirborneState : PlayerBaseState
         {
             return;
         }
-        
-        if (Hub.sensor.OnMovingPlatform)
-        {
-            Hub.TransitionToState(Hub.ConnectionState);
-            return;
-        }
 
-        switch (Hub.sensor.CurrentSurface)
+        if (Hub.sensor.IsGrounded)
         {
-            case SurfaceType.Metal:
-                Hub.TransitionToState(Hub.MetalState);
-                break;
-            case SurfaceType.Plastic:
-                Hub.TransitionToState(Hub.PlasticState);
-                break;
-            case SurfaceType.Slope:
-                Hub.TransitionToState(Hub.SlopeState);
-                break;
-            default:
-                Hub.TransitionToState(Hub.GroundState);
-                break;
+            Hub.stateMachine.QueueNextState(PlayerState.Grounded);
         }
     }
 

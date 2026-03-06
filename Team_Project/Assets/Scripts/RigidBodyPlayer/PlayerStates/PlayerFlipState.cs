@@ -1,11 +1,12 @@
 using RigidBodyPlayer.PlayerData;
+using RigidBodyPlayer.PlayerStates;
 using UnityEngine;
 
 public class PlayerFlipState : PlayerBaseState
 {
     private float targetRotation = 180f;
     private float remaining;
-    public PlayerFlipState(RigidBodyMovement hub) : base(hub)
+    public PlayerFlipState(RigidBodyMovement hub) : base(hub, PlayerState.Flip)
     {
     }
 
@@ -13,7 +14,7 @@ public class PlayerFlipState : PlayerBaseState
     {
         Hub.rb.linearVelocity = Vector3.zero;
         Hub.gravity.InvertGravityDirection();
-        Hub.canJump = false;
+        Hub.jump.canJump = false;
         remaining = targetRotation;
     }
 
@@ -48,29 +49,13 @@ public class PlayerFlipState : PlayerBaseState
     {
         if (!Hub.sensor.IsGrounded)
         {
-            Hub.TransitionToState(Hub.AirborneState);
+            Hub.stateMachine.QueueNextState(PlayerState.Airborne);
             return;
         }
-        if (Hub.sensor.OnMovingPlatform)
+        if (Hub.sensor.IsGrounded)
         {
-            Hub.TransitionToState(Hub.ConnectionState);
+            Hub.stateMachine.QueueNextState(PlayerState.Grounded);
             return;
-        }
-
-        switch (Hub.sensor.CurrentSurface)
-        {
-            case SurfaceType.Metal:
-                Hub.TransitionToState(Hub.MetalState);
-                break;
-            case SurfaceType.Plastic:
-                Hub.TransitionToState(Hub.PlasticState);
-                break;
-            case SurfaceType.Slope:
-                Hub.TransitionToState(Hub.SlopeState);
-                break;
-            default:
-                Hub.TransitionToState(Hub.GroundState);
-                break;
         }
     }
 

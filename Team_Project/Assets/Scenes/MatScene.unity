@@ -68012,7 +68012,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6633d559fb87aca46ac96c79adb0139b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game.Main::SpawnManager
-  rm: {fileID: 1993744306}
   respawnPoint: {fileID: 0}
   hub: {fileID: 0}
 --- !u!4 &130471999
@@ -70864,11 +70863,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -407.69
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -3.2929993
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -75434,7 +75433,7 @@ Transform:
   m_GameObject: {fileID: 470741509}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 350.99, y: 367.293, z: 247.89}
+  m_LocalPosition: {x: 755, y: 367.293, z: 247.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -92417,6 +92416,10 @@ PrefabInstance:
       propertyPath: cameraPostion
       value: 
       objectReference: {fileID: 428476192}
+    - target: {fileID: 1734664355530733004, guid: 3a98a5de78704624496e2b9db43fd84a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4032769265305513255, guid: 3a98a5de78704624496e2b9db43fd84a, type: 3}
       propertyPath: m_Name
       value: NewCam
@@ -92427,19 +92430,19 @@ PrefabInstance:
       objectReference: {fileID: 27331911}
     - target: {fileID: 6079970588868884629, guid: 3a98a5de78704624496e2b9db43fd84a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -439.8512
       objectReference: {fileID: 0}
     - target: {fileID: 6079970588868884629, guid: 3a98a5de78704624496e2b9db43fd84a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.02
+      value: -2.869995
       objectReference: {fileID: 0}
     - target: {fileID: 6079970588868884629, guid: 3a98a5de78704624496e2b9db43fd84a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -364.57028
       objectReference: {fileID: 0}
     - target: {fileID: 6079970588868884629, guid: 3a98a5de78704624496e2b9db43fd84a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.67516756
       objectReference: {fileID: 0}
     - target: {fileID: 6079970588868884629, guid: 3a98a5de78704624496e2b9db43fd84a, type: 3}
       propertyPath: m_LocalRotation.x
@@ -92447,7 +92450,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6079970588868884629, guid: 3a98a5de78704624496e2b9db43fd84a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.73766446
       objectReference: {fileID: 0}
     - target: {fileID: 6079970588868884629, guid: 3a98a5de78704624496e2b9db43fd84a, type: 3}
       propertyPath: m_LocalRotation.z
@@ -92459,7 +92462,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6079970588868884629, guid: 3a98a5de78704624496e2b9db43fd84a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 95.066
       objectReference: {fileID: 0}
     - target: {fileID: 6079970588868884629, guid: 3a98a5de78704624496e2b9db43fd84a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -310443,17 +310446,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.06, y: 0.0023240517, z: 0.049999993}
   m_Center: {x: 0.03, y: -0.0011620258, z: 0.024999997}
---- !u!114 &1993744306 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4158431421010609204, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
-  m_PrefabInstance: {fileID: 247220557}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcdc472b0354b4544991144a911f4c90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RigidBodyMovement
 --- !u!4 &1993744307 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
