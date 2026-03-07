@@ -14,6 +14,8 @@ private:
 
     Adafruit_MPU6050 mpu;
 
+    bool enabled = true;
+
     bool motionActive = false;
     unsigned long lastMotionTime = 0;
     const unsigned long motionTimout = 200;
@@ -32,6 +34,8 @@ public:
 
     void update();
 
+    void enable() override;
+    void disable() override;
     void set(std::vector<std::string> args) override;
     void status() override;
 

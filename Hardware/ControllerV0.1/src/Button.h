@@ -12,9 +12,12 @@ private:
     std::function<void (std::string, int)> onPressed;
 
     int lastState;
+    bool enabled = false;
 
 public:
 
+    void enable() override;
+    void disable() override;
     void status() override;
     void set(std::vector<std::string> args) override;
 

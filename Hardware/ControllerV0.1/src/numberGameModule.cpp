@@ -29,6 +29,12 @@ void numberGameModule::disable(){
     state = 0;
 }
 
+void numberGameModule::enable(){
+
+    state = 1;
+    
+}
+
 void numberGameModule::reset(){
 
     digitsBuffer[0] = 0;

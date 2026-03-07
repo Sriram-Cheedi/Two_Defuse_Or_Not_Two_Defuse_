@@ -19,8 +19,9 @@ private:
     const unsigned int refreshInterval = 10;
     uint8_t currentDigit = 0;
     bool colonEnabled = false;
-    bool flashing = false;
     int digitsBuffer[4];
+    
+    bool enabled = false;
 
     const uint8_t segment_encodings[11] = {
         0b11111100, // 0
@@ -45,6 +46,9 @@ private:
     };
 
 public:
+
+    void enable() override;
+    void disable() override;
 
     TimerModule(std::string name, int dataPin, int clockPin, int latchPin, SerialController serialController);
     void set(std::vector<std::string> args) override;

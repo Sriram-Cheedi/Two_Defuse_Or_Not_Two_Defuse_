@@ -65,10 +65,11 @@ public:
     numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, std::array<int,5> buttonPins, SerialController serialController);
     void set(std::vector<std::string> args) override;
     void status() override;
+    void disable() override;
+    void enable() override;
     void checkGuess(std::string btnName, int btnState);
     void buttonCheck(std::string btnName, int btnState);
     void update();
-    void disable();
     void reset();
     void complete();
 };

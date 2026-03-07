@@ -28,8 +28,20 @@ void Button::status(){
 
 void Button::set(std::vector<std::string> args){return;}
 
+void Button::enable(){
+
+    enabled = true;
+
+}
+
+void Button::disable(){
+
+    enabled = false;
+}
 
 void Button::update(){
+
+    if(!enabled) return;
 
     int currentState = digitalRead(pin);
 

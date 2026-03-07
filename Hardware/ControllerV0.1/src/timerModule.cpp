@@ -11,6 +11,24 @@ TimerModule::TimerModule(std::string name, int dataPin, int clockPin, int latchP
 
 }
 
+void TimerModule::enable(){
+
+    enabled = true;
+
+}
+
+void TimerModule::disable(){
+    
+    enabled = false;
+
+    //start writing to the shift registers
+    digitalWrite(latchPin, LOW);
+    shiftOut(dataPin, clockPin, LSBFIRST, 0b11111110);
+    shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+    //end writing to the shift registers
+    digitalWrite(latchPin, HIGH);
+    
+}
 
 void TimerModule::set(std::vector<std::string> args){
 
