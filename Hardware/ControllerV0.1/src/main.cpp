@@ -85,6 +85,7 @@ void setup() {
   components.push_back(&btn1);
   components.push_back(&btn2);
   components.push_back(&btn3);
+  components.push_back(&btn4);
   //components.push_back(&fgm);
 
   analogWrite(26, HIGH);  //Power Pin for SSM buttons
@@ -97,14 +98,7 @@ void loop() {
 
   parseCommand(serialController.serialRecieve());
 
-  btn1.update();
-  btn2.update();
-  btn3.update(); 
-  btn4.update();
-
-  timer.updateDisplay();
-  gyro.update();
-  ssm.update();
-  ngm.update();
-  //fgm.update();
+  for(const auto& cmp : components){
+    cmp->update();
+  }
 }

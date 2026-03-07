@@ -69,7 +69,7 @@ public:
     void enable() override;
     void checkGuess(std::string btnName, int btnState);
     void buttonCheck(std::string btnName, int btnState);
-    void update();
+    void update() override;
     void reset();
     void complete();
 };

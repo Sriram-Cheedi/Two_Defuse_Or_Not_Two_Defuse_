@@ -32,7 +32,7 @@ public:
 
     Imu(std::string name, SerialController serialController);
 
-    void update();
+    void update() override;
 
     void enable() override;
     void disable() override;

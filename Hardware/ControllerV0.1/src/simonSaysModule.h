@@ -70,7 +70,7 @@ public:
 
     SimonSaysModule(std::string name, std::vector<int> buttonPins, int rgbPin, SerialController serialController);
 
-    void update(); //Called from main loop
+    void update() override; //Called from main loop
     void enable() override;
     void disable() override;
     void set(std::vector<std::string> args) override; //Called from serialController (main loop)

@@ -55,6 +55,6 @@ public:
     void status() override;
 
     void setDigits(int* digits, bool colon);
-    void updateDisplay();
+    void update() override;
   
 };
