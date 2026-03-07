@@ -21,11 +21,16 @@ void powerToggle(std::string btnName, int btnState) {
       if(cmp->name != "IMU" &&
          cmp->name != "PWR") cmp->disable();
     }
+
+    serialController.serialWrite("PWR", "0");
+
   }else{
     for(const auto& cmp : components){
       if(cmp->name != "IMU" &&
          cmp->name != "PWR") cmp->enable();
     }
+
+    serialController.serialWrite("PWR", "1");
   }
 }
 
