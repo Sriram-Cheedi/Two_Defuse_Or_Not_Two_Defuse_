@@ -1,33 +1,48 @@
+using System;
 using System.Collections;
 using RigidBodyPlayer.Modules;
+using RigidBodyPlayer.PlayerStates;
 using UnityEngine;
 
 public class PlayerJump : MonoBehaviour, IPlayerModule
 {
-    public float coyoteTimeCounter;
-    public float jumpBufferCounter;
+    public float CoyoteTimeCounter { get; private set; }
+    public float JumpBufferCounter { get; private set; }
     public bool readyToJump;
-    private RigidBodyMovement Hub;
+    private RigidBodyMovement hub;
+    public bool canJump;
     
-    public void Initialize(RigidBodyMovement hub)
+    public void Initialize(RigidBodyMovement Hub)
     {
-        Hub = hub;
+        hub = Hub;
+        if (hub.relay != null)
+        {
+            hub.relay.JumpPressed += SetJumpBuffer;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (hub.relay != null)
+        {
+            hub.relay.JumpPressed -= SetJumpBuffer;
+        }
     }
 
     public void Tick()
     {
-        if (Hub.sensor.IsGrounded)
+        if (hub.sensor.IsGrounded)
         {
-            coyoteTimeCounter = Hub.data.coyoteTime;
+            CoyoteTimeCounter = hub.data.coyoteTime;
         }
         else
         {
-            coyoteTimeCounter -= Time.deltaTime;
+            CoyoteTimeCounter -= Time.deltaTime;
         }
 
-        if (jumpBufferCounter > 0f)
+        if (JumpBufferCounter > 0f)
         {
-            jumpBufferCounter -= Time.deltaTime;
+            JumpBufferCounter -= Time.deltaTime;
         }
     }
 
@@ -44,26 +59,26 @@ public class PlayerJump : MonoBehaviour, IPlayerModule
 
     public void SetJumpBuffer()
     {
-        jumpBufferCounter = Hub.data.jumpBuffer;
+        JumpBufferCounter = hub.data.jumpBuffer;
     }
-
+    
     public void OnJumpExecuted()
     {
         StartCoroutine(JumpCooldownRoutine());
         ResetJump();
-        Hub.TransitionToState(Hub.AirborneState);
+        hub.stateMachine.QueueNextState(PlayerState.Airborne);
     }
     
     private IEnumerator JumpCooldownRoutine()
     {
-        yield return new WaitForSeconds(Hub.data.jumpCooldown);
+        yield return new WaitForSeconds(hub.data.jumpCooldown);
         readyToJump = true;
     }
 
     private void ResetJump()
     {
         readyToJump = false;
-        coyoteTimeCounter = 0f;
-        jumpBufferCounter = 0f;
+        CoyoteTimeCounter = 0f;
+        JumpBufferCounter = 0f;
     }
 }

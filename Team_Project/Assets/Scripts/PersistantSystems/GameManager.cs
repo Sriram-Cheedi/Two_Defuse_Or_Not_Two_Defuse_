@@ -56,7 +56,10 @@ public class GameManager : MonoBehaviour
                 bombTimer = 0.0f;
             }
 
-            API_Provider.Instance.ActiveAPIController.TimerSet((int)bombTimer);
+            if (API_Provider.Instance != null && API_Provider.Instance.ActiveAPIController != null)
+            {
+                API_Provider.Instance.ActiveAPIController.TimerSet((int)bombTimer);
+            }
         }
     }
 
