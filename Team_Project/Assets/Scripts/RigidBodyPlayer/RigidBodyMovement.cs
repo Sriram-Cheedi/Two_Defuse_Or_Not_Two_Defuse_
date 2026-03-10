@@ -14,6 +14,7 @@ public class RigidBodyMovement : MonoBehaviour
     [SerializeField] public PlayerCrouch crouch;
     [SerializeField] public PlayerCameraHandler cameraHandler;
     [SerializeField] public PlayerJump jump;
+    [SerializeField] public FootStepSystem footStepSystem;
 
     [HideInInspector] public PlayerStateMachine stateMachine;
 
@@ -81,6 +82,7 @@ public class RigidBodyMovement : MonoBehaviour
         if (cameraHandler == null) cameraHandler = GetComponent<PlayerCameraHandler>();
         if (jump == null) jump = GetComponent<PlayerJump>();
         if (orientation == null) orientation = transform.Find("Orientation");
+        if (footStepSystem == null) footStepSystem = GetComponent<FootStepSystem>();
     }
 
     private void ConfigureRigidBody()

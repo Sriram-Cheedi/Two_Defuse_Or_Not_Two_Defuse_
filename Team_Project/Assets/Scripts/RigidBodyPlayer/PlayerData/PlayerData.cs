@@ -24,6 +24,7 @@ public class MovementData : ScriptableObject
     public float coyoteTime = 0.15f;
     public float jumpBuffer = 0.15f;
     public float gravityAlpha = 0.1f;
+    public float airTimeBuffer = 0.15f;
     
 
     [Header("Slope")]
@@ -34,4 +35,8 @@ public class MovementData : ScriptableObject
     public float crouchTransitionSpeed = 5f;
     public float crouchHeightMultiplier = 0.5f;
     public float rotationSpeed = 200f;
+    
+    [Header("Sound Effects")]
+    public float stepInterval = 0.5f;
+    public float volumnBoost = 2.0f;
 }
