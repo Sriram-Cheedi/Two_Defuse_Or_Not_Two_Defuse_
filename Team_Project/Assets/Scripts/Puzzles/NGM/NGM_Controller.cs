@@ -6,7 +6,13 @@ namespace Puzzles.Controllers
     {
         [SerializeField] public PlayerInputRelay relay;
         
-        public PuzzleData data;
+        public PuzzleData data = new PuzzleData 
+        { 
+            guessSequence = new int[4], 
+            correctSequence = GenerateSequence(4, 9)
+        };
+        
+        public PuzzleData getData => data;
         
         public Renderer[] ledRenderers;
         public SegmentDisplay[] ledDisplays;
@@ -15,16 +21,6 @@ namespace Puzzles.Controllers
         [SerializeField] public Material matMisplaced;
         [SerializeField] public Material matDefault;
         
-        public PuzzleData getData => data;
-
-        private void Awake()
-        {
-            data = new PuzzleData();
-            
-            data.guessSequence = new int[4];
-            data.correctSequence = GenerateSequence(4, 9);
-        }
-
         private void Start()
         {
             API_Provider.Instance.ActiveAPIController.SendSetSeq("NGM", data.correctSequence);
@@ -167,7 +163,7 @@ namespace Puzzles.Controllers
     }
     
     
-    public int[] GenerateSequence(int length, int maxValue)
+    public static int[] GenerateSequence(int length, int maxValue)
     {
         System.Random rng = new System.Random();
         int[] Seq = new int[length];
