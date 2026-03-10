@@ -135,11 +135,8 @@ public class PlayerInputRelay : MonoBehaviour
         if (!ctx.ReadValueAsButton()) return;
         string keyname = ctx.control.name;
         char lastChar = keyname[keyname.Length - 1];
-        Debug.Log(lastChar);
-
         if (char.IsDigit(lastChar))
         {
-
             int digit = (int)char.GetNumericValue(lastChar);
             NumberPressed?.Invoke(digit);
         }
