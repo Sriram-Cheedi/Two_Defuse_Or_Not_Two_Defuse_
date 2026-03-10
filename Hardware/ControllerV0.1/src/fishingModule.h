@@ -45,21 +45,21 @@ class fishingModule : public Component {
     };
 
     uint32_t fishLED [12] = {
-        0b1000000000,
-        0b1100000000,
-        0b1110000000,
-        0b0111000000,
-        0b0011100000,
-        0b0001110000,
-        0b0000111000,
-        0b0000011100,
-        0b0000001110,
-        0b0000000111,
+        0b0000000001,
         0b0000000011,
-        0b0000000001
+        0b0000000111,
+        0b0000001110,
+        0b0000011100,
+        0b0000111000,
+        0b0001110000,
+        0b0011100000,
+        0b0111000000,
+        0b1110000000,
+        0b1100000000,
+        0b1000000000
     };
 
-    int state = 0; // 0 = Not Started, 1 = In Progress, 2 = Complete, 3 = Failed (Resetting)
+    int state = 0; // 0 = Off, 1 = On correct position, 2 = On incorrect position
 
     SerialController serialController;
     Button btn;

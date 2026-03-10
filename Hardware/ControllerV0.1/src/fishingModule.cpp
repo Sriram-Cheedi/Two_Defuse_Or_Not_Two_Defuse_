@@ -28,16 +28,12 @@ void fishingModule::complete(){
 }
 
 void fishingModule::set(std::vector<std::string> args){
-    int newState = stoi(args[0]);
-
-    if(newState == 0){
-        reset();
-    }else if (newState == 2){
-        complete();
-    }
+    
 }
 
 void fishingModule::status(){
+    //FGM:status 1 for correct position
+    //FGM:status 2 for incorrect position
     serialController.serialWrite(name, std::to_string(state));
 }
 
@@ -59,8 +55,16 @@ void fishingModule::buttonUpdate(std::string btnName, int btnState){
 void fishingModule::scoreCheck(){
   int hasScored = fishLED[randState] & hookLED[hookPos];
   if (hasScored > 0){
-    if(points == 0) state = 1;
+    if(state == 1){
+        state = 2;
+        status();
+    }
     points++;
+  }else{
+    if(state == 2){
+        state = 1;
+        status();
+    }
   }
 }
 
