@@ -14,11 +14,11 @@ private:
 
     Adafruit_MPU6050 mpu;
 
-    bool enabled = true;
-
     bool motionActive = false;
     unsigned long lastMotionTime = 0;
     const unsigned long motionTimout = 200;
+
+    bool enabled = true;
 
     float accelX;
     float accelY;

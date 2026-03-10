@@ -20,9 +20,9 @@ private:
     uint8_t currentDigit = 0;
     bool colonEnabled = false;
     int digitsBuffer[4];
-    
-    bool enabled = false;
 
+    bool enabled = true;
+    
     const uint8_t segment_encodings[11] = {
         0b11111100, // 0
         0b01100000, // 1

@@ -12,6 +12,7 @@
 class numberGameModule : public Component {
 
 private:
+    int prevState = 0;
     int state = 0; // 0 = Off, 1 = On, 2 = Complete
     int submitting = 0; // 0 = Not submitting, 1 = Submitting
     const int dataPin;
@@ -22,6 +23,8 @@ private:
     int secretNumber[4];
 
     SerialController serialController;
+
+    bool enabled = true;
 
     unsigned long lastUpdate = 0;
     unsigned long buttonUpdate = 0;

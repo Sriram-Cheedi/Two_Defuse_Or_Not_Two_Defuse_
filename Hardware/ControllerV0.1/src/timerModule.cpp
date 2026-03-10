@@ -23,11 +23,11 @@ void TimerModule::disable(){
 
     //start writing to the shift registers
     digitalWrite(latchPin, LOW);
-    shiftOut(dataPin, clockPin, LSBFIRST, 0b11111110);
+    shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
     shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
     //end writing to the shift registers
     digitalWrite(latchPin, HIGH);
-    
+
 }
 
 void TimerModule::set(std::vector<std::string> args){
@@ -67,7 +67,9 @@ void TimerModule::setDigits(int* digits, bool colon){
 }
 
 
-void TimerModule::updateDisplay(){
+void TimerModule::update(){
+
+    if(!enabled) return;
 
     unsigned long now = micros();
     if (now - lastUpdate < refreshInterval) return;

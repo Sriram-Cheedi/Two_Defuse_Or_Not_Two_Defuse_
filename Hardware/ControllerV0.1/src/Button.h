@@ -11,8 +11,9 @@ private:
     SerialController& serialController;
     std::function<void (std::string, int)> onPressed;
 
+    bool enabled = true;
+
     int lastState;
-    bool enabled = false;
 
 public:
 

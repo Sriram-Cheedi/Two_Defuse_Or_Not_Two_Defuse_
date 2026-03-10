@@ -15,6 +15,12 @@ SerialController serialController = SerialController();
 
 std::vector<Component*> components; 
 
+
+TimerModule timer = TimerModule("TMR", 30, 32, 31, serialController);
+Imu gyro = Imu("IMU", serialController);
+
+LCDModule LCD = LCDModule("LCD", serialController);
+
 void powerToggle(std::string btnName, int btnState) {
   if(btnState == 0){
     for(const auto& cmp : components){
@@ -22,29 +28,39 @@ void powerToggle(std::string btnName, int btnState) {
          cmp->name != "PWR") cmp->disable();
     }
 
-    serialController.serialWrite("PWR", "0");
-
   }else{
     for(const auto& cmp : components){
       if(cmp->name != "IMU" &&
          cmp->name != "PWR") cmp->enable();
     }
-
-    serialController.serialWrite("PWR", "1");
   }
-}
 
-TimerModule timer = TimerModule("TMR", 30, 32, 31, serialController);
-Imu gyro = Imu("IMU", serialController);
+  serialController.serialWrite("PWR", std::to_string(btnState));
+}
 
 Button btn1 = Button("BTN1", 9, serialController);
 Button btn2 = Button("BTN2", 10, serialController);
 Button btn3 = Button("BTN3", 11, serialController);
-Button btn4("PWR", 12, serialController, powerToggle);
+Button btn4("BTN4", 12, serialController);
+Button pwr("PWR", 23, serialController);//, powerToggle);
 
 numberGameModule ngm = numberGameModule("NGM",33,35,34,{36,37,38,39,40}, serialController);
 //fishingModule fgm = fishingModule("FGM",36,35,34,13,serialController);
 SimonSaysModule ssm = SimonSaysModule("SSM", {27, 26, 25, 24}, 0,  serialController);
+
+
+void powerGame(){
+
+  for(const auto& cmp : components){
+    if(cmp->name != "IMU" &&
+        cmp->name != "PWR" &&
+        cmp->name != "LCD" ) cmp->disable();
+  }
+
+  LCD.set({"Unknown Error!!!", "Power Cycle Req."});
+  
+}
+
 
 std::vector<std::string> split(const std::string& s) {
     std::stringstream ss(s);
@@ -66,6 +82,14 @@ void parseCommand(std::string command){
 
   std::vector<std::string> func_args = split(command.substr(command.find(':') + 1, command.length() - (command.find(':') + 1)));
 
+  if(name == "PWR" && func_args[0] == "set"){
+    if(std::stoi(func_args[1]) == 3){
+      powerGame();
+      return;
+    }
+    powerToggle(name, std::stoi(func_args[1]));
+  }
+
   for(const auto& cmp : components){
     if(cmp->name == name){
       if(func_args[0] == "set" && func_args.size() > 1){
@@ -86,8 +110,12 @@ void setup() {
   components.push_back(&btn2);
   components.push_back(&btn3);
   components.push_back(&btn4);
+  components.push_back(&LCD);
   //components.push_back(&fgm);
 
+  LCD.LCDSetup();
+
+  digitalWrite(8, HIGH); //Power pin for pwr switch
   analogWrite(26, HIGH);  //Power Pin for SSM buttons
 
 }

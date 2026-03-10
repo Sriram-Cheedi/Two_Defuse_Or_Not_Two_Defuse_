@@ -1,12 +1,34 @@
 #ifndef LCDMODULE_H
 #define LCDMODULE_H
 
-class LCDModule {
+#include <Arduino.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include <string>
+#include <Component.h>
+#include <SerialController.h>
+
+class LCDModule : public Component {
+
+    SerialController serialController;
+
+    std::string topText = "";
+    std::string bottomText  = "";
+
+    bool enabled = true;
+    bool changed = false;
 public:
-    LCDModule();
+    LCDModule(std::string name, SerialController serialController);
     void LCDSetup();
     void LCDScroll();
     void LCDSet(char word[]);
+
+    void enable() override;
+    void disable() override;
+    void set(std::vector<std::string> args) override;
+    void status() override;
+    void update() override;
+
 };
 
 #endif

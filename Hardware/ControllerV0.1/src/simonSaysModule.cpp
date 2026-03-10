@@ -87,6 +87,8 @@ void SimonSaysModule::disable(){
     }
 
     setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)});    
+
+    enabled = false;
 }
 
 void SimonSaysModule::enable(){
@@ -99,6 +101,8 @@ void SimonSaysModule::enable(){
     }
     
     threadID = threads.addThread(loopTrampoline, this, 8192);
+
+    enabled = true;
 }
 
 void SimonSaysModule::reset(){
@@ -111,7 +115,9 @@ void SimonSaysModule::reset(){
     state.store(1, std::memory_order_release);
     currentRound = 1;
 
-    threadID = threads.addThread(loopTrampoline, this, 8192);
+    if(enabled){
+        threadID = threads.addThread(loopTrampoline, this, 8192);
+    }
 }
 
 void SimonSaysModule::complete(){

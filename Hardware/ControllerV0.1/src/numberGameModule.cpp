@@ -14,7 +14,6 @@ numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, 
     buttons.push_back(btn);
     randomSeed(analogRead(A0));
 
-    disable();
 }
 
 void numberGameModule::disable(){
@@ -26,13 +25,13 @@ void numberGameModule::disable(){
     //end writing to the shift registers
     digitalWrite(latchPin, HIGH);
     
-    state = 0;
+    enabled = false;
 }
 
 void numberGameModule::enable(){
 
-    state = 1;
-    
+    enabled = true;
+
 }
 
 void numberGameModule::reset(){
@@ -133,7 +132,7 @@ void numberGameModule::update(){
     if (now - lastUpdate < refreshInterval) return;
     lastUpdate = now;
 
-    if(state == 0) return;
+    if(state == 0 || !enabled) return;
 
     for(auto& btn : buttons){
         if(state != 2){

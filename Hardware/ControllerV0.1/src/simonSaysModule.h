@@ -37,6 +37,7 @@ private:
     size_t currentRound;
 
     // MULTI-THREAD VARIABLES (Protected) 
+    bool enabled = true;
     std::vector<uint32_t> pixelBuffer = {Color(255, 0, 0), Color(255, 0, 0), Color(255, 0, 0), Color(255, 0, 0)}; 
     std::atomic<int> state{0};  // 0 = Not Started, 1 = In Progress, 2 = Complete, 3 = Failed (Resetting)
     std::atomic<int> pressedButton{-1};
