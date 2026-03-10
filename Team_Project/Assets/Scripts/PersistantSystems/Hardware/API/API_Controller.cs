@@ -29,8 +29,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     private HardwareState hardwareState;
 
     public I_SerialPortController serialController;
-
-
+    
     // Getters for Local saved hardware values
     public Vector3 getGyroValue => hardwareState.gyroValue;
     public Vector3 getAccelerometerValue => hardwareState.accelerometerValue;
