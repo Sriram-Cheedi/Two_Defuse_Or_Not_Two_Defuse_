@@ -93,6 +93,8 @@ void SimonSaysModule::disable(){
 
 void SimonSaysModule::enable(){
     
+    enabled = true;
+
     if(state.load(std::memory_order_acquire) == 0) return;
 
     if(threadID != -1){
@@ -101,8 +103,6 @@ void SimonSaysModule::enable(){
     }
     
     threadID = threads.addThread(loopTrampoline, this, 8192);
-
-    enabled = true;
 }
 
 void SimonSaysModule::reset(){
