@@ -47,6 +47,11 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
         }
     }
 
+    private void OnEnable()
+    {
+        SpawnManager.RespawnRequested += ResetGravity;
+    }
+
     private void OnDisable()
     {
         if (_activeHardware != null)
@@ -54,6 +59,20 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
         if (Hub.relay != null)
         {
             Hub.relay.InvertGravity -= HandleGravityInverted;
+        }
+        SpawnManager.RespawnRequested -= ResetGravity;
+    }
+
+    private void ResetGravity(RespawnData data)
+    {
+        invertRequested = false;
+        if (data.IsUpsideDown)
+        {
+            SetGravityDirection(Vector3.up);
+        }
+        else
+        {
+            SetGravityDirection(Vector3.down);
         }
     }
     

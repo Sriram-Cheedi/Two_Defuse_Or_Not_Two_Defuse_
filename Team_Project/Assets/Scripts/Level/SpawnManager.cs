@@ -1,32 +1,38 @@
+using System;
 using RigidBodyPlayer.PlayerStates;
 using UnityEngine;
+using Object = UnityEngine.Object;
+
+public struct RespawnData
+{
+    public Vector3 Position;
+    public Quaternion Rotation;
+    public bool IsUpsideDown;
+}
 
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] public CheckPointScript respawnPoint;
     [SerializeField] private RigidBodyMovement hub;
-    private PlayerInputRelay relay;
+    public static event Action<RespawnData> RespawnRequested;
+
     private void Awake()
     {
-        relay = Object.FindAnyObjectByType<PlayerInputRelay>();
         hub = FindAnyObjectByType<RigidBodyMovement>();
     }
-    private void OnEnable()
-    {
-        if (relay != null) 
-        {
-            relay.RespawnRequested += ResetPlayer; 
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (relay != null) 
-        {
-            relay.RespawnRequested -= ResetPlayer; 
-        }
-    }
     
+    public void CallRepawn()
+    {
+        if (hub == null && respawnPoint == null) return; 
+        RespawnData data = new RespawnData
+        {
+            Position = respawnPoint.transform.position,
+            Rotation = respawnPoint.transform.rotation,
+            IsUpsideDown = respawnPoint.isUpsideDown,
+        };
+        RespawnRequested?.Invoke(data);
+        hub.stateMachine.QueueNextState(PlayerState.Airborne);
+    }
     
 
     public void ResetPlayer()

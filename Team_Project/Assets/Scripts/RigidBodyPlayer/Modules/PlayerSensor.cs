@@ -33,6 +33,16 @@ public class PlayerSensor : MonoBehaviour, IPlayerModule
         Hub = hub;
     }
 
+    private void OnEnable()
+    {
+        SpawnManager.RespawnRequested += ResetSensor;
+    }
+
+    private void OnDisable()
+    {
+        SpawnManager.RespawnRequested -= ResetSensor;
+    }
+
     public void Tick()
     {
         // switch (CurrentSurface)
@@ -100,6 +110,25 @@ public class PlayerSensor : MonoBehaviour, IPlayerModule
             OnMovingPlatform = false;
             connectedBody = null;
         }
+    }
+
+    private void ResetSensor(RespawnData respawnData)
+    {
+        CurrentSurface = SurfaceType.Default;
+        PreviousSurface = SurfaceType.Default;
+    
+        // 2. Clear the ground state
+        IsGrounded = false;
+        OnMovingPlatform = false;
+        OnSlope = false;
+    
+        // 3. WIPE THE HIT DATA! (This is what was holding the old slope angle)
+        slopeHit = new RaycastHit(); 
+    
+        // 4. Clear any moving platform momentum
+        connectedBody = null;
+        previousConnectedBody = null;
+        ConnectionVelocity = Vector3.zero;
     }
 
     private void UpdateConnectionState()

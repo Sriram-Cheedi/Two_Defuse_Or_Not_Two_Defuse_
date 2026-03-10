@@ -14,7 +14,6 @@ public class PlayerInputRelay : MonoBehaviour
     public event Action<bool> InvertGravity;
     public event Action<int> NumberPressed;
     public event Action<bool> SmokeReleased;
-    public event Action RespawnRequested;
     public event Action GuessSubmitted;
     private InputAction move, look, jump, crouch, invertGravity, enter, click, smoke;
     private InputAction keypressNumbers;
@@ -163,11 +162,5 @@ public class PlayerInputRelay : MonoBehaviour
     {
         if (ctx.performed) GuessSubmitted?.Invoke();
     }
-
-    public void CallRepawn()
-    {
-        RespawnRequested?.Invoke();
-    }
-
     
 }
