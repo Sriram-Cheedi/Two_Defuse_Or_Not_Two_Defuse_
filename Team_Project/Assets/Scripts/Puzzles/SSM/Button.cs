@@ -14,7 +14,6 @@ public class Button : MonoBehaviour, Interactible_Interface
     [SerializeField] public Material _materialOFF;
     [SerializeField] public Material _incorrectMaterial;
 
-    private Material _activeMaterial;
     private Renderer _renderer;
     
     private void Awake()
@@ -25,16 +24,17 @@ public class Button : MonoBehaviour, Interactible_Interface
     private void OnEnable()
     {
         ssm_controller.data.OnFailure += FlashRed;
-        ssm_controller.data.OnSuccess += DisableInteraction;
+        ssm_controller.data.OnSuccess += DisableInteractionSetOn;
     }
 
     private void OnDisable()
     {
         ssm_controller.data.OnFailure -= FlashRed;
-        ssm_controller.data.OnSuccess -= DisableInteraction;
+        ssm_controller.data.OnSuccess -= DisableInteractionSetOn;
+
     }
     
-    private void DisableInteraction()
+    private void DisableInteractionSetOn()
     {
         gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
         

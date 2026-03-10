@@ -3,14 +3,16 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] public CheckPointScript respawnPoint;
-    [SerializeField] private RigidBodyMovement hub;
+    public CheckPointScript respawnPoint;
+    private RigidBodyMovement hub;
+    
     private PlayerInputRelay relay;
     private void Awake()
     {
         relay = Object.FindAnyObjectByType<PlayerInputRelay>();
         hub = FindAnyObjectByType<RigidBodyMovement>();
     }
+    
     private void OnEnable()
     {
         if (relay != null) 
@@ -26,8 +28,6 @@ public class SpawnManager : MonoBehaviour
             relay.RespawnRequested -= ResetPlayer; 
         }
     }
-    
-    
 
     public void ResetPlayer()
     {
