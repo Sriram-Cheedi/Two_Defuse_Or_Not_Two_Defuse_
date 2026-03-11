@@ -1,3 +1,4 @@
+using RigidBodyPlayer.PlayerStates;
 using UnityEngine;
 
 public class CheckPointScript : MonoBehaviour

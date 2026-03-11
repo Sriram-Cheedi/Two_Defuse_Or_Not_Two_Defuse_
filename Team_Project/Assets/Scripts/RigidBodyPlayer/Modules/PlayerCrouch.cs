@@ -20,8 +20,9 @@ public class PlayerCrouch : MonoBehaviour, IPlayerModule
 
     public void Initialize(RigidBodyMovement hub)
     {
-        if (controller == null) controller = GetComponent<CapsuleCollider>();
+        
         Hub = hub;
+        if (controller == null) controller = GetComponent<CapsuleCollider>();
         if (Hub != null && Hub.relay != null)
         {
             Hub.relay.Crouch += HandleCrouch;
