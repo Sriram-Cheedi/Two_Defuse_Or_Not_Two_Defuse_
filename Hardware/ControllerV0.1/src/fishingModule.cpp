@@ -18,7 +18,6 @@ void fishingModule::reset(){
     lastGameUpdate = 0;
     lastFishUpdate = 0;
     lastHookUpdate = 0;
-    lastScoreUpdate = 0;
     lastButtonUpdate = 0;
 }
 
@@ -53,49 +52,46 @@ void fishingModule::buttonUpdate(std::string btnName, int btnState){
 }
 
 void fishingModule::scoreCheck(){
-  int hasScored = fishLED[randState] & hookLED[hookPos];
+  int hasScored = fishPos[randState] & hookLED[hookPos];
   if (hasScored > 0){
-    if(state == 1){
-        state = 2;
-        status();
-    }
-    points++;
-  }else{
     if(state == 2){
         state = 1;
         status();
     }
+    lockout = true;
+  }else{
+    if(state == 1){
+        state = 2;
+        status();
+    }
+    lockout = false;
   }
 }
 
 void fishingModule::update(){
     unsigned long micro = micros();
     unsigned long milli = millis();
-    if (micro - lastGameUpdate > gameInterval && state < 2){
+    if (micro - lastGameUpdate > gameInterval && state < 3){
         lastGameUpdate = micro;
         if(milli - lastButtonUpdate > buttonInterval){
             btn.update();
             lastButtonUpdate = milli;
         }
-        if(milli - lastHookUpdate > hookInterval){
+        if(milli - lastHookUpdate > hookInterval && !lockout){
             hookPos--;
             if(hookPos < 0) hookPos = 0;
             lastHookUpdate = milli;
         }
 
-        if(milli - lastScoreUpdate > scoreInterval){
-            scoreCheck();
-            lastScoreUpdate = milli;
-        }
-
         if(milli - lastFishUpdate > fishInterval){
-            randState = random(0,12);
+            randState = random(0,9);
+            //randState++;
+            //if(randState > 11) randState = 0;
             lastFishUpdate = milli;
         }
-
-        if(points >= 45) state = 2;
-
-        uint32_t LEDBarState = (fishLED[randState] << 14) + (hookLED[hookPos] << 4);
+        uint32_t LEDBarState = (fishEncoding[randState] << 14) + (hookLED[hookPos] << 4);
         shift(LEDBarState);
+
+        scoreCheck();
     }
 }

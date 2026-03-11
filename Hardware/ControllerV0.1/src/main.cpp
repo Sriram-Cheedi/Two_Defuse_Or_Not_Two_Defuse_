@@ -22,7 +22,7 @@ Button btn3 = Button("BTN3", 11, serialController);
 Button btn4 = Button("BTN4", 12, serialController);
 
 numberGameModule ngm = numberGameModule("NGM",33,35,34,{36,37,38,39,40}, serialController);
-//fishingModule fgm = fishingModule("FGM",36,35,34,13,serialController);
+fishingModule fgm = fishingModule("FGM",4,2,3,5,serialController);
 SimonSaysModule ssm = SimonSaysModule("SSM", {27, 26, 25, 24}, 0,  serialController);
 
 std::vector<Component*> components;
@@ -62,7 +62,7 @@ void setup() {
   components.push_back(&gyro);  
   components.push_back(&ssm);
   components.push_back(&ngm);
-  //components.push_back(&fgm);
+  components.push_back(&fgm);
 
   analogWrite(26, HIGH);  //Power Pin for SSM buttons
 
@@ -83,5 +83,5 @@ void loop() {
   gyro.update();
   ssm.update();
   ngm.update();
-  //fgm.update();
+  fgm.update();
 }
