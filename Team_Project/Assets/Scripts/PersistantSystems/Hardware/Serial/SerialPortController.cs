@@ -31,8 +31,6 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
     {
         Debug.Log("SerialPortController Awake on: " + gameObject.name);
         Debug.Log("SerialPortController instance: " + gameObject.GetInstanceID());
-        Connect();
-
     }
 
     public void Update()
@@ -237,10 +235,10 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
             return true;
         }
         catch (Exception error)
-        {
-            Debug.LogError("Could not open port: " + error.Message);
+        {   
+            Debug.LogError("Could not open port: " + error.Message + " Throwing ERROR...");
             Disconnect();
-            return false;
+            throw error;
         }
         
     }

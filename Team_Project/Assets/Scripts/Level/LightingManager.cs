@@ -74,8 +74,11 @@ public class LightingManager : MonoBehaviour
         switch (header)
         {
             case "PWR":
-                Debug.Log("PWR Changed");
+                if (API_Provider.Instance.ActiveAPIController.getComponentStateManager["PWR"] == 0) 
+                    TurnOffLights();
+                else TurnOnLights();
                 break;
+           
         }
     }
     

@@ -50556,7 +50556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 341c9b60cd86c405d944500e7eec2c32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game.Main::API_Provider
-  useMockHardware: 1
+  useMockHardware: 0
 --- !u!4 &740190520
 Transform:
   m_ObjectHideFlags: 0
