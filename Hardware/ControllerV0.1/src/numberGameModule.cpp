@@ -73,8 +73,13 @@ void numberGameModule::set(std::vector<std::string> args){
         secretNumber[3] = stoi(args[3]);
         state = 0;
         digitsBuffer = {0,0,0,0};
+        //start writing to the shift registers
+        digitalWrite(latchPin, LOW);
+        shiftOut(dataPin, clockPin, LSBFIRST, 0b11111110);
+        shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+        //end writing to the shift registers
+        digitalWrite(latchPin, HIGH);
         
-        disable();
     }
 }
 
