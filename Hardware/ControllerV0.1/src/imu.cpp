@@ -19,6 +19,14 @@ Imu::Imu(std::string name, SerialController serialController)
     delay(100);
 }
 
+void Imu::enable(){
+    enabled = true;
+}
+
+void Imu::disable(){
+    enabled = false;
+}
+
 void Imu::update(){
 
     if(mpu.getMotionInterruptStatus()) {

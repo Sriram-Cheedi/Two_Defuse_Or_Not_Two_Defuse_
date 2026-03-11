@@ -14,7 +14,13 @@ numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, 
     buttons.push_back(btn);
     randomSeed(analogRead(A0));
 
-    disable();
+    //start writing to the shift registers
+    digitalWrite(latchPin, LOW);
+    shiftOut(dataPin, clockPin, LSBFIRST, 0b11111110);
+    shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+    //end writing to the shift registers
+    digitalWrite(latchPin, HIGH);
+
 }
 
 void numberGameModule::disable(){
@@ -26,8 +32,13 @@ void numberGameModule::disable(){
     //end writing to the shift registers
     digitalWrite(latchPin, HIGH);
     
-    state = 0;
-    disabled = true;
+    enabled = false;
+}
+
+void numberGameModule::enable(){
+
+    enabled = true;
+
 }
 
 void numberGameModule::reset(){
@@ -38,7 +49,6 @@ void numberGameModule::reset(){
     digitsBuffer[3] = 0;
 
     state = 1; 
-    disabled = false;
 }
 
 void numberGameModule::complete(){
@@ -49,7 +59,6 @@ void numberGameModule::complete(){
     digitsBuffer[3] = secretNumber[3];
 
     state = 2;
-    disabled = false;
 }
 
 void numberGameModule::set(std::vector<std::string> args){
@@ -57,7 +66,13 @@ void numberGameModule::set(std::vector<std::string> args){
         int newState = stoi(args[0]);
 
         if(newState == 0){
-            disable();
+            state = 0;
+            //start writing to the shift registers
+            digitalWrite(latchPin, LOW);
+            shiftOut(dataPin, clockPin, LSBFIRST, 0b11111110);
+            shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+            //end writing to the shift registers
+            digitalWrite(latchPin, HIGH);
         }else if (newState == 1){
             reset();
         }else if (newState == 2){
@@ -71,8 +86,13 @@ void numberGameModule::set(std::vector<std::string> args){
         secretNumber[3] = stoi(args[3]);
         state = 0;
         digitsBuffer = {0,0,0,0};
+        //start writing to the shift registers
+        digitalWrite(latchPin, LOW);
+        shiftOut(dataPin, clockPin, LSBFIRST, 0b11111110);
+        shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+        //end writing to the shift registers
+        digitalWrite(latchPin, HIGH);
         
-        disable();
     }
 }
 
@@ -130,7 +150,7 @@ void numberGameModule::update(){
     if (now - lastUpdate < refreshInterval) return;
     lastUpdate = now;
 
-    if(disabled) return;
+    if(state == 0 || !enabled) return;
 
     for(auto& btn : buttons){
         if(state != 2){

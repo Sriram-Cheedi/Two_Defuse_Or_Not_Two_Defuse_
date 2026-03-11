@@ -42,7 +42,6 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
         _activeHardware = API_Provider.Instance.ActiveAPIController;
         if (_activeHardware != null)
         {
-            Debug.Log("IMU CALLED");
             _activeHardware.OnImuChanged += RotateLevel;
         }
     }

@@ -11,16 +11,21 @@ private:
     SerialController& serialController;
     std::function<void (std::string, int)> onPressed;
 
-    int lastState;
+    bool enabled = true;
+
 
 public:
 
+    int lastState = -1;
+
+    void enable() override;
+    void disable() override;
     void status() override;
     void set(std::vector<std::string> args) override;
 
     Button(std::string name, int pin, SerialController serialController);
     Button(std::string name, int pin, SerialController serialController, std::function<void (std::string, int)> onPressed);
 
-    void update();
+    void update() override;
 
 };
