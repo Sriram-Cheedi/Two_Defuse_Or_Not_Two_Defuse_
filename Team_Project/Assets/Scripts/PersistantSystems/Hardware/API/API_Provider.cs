@@ -8,6 +8,8 @@ public class API_Provider : MonoBehaviour
     public bool useMockHardware;
     public API_Controller_Interface ActiveAPIController { get; private set; }
 
+    public bool hasAPIController = false;
+
     private void Awake()
     {
         if (Instance == null)
@@ -50,6 +52,7 @@ public class API_Provider : MonoBehaviour
                 ActiveAPIController = mockChild.AddComponent<Mock_API_Controller>();
             }
         }
+        hasAPIController = true;
     }
 
     public void Update()
