@@ -13,9 +13,10 @@ private:
 
     bool enabled = true;
 
-    int lastState;
 
 public:
+
+    int lastState = -1;
 
     void enable() override;
     void disable() override;

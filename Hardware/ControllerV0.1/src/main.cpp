@@ -41,8 +41,14 @@ void powerToggle(std::string btnName, int btnState) {
 Button btn1 = Button("BTN1", 9, serialController);
 Button btn2 = Button("BTN2", 10, serialController);
 Button btn3 = Button("BTN3", 11, serialController);
-Button btn4("BTN4", 12, serialController);
-Button pwr("PWR", 7, serialController, powerToggle);
+Button btn4 = Button("BTN4", 12, serialController);
+
+Button pwr = Button("PWR", 7, serialController, powerToggle);
+
+Button sw1 = Button("SW1", 6, serialController);
+Button sw2 = Button("SW2", 5, serialController);
+Button sw3 = Button("SW3", 4, serialController);
+
 
 numberGameModule ngm = numberGameModule("NGM",33,35,34,{36,37,38,39,40}, serialController);
 //fishingModule fgm = fishingModule("FGM",36,35,34,13,serialController);
@@ -111,6 +117,9 @@ void setup() {
   components.push_back(&btn3);
   components.push_back(&btn4);
   components.push_back(&pwr);
+  components.push_back(&sw1);
+  components.push_back(&sw2);
+  components.push_back(&sw3);
   components.push_back(&LCD);
   //components.push_back(&fgm);
 

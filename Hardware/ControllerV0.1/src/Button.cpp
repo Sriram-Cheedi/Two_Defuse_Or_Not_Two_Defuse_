@@ -9,7 +9,6 @@ Component(name), pin(pin), serialController(serialController) {
 
     delay(10);
 
-    lastState = digitalRead(pin);
 }
 
 Button::Button(std::string name, int pin, SerialController serialController, std::function<void (std::string, int)> onPressed) :
@@ -19,7 +18,6 @@ Component(name), pin(pin), serialController(serialController), onPressed(onPress
 
     delay(10);
 
-    lastState = digitalRead(pin);
 }
 
 void Button::status(){

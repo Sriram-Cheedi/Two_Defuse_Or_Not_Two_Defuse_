@@ -6,12 +6,15 @@ SimonSaysModule::SimonSaysModule(std::string name, std::vector<int> buttonPins, 
 
     for(size_t i = 0; i < buttonPins.size(); i++){
         Button btn = Button("SSM" + std::to_string(i), buttonPins[i], serialController, [this](std::string name, int state){buttonPressed(name, state);});   
+        btn.update();
         buttons.push_back(btn);
     }
 
     strip.begin();
 
     setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)});
+
+    pressedButton.store(-1, std::memory_order_release);
 }
 
 void SimonSaysModule::update(){
@@ -55,7 +58,12 @@ void SimonSaysModule::set(std::vector<std::string> args) {
         int newState = stoi(args[0]);
 
         if(newState == 0){
-            disable();
+            if(threadID != -1){
+                threads.kill(threadID);
+                threadID = -1;
+            }
+
+            setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)});    
             state.store(0, std::memory_order_release);
         }else if (newState == 1){
             reset();
@@ -69,7 +77,13 @@ void SimonSaysModule::set(std::vector<std::string> args) {
             correctSequence.push_back(stoi(arg));
         }
 
-        disable();
+        if(threadID != -1){
+            threads.kill(threadID);
+            threadID = -1;
+        }
+
+        setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)});    
+        state.store(0, std::memory_order_release);
     }
 
     resetingMutex.unlock();
@@ -133,8 +147,9 @@ int SimonSaysModule::getInputSequence(){
     while(millis() - startTime < 3000){
 
         for(auto& btn : buttons){
-            
+            btn.status();
             btn.update();
+            btn.status();
 
             if(pressedButton.load(std::memory_order_acquire) == -1){
                 continue;
