@@ -18,15 +18,15 @@ namespace RigidBodyPlayer.SoundEffect
 
         private void OnEnable()
         {
-            SpawnManager.RespawnRequested += PlayDeathSound;
+            SpawnManager.OnDeath += PlayDeathSound;
         }
 
         private void OnDisable()
         {
-            SpawnManager.RespawnRequested -= PlayDeathSound;
+            SpawnManager.OnDeath -= PlayDeathSound;
         }
 
-        private void PlayDeathSound(RespawnData spawnData)
+        private void PlayDeathSound()
         {
             if (deathClip != null)
             {

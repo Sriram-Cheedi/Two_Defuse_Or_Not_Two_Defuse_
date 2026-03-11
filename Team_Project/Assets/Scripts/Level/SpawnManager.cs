@@ -15,13 +15,24 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] public CheckPointScript respawnPoint;
     [SerializeField] private RigidBodyMovement hub;
     public static event Action<RespawnData> RespawnRequested;
+    public static event Action OnDeath;
 
     private void Awake()
     {
         hub = FindAnyObjectByType<RigidBodyMovement>();
     }
-    
-    public void CallRepawn()
+
+    private void OnEnable()
+    {
+        PlayerDeathState.OnDeathAnimationFinished += CallRepawnReset;
+    }
+
+    private void OnDisable()
+    {
+        PlayerDeathState.OnDeathAnimationFinished -= CallRepawnReset;
+    }
+
+    public void CallRepawnReset()
     {
         if (hub == null && respawnPoint == null) return; 
         RespawnData data = new RespawnData
@@ -33,7 +44,13 @@ public class SpawnManager : MonoBehaviour
         RespawnRequested?.Invoke(data);
         hub.stateMachine.QueueNextState(PlayerState.Airborne);
     }
-    
+
+    public void OnRespawn()
+    {
+        if (hub == null && respawnPoint == null) return; 
+        OnDeath?.Invoke();
+        hub.stateMachine.QueueNextState(PlayerState.Death);
+    }
 
     public void ResetPlayer()
     {

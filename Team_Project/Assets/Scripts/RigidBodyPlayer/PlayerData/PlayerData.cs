@@ -35,6 +35,10 @@ public class MovementData : ScriptableObject
     public float crouchTransitionSpeed = 5f;
     public float crouchHeightMultiplier = 0.5f;
     public float rotationSpeed = 200f;
+    public float deathRotationSpeed = 20f;
+    public float vignetteIntensity = 0.4f;
+    public float vignetteFadeSpeed = 1.5f;
+    public float blackFadeSpeed = 0.8f;
     
     [Header("Sound Effects")]
     public float stepInterval = 0.5f;
