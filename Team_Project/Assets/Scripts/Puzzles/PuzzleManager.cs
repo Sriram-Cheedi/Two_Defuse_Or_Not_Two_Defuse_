@@ -43,6 +43,12 @@ public class PuzzleManager : MonoBehaviour
     {
         ssm_controller.data.OnSuccess += HandleSSMVictory;
         ngm_controller.data.OnSuccess += HandleNGMVictory;
+        
+        API_Provider.Instance.ActiveAPIController.SendSetSeq("SSM", ssm_controller.data.correctSequence);
+        API_Provider.Instance.ActiveAPIController.SendSetSeq("NGM", ngm_controller.data.correctSequence);
+        
+        API_Provider.Instance.ActiveAPIController.SendSet("SSM", 1);
+
     }
     
     // Global Changes if correct
@@ -51,6 +57,9 @@ public class PuzzleManager : MonoBehaviour
         Debug.Log("SSM Solved!");
         // Link Lighting and Alarms and stuff to this 
         SSM_Completed?.Invoke(); 
+        
+        // Activate NGM Puzzle after SSM Completed
+        API_Provider.Instance.ActiveAPIController.SendSet("NGM", 1);
     }
     
     // Global Changes if correct

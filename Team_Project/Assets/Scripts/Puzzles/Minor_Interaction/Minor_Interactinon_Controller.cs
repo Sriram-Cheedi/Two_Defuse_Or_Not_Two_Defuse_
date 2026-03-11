@@ -8,13 +8,15 @@ namespace Puzzles.Minor_Interaction
         enum MockButtonValues
         {
             BTN1 = 5,
+            BTN2 = 6,
         }
         
         [SerializeField] public PlayerInputRelay relay;
 
         [SerializeField] public GameObject deathLazer;
+        [SerializeField] public GameObject spawnRoomDoor;
         
-    void Awake()
+    void OnEnable()
     {
         // For Testing with Keyboard Button Presses
         if (relay != null)
@@ -34,32 +36,44 @@ namespace Puzzles.Minor_Interaction
             relay.NumberPressed -= HandleMockButtonPress;
         }
     }
-
+    
+    // Handle with hardware or corresponding software button presses and activate relevent ingame effect.
     private void HandleMockButtonPress(int digit)
     {
-        if (digit <= 4) return;
-
-        if (digit == (int)MockButtonValues.BTN1)
+        switch (digit)
         {
-            Debug.Log("Software BTN1 Pressed");
-            DisableDeathLazer();
+            case (int)MockButtonValues.BTN1:
+                SwingDoor();
+                break;
+            case  (int)MockButtonValues.BTN2:
+                DisableDeathLazer();
+                break;
         }
     }
 
     private void HandleButtonPress(string header, int value)
     {
-        if (header == "BTN1")
+        switch (header)
         {
-            Debug.Log("Hardware BTN1 Pressed");
-            DisableDeathLazer();
+            case "BTN1":
+                SwingDoor();
+                break;
+            case "BTN2":
+                DisableDeathLazer();
+                break;
         }
     }
     
-    // Button Effects
-
+    // Ingame Effects
     private void DisableDeathLazer()
     {
         deathLazer.SetActive(false);
+    }
+
+
+    private void SwingDoor()
+    {
+        spawnRoomDoor.SetActive(false);
     }
     
     }
