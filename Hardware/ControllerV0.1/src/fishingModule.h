@@ -76,5 +76,5 @@ public:
     void set(std::vector<std::string> args) override;
     void status() override;
 
-    void update();
+    void update() override;
 };

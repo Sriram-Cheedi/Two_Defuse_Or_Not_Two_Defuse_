@@ -19,9 +19,11 @@ private:
     const int latchPin;
     const std::array<int,5> buttonPins; //First 4 button are used to increment the display numbers. Button 5 will be the submit button.
     std::vector<Button> buttons;
-    int secretNumber[4];
+    std::vector<int> secretNumber = {0,0,0,0};
 
     SerialController serialController;
+
+    bool enabled = true;
 
     unsigned long lastUpdate = 0;
     unsigned long buttonUpdate = 0;
@@ -30,9 +32,7 @@ private:
     bool ledOn = false;
     const unsigned int refreshInterval = 200;
     uint8_t currentDigit = 0; 
-    std::array<int,4> digitsBuffer = {0,0,0,0};
-
-    bool disabled = true;
+    std::vector<int> digitsBuffer = {0,0,0,0};
 
     //common anode segment encoding
     const uint8_t segment_encodings[10] = {
@@ -67,10 +67,11 @@ public:
     numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, std::array<int,5> buttonPins, SerialController serialController);
     void set(std::vector<std::string> args) override;
     void status() override;
+    void disable() override;
+    void enable() override;
     void checkGuess(std::string btnName, int btnState);
     void buttonCheck(std::string btnName, int btnState);
-    void update();
-    void disable();
+    void update() override;
     void reset();
     void complete();
 };
