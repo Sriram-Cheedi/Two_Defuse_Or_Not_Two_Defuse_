@@ -126,7 +126,6 @@ void setup() {
   LCD.LCDSetup();
 
   digitalWrite(8, HIGH); //Power pin for pwr switch
-  analogWrite(26, HIGH);  //Power Pin for SSM buttons
 
 }
 
