@@ -51,7 +51,6 @@ public class PuzzleManager : MonoBehaviour
                 API_Provider.Instance.hasAPIController
         );
         
-        yield return new WaitForSeconds(1.5f);
         
         // Send all Puzzle info AFTER 
         API_Provider.Instance.ActiveAPIController.SendSetSeq("SSM", ssm_controller.data.correctSequence);
@@ -67,6 +66,7 @@ public class PuzzleManager : MonoBehaviour
         // Link Lighting and Alarms and stuff to this 
         SSM_Completed?.Invoke(); 
         API_Provider.Instance.ActiveAPIController.SendSet("SSM", 2); // Alert Hardware that puzzle has been completed (Edge case where software guesses before Hardware complete)
+        
         
         // Activate NGM Puzzle after SSM Completed
         API_Provider.Instance.ActiveAPIController.SendSet("NGM", 1);
