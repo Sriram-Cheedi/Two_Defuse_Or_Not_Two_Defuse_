@@ -13,7 +13,7 @@ public class KillZone : MonoBehaviour
     {
         if (other.TryGetComponent(out PlayerInputRelay relay))
         {
-            spawnManager.CallRepawn();
+            spawnManager.OnRespawn();
         }
     }
 }

@@ -30,8 +30,15 @@ MonoBehaviour:
   coyoteTime: 0.15
   jumpBuffer: 0.2
   gravityAlpha: 0.1
+  airTimeBuffer: 0.15
   sideWayMoveSpeed: 10
   slopeSpeed: 20
   crouchTransitionSpeed: 5
   crouchHeightMultiplier: 0.5
   rotationSpeed: 300
+  deathRotationSpeed: 100
+  vignetteIntensity: 0.5
+  vignetteFadeSpeed: 1.5
+  blackFadeSpeed: 2
+  stepInterval: 0.5
+  volumnBoost: 2
