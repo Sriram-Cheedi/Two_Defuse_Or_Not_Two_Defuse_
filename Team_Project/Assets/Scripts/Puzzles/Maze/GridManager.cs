@@ -88,7 +88,7 @@ public class GridManager : MonoBehaviour
         }
         if (relay != null)
         {
-            relay.RespawnRequested += ResetPath;
+            // relay.RespawnRequested += ResetPath;
         }
     }
 
@@ -96,7 +96,7 @@ public class GridManager : MonoBehaviour
     {
         if (relay != null)
         {
-            relay.RespawnRequested -= ResetPath;
+            // relay.RespawnRequested -= ResetPath;
         }
     }
 

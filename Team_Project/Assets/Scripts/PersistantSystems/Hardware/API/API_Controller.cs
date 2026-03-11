@@ -21,9 +21,9 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public event Action<string, int> OnInputChanged;
     public event Action<Vector3> OnGyroChanged;
     public event Action<Vector3, Vector3> OnImuChanged;
-    
     public event Action<int[]> OnNGMSubmit;
     public event Action<int[]> OnNGMChanged;
+    public event Action<int> OnFGMChanged; 
     
     // Local saved hardware values
     private HardwareState hardwareState;
@@ -37,6 +37,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public Dictionary<string, int> getComponentStateManager => hardwareState.componentStates;
     public int[] GetcurrentHardwareNGMValues => hardwareState.currentHardwareNGMValues;
     public int[] GetLastNGMSubmissionValues => hardwareState.LastNGMSubmissionValues;
+
     
     
     private void OnDestroy() => Exit();
@@ -72,8 +73,9 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         hardwareState.componentStates["LED1"] = 0;
         hardwareState.componentStates["LED2"] = 0;
         hardwareState.componentStates["LED3"] = 0;
-
         hardwareState.componentStates["SSM"] = 0;
+
+        hardwareState.componentStates["FGM"] = 0;
 
         GameObject child = new GameObject("Serial_Port_Controller");
         child.transform.SetParent(this.transform);
@@ -286,6 +288,10 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         }
 
         hardwareState.componentStates[header] = newInt;
+        if (header == "FGM")
+        {
+            OnFGMChanged?.Invoke(newInt);
+        }
         OnInputChanged?.Invoke(header, newInt);
     }
 
@@ -310,6 +316,11 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public int GetSSMStatus()
     {
         return hardwareState.componentStates["SSM"];
+    }
+
+    public int GetFGMStatus()
+    {
+        return hardwareState.componentStates["FGM"];
     }
 
     public void SendSetSeq(string header, int[] seq)

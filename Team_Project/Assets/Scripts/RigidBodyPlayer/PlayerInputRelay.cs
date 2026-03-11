@@ -13,9 +13,9 @@ public class PlayerInputRelay : MonoBehaviour
     public event Action<bool> Crouch;
     public event Action<bool> InvertGravity;
     public event Action<int> NumberPressed;
-    public event Action RespawnRequested;
+    public event Action<bool> SmokeReleased;
     public event Action GuessSubmitted;
-    private InputAction move, look, jump, crouch, invertGravity, enter, click;
+    private InputAction move, look, jump, crouch, invertGravity, enter, click, smoke;
     private InputAction keypressNumbers;
 
     [SerializeField] private LayerMask interactableLayer;
@@ -24,6 +24,7 @@ public class PlayerInputRelay : MonoBehaviour
     public Vector2 LookValue { get; private set; }
     public bool CrouchValue { get; private set; }
     public bool InvertGravityValue { get; private set; }
+    public bool SmokeValue { get; private set; }
     public bool IsJumpHeld => jump.IsPressed();
 
     void Awake()
@@ -38,6 +39,7 @@ public class PlayerInputRelay : MonoBehaviour
         invertGravity = input.actions["InvertGravity"];
         keypressNumbers = input.actions["NumKey"];
         enter = input.actions["Enter"];
+        smoke = input.actions["Smoke"];
     }
 
     private void OnEnable()
@@ -58,6 +60,8 @@ public class PlayerInputRelay : MonoBehaviour
         
         invertGravity.performed += OnInvertGravity;
         invertGravity.canceled += OnInvertGravity;
+        
+        smoke.performed += OnSmokeReleased;
         
         keypressNumbers.performed += OnNumberInput;
         
@@ -83,6 +87,8 @@ public class PlayerInputRelay : MonoBehaviour
         
         invertGravity.performed -= OnInvertGravity;
         invertGravity.canceled -= OnInvertGravity;
+        
+        smoke.performed -= OnSmokeReleased;
         
         keypressNumbers.performed -= OnNumberInput;
         
@@ -130,6 +136,13 @@ public class PlayerInputRelay : MonoBehaviour
         InvertGravity?.Invoke(InvertGravityValue);
     }
 
+    private void OnSmokeReleased(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.performed) return;
+        SmokeValue = !SmokeValue;
+        SmokeReleased?.Invoke(SmokeValue);
+    }
+
     private void OnNumberInput(InputAction.CallbackContext ctx)
     {
         if (!ctx.ReadValueAsButton()) return;
@@ -149,11 +162,5 @@ public class PlayerInputRelay : MonoBehaviour
     {
         if (ctx.performed) GuessSubmitted?.Invoke();
     }
-
-    public void CallRepawn()
-    {
-        RespawnRequested?.Invoke();
-    }
-
     
 }

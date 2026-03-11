@@ -20,7 +20,8 @@ public class PlayerGroundState : PlayerBaseState
     {   
         Hub.jump.canJump = true;
         Hub.jump.readyToJump = true;
-        UpdateSubState(force: true);
+        UpdateSubState(force: true); 
+        Hub.footStepSystem.PlayLandingSound(); 
     }
 
     public override void UpdateState()

@@ -1,3 +1,4 @@
+using System;
 using RigidBodyPlayer.Modules;
 using RigidBodyPlayer.PlayerStates;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class RigidBodyMovement : MonoBehaviour
     [SerializeField] public PlayerCrouch crouch;
     [SerializeField] public PlayerCameraHandler cameraHandler;
     [SerializeField] public PlayerJump jump;
+    [SerializeField] public FootStepSystem footStepSystem;
 
     [HideInInspector] public PlayerStateMachine stateMachine;
 
@@ -38,6 +40,16 @@ public class RigidBodyMovement : MonoBehaviour
         CacheModules();
     }
 
+    private void OnEnable()
+    {
+        SpawnManager.RespawnRequested += ResetPlayer;
+    }
+
+    private void OnDisable()
+    {
+        SpawnManager.RespawnRequested -= ResetPlayer;
+    }
+
     private void Start()
     {
         //external wiring
@@ -52,6 +64,22 @@ public class RigidBodyMovement : MonoBehaviour
         {
             stateMachine.Initialize(this);
         }
+    }
+
+    private void ResetPlayer(RespawnData respawnData)
+    {
+        rb.isKinematic = true;
+        rb.position = respawnData.Position;
+        rb.linearVelocity = Vector3.zero;
+        if (respawnData.IsUpsideDown)
+        {
+            rb.rotation = Quaternion.Euler(0, 0, 180);
+        }
+        else
+        {
+            rb.rotation = Quaternion.Euler(0, 0, 0);
+        }
+        rb.isKinematic = false;
     }
 
     private void InitializeComponents()
@@ -81,6 +109,7 @@ public class RigidBodyMovement : MonoBehaviour
         if (cameraHandler == null) cameraHandler = GetComponent<PlayerCameraHandler>();
         if (jump == null) jump = GetComponent<PlayerJump>();
         if (orientation == null) orientation = transform.Find("Orientation");
+        if (footStepSystem == null) footStepSystem = GetComponent<FootStepSystem>();
     }
 
     private void ConfigureRigidBody()
