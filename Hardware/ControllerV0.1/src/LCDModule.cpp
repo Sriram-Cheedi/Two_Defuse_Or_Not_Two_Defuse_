@@ -27,18 +27,22 @@ void LCDModule::enable(){
   changed = true;
 
   if(topText == "Unknown Error!!!" && bottomText == "Power Cycle Req."){
-    topText = "";
-    bottomText = "";
+    topText = tempTopText;
+    bottomText = tempBottomText;
   }
 }
 
 void LCDModule::disable(){
+
   enabled = false;
   lcd.clear();
   lcd.noBacklight();
 }
 
 void LCDModule::set(std::vector<std::string> args){
+  tempTopText = topText;
+  tempBottomText = bottomText;
+
   changed = true;
   if(args.size() == 1){
     topText = args[0];

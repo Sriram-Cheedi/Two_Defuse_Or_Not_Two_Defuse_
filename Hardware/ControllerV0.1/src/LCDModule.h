@@ -15,6 +15,9 @@ class LCDModule : public Component {
     std::string topText = "";
     std::string bottomText  = "";
 
+    std::string tempTopText = "";
+    std::string tempBottomText = "";
+
     bool enabled = true;
     bool changed = false;
 public:
