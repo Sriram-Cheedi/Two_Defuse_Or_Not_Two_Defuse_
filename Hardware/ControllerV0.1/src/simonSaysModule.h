@@ -48,7 +48,6 @@ private:
     // --------------------------
 
     // EXTERNAL THREAD FUNCTIONS
-    void off();   // Turn off module
     void reset();     // Reset Module to the initial state
     void complete();  // Auto complete the module 
     void buttonPressed(std::string btnName, int state);

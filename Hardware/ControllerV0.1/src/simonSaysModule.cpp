@@ -135,7 +135,17 @@ void SimonSaysModule::reset(){
 }
 
 void SimonSaysModule::complete(){
+    
+    if(threadID != -1){
+        threads.kill(threadID);
+        threadID = -1;
+    }
+
     state.store(2, std::memory_order_release);
+
+    if(enabled){
+        threadID = threads.addThread(loopTrampoline, this, 8192);
+    }
 }
 
 int SimonSaysModule::getInputSequence(){
