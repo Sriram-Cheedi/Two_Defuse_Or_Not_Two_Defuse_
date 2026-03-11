@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
         }
         pause = true;
         PreviousTimeScale = Time.timeScale;
-        Time.timeScale = 1f;
+        Time.timeScale = 0f;
         if (WarningAudio != null && WarningAudio.isPlaying)
         {
             WarningAudio.Stop();

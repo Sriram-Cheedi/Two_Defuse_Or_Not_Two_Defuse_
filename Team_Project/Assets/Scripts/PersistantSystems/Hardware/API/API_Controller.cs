@@ -97,7 +97,6 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         // If serial fails to open
         catch (Exception e)
         {
-            Debug.LogError("Error in adding SerialPortController in API_Controller, rethrowing..." + e.Message);
             // Rethrow up tree
             Destroy(child);
             throw e;

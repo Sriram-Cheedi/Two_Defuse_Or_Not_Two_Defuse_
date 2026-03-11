@@ -42,7 +42,7 @@ public class API_Provider : MonoBehaviour
             // If fail default to mock hardware again
             catch (Exception e)
             {
-                Debug.LogError("Failed to INIT real hardware with error: " + e.Message + "Defaulting to Mock_API_Controller");
+                Debug.LogError("ERROR Failed connect to hardware: " + e.Message + " | Defaulting to Mock_API_Controller");
                 Destroy(child);
                 GameObject mockChild = new GameObject("Mock_API_Controller");
                 mockChild.transform.SetParent(transform);
