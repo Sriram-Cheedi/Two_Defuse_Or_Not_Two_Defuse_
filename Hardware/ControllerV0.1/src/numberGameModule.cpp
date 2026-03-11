@@ -14,6 +14,13 @@ numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, 
     buttons.push_back(btn);
     randomSeed(analogRead(A0));
 
+    //start writing to the shift registers
+    digitalWrite(latchPin, LOW);
+    shiftOut(dataPin, clockPin, LSBFIRST, 0b11111110);
+    shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+    //end writing to the shift registers
+    digitalWrite(latchPin, HIGH);
+
 }
 
 void numberGameModule::disable(){
@@ -59,7 +66,13 @@ void numberGameModule::set(std::vector<std::string> args){
         int newState = stoi(args[0]);
 
         if(newState == 0){
-            disable();
+            state = 0;
+            //start writing to the shift registers
+            digitalWrite(latchPin, LOW);
+            shiftOut(dataPin, clockPin, LSBFIRST, 0b11111110);
+            shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+            //end writing to the shift registers
+            digitalWrite(latchPin, HIGH);
         }else if (newState == 1){
             reset();
         }else if (newState == 2){

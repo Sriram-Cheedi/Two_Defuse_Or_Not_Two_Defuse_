@@ -12,7 +12,6 @@
 class numberGameModule : public Component {
 
 private:
-    int prevState = 0;
     int state = 0; // 0 = Off, 1 = On, 2 = Complete
     int submitting = 0; // 0 = Not submitting, 1 = Submitting
     const int dataPin;
@@ -20,7 +19,7 @@ private:
     const int latchPin;
     const std::array<int,5> buttonPins; //First 4 button are used to increment the display numbers. Button 5 will be the submit button.
     std::vector<Button> buttons;
-    int secretNumber[4];
+    std::vector<int> secretNumber = {0,0,0,0};
 
     SerialController serialController;
 
@@ -33,7 +32,7 @@ private:
     bool ledOn = false;
     const unsigned int refreshInterval = 200;
     uint8_t currentDigit = 0; 
-    std::array<int,4> digitsBuffer = {0,0,0,0};
+    std::vector<int> digitsBuffer = {0,0,0,0};
 
     //common anode segment encoding
     const uint8_t segment_encodings[10] = {
