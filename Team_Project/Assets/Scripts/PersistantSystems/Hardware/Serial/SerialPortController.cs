@@ -31,8 +31,6 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
     {
         Debug.Log("SerialPortController Awake on: " + gameObject.name);
         Debug.Log("SerialPortController instance: " + gameObject.GetInstanceID());
-        Connect();
-
     }
 
     public void Update()
@@ -132,7 +130,7 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
         try
         {
             _serialPort.Write(message);
-            Debug.Log("<color=orange>Message Sent: </color>" + message);
+            Debug.Log("<color=green>Message Sent: </color>" + message);
         }
         catch (Exception e)
         {
@@ -181,7 +179,7 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
             {
                 CheckPort = new SerialPort(PortName, _baudRate);
                 CheckPort.ReadTimeout = 300;
-                Debug.Log("Checking port: " + PortName);
+                // Debug.Log("Checking port: " + PortName);
                 CheckPort.Open();
                 CheckPort.Write("$PING#");
                 System.Threading.Thread.Sleep(50);
@@ -237,10 +235,9 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
             return true;
         }
         catch (Exception error)
-        {
-            Debug.LogError("Could not open port: " + error.Message);
+        {   
             Disconnect();
-            return false;
+            throw error;
         }
         
     }

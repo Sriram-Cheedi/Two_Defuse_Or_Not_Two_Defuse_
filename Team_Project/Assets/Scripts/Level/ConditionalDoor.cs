@@ -37,7 +37,10 @@ public class ConditionalDoor : MonoBehaviour
     {
         left_door = transform.Find("Door_Left").gameObject;
         right_door = transform.Find("Door_Right").gameObject;
-        
+    }
+
+    private void OnEnable()
+    {
         linkedPuzzleController.getData.OnSuccess += OpenDoorWrapper; 
     }
 

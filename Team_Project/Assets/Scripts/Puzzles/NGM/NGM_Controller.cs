@@ -23,8 +23,6 @@ namespace Puzzles.Controllers
         
         private void Start()
         {
-            API_Provider.Instance.ActiveAPIController.SendSetSeq("NGM", data.correctSequence);
-        
             API_Provider.Instance.ActiveAPIController.OnNGMChanged += HandleButtonPress;
             API_Provider.Instance.ActiveAPIController.OnNGMSubmit += SetMaterialHARDWARE;
         }

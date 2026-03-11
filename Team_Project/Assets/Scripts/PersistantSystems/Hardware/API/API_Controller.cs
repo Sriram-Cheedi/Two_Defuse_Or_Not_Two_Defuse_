@@ -44,6 +44,8 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
     public void Awake()
     {
+        Debug.Log("<color=green>API Controller: Awake</color>");
+        
         hardwareState = new HardwareState();
         hardwareState.componentStates = new Dictionary<string, int>();
         hardwareState.gyroValue = Vector3.zero; ;
@@ -76,11 +78,29 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         hardwareState.componentStates["SSM"] = 0;
 
         hardwareState.componentStates["FGM"] = 0;
+        
+        hardwareState.componentStates["PWR"] = 0;
 
         GameObject child = new GameObject("Serial_Port_Controller");
         child.transform.SetParent(this.transform);
-        ActivePortController = child.AddComponent<SerialPortController>();
-        Debug.Log("Setting Serial Controller");
+        
+        // Try init Serial Port Controller
+        try
+        {
+            SerialPortController serialPortController = child.AddComponent<SerialPortController>();
+            Debug.Log("Setting Serial Controller");
+
+            serialPortController.Connect();
+            
+            ActivePortController =  serialPortController;
+        }
+        // If serial fails to open
+        catch (Exception e)
+        {
+            // Rethrow up tree
+            Destroy(child);
+            throw e;
+        }
 
         if (ActivePortController != null)
         {
@@ -180,6 +200,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
             return;
         }
 
+        // GYRO Checking
         if (header == "GYR" && command == "status")
         {
             string[] parts = value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -207,8 +228,8 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
                 return;
             }
         }
-
-
+        
+        // IMU Checking
         if (header == "IMU" && command == "status")
         {
             string[] parts = value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -243,6 +264,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
             }
         }
 
+        // NGM Checking
         if (header == "NGM" && command == "status")
         {
             string[] parts = value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -268,12 +290,14 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
                 OnNGMSubmit?.Invoke(hardwareState.LastNGMSubmissionValues);
             }
         }
-
+        
+        // SSM Checking
         if (header == "SSM" && command == "status")
         {
             hardwareState.componentStates["SSM"] = int.Parse(value);
         }
 
+        // General Button Checking 
         if (!hardwareState.componentStates.ContainsKey(header))
         {
             return;
@@ -282,17 +306,15 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         int newInt = int.Parse(value);
         int oldInt = hardwareState.componentStates[header];
 
-        if (oldInt == newInt)
-        {
-            return;
-        }
-
         hardwareState.componentStates[header] = newInt;
+        
+        // FGM Checking
         if (header == "FGM")
         {
             OnFGMChanged?.Invoke(newInt);
         }
         OnInputChanged?.Invoke(header, newInt);
+        
     }
 
     public int GetDigital(string header)

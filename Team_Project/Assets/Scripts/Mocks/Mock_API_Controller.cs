@@ -24,6 +24,11 @@ public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
     
     [SerializeField] public int mockSSMStatus = 0;
 
+    public void Awake()
+    {
+        Debug.Log("<color=orange>MOCK API Controller: Awake</color>");
+    }
+
     public void InitializeSelf()
     {
         // Debug.Log("<color=orange>MOCK: Initializing Simulated Controlller...</color>");
