@@ -112,9 +112,7 @@ void setup() {
   components.push_back(&gyro);  
   components.push_back(&ssm);
   components.push_back(&ngm);
-<<<<<<< HEAD
   components.push_back(&fgm);
-=======
   components.push_back(&btn1);
   components.push_back(&btn2);
   components.push_back(&btn3);
@@ -124,8 +122,7 @@ void setup() {
   components.push_back(&sw2);
   components.push_back(&sw3);
   components.push_back(&LCD);
-  //components.push_back(&fgm);
->>>>>>> 18521f07c1c3ed87d4c7c6a2b52e14c46f22aaa5
+
 
   LCD.LCDSetup();
 
@@ -139,20 +136,7 @@ void loop() {
 
   parseCommand(serialController.serialRecieve());
 
-<<<<<<< HEAD
-  btn1.update();
-  btn2.update();
-  btn3.update(); 
-  btn4.update();
-
-  timer.updateDisplay();
-  gyro.update();
-  ssm.update();
-  ngm.update();
-  fgm.update();
-=======
   for(const auto& cmp : components){
     cmp->update();
   }
->>>>>>> 18521f07c1c3ed87d4c7c6a2b52e14c46f22aaa5
 }
