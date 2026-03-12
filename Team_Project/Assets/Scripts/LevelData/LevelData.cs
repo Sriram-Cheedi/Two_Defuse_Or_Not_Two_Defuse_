@@ -10,4 +10,5 @@ public class LevelData : ScriptableObject
     public float maxRate = 40f;
     public float fillSpeed = 0.01f;
     public float clearSpeed = 3f;
+    public float alphaSpeed = 0.05f;
 }

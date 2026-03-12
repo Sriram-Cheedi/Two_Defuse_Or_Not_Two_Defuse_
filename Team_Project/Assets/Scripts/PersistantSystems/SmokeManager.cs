@@ -7,6 +7,7 @@ public class SmokeManager : MonoBehaviour
     private bool smokeReleased;
     private ParticleSystem smoke;
     private float currentRate;
+    private float currentAlpha;
     public LevelData levelData;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
@@ -39,9 +40,17 @@ public class SmokeManager : MonoBehaviour
     void Update()
     {
         float targetRate = smokeReleased ? levelData.maxRate : 0f;
+        float targetAlpha = smokeReleased ? 1f : 0f;
         float lerpRate = smokeReleased ? levelData.fillSpeed : levelData.clearSpeed;
+        float alphaLerpRate = smokeReleased ? levelData.alphaSpeed : levelData.clearSpeed;
         currentRate = Mathf.MoveTowards(currentRate, targetRate, lerpRate * Time.deltaTime);
         var emission = smoke.emission;
         emission.rateOverTime = currentRate;
+        currentAlpha = Mathf.MoveTowards(currentAlpha, targetAlpha, alphaLerpRate * Time.deltaTime);
+        Debug.Log(currentAlpha);
+        var main = smoke.main;
+        Color c = main.startColor.color;
+        c.a = currentAlpha;
+        main.startColor = c;
     }
 }
