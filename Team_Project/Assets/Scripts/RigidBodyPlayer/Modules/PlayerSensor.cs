@@ -33,23 +33,33 @@ public class PlayerSensor : MonoBehaviour, IPlayerModule
         Hub = hub;
     }
 
+    private void OnEnable()
+    {
+        SpawnManager.RespawnRequested += ResetSensor;
+    }
+
+    private void OnDisable()
+    {
+        SpawnManager.RespawnRequested -= ResetSensor;
+    }
+
     public void Tick()
     {
-        switch (CurrentSurface)
-        {
-            case SurfaceType.Metal:
-                Debug.Log("CurrentSurfacerrent Surface : Metal");
-                break;
-            case SurfaceType.Plastic:
-                Debug.Log("Current Surface : Plastic");
-                break;
-            case SurfaceType.SemiConductor:
-                Debug.Log("Current Surface : SemiConductor");
-                break;
-            default:
-                Debug.Log("Current Surface : Default");
-                break;
-        }
+        // switch (CurrentSurface)
+        // {
+        //     case SurfaceType.Metal:
+        //         Debug.Log("CurrentSurfacerrent Surface : Metal");
+        //         break;
+        //     case SurfaceType.Plastic:
+        //         Debug.Log("Current Surface : Plastic");
+        //         break;
+        //     case SurfaceType.SemiConductor:
+        //         Debug.Log("Current Surface : SemiConductor");
+        //         break;
+        //     default:
+        //         Debug.Log("Current Surface : Default");
+        //         break;
+        // }
         
     }
 
@@ -100,6 +110,25 @@ public class PlayerSensor : MonoBehaviour, IPlayerModule
             OnMovingPlatform = false;
             connectedBody = null;
         }
+    }
+
+    private void ResetSensor(RespawnData respawnData)
+    {
+        CurrentSurface = SurfaceType.Default;
+        PreviousSurface = SurfaceType.Default;
+    
+        // 2. Clear the ground state
+        IsGrounded = false;
+        OnMovingPlatform = false;
+        OnSlope = false;
+    
+        // 3. WIPE THE HIT DATA! (This is what was holding the old slope angle)
+        slopeHit = new RaycastHit(); 
+    
+        // 4. Clear any moving platform momentum
+        connectedBody = null;
+        previousConnectedBody = null;
+        ConnectionVelocity = Vector3.zero;
     }
 
     private void UpdateConnectionState()

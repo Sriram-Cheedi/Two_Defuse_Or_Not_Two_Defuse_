@@ -12,23 +12,27 @@
 class numberGameModule : public Component {
 
 private:
-    int state = 0; // 0 = In Progress, 1 = Submission, 2 = Complete
-
+    int state = 0; // 0 = Off, 1 = On, 2 = Complete
+    int submitting = 0; // 0 = Not submitting, 1 = Submitting
     const int dataPin;
     const int clockPin;
     const int latchPin;
     const std::array<int,5> buttonPins; //First 4 button are used to increment the display numbers. Button 5 will be the submit button.
     std::vector<Button> buttons;
-    int secretNumber[4];
+    std::vector<int> secretNumber = {0,0,0,0};
 
     SerialController serialController;
+
+    bool enabled = true;
 
     unsigned long lastUpdate = 0;
     unsigned long buttonUpdate = 0;
     unsigned long submitUpdate = 0;
+    unsigned long ledUpdate = 0;
+    bool ledOn = false;
     const unsigned int refreshInterval = 200;
     uint8_t currentDigit = 0; 
-    std::array<int,4> digitsBuffer = {0,0,0,0};
+    std::vector<int> digitsBuffer = {0,0,0,0};
 
     //common anode segment encoding
     const uint8_t segment_encodings[10] = {
@@ -44,7 +48,14 @@ private:
         0b11100110,  // 9
     };
 
-    const uint8_t digit_encodings[4] = {
+    const uint8_t digit_encodings_led_off[4] = {
+        0b01111110, // first digit
+        0b10111110, // second digit
+        0b11011110, // third digit
+        0b11101110, // fourth digit
+    };
+
+    const uint8_t digit_encodings_led_on[4] = {
         0b01111111, // first digit
         0b10111111, // second digit
         0b11011111, // third digit
@@ -56,11 +67,13 @@ public:
     numberGameModule(std::string name, int dataPin, int clockPin, int latchPin, std::array<int,5> buttonPins, SerialController serialController);
     void set(std::vector<std::string> args) override;
     void status() override;
-    void setupGame();
+    void disable() override;
+    void enable() override;
     void checkGuess(std::string btnName, int btnState);
     void buttonCheck(std::string btnName, int btnState);
-    void update();
-  
+    void update() override;
+    void reset();
+    void complete();
 };
 
 #endif

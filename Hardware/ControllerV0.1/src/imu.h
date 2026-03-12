@@ -18,6 +18,8 @@ private:
     unsigned long lastMotionTime = 0;
     const unsigned long motionTimout = 200;
 
+    bool enabled = true;
+
     float accelX;
     float accelY;
     float accelZ;
@@ -30,8 +32,10 @@ public:
 
     Imu(std::string name, SerialController serialController);
 
-    void update();
+    void update() override;
 
+    void enable() override;
+    void disable() override;
     void set(std::vector<std::string> args) override;
     void status() override;
 

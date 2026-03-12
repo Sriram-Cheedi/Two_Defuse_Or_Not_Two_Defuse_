@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using RigidBodyPlayer.Modules;
 using RigidBodyPlayer.PlayerData;
@@ -9,15 +10,17 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     private RigidBodyMovement Hub;
 
     [Header("Refs")]
-    [SerializeField] private PlayerInputRelay relay;
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private Transform cameraPosition;
     [SerializeField] private PlayerCam playerCam;
     
+    public bool canFlipGravity;
+    private API_Controller_Interface _activeHardware;
+    
     private Vector3 filteredAcceleration = Vector3.zero;
     
-    [Header("Rotation")]
-    [SerializeField] private float targetRotation = 180f;
+    // [Header("Rotation")]
+    // [SerializeField] private float targetRotation = 180f;
 
     private Vector3 gravityDir = Vector3.down;
     private float gravityMangitude = Physics.gravity.magnitude;
@@ -28,12 +31,54 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     {
         Hub = hub;
         Hub.rb.useGravity = false;
-        if (relay == null) relay = GetComponent<PlayerInputRelay>();
         // if (relay != null) relay.RespawnRequested += ResetGravity;
-        if (relay == null) relay = GetComponent<PlayerInputRelay>();
         if (playerInput == null) playerInput = GetComponent<PlayerInput>();
         if (playerCam == null) playerCam = FindAnyObjectByType<PlayerCam>();
         if (gravityDir == Vector3.zero) gravityDir = Vector3.down;
+        if (Hub.relay != null)
+        {
+            Hub.relay.InvertGravity += HandleGravityInverted;
+        }
+        _activeHardware = API_Provider.Instance.ActiveAPIController;
+        if (_activeHardware != null)
+        {
+            _activeHardware.OnImuChanged += RotateLevel;
+        }
+    }
+
+    private void OnEnable()
+    {
+        SpawnManager.RespawnRequested += ResetGravity;
+    }
+
+    private void OnDisable()
+    {
+        if (_activeHardware != null)
+            _activeHardware.OnImuChanged -= RotateLevel;
+        if (Hub.relay != null)
+        {
+            Hub.relay.InvertGravity -= HandleGravityInverted;
+        }
+        SpawnManager.RespawnRequested -= ResetGravity;
+    }
+
+    private void ResetGravity(RespawnData data)
+    {
+        invertRequested = false;
+        if (data.IsUpsideDown)
+        {
+            SetGravityDirection(Vector3.up);
+        }
+        else
+        {
+            SetGravityDirection(Vector3.down);
+        }
+    }
+    
+    private void RotateLevel(Vector3 gyro, Vector3 accelerometer)
+    {
+        // Debug.Log("RotateLevel"); 
+        ProcessAccelerometer(accelerometer);
     }
 
     public void Tick()
@@ -46,11 +91,6 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     }
 
     public void LateTick()
-    {
-        
-    }
-
-    private void OnEnable()
     {
         
     }
@@ -75,16 +115,17 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
         float relativeVerticalVelocity = GetRelativeVerticalVelocity();
         float baseGravityMagnitude = Physics.gravity.magnitude;
 
-        if (!Hub.IsJumpHeld && relativeVerticalVelocity > 0f)
+        //faster fall
+        if (!Hub.relay.IsJumpHeld && relativeVerticalVelocity > 0f)
         {
             return baseGravityMagnitude * Hub.data.fallMultiplier;
         }
-        
-        if (!Hub.IsJumpHeld && relativeVerticalVelocity < 0f)
+        //var jump height
+        if (!Hub.relay.IsJumpHeld && relativeVerticalVelocity < 0f)
         {
             return baseGravityMagnitude * Hub.data.jumpCutMultiplier;
         }
-        
+        //at apex fall slightly slower
         if (!Hub.sensor.IsGrounded && Mathf.Abs(relativeVerticalVelocity)  < Hub.data.apexThreshold)
         {
             return baseGravityMagnitude * Hub.data.apexGravityMultiplier;
@@ -95,7 +136,7 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     
     private void OnDestroy()
     {
-        var relay = GetComponent<PlayerInputRelay>();
+        // var relay = GetComponent<PlayerInputRelay>();
         // if (relay != null) relay.RespawnRequested -= ResetGravity;
     }
     
@@ -105,7 +146,7 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
         Debug.Log("ProcessAccelerometer" + (accelerometer.z ));
         if (accelerometer.z < -12f || accelerometer.z > 12f) 
         {
-            // Phone is moving too fast! Ignore the input this frame so we don't accidentally flip.
+            // harware is moving too fast! Ignore the input this frame so we don't accidentally flip.
             return; 
         }
         float a = Hub.data.gravityAlpha;
@@ -127,6 +168,16 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
             RequestInvert(false);
         }
     }
+    
+    
+    private void HandleGravityInverted(bool inverted)
+    {
+        // Debug.Log("can Flip" + canFlipGravity);
+        if (canFlipGravity)
+        {
+            RequestInvert(inverted);
+        }
+    }
 
     public void RequestInvert(bool value)
     {
@@ -141,38 +192,5 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
         {
             Hub.rb.AddForce(gravityDir * gravityMagnitude, ForceMode.Acceleration);
         }
-    }
-
-    private void ApexHang()
-    {
-        float relativeVerticalVelocity = GetRelativeVerticalVelocity();
-        if (!Hub.sensor.IsGrounded && Mathf.Abs(relativeVerticalVelocity)  < Hub.data.apexThreshold)
-        {
-            gravityMangitude = Physics.gravity.magnitude * Hub.data.apexGravityMultiplier;
-        }else if (relativeVerticalVelocity > 0f)
-        {
-            gravityMangitude = Physics.gravity.magnitude * Hub.data.fallMultiplier;
-        }
-    }
-
-    private void HandleJumpCut()
-    {
-        
-    }
-
-    private void ResetGravity()
-    {
-        invertRequested = false;
-        hasInvertRequest = false;
-
-        gravityDir = Vector3.down;
-
-        Hub.rb.rotation = Quaternion.identity;
-
-        if (cameraPosition != null)
-            cameraPosition.localRotation = Quaternion.identity;
-
-        if (playerCam != null)
-            playerCam.rollZ = 0f;
     }
 }

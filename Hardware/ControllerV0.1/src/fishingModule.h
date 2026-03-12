@@ -17,6 +17,8 @@ class fishingModule : public Component {
 
     bool lockout = false;
 
+    bool enabled = true;
+
     const unsigned int gameInterval = 500;
     unsigned long lastGameUpdate = 0;
 
@@ -81,6 +83,7 @@ public:
     fishingModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin, SerialController SerialController);
     void set(std::vector<std::string> args) override;
     void status() override;
-
-    void update();
+    void disable() override;
+    void enable() override;
+    void update() override;
 };

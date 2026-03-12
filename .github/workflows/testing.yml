@@ -1,11 +1,6 @@
 name: Test project
 
 on:
-  push:
-    paths:
-        - 'Team_Project/**'
-    branches:
-      - main 
   pull_request:
     paths:
         - 'Team_Project/**'

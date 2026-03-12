@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
+using Puzzles;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 
 public class ConditionalDoor : MonoBehaviour
 {
-    private bool _puzzleCompleted = false;
     private bool _isOpen = false;
 
     private GameObject left_door;
@@ -14,29 +14,44 @@ public class ConditionalDoor : MonoBehaviour
     
     private float moveDistance = 2.0f;
 
-    [SerializeField] private string linkedPuzzle = "SET VALUE PLEASE";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [Header("Drag the Puzzle GameObject here")]
+    public GameObject puzzleObject;
     
+    private IPuzzle linkedPuzzleController;
 
+    void Awake()
+    {
+        if (puzzleObject != null)
+        {
+            linkedPuzzleController = puzzleObject.GetComponent<IPuzzle>();
+            
+            if (linkedPuzzleController == null)
+            {
+                Debug.LogError("The object you dragged in doesn't have an IPuzzle script on it!");
+            }
+        }
+    }
+    
     void Start()
     {
         left_door = transform.Find("Door_Left").gameObject;
         right_door = transform.Find("Door_Right").gameObject;
-        
-        Debug.Log("LINKING TO : " + linkedPuzzle);
-        PuzzleManager.Instance._puzzleTriggers[linkedPuzzle].OnSuccess += OpenDoorWrapper; 
+    }
+
+    private void OnEnable()
+    {
+        linkedPuzzleController.getData.OnSuccess += OpenDoorWrapper; 
     }
 
     private void OnDisable()
     {
-        PuzzleManager.Instance._puzzleTriggers[linkedPuzzle].OnSuccess -= OpenDoorWrapper;
+        linkedPuzzleController.getData.OnSuccess -= OpenDoorWrapper;
     }
 
     // Update is called once per frame
     private void OpenDoorWrapper()
     {
-        Debug.Log("Checking Already Open");
-
         if (!_isOpen)
         {
             StartCoroutine(OpenDoors());
@@ -46,8 +61,6 @@ public class ConditionalDoor : MonoBehaviour
     
     IEnumerator OpenDoors()
     {
-        Debug.Log("Opening Doors for: " + linkedPuzzle);
-        
         float elapsed = 0;
         float duration = 1.0f;
     
@@ -56,9 +69,6 @@ public class ConditionalDoor : MonoBehaviour
     
         Vector3 leftTarget = leftStart + transform.forward * moveDistance;
         Vector3 rightTarget = rightStart - transform.forward * moveDistance;
-        
-        Debug.Log("POSITIONS" + leftStart);
-        Debug.Log("POSITIONS" +rightStart);
 
         while (elapsed < duration)
         {
@@ -71,9 +81,6 @@ public class ConditionalDoor : MonoBehaviour
     
         left_door.transform.position = leftTarget;
         right_door.transform.position = rightTarget;
-        
-        Debug.Log("POSITIONS" + left_door.transform.position);
-        Debug.Log("POSITIONS" + right_door.transform.position);
     }
     
 }

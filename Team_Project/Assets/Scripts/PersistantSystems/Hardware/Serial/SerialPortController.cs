@@ -29,8 +29,8 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
     public void Start() { }
     public void Awake()
     {
-        Connect();
-
+        Debug.Log("SerialPortController Awake on: " + gameObject.name);
+        Debug.Log("SerialPortController instance: " + gameObject.GetInstanceID());
     }
 
     public void Update()
@@ -94,7 +94,7 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
                     lastPongTime = Time.realtimeSinceStartup;
                     continue;
                 }
-                Debug.Log("Message Received: " + message);
+                Debug.Log("<color=green>Message Received: </color>" + message);
                 Received?.Invoke(message);
 
             }
@@ -130,7 +130,7 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
         try
         {
             _serialPort.Write(message);
-            Debug.Log("Sent: " + message);
+            Debug.Log("<color=green>Message Sent: </color>" + message);
         }
         catch (Exception e)
         {
@@ -179,7 +179,7 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
             {
                 CheckPort = new SerialPort(PortName, _baudRate);
                 CheckPort.ReadTimeout = 300;
-                Debug.Log("Checking port: " + PortName);
+                // Debug.Log("Checking port: " + PortName);
                 CheckPort.Open();
                 CheckPort.Write("$PING#");
                 System.Threading.Thread.Sleep(50);
@@ -221,6 +221,7 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
             Debug.Log("Attempting to Open Port on: " + _portID + " and baud rate: " + _baudRate);
             _serialPort = new SerialPort(_portID, _baudRate);
             _serialPort.ReadTimeout = 50;
+            Debug.Log("Opening serial port: " + _portID + "\n" + Environment.StackTrace);
             _serialPort.Open();
 
             Debug.Log("Protocol Active on " + _portID);
@@ -234,10 +235,9 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
             return true;
         }
         catch (Exception error)
-        {
-            Debug.LogError("Could not open port: " + error.Message);
+        {   
             Disconnect();
-            return false;
+            throw error;
         }
         
     }

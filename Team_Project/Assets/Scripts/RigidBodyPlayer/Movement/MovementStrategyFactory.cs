@@ -33,10 +33,12 @@ namespace RigidBodyPlayer.Movement
             if (!hub.sensor.IsGrounded)
             {
                 return Air;
-            }else if (hub.sensor.CurrentSurface == SurfaceType.Slope)
+            }
+            if (hub.sensor.CurrentSurface == SurfaceType.Slope)
             {
                 return Slope;
-            }else if (hub.sensor.OnMovingPlatform)
+            }
+            if (hub.sensor.OnMovingPlatform)
             {
                 return MovingPlayform;
             }

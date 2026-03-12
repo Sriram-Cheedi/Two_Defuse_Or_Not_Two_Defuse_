@@ -14,26 +14,55 @@ void fishingModule::reset(){
     hookPos = 9;
     points = 0;
     randState = 0;
-    state = 0;
+    state = 1;
     lastGameUpdate = 0;
     lastFishUpdate = 0;
     lastHookUpdate = 0;
     lastButtonUpdate = 0;
 }
 
-void fishingModule::complete(){
-    state = 2;
-    points = 45;
-}
-
 void fishingModule::set(std::vector<std::string> args){
-    
+    if(args.size() == 1){
+        int newState = stoi(args[0]);
+
+        if(newState == 0){
+            state = 0;
+            //start writing to the shift registers
+            digitalWrite(latchPin, LOW);
+            shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+            shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+            shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+            //end writing to the shift registers
+            digitalWrite(latchPin, HIGH);
+        }else if (newState == 1){
+            reset();
+        }
+    }
 }
 
 void fishingModule::status(){
     //FGM:status 1 for correct position
     //FGM:status 2 for incorrect position
     serialController.serialWrite(name, std::to_string(state));
+}
+
+void fishingModule::disable(){
+    
+    //start writing to the shift registers
+    digitalWrite(latchPin, LOW);
+    shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+    shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+    shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+    //end writing to the shift registers
+    digitalWrite(latchPin, HIGH);
+    
+    enabled = false;
+}
+
+void fishingModule::enable(){
+
+    enabled = true;
+
 }
 
 void fishingModule::shift(uint32_t digit){
@@ -71,9 +100,9 @@ void fishingModule::scoreCheck(){
 void fishingModule::update(){
     unsigned long micro = micros();
     unsigned long milli = millis();
-    if (micro - lastGameUpdate > gameInterval && state < 3){
+    if (micro - lastGameUpdate > gameInterval && state != 0){
         lastGameUpdate = micro;
-        if(milli - lastButtonUpdate > buttonInterval){
+        if(milli - lastButtonUpdate > buttonInterval && enabled){
             btn.update();
             lastButtonUpdate = milli;
         }
@@ -90,7 +119,10 @@ void fishingModule::update(){
             lastFishUpdate = milli;
         }
         uint32_t LEDBarState = (fishEncoding[randState] << 14) + (hookLED[hookPos] << 4);
-        shift(LEDBarState);
+        if(enable){
+            shift(LEDBarState);
+        }
+        
 
         scoreCheck();
     }

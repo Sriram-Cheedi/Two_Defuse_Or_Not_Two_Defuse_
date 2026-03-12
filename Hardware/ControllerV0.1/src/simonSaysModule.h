@@ -37,6 +37,7 @@ private:
     size_t currentRound;
 
     // MULTI-THREAD VARIABLES (Protected) 
+    bool enabled = true;
     std::vector<uint32_t> pixelBuffer = {Color(255, 0, 0), Color(255, 0, 0), Color(255, 0, 0), Color(255, 0, 0)}; 
     std::atomic<int> state{0};  // 0 = Not Started, 1 = In Progress, 2 = Complete, 3 = Failed (Resetting)
     std::atomic<int> pressedButton{-1};
@@ -47,7 +48,6 @@ private:
     // --------------------------
 
     // EXTERNAL THREAD FUNCTIONS
-    void disable();   // Turn off module
     void reset();     // Reset Module to the initial state
     void complete();  // Auto complete the module 
     void buttonPressed(std::string btnName, int state);
@@ -70,8 +70,9 @@ public:
 
     SimonSaysModule(std::string name, std::vector<int> buttonPins, int rgbPin, SerialController serialController);
 
-    void update(); //Called from main loop
-
+    void update() override; //Called from main loop
+    void enable() override;
+    void disable() override;
     void set(std::vector<std::string> args) override; //Called from serialController (main loop)
     void status() override; //Called from serialController (main loop)
 

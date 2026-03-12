@@ -9,36 +9,50 @@ struct HardwareState
     public Vector3 gyroValue;
     public Vector3 accelerometerValue;
     public bool hasAccelerometer;
+    
+    public int[] currentHardwareNGMValues;
+    public int[] LastNGMSubmissionValues;
 }
 
 public class API_Controller : MonoBehaviour, API_Controller_Interface
 {
     public I_SerialPortController ActivePortController { get; private set; }
-
-
+    
     public event Action<string, int> OnInputChanged;
     public event Action<Vector3> OnGyroChanged;
     public event Action<Vector3, Vector3> OnImuChanged;
-
+    public event Action<int[]> OnNGMSubmit;
+    public event Action<int[]> OnNGMChanged;
+    public event Action<int> OnFGMChanged; 
+    
     // Local saved hardware values
     private HardwareState hardwareState;
 
     public I_SerialPortController serialController;
-
-
+    
     // Getters for Local saved hardware values
     public Vector3 getGyroValue => hardwareState.gyroValue;
     public Vector3 getAccelerometerValue => hardwareState.accelerometerValue;
     public bool getHasAccelerometer => hardwareState.hasAccelerometer;
     public Dictionary<string, int> getComponentStateManager => hardwareState.componentStates;
+    public int[] GetcurrentHardwareNGMValues => hardwareState.currentHardwareNGMValues;
+    public int[] GetLastNGMSubmissionValues => hardwareState.LastNGMSubmissionValues;
+
+    
+    
     private void OnDestroy() => Exit();
 
     public void Awake()
     {
+        Debug.Log("<color=green>API Controller: Awake</color>");
+        
         hardwareState = new HardwareState();
         hardwareState.componentStates = new Dictionary<string, int>();
         hardwareState.gyroValue = Vector3.zero; ;
         hardwareState.hasAccelerometer = false;
+
+        hardwareState.currentHardwareNGMValues = new int[4];
+        hardwareState.LastNGMSubmissionValues = new int[4];
     }
     /// <summary>
     /// Initializes Local dictionary of all connected hardware components to 0 (off).
@@ -61,23 +75,32 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         hardwareState.componentStates["LED1"] = 0;
         hardwareState.componentStates["LED2"] = 0;
         hardwareState.componentStates["LED3"] = 0;
-
         hardwareState.componentStates["SSM"] = 0;
 
-
-
-        //hardwareState.componentStates["SWT1"] = 0;
-        //hardwareState.componentStates["SWT2"] = 0;
-        //hardwareState.componentStates["SWT3"] = 0;
-
-        //hardwareState.componentStates["LED1"] = 0;
-        //hardwareState.componentStates["LED2"] = 0;
-        //hardwareState.componentStates["LED3"] = 0;
+        hardwareState.componentStates["FGM"] = 0;
+        
+        hardwareState.componentStates["PWR"] = 0;
 
         GameObject child = new GameObject("Serial_Port_Controller");
         child.transform.SetParent(this.transform);
-        ActivePortController = child.AddComponent<SerialPortController>();
-        Debug.Log("Setting Serial Controller");
+        
+        // Try init Serial Port Controller
+        try
+        {
+            SerialPortController serialPortController = child.AddComponent<SerialPortController>();
+            Debug.Log("Setting Serial Controller");
+
+            serialPortController.Connect();
+            
+            ActivePortController =  serialPortController;
+        }
+        // If serial fails to open
+        catch (Exception e)
+        {
+            // Rethrow up tree
+            Destroy(child);
+            throw e;
+        }
 
         if (ActivePortController != null)
         {
@@ -137,6 +160,8 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
     public void HandleMessage(string message)
     {
+        
+        
         if (string.IsNullOrWhiteSpace(message))
         {
             return;
@@ -175,6 +200,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
             return;
         }
 
+        // GYRO Checking
         if (header == "GYR" && command == "status")
         {
             string[] parts = value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -202,8 +228,8 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
                 return;
             }
         }
-
-
+        
+        // IMU Checking
         if (header == "IMU" && command == "status")
         {
             string[] parts = value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -238,11 +264,40 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
             }
         }
 
+        // NGM Checking
+        if (header == "NGM" && command == "status")
+        {
+            string[] parts = value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length != 5)
+            {
+                return;
+            }
+
+            if (parts[0] == "0")
+            {
+                for (int i = 1; i < parts.Length; i++)
+                {
+                    hardwareState.currentHardwareNGMValues[i - 1] = int.Parse(parts[i]);
+                }
+                OnNGMChanged?.Invoke(hardwareState.currentHardwareNGMValues);
+            }
+            else
+            {
+                for (int i = 1; i < parts.Length; i++)
+                {
+                    hardwareState.LastNGMSubmissionValues[i - 1] = int.Parse(parts[i]);
+                }
+                OnNGMSubmit?.Invoke(hardwareState.LastNGMSubmissionValues);
+            }
+        }
+        
+        // SSM Checking
         if (header == "SSM" && command == "status")
         {
             hardwareState.componentStates["SSM"] = int.Parse(value);
         }
 
+        // General Button Checking 
         if (!hardwareState.componentStates.ContainsKey(header))
         {
             return;
@@ -251,13 +306,15 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         int newInt = int.Parse(value);
         int oldInt = hardwareState.componentStates[header];
 
-        if (oldInt == newInt)
-        {
-            return;
-        }
-
         hardwareState.componentStates[header] = newInt;
+        
+        // FGM Checking
+        if (header == "FGM")
+        {
+            OnFGMChanged?.Invoke(newInt);
+        }
         OnInputChanged?.Invoke(header, newInt);
+        
     }
 
     public int GetDigital(string header)
@@ -281,6 +338,11 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public int GetSSMStatus()
     {
         return hardwareState.componentStates["SSM"];
+    }
+
+    public int GetFGMStatus()
+    {
+        return hardwareState.componentStates["FGM"];
     }
 
     public void SendSetSeq(string header, int[] seq)

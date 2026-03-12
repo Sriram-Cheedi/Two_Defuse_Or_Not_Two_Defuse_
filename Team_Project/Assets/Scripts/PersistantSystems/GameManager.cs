@@ -19,6 +19,25 @@ public class GameManager : MonoBehaviour
     
     private bool pause = false;
     private float PreviousTimeScale = 1f;
+    
+    private bool isMatSceneLoaded = false;
+    
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    
+    private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+    {
+        isMatSceneLoaded = (scene.name == "MatScene");
+    }
+    
+    
     private void Awake()
     {
         if (Instance == null)
@@ -55,7 +74,10 @@ public class GameManager : MonoBehaviour
                 bombTimer = 0.0f;
             }
 
-            API_Provider.Instance.ActiveAPIController.TimerSet((int)bombTimer);
+            if (isMatSceneLoaded && API_Provider.Instance != null && API_Provider.Instance.ActiveAPIController != null)
+            {
+                API_Provider.Instance.ActiveAPIController.TimerSet((int)bombTimer);
+            }
         }
     }
 
@@ -113,11 +135,19 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = PreviousTimeScale;
         }
-        try
+
+        if (isMatSceneLoaded)
         {
-            API_Provider.Instance.ActiveAPIController.TimerSet((int)bombTimer);
-            API_Provider.Instance.ActiveAPIController.TimerOnOff(1);
+            try
+            {
+                API_Provider.Instance.ActiveAPIController.TimerSet((int)bombTimer);
+                API_Provider.Instance.ActiveAPIController.TimerOnOff(1);
+            }
+            catch
+            {
+                Debug.LogError("Unable to reset Bomb Timer when reconnecting...");
+            }
         }
-        catch { }
+      
     }
 }

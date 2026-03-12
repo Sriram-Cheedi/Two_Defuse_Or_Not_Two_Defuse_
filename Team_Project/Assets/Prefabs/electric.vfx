@@ -30,6 +30,14 @@ MonoBehaviour:
     - model: {fileID: 8926484042661614662}
       id: 0
       isStickyNote: 0
+  - title: New Group Node
+    position:
+      serializedVersion: 2
+      x: 546
+      y: 183
+      width: 100
+      height: 100
+    contents: []
   stickyNoteInfos: []
   categories: []
   uiBounds:
@@ -37,7 +45,7 @@ MonoBehaviour:
     x: 5
     y: -1473
     width: 1328
-    height: 1563
+    height: 1740
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4205,7 +4213,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0.5
+      m_SerializableObject: 0.6
     m_Space: -1
   m_Property:
     name: roughness
@@ -4275,7 +4283,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Vector2, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"x":1.0,"y":1.5}'
+      m_SerializableObject: '{"x":0.0,"y":0.029999999329447748}'
     m_Space: -1
   m_Property:
     name: range

@@ -26,6 +26,21 @@ public class PlayerCam : MonoBehaviour
     private void OnEnable()
     {
         relay.Look += SetLookInput ;
+        SpawnManager.RespawnRequested += ResetCamera;
+    }
+
+    private void ResetCamera(RespawnData data)
+    {
+        yRotation = data.Rotation.eulerAngles.y;
+        xRotation = data.Rotation.eulerAngles.x;
+        if (data.IsUpsideDown)
+        {
+            rollZ = 180;
+        }
+        else
+        {
+            rollZ = 0;
+        }
     }
     
     private void OnDisable()
@@ -60,7 +75,6 @@ public class PlayerCam : MonoBehaviour
         yRotation += mouseX;
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-        
         transform.rotation = Quaternion.Euler(xRotation, yRotation , rollZ);
         orientation.rotation = Quaternion.Euler(0f, yRotation, rollZ);
     }
