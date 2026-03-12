@@ -7,7 +7,7 @@ public class LevelData : ScriptableObject
     public float doorDelay = 3f;
     
     [Header("Smoke")]
-    public float maxRate = 8f;
-    public float fillSpeed = 0.1f;
-    public float clearSpeed = 5f;
+    public float maxRate = 40f;
+    public float fillSpeed = 0.01f;
+    public float clearSpeed = 3f;
 }
