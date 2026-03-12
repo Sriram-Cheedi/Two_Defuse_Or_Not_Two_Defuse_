@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LevelData
   m_EditorClassIdentifier: Game.Main::LevelData
   doorDelay: 5
-  maxRate: 3
+  maxRate: 10
   fillSpeed: 10
   clearSpeed: 10
-  alphaSpeed: 0.1
+  alphaSpeed: 0.02
