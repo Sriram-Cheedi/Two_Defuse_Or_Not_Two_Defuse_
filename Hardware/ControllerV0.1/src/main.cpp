@@ -44,8 +44,7 @@ void flickerOn(){
   while (millis() < waitUntil) threads.yield();
   
   for(const auto& cmp : components){
-    if(cmp->name != "IMU" &&
-        cmp->name != "PWR") cmp->enable();
+    cmp->enable();
   }
 }
 
@@ -60,8 +59,14 @@ void powerToggle(std::string btnName, int btnState) {
 
     for(const auto& cmp : components){
       if(cmp->name != "IMU" &&
-         cmp->name != "PWR") cmp->disable();
+         cmp->name != "PWR") {
+          cmp->disable();
+      }else{
+        cmp->enable();
+      }
+
     }
+
 
   }else{
 
@@ -136,6 +141,7 @@ void parseCommand(std::string command){
       for(const auto& cmp : components){
         cmp->disable();
       }
+      return;
     }
     powerToggle(name, std::stoi(func_args[1]));
   }

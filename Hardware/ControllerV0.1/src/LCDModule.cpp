@@ -40,16 +40,24 @@ void LCDModule::disable(){
 }
 
 void LCDModule::set(std::vector<std::string> args){
-  tempTopText = topText;
-  tempBottomText = bottomText;
+  if(!(topText == "Unknown Error!!!" && bottomText == "Power Cycle Req.")){
+    tempTopText = topText;
+    tempBottomText = bottomText;
 
-  changed = true;
-  if(args.size() == 1){
-    topText = args[0];
-  }else if(args.size() == 2){
-    topText = args[0];
-    bottomText = args[1];
+    changed = true;
+    if(args.size() == 1){
+      topText = args[0];
+    }else if(args.size() == 2){
+      topText = args[0];
+      bottomText = args[1];
+    }
+  }else{
+    tempTopText = args[0];
+    tempBottomText = args[1];
   }
+  
+
+  
 }
 
 void LCDModule::status(){
