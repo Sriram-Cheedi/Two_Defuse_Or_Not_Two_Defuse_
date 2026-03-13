@@ -51,7 +51,7 @@ Button sw3 = Button("SW3", 4, serialController);
 
 
 numberGameModule ngm = numberGameModule("NGM",33,35,34,{36,37,38,39,40}, serialController);
-//fishingModule fgm = fishingModule("FGM",36,35,34,13,serialController);
+fishingModule fgm = fishingModule("FGM",16,14,15,17,serialController);
 SimonSaysModule ssm = SimonSaysModule("SSM", {27, 26, 25, 24}, 0,  serialController);
 
 
@@ -112,6 +112,7 @@ void setup() {
   components.push_back(&gyro);  
   components.push_back(&ssm);
   components.push_back(&ngm);
+  components.push_back(&fgm);
   components.push_back(&btn1);
   components.push_back(&btn2);
   components.push_back(&btn3);
@@ -121,11 +122,12 @@ void setup() {
   components.push_back(&sw2);
   components.push_back(&sw3);
   components.push_back(&LCD);
-  //components.push_back(&fgm);
+
 
   LCD.LCDSetup();
 
-  digitalWrite(8, HIGH); //Power pin for pwr switch
+  digitalWrite(8, HIGH); //Power pin for pwr switch#
+  digitalWrite(13, HIGH); //Power pin for FGM
 
 }
 

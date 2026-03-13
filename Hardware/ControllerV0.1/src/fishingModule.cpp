@@ -14,31 +14,55 @@ void fishingModule::reset(){
     hookPos = 9;
     points = 0;
     randState = 0;
-    state = 0;
+    state = 1;
     lastGameUpdate = 0;
     lastFishUpdate = 0;
     lastHookUpdate = 0;
-    lastScoreUpdate = 0;
     lastButtonUpdate = 0;
 }
 
-void fishingModule::complete(){
-    state = 2;
-    points = 45;
-}
-
 void fishingModule::set(std::vector<std::string> args){
-    int newState = stoi(args[0]);
+    if(args.size() == 1){
+        int newState = stoi(args[0]);
 
-    if(newState == 0){
-        reset();
-    }else if (newState == 2){
-        complete();
+        if(newState == 0){
+            state = 0;
+            //start writing to the shift registers
+            digitalWrite(latchPin, LOW);
+            shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+            shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+            shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+            //end writing to the shift registers
+            digitalWrite(latchPin, HIGH);
+        }else if (newState == 1){
+            reset();
+        }
     }
 }
 
 void fishingModule::status(){
+    //FGM:status 1 for correct position
+    //FGM:status 2 for incorrect position
     serialController.serialWrite(name, std::to_string(state));
+}
+
+void fishingModule::disable(){
+    
+    //start writing to the shift registers
+    digitalWrite(latchPin, LOW);
+    shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+    shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+    shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+    //end writing to the shift registers
+    digitalWrite(latchPin, HIGH);
+    
+    enabled = false;
+}
+
+void fishingModule::enable(){
+
+    enabled = true;
+
 }
 
 void fishingModule::shift(uint32_t digit){
@@ -52,46 +76,54 @@ void fishingModule::shift(uint32_t digit){
 void fishingModule::buttonUpdate(std::string btnName, int btnState){
     if(btnState == HIGH){
         hookPos++;
-        if(hookPos > 9) hookPos = 9;
+        if(hookPos > 9) hookPos = 0;
     }
 }
 
 void fishingModule::scoreCheck(){
-  int hasScored = fishLED[randState] & hookLED[hookPos];
+  int hasScored = fishPos[randState] & hookLED[hookPos];
   if (hasScored > 0){
-    if(points == 0) state = 1;
-    points++;
+    if(state == 2){
+        state = 1;
+        status();
+    }
+    lockout = true;
+  }else{
+    if(state == 1){
+        state = 2;
+        status();
+    }
+    lockout = false;
   }
 }
 
 void fishingModule::update(){
     unsigned long micro = micros();
     unsigned long milli = millis();
-    if (micro - lastGameUpdate > gameInterval && state < 2){
+    if (micro - lastGameUpdate > gameInterval && state != 0){
         lastGameUpdate = micro;
-        if(milli - lastButtonUpdate > buttonInterval){
+        if(milli - lastButtonUpdate > buttonInterval && enabled){
             btn.update();
             lastButtonUpdate = milli;
         }
-        if(milli - lastHookUpdate > hookInterval){
+        /*if(milli - lastHookUpdate > hookInterval && !lockout && enabled){
             hookPos--;
             if(hookPos < 0) hookPos = 0;
             lastHookUpdate = milli;
-        }
-
-        if(milli - lastScoreUpdate > scoreInterval){
-            scoreCheck();
-            lastScoreUpdate = milli;
-        }
+        }*/
 
         if(milli - lastFishUpdate > fishInterval){
-            randState = random(0,12);
+            randState = random(0,9);
+            //randState++;
+            //if(randState > 11) randState = 0;
             lastFishUpdate = milli;
         }
+        uint32_t LEDBarState = (fishEncoding[randState] << 14) + (hookLED[hookPos] << 4);
+        if(enabled){
+            shift(LEDBarState);
+        }
+        
 
-        if(points >= 45) state = 2;
-
-        uint32_t LEDBarState = (fishLED[randState] << 14) + (hookLED[hookPos] << 4);
-        shift(LEDBarState);
+        scoreCheck();
     }
 }
