@@ -64,18 +64,9 @@ void powerToggle(std::string btnName, int btnState) {
       }else{
         cmp->enable();
       }
-
     }
-
-
   }else{
-
     flickerThread = threads.addThread(flickerOn);
-
-    /* for(const auto& cmp : components){
-      if(cmp->name != "IMU" &&
-         cmp->name != "PWR") cmp->enable();
-    } */
   }
 
   serialController.serialWrite("PWR", std::to_string(btnState));
