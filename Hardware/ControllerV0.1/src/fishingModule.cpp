@@ -76,7 +76,7 @@ void fishingModule::shift(uint32_t digit){
 void fishingModule::buttonUpdate(std::string btnName, int btnState){
     if(btnState == HIGH){
         hookPos++;
-        if(hookPos > 9) hookPos = 9;
+        if(hookPos > 9) hookPos = 0;
     }
 }
 
@@ -106,11 +106,11 @@ void fishingModule::update(){
             btn.update();
             lastButtonUpdate = milli;
         }
-        if(milli - lastHookUpdate > hookInterval && !lockout && enabled){
+        /*if(milli - lastHookUpdate > hookInterval && !lockout && enabled){
             hookPos--;
             if(hookPos < 0) hookPos = 0;
             lastHookUpdate = milli;
-        }
+        }*/
 
         if(milli - lastFishUpdate > fishInterval){
             randState = random(0,9);

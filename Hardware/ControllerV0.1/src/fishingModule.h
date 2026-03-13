@@ -11,7 +11,7 @@ class fishingModule : public Component {
     const int latchPin;
     const int buttonPin;
 
-    int hookPos = 9;
+    int hookPos = 4;
     int points = 0;
     long randState = 0;
 
@@ -22,7 +22,7 @@ class fishingModule : public Component {
     const unsigned int gameInterval = 500;
     unsigned long lastGameUpdate = 0;
 
-    const unsigned int fishInterval = 5000;
+    const unsigned int fishInterval = 10000;
     unsigned long lastFishUpdate = 0;
 
     const unsigned int hookInterval = 500;
