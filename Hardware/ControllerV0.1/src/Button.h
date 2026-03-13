@@ -18,6 +18,9 @@ public:
 
     int lastState = -1;
 
+    void scramble() override{
+        disable();
+    };
     void enable() override;
     void disable() override;
     void status() override;

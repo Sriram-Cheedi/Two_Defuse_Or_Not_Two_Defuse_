@@ -21,6 +21,11 @@ void fishingModule::reset(){
     lastButtonUpdate = 0;
 }
 
+void fishingModule::scramble(){
+    disable();
+    scrambled = true;
+}
+
 void fishingModule::set(std::vector<std::string> args){
     if(args.size() == 1){
         int newState = stoi(args[0]);
@@ -57,12 +62,13 @@ void fishingModule::disable(){
     digitalWrite(latchPin, HIGH);
     
     enabled = false;
+    scrambled = false;
 }
 
 void fishingModule::enable(){
 
     enabled = true;
-
+    scrambled = false;
 }
 
 void fishingModule::shift(uint32_t digit){
@@ -121,6 +127,8 @@ void fishingModule::update(){
         uint32_t LEDBarState = (fishEncoding[randState] << 14) + (hookLED[hookPos] << 4);
         if(enabled){
             shift(LEDBarState);
+        }else if(scrambled){
+            shift((static_cast<uint32_t>(rand()) << 16) ^ static_cast<uint32_t>(rand()));        
         }
         
 

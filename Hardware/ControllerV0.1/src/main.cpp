@@ -15,24 +15,62 @@ SerialController serialController = SerialController();
 
 std::vector<Component*> components; 
 
-
 TimerModule timer = TimerModule("TMR", 30, 32, 31, serialController);
 Imu gyro = Imu("IMU", serialController);
 
 LCDModule LCD = LCDModule("LCD", serialController);
 
+int flickerThread = -1;
+
+void flickerOn(){
+  for(int i = 0; i < 4; i++){
+    for(const auto& cmp : components){
+      if(cmp->name != "IMU" &&
+          cmp->name != "PWR") cmp->enable();
+    }
+    uint32_t waitUntil = millis() + 50;
+    while (millis() < waitUntil) threads.yield();
+
+    for(const auto& cmp : components){
+      if(cmp->name != "IMU" &&
+          cmp->name != "PWR") cmp->disable();
+    }
+
+    waitUntil = millis() + 100;
+    while (millis() < waitUntil) threads.yield();
+  }
+
+  uint32_t waitUntil = millis() + 100;
+  while (millis() < waitUntil) threads.yield();
+  
+  for(const auto& cmp : components){
+    if(cmp->name != "IMU" &&
+        cmp->name != "PWR") cmp->enable();
+  }
+}
+
+
 void powerToggle(std::string btnName, int btnState) {
   if(btnState == 0){
+
+    if(flickerThread != -1){
+      threads.kill(flickerThread);
+      flickerThread = -1;
+    }
+
     for(const auto& cmp : components){
       if(cmp->name != "IMU" &&
          cmp->name != "PWR") cmp->disable();
     }
 
   }else{
-    for(const auto& cmp : components){
+
+    flickerThread = threads.addThread(flickerOn);
+
+    /* for(const auto& cmp : components){
       if(cmp->name != "IMU" &&
          cmp->name != "PWR") cmp->enable();
-    }
+    } */
   }
 
   serialController.serialWrite("PWR", std::to_string(btnState));
@@ -57,14 +95,16 @@ SimonSaysModule ssm = SimonSaysModule("SSM", {27, 26, 25, 24}, 0,  serialControl
 
 void powerGame(){
 
-  for(const auto& cmp : components){
-    if(cmp->name != "IMU" &&
-        cmp->name != "PWR" &&
-        cmp->name != "LCD" ) cmp->disable();
+  if(timer.getEnabled()){
+    for(const auto& cmp : components){
+      if(cmp->name != "IMU" &&
+          cmp->name != "PWR" &&
+          cmp->name != "LCD" ) cmp->scramble();
+    }
+
+    LCD.set({"Unknown Error!!!", "Power Cycle Req."});
   }
 
-  LCD.set({"Unknown Error!!!", "Power Cycle Req."});
-  
 }
 
 
@@ -92,6 +132,10 @@ void parseCommand(std::string command){
     if(std::stoi(func_args[1]) == 3){
       powerGame();
       return;
+    }else if(std::stoi(func_args[1]) == 4){
+      for(const auto& cmp : components){
+        cmp->disable();
+      }
     }
     powerToggle(name, std::stoi(func_args[1]));
   }

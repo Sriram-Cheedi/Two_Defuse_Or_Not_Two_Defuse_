@@ -31,6 +31,8 @@ private:
 
     WS2812Serial strip = WS2812Serial(4, drawingMemory, displayMemory, 29, WS2812_GRB);
 
+    uint32_t lastScrambleUpdate = 0;
+
     std::vector<uint32_t> colourMap = {Color(255, 255, 0), Color(0, 255, 0), Color(255, 0, 0), Color(0, 0, 255)};
 
     // SSM THREAD ONLY VARIABLES
@@ -38,6 +40,7 @@ private:
 
     // MULTI-THREAD VARIABLES (Protected) 
     bool enabled = true;
+    bool scrambled = false;
     std::vector<uint32_t> pixelBuffer = {Color(255, 0, 0), Color(255, 0, 0), Color(255, 0, 0), Color(255, 0, 0)}; 
     std::atomic<int> state{0};  // 0 = Not Started, 1 = In Progress, 2 = Complete, 3 = Failed (Resetting)
     std::atomic<int> pressedButton{-1};
@@ -70,6 +73,7 @@ public:
 
     SimonSaysModule(std::string name, std::vector<int> buttonPins, int rgbPin, SerialController serialController);
 
+    void scramble() override;
     void update() override; //Called from main loop
     void enable() override;
     void disable() override;
