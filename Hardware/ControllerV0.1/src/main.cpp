@@ -51,7 +51,7 @@ Button sw3 = Button("SW3", 4, serialController);
 
 
 numberGameModule ngm = numberGameModule("NGM",33,35,34,{36,37,38,39,40}, serialController);
-fishingModule fgm = fishingModule("FGM",4,2,3,5,serialController);
+fishingModule fgm = fishingModule("FGM",16,14,15,17,serialController);
 SimonSaysModule ssm = SimonSaysModule("SSM", {27, 26, 25, 24}, 0,  serialController);
 
 
@@ -126,7 +126,8 @@ void setup() {
 
   LCD.LCDSetup();
 
-  digitalWrite(8, HIGH); //Power pin for pwr switch
+  digitalWrite(8, HIGH); //Power pin for pwr switch#
+  digitalWrite(13, HIGH); //Power pin for FGM
 
 }
 

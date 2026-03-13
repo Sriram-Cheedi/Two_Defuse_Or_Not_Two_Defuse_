@@ -106,7 +106,7 @@ void fishingModule::update(){
             btn.update();
             lastButtonUpdate = milli;
         }
-        if(milli - lastHookUpdate > hookInterval && !lockout){
+        if(milli - lastHookUpdate > hookInterval && !lockout && enabled){
             hookPos--;
             if(hookPos < 0) hookPos = 0;
             lastHookUpdate = milli;
@@ -119,7 +119,7 @@ void fishingModule::update(){
             lastFishUpdate = milli;
         }
         uint32_t LEDBarState = (fishEncoding[randState] << 14) + (hookLED[hookPos] << 4);
-        if(enable){
+        if(enabled){
             shift(LEDBarState);
         }
         
