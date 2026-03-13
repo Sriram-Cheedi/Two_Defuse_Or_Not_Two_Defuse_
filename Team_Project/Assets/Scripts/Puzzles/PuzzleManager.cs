@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public class PuzzleData
@@ -24,6 +25,7 @@ public class PuzzleManager : MonoBehaviour
     
     public Puzzles.Controllers.SSM_Controller ssm_controller;
     public Puzzles.Controllers.NGM_Controller ngm_controller;
+    public Puzzles.Controllers.MazeController maze_controller;
     
     public Action SSM_Completed;
     public Action NGM_Completed;
@@ -57,6 +59,8 @@ public class PuzzleManager : MonoBehaviour
         API_Provider.Instance.ActiveAPIController.SendSetSeq("NGM", ngm_controller.data.correctSequence);
         API_Provider.Instance.ActiveAPIController.SendSet("SSM", 1);
         API_Provider.Instance.ActiveAPIController.SendSet("FGM", 1);
+        
+        
 
     }
     

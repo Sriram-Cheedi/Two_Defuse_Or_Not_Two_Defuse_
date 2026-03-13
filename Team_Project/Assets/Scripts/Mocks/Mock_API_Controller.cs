@@ -65,6 +65,7 @@ public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
     public void HandleMessage(string message) => Debug.Log($"<color=orange>MOCK: Handle Message</color>");
     public void SendSet(string header, int value) => Debug.Log("<color=orange>MOCK: SendSet: </color>" + header + ":set " + value + "#");
     public void SendSetSeq(string header, int[] value) => Debug.Log("<color=orange>MOCK: SendSetSeq: </color>" + header + ":set " + value + "#");
+    public void SendSetSeqSTRING(string header, string[] value) =>  Debug.Log("<color=orange>MOCK: SendSetSeqSTRING: </color>" + header + ":set " + value + "#");
     public int GetButton(string id) => _componentStateManager.ContainsKey("BTN" + id) ? _componentStateManager["BTN" + id] : 0;
     public void TimerSet(int seconds) => Debug.Log("<color=orange>MOCK: Timer Set: </color>" + seconds);
     public void ResetHardware(string header) => Debug.Log("<color=orange>MOCK: Reset: </color>" + header);

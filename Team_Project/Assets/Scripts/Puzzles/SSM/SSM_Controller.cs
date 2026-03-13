@@ -13,11 +13,11 @@ namespace Puzzles.Controllers
     
         public PuzzleData getData => data;
         
-        private void Start()
-        {
-            API_Provider.Instance.ActiveAPIController.SendSetSeq("SSM", data.correctSequence);
-        }
-        
+        // private void Start()
+        // {
+        //     API_Provider.Instance.ActiveAPIController.SendSetSeq("SSM", data.correctSequence);
+        // }
+        //
         public void CheckSSMButtonPress(int pressedValue)
         {
             if (!data.completed && pressedValue == data.correctSequence[data.currentSequenceIndex])
