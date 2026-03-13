@@ -19,7 +19,7 @@ public class CheckPointScript : MonoBehaviour
         {
             spawnManager.respawnPoint = this;
             // respawnCollider.enabled = false;
-        }
+        } 
     }
 
 }
