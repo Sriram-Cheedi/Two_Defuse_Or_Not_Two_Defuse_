@@ -11,4 +11,5 @@ public class LevelData : ScriptableObject
     public float fillSpeed = 0.01f;
     public float clearSpeed = 3f;
     public float alphaSpeed = 0.05f;
+    public float targetAlpha = 1f;  
 }

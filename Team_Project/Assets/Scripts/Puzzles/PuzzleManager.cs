@@ -56,6 +56,8 @@ public class PuzzleManager : MonoBehaviour
         API_Provider.Instance.ActiveAPIController.SendSetSeq("SSM", ssm_controller.data.correctSequence);
         API_Provider.Instance.ActiveAPIController.SendSetSeq("NGM", ngm_controller.data.correctSequence);
         API_Provider.Instance.ActiveAPIController.SendSet("SSM", 1);
+        API_Provider.Instance.ActiveAPIController.SendSet("FGM", 1);
+
     }
     
     

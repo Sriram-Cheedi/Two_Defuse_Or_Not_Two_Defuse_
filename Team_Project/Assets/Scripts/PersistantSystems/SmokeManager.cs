@@ -19,11 +19,13 @@ public class SmokeManager : MonoBehaviour
     private void OnEnable()
     {
         relay.SmokeReleased += HandleSmoke;
+        API_Provider.Instance.ActiveAPIController.OnInputChanged += OnSmokeReleased;
     }
 
     private void OnDisable()
     {
         relay.SmokeReleased -= HandleSmoke;
+        API_Provider.Instance.ActiveAPIController.OnInputChanged -= OnSmokeReleased;
     }
 
     void Start()
@@ -36,11 +38,24 @@ public class SmokeManager : MonoBehaviour
         smokeReleased = smoke;
     }
 
+    private void OnSmokeReleased(String header, int value)
+    {
+        Debug.Log("Smoke Released: " + value);
+        if (header == "FGM" && value == 2)
+        {
+            smokeReleased = true;
+        }
+        else if (header == "FGM" && value == 1)
+        {
+            smokeReleased = false;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
         float targetRate = smokeReleased ? levelData.maxRate : 0f;
-        float targetAlpha = smokeReleased ? 1f : 0f;
+        float targetAlpha = smokeReleased ? levelData.targetAlpha : 0f;
         float lerpRate = smokeReleased ? levelData.fillSpeed : levelData.clearSpeed;
         float alphaLerpRate = smokeReleased ? levelData.alphaSpeed : levelData.clearSpeed;
         currentRate = Mathf.MoveTowards(currentRate, targetRate, lerpRate * Time.deltaTime);
