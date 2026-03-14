@@ -4,6 +4,7 @@ namespace Puzzles.Controllers
 {
     public class MazeController : MonoBehaviour, IPuzzle
     {
+        
         public PuzzleData getData => data;
         
         private enum Dir
@@ -13,6 +14,16 @@ namespace Puzzles.Controllers
             LEFT,
             RIGHT
         }
+
+        private int[,] maze = new int[,]
+        {
+            { 0, 0, 1, 1, 1, 1 },
+            { 0, 0, 0, 0, 0, 1 },
+            { 1, 1, 1, 1, 0, 1 },
+            { 1, 0, 0, 1, 1, 1 },
+            { 1, 1, 1, 0, 0, 0 },
+            { 0, 0, 1, 0, 0, 0 }
+        };
         
         public PuzzleData data = new PuzzleData 
         { 
