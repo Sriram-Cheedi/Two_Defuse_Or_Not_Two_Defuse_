@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Puzzles.Minor_Interaction
@@ -9,12 +11,26 @@ namespace Puzzles.Minor_Interaction
         {
             BTN1 = 5,
             BTN2 = 6,
+            
+            SWT1 = 8,
+            SWT2 = 9,
+            SWT3 = 0,
         }
         
         [SerializeField] public PlayerInputRelay relay;
 
         [SerializeField] public GameObject deathLazer;
         [SerializeField] public GameObject spawnRoomDoor;
+        
+        [SerializeField] public GameObject[] bars;
+        [SerializeField] public GameObject barredDoor;
+
+        private Dictionary<String, int> barStates = new Dictionary<String, int>
+        {
+            { "SWT1", 1 },
+            { "SWT2", 1 },
+            { "SWT3", 1 },
+        };
         
     void OnEnable()
     {
@@ -43,11 +59,22 @@ namespace Puzzles.Minor_Interaction
         switch (digit)
         {
             case (int)MockButtonValues.BTN1:
-                SwingDoor();
+                SwingDoor(spawnRoomDoor);
                 break;
             case  (int)MockButtonValues.BTN2:
                 DisableDeathLazer();
                 break;
+            
+            case (int)MockButtonValues.SWT1:
+                UpdateBarStatus("SWT1", 0);
+                break;
+            case (int)MockButtonValues.SWT2:
+                UpdateBarStatus("SWT2", 0);
+                break;
+            case (int)MockButtonValues.SWT3:
+                UpdateBarStatus("SWT3", 0);
+                break;
+            
         }
     }
 
@@ -56,10 +83,24 @@ namespace Puzzles.Minor_Interaction
         switch (header)
         {
             case "BTN1":
-                SwingDoor();
+                SwingDoor(spawnRoomDoor);
                 break;
             case "BTN2":
                 DisableDeathLazer();
+                break;
+            
+            
+            case "SWT1":
+                UpdateBarStatus("SWT1", value);
+
+                break;
+            case "SWT2":
+                UpdateBarStatus("SWT2", value);
+
+                break;
+            case "SWT3":
+                UpdateBarStatus("SWT3", value);
+
                 break;
         }
     }
@@ -71,9 +112,44 @@ namespace Puzzles.Minor_Interaction
     }
 
 
-    private void SwingDoor()
+    private void SwingDoor(GameObject door)
     {
-        spawnRoomDoor.SetActive(false);
+        door.SetActive(false);
+    }
+
+    private void UpdateBarStatus(string header, int value)
+    {
+        Debug.Log("Updating bar status" +  header);
+        barStates[header] = value;
+
+        if (header == "SWT1")
+        {
+            if (value == 1) bars[0].SetActive(true);
+            else bars[0].SetActive(false);
+        } else if (header == "SWT2")
+        {
+            if (value == 1) bars[1].SetActive(true);
+            else bars[1].SetActive(false);
+        } else if (header == "SWT3")
+        {
+            if (value == 1) bars[2].SetActive(true);
+            else bars[2].SetActive(false);
+        }
+
+        bool blocked = false;
+        foreach (int state in barStates.Values)
+        {
+            if (state == 1)
+            {
+                blocked = true;
+                break;
+            }
+        }
+    
+        if (!blocked) 
+        {
+            SwingDoor(barredDoor);
+        }
     }
     
     }
