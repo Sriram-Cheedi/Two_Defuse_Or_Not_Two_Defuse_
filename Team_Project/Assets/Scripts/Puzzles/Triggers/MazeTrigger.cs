@@ -1,0 +1,50 @@
+using System.Collections;
+using UnityEngine;
+
+public class Maze_Trigger : MonoBehaviour
+{
+    [SerializeField] Puzzles.Controllers.MazeController maze_controller;
+
+       
+
+    private bool gameActive = false;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            gameActive = true;
+            StartCoroutine(startScreen());
+        }
+    }
+
+    IEnumerator startScreen()
+    {
+        while (gameActive)
+        {
+            for (int i = 0; i < maze_controller.data.correctSequence.Length / 2; i++)
+            {
+                string v1 = GetDirectionString(maze_controller.data.correctSequence[i * 2]);
+                string v2 = GetDirectionString(maze_controller.data.correctSequence[i * 2 + 1]);
+            
+                API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[] { v1, v2 });
+                yield return new WaitForSeconds(1.5f); 
+            }
+            API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[] { "------------------------", "------------------------" });
+
+            yield return new WaitForSeconds(2.0f);
+        }
+    }
+    
+    public string GetDirectionString(int dirInt)
+    {
+        return dirInt switch
+        {
+            0 => "UP",
+            1 => "DOWN",
+            2 => "LEFT",
+            3 => "RIGHT",
+            _ => "WTF IS THIS"
+        };
+    }
+}

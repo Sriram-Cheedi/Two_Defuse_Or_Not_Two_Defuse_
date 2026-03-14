@@ -357,6 +357,19 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         string message = "$" + header + ":set " + strseq + "#";
         ActivePortController.SendToArduino(message);
     }
+    
+    public void SendSetSeqSTRING(string header, string[] seq)
+    {
+        string strseq = "";
+        for (int i = 0; i < seq.Length; i++)
+        {
+            strseq += seq[i] + " ";
+        }
+        strseq = strseq.Substring(0, strseq.Length - 1);
+
+        string message = "$" + header + ":set " + strseq + "#";
+        ActivePortController.SendToArduino(message);
+    }
 
     public void SendSet(string header, int value)
     {
