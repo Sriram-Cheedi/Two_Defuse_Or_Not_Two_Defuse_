@@ -1,16 +1,12 @@
+using RigidBodyPlayer.PlayerStates;
 using UnityEngine;
 
-public abstract class PlayerBaseState
+public abstract class PlayerBaseState : BaseState<PlayerState>
 {
     protected readonly RigidBodyMovement Hub;
 
-    protected PlayerBaseState(RigidBodyMovement hub)
+    protected PlayerBaseState(RigidBodyMovement hub, PlayerState key) : base(key)
     {
         Hub = hub;
     }
-    
-    public abstract void EnterState();
-    public abstract void ExitState();
-    public abstract void UpdateState();
-    public abstract void FixedUpdateState();
 }

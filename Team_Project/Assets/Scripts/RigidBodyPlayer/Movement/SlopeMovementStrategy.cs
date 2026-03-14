@@ -7,16 +7,19 @@ namespace RigidBodyPlayer.Movement
         public void ApplyMovement(RigidBodyMovement hub)
         {
             Vector3 surfaceNormal = hub.sensor.GroundHit.normal;
-            hub.slopeDir = Vector3.ProjectOnPlane(-hub.rb.transform.up, surfaceNormal).normalized;
-            hub.slopeSideWayDir = Vector3.Cross(surfaceNormal, hub.slopeDir).normalized;
+            Vector3 slopeDir = Vector3.ProjectOnPlane(-hub.rb.transform.up, surfaceNormal).normalized;
+            Vector3 slopeSideWayDir = Vector3.Cross(surfaceNormal, slopeDir).normalized;
+            
+            float facingDirection = Mathf.Sign(Vector3.Dot(hub.orientation.forward, slopeDir));
 
-            hub.movementDir = hub.slopeSideWayDir * hub.horizontalInput;
+            // 4. Multiply input by our facing direction so A and D always feel correct
+            Vector3 movementDir = slopeSideWayDir * (hub.relay.MoveValue.x * facingDirection);
 
-            Vector3 desiredRelativeVelocity = hub.movementDir.sqrMagnitude > 0.0001f
-                ? hub.movementDir.normalized * hub.data.sideWayMoveSpeed
+            Vector3 desiredRelativeVelocity = movementDir.sqrMagnitude > 0.0001f
+                ? movementDir.normalized * hub.data.sideWayMoveSpeed
                 : Vector3.zero;
 
-            Vector3 slopVelocity = hub.slopeDir * hub.data.slopeSpeed;
+            Vector3 slopVelocity = slopeDir * hub.data.slopeSpeed;
             hub.rb.linearVelocity = desiredRelativeVelocity + slopVelocity;
         }
     }

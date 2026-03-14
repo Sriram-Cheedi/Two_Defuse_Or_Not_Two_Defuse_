@@ -1,3 +1,4 @@
+using RigidBodyPlayer.PlayerStates;
 using UnityEngine;
 
 public class CheckPointScript : MonoBehaviour
@@ -18,7 +19,7 @@ public class CheckPointScript : MonoBehaviour
         {
             spawnManager.respawnPoint = this;
             // respawnCollider.enabled = false;
-        }
+        } 
     }
 
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Puzzles;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,21 +14,39 @@ public class ConditionalDoor : MonoBehaviour
     
     private float moveDistance = 2.0f;
 
-    [SerializeField] private string linkedPuzzle = "SET VALUE PLEASE";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [Header("Drag the Puzzle GameObject here")]
+    public GameObject puzzleObject;
     
+    private IPuzzle linkedPuzzleController;
 
+    void Awake()
+    {
+        if (puzzleObject != null)
+        {
+            linkedPuzzleController = puzzleObject.GetComponent<IPuzzle>();
+            
+            if (linkedPuzzleController == null)
+            {
+                Debug.LogError("The object you dragged in doesn't have an IPuzzle script on it!");
+            }
+        }
+    }
+    
     void Start()
     {
         left_door = transform.Find("Door_Left").gameObject;
         right_door = transform.Find("Door_Right").gameObject;
-        
-        PuzzleManager.Instance.puzzleDatas[linkedPuzzle].OnSuccess += OpenDoorWrapper; 
+    }
+
+    private void OnEnable()
+    {
+        linkedPuzzleController.getData.OnSuccess += OpenDoorWrapper; 
     }
 
     private void OnDisable()
     {
-        PuzzleManager.Instance.puzzleDatas[linkedPuzzle].OnSuccess -= OpenDoorWrapper;
+        linkedPuzzleController.getData.OnSuccess -= OpenDoorWrapper;
     }
 
     // Update is called once per frame

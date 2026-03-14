@@ -10,7 +10,9 @@ public:
 
     std::string name;
 
+    virtual void enable() = 0;
+    virtual void disable() = 0;
     virtual void set(std::vector<std::string> args) = 0;
     virtual void status() = 0;
-
+    virtual void update() = 0;
 };

@@ -9,18 +9,24 @@ public class PlayerCrouch : MonoBehaviour, IPlayerModule
 
     private RigidBodyMovement Hub;
     
-
     // moved fields
     private float standCenterY;
     private float standHeight;
     private float crouchHeight;
     private Vector3 crouchOrigin;
     private Vector3 standOrigin;
+    
+    public bool isCrouchPressed;
 
     public void Initialize(RigidBodyMovement hub)
     {
-        if (controller == null) controller = GetComponent<CapsuleCollider>();
+        
         Hub = hub;
+        if (controller == null) controller = GetComponent<CapsuleCollider>();
+        if (Hub != null && Hub.relay != null)
+        {
+            Hub.relay.Crouch += HandleCrouch;
+        }
         
         standHeight = controller.height;
         standCenterY = controller.center.y;
@@ -29,10 +35,30 @@ public class PlayerCrouch : MonoBehaviour, IPlayerModule
         SetStandCenter();
         SetCrouchCenter();
     }
+    
+    private void OnEnable()
+    {
+        // Subscribe directly to the relay once the hub is set up!
+        
+    }
+
+    private void OnDisable()
+    {
+        if (Hub != null && Hub.relay != null)
+        {
+            Hub.relay.Crouch -= HandleCrouch;
+        }
+    }
+
+    // The module handles its own flag now!
+    private void HandleCrouch(bool pressed) 
+    {
+        isCrouchPressed = pressed;
+    }
 
     public void Tick()
     {
-        SetCrouch(Hub.isCrouchPressed);
+        SetCrouch(isCrouchPressed);
     }
 
     public void FixedTick()

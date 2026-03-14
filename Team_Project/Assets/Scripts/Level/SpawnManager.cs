@@ -1,36 +1,61 @@
+using System;
+using RigidBodyPlayer.PlayerStates;
 using UnityEngine;
+using Object = UnityEngine.Object;
+
+public struct RespawnData
+{
+    public Vector3 Position;
+    public Quaternion Rotation;
+    public bool IsUpsideDown;
+}
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private RigidBodyMovement rm;
     [SerializeField] public CheckPointScript respawnPoint;
     [SerializeField] private RigidBodyMovement hub;
-    private PlayerInputRelay relay;
+    public static event Action<RespawnData> RespawnRequested;
+    public static event Action OnDeath;
+
     private void Awake()
     {
-        relay = Object.FindAnyObjectByType<PlayerInputRelay>();
         hub = FindAnyObjectByType<RigidBodyMovement>();
     }
+
     private void OnEnable()
     {
-        if (relay != null) 
-        {
-            relay.RespawnRequested += ResetPlayer; 
-        }
+        PlayerDeathState.OnDeathAnimationFinished += CallRepawnReset;
     }
 
     private void OnDisable()
     {
-        if (relay != null) 
+        PlayerDeathState.OnDeathAnimationFinished -= CallRepawnReset;
+    }
+
+    public void CallRepawnReset()
+    {
+        if (hub == null && respawnPoint == null) return; 
+        RespawnData data = new RespawnData
         {
-            relay.RespawnRequested -= ResetPlayer; 
-        }
+            Position = respawnPoint.transform.position,
+            Rotation = respawnPoint.transform.rotation,
+            IsUpsideDown = respawnPoint.isUpsideDown,
+        };
+        RespawnRequested?.Invoke(data);
+        hub.stateMachine.QueueNextState(PlayerState.Airborne);
+    }
+
+    public void OnRespawn()
+    {
+        if (hub == null && respawnPoint == null) return; 
+        OnDeath?.Invoke();
+        hub.stateMachine.QueueNextState(PlayerState.Death);
     }
 
     public void ResetPlayer()
     {
-        if (rm == null && respawnPoint == null) return; 
-            rm.rb.position = respawnPoint.transform.position;
+        if (hub == null && respawnPoint == null) return; 
+            hub.rb.position = respawnPoint.transform.position;
             hub.rb.linearVelocity = Vector3.zero;
             if (!respawnPoint.isUpsideDown)
             {
@@ -42,7 +67,7 @@ public class SpawnManager : MonoBehaviour
                 ResetInversePlayerRotation();
                 ResetInversePlayerGravity();
             }
-            hub.CheckInitialState(); 
+            hub.stateMachine.QueueNextState(PlayerState.Airborne);
     }
 
     private void ResetPlayerRotation()
@@ -50,7 +75,7 @@ public class SpawnManager : MonoBehaviour
         var playerCam = hub.cameraHandler.playerCam;
         var orientation = hub.orientation;
         if (playerCam != null) playerCam.rollZ = 0f;
-        if (orientation != null) orientation.rotation = Quaternion.Euler(0, 0, 0);
+        if (orientation != null) hub.orientation.transform.rotation = respawnPoint.transform.rotation;
     }
 
     private void ResetPlayerGravity()
