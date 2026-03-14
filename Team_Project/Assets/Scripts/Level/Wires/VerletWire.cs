@@ -38,13 +38,11 @@ public class VerletWire : MonoBehaviour
     private LineRenderer lr;
     private Vector3[] RopePoint;     
     private Vector3[] RopePointOld; 
+    
     [Header("Wire Look")]
-    public LineRenderer copperLR;
-    public float exposedTipLength = 0.08f;   
     public float insulatedWidth = 0.12f;
-    public float copperWidth = 0.012f;
     public Material insulatedMat;
-    public Material copperMat;
+    
     [Header("Rope-Rope Collision")]
     public bool ropeRopeCollision = true;
     [Range(0, 4)] public int ropeRopePasses = 1; 
@@ -55,6 +53,14 @@ public class VerletWire : MonoBehaviour
     public bool selfCollision = true;
     [Range(2, 20)] public int selfCollisionSkipNear = 6;
     [Range(0, 4)] public int selfCollisionPasses = 1;     
+    [Header("Collision")]
+    public bool enableCollision = true;
+    private CapsuleCollider[] segmentColliders;
+    
+    [Header("Player Interaction")]
+    public float playerPushForce = 0.05f;
+    
+    public LayerMask playerLayer;
     void Awake()
     {
         lr = GetComponent<LineRenderer>();
@@ -75,26 +81,7 @@ public class VerletWire : MonoBehaviour
         {
             lr.material = new Material(Shader.Find("Sprites/Default"));
         }
-        if (copperLR != null)
-        {
-            copperLR.useWorldSpace = true;
-            copperLR.alignment = LineAlignment.View;
-            copperLR.textureMode = LineTextureMode.Tile;
-            copperLR.startWidth = copperWidth;
-            copperLR.endWidth = copperWidth;
-            copperLR.numCapVertices = 8;
-            copperLR.numCornerVertices = 8;
-            copperLR.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            copperLR.receiveShadows = false;
-            if (copperMat != null)
-            {
-                copperLR.material = copperMat;
-            }
-            else
-            {
-                copperLR.material = new Material(Shader.Find("Sprites/Default"));
-            }
-        }
+
     }
     public int PointCount => RopePoint != null ? RopePoint.Length : 0;
     public Vector3 GetPoint(int i)
@@ -114,8 +101,6 @@ public class VerletWire : MonoBehaviour
         RopePointOld = new Vector3[points];
         Vector3 start = anchor1.position;
         Vector3 end = anchor2.position;
-        float distance = Vector3.Distance(anchor1.position, anchor2.position);
-        
        
         for (int i = 0; i < points; i++)
         {
@@ -125,8 +110,67 @@ public class VerletWire : MonoBehaviour
             RopePointOld[i] = pos;
         }
         lr.positionCount = points;
+        if (enableCollision)
+        {
+            segmentColliders = new CapsuleCollider[points - 1];
+
+            for (int i = 0; i < points - 1; i++)
+            {
+                GameObject col = new GameObject("WireCollider_" + i);
+                col.transform.parent = transform;
+
+                CapsuleCollider capsule = col.AddComponent<CapsuleCollider>();
+                capsule.radius = ropeRadius;
+                capsule.direction = 1; 
+                capsule.height = segmentLength;
+                capsule.isTrigger = false;
+                segmentColliders[i] = capsule;
+            }
+        }
     }
     
+    void UpdateColliders()
+    {
+        if (!enableCollision || segmentColliders == null) return;
+
+        for (int i = 0; i < points - 1; i++)
+        {
+            Vector3 p1 = RopePoint[i];
+            Vector3 p2 = RopePoint[i + 1];
+
+            Vector3 mid = (p1 + p2) * 0.5f;
+
+            segmentColliders[i].transform.position = mid;
+            segmentColliders[i].transform.rotation =
+                Quaternion.FromToRotation(Vector3.up, p2 - p1);
+
+            segmentColliders[i].height = Vector3.Distance(p1, p2) + ropeRadius * 2f;
+        }
+    }
+    void PushWireFromPlayer()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, 2f, playerLayer);
+
+        foreach (Collider hit in hits)
+        {
+            for (int i = 2; i < points - 2; i++)
+            {
+                Vector3 point = RopePoint[i];
+
+                Vector3 closest = hit.ClosestPoint(point);
+
+                float dist = Vector3.Distance(point, closest);
+
+                if (dist < ropeRadius * 2f)
+                {
+                    Vector3 dir = (point - closest).normalized;
+
+                    RopePoint[i] += dir * playerPushForce;
+                }
+            }
+        }
+    }
+
     private void SolveCeiling()
     {
         if (!ceilingCollision)
@@ -282,27 +326,6 @@ public class VerletWire : MonoBehaviour
         }
     }
 
-    private void UpdateCopperTip()
-    {
-        if (copperLR == null || RopePoint == null || points < 2)
-		{
-			return;
-		}
-        Vector3 tipEnd = RopePoint[points - 1];
-        Vector3 tipDir = (RopePoint[points - 1] - RopePoint[points - 2]).normalized;
-
-        if (tipDir.sqrMagnitude < 1e-8f)
-        {
-            tipDir = Vector3.down;
-        }
-
-        Vector3 tipStart = tipEnd - tipDir * exposedTipLength;
-
-        copperLR.positionCount = 2;
-        copperLR.SetPosition(0, tipStart);
-        copperLR.SetPosition(1, tipEnd);
-    }
-
     void FixedUpdate()
     {
         Vector3 gravity = (gravitySource != null) ? gravitySource.Gravity : Physics.gravity;
@@ -350,7 +373,8 @@ public class VerletWire : MonoBehaviour
         for (int i = 0; i < points; i++)
         {
             lr.SetPosition(i, RopePoint[i]);
-        }
-        UpdateCopperTip();
+        } 
+        UpdateColliders();
+        PushWireFromPlayer();
     }
 }
