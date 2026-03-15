@@ -5,10 +5,13 @@ public class SmokeEmitter : MonoBehaviour
 {
     
     public LevelData levelData;
+    private AudioSource smokeAudio;
     private ParticleSystem[] smokes;
     private float currentRate;
     private float currentAlpha;
     private bool shouldEmitSmoke;
+    private bool wasEmitting;
+
     
     
     private void Awake()
@@ -16,6 +19,10 @@ public class SmokeEmitter : MonoBehaviour
         if (smokes == null)
         {
             smokes = GetComponentsInChildren<ParticleSystem>(true);
+        }
+        if (smokeAudio == null)
+        {
+            smokeAudio = GetComponent<AudioSource>();
         }
     }
     
@@ -48,5 +55,17 @@ public class SmokeEmitter : MonoBehaviour
             c.a = currentAlpha;
             main.startColor = new ParticleSystem.MinMaxGradient(c);
         }
+        if (smokeAudio != null)
+        {
+            if (shouldEmitSmoke && !wasEmitting)
+            {
+                smokeAudio.Play();
+            }
+            else if (!shouldEmitSmoke && wasEmitting)
+            {
+                smokeAudio.Stop();
+            }
+        }
+        wasEmitting = shouldEmitSmoke;
     }
 }
