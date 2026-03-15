@@ -160,8 +160,6 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
     public void HandleMessage(string message)
     {
-        
-        
         if (string.IsNullOrWhiteSpace(message))
         {
             return;
