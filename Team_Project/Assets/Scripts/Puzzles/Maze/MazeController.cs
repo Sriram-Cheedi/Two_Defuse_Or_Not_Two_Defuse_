@@ -30,7 +30,6 @@ namespace Puzzles.Controllers
             correctSequence = new int[] { 
                 (int)Dir.UP, 
                 (int)Dir.UP, 
-                (int)Dir.UP, 
                 (int)Dir.UP,
                 (int)Dir.LEFT,
                 (int)Dir.LEFT,
