@@ -47,9 +47,13 @@ void LCDModule::set(std::vector<std::string> args){
     changed = true;
     if(args.size() == 1){
       topText = args[0];
+      topText.erase(remove( topText.begin(), topText.end(), '\"' ),topText.end());
     }else if(args.size() == 2){
       topText = args[0];
       bottomText = args[1];
+    
+      topText.erase(remove( topText.begin(), topText.end(), '\"' ),topText.end());
+      bottomText.erase(remove( bottomText.begin(), bottomText.end(), '\"' ),bottomText.end());
     }
   }else{
     tempTopText = args[0];
@@ -61,7 +65,8 @@ void LCDModule::set(std::vector<std::string> args){
 }
 
 void LCDModule::status(){
-  serialController.serialWrite(name, {topText, bottomText});
+  std::string state = "\"" + topText + "\" \"" + bottomText + "\"";
+  serialController.serialWrite(name, state);
 }
 
 void LCDModule::update(){

@@ -137,6 +137,13 @@ void parseCommand(std::string command){
     powerToggle(name, std::stoi(func_args[1]));
   }
 
+  if(name == "GLB" && func_args[0] == "status"){
+    for(const auto& cmp : components){
+      cmp->update();
+      cmp->status();
+    }
+  }
+
   for(const auto& cmp : components){
     if(cmp->name == name){
       if(func_args[0] == "set" && func_args.size() > 1){
