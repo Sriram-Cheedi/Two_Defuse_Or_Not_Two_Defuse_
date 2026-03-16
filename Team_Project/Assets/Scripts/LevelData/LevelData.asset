@@ -15,6 +15,6 @@ MonoBehaviour:
   doorDelay: 5
   maxRate: 60
   fillSpeed: 20
-  clearSpeed: 10
+  clearSpeed: 100
   alphaSpeed: 0.02
   targetAlpha: 0.6

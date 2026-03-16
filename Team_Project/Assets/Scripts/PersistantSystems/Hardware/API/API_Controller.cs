@@ -68,9 +68,9 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         hardwareState.componentStates["BTN4"] = 0;
         hardwareState.componentStates["BTN5"] = 0;
 
-        hardwareState.componentStates["SWT1"] = 0;
-        hardwareState.componentStates["SWT2"] = 0;
-        hardwareState.componentStates["SWT3"] = 0;
+        hardwareState.componentStates["SW1"] = 0;
+        hardwareState.componentStates["SW2"] = 0;
+        hardwareState.componentStates["SW3"] = 0;
 
         hardwareState.componentStates["LED1"] = 0;
         hardwareState.componentStates["LED2"] = 0;
@@ -117,6 +117,9 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         {
             Debug.LogError("Error: Unable to set serial Controller for REAL API_Controller");
         }
+        
+        // Getting inital states of hardware
+        RequestStatus("GLB");
     }
 
 
@@ -179,7 +182,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
         int colonIndex = message.IndexOf(':');
         if (colonIndex == -1)
-        {
+        {   
             return;
         }
 
