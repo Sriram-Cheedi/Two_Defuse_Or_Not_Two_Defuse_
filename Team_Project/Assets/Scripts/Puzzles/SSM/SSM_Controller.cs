@@ -8,7 +8,7 @@ namespace Puzzles.Controllers
         public PuzzleData data = new PuzzleData 
         { 
             guessSequence = new int[4], 
-            correctSequence = new int[4] { 0, 0, 0, 0 }
+            correctSequence = GenerateSequence(4, 4),
         };
     
         public PuzzleData getData => data;
@@ -40,7 +40,7 @@ namespace Puzzles.Controllers
             }
         }
         
-        public int[] GenerateSequence(int length, int maxValue)
+        public static int[] GenerateSequence(int length, int maxValue)
         {
             System.Random rng = new System.Random();
             int[] Seq = new int[length];
