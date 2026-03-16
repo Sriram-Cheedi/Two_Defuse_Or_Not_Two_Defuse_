@@ -298,6 +298,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         if (header == "SSM" && command == "status")
         {
             hardwareState.componentStates["SSM"] = int.Parse(value);
+            OnInputChanged?.Invoke("SSM",  hardwareState.componentStates["SSM"]);
         }
 
         // General Button Checking 

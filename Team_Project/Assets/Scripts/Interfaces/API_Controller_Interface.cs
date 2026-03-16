@@ -10,7 +10,7 @@ public interface API_Controller_Interface
     
     public event Action<int[]> OnNGMSubmit;
     public event Action<int[]> OnNGMChanged;
-    // Getters
+// Getters
     Dictionary<string, int> getComponentStateManager { get; }
     Vector3 getAccelerometerValue { get; }
     bool getHasAccelerometer { get; }

@@ -11,6 +11,7 @@ public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
     public event Action<int[]> OnNGMSubmit;
     public event Action<int[]> OnNGMChanged;
     
+    
     public event Action<int> OnFGMChanged; 
 
     private Dictionary<string, int> _componentStateManager = new Dictionary<string, int>();
