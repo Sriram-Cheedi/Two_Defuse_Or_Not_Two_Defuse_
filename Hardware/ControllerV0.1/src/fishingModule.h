@@ -18,6 +18,7 @@ class fishingModule : public Component {
     bool lockout = false;
 
     bool enabled = true;
+    bool scrambled = false;
 
     const unsigned int gameInterval = 500;
     unsigned long lastGameUpdate = 0;
@@ -86,4 +87,5 @@ public:
     void disable() override;
     void enable() override;
     void update() override;
+    void scramble() override;
 };

@@ -22,6 +22,7 @@ private:
     int digitsBuffer[4];
 
     bool enabled = true;
+    bool scrambled = false;
     
     const uint8_t segment_encodings[11] = {
         0b11111100, // 0
@@ -49,6 +50,7 @@ public:
 
     void enable() override;
     void disable() override;
+    void scramble() override;
 
     TimerModule(std::string name, int dataPin, int clockPin, int latchPin, SerialController serialController);
     void set(std::vector<std::string> args) override;
@@ -56,5 +58,6 @@ public:
 
     void setDigits(int* digits, bool colon);
     void update() override;
-  
+
+    bool getEnabled();
 };

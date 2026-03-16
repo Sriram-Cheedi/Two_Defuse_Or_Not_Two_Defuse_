@@ -34,6 +34,9 @@ public:
 
     void update() override;
 
+    void scramble() override{
+        disable();
+    };
     void enable() override;
     void disable() override;
     void set(std::vector<std::string> args) override;

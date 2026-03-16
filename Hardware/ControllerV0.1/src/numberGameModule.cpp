@@ -33,12 +33,13 @@ void numberGameModule::disable(){
     digitalWrite(latchPin, HIGH);
     
     enabled = false;
+    scrambled = false;
 }
 
 void numberGameModule::enable(){
 
     enabled = true;
-
+    scrambled = false;
 }
 
 void numberGameModule::reset(){
@@ -61,9 +62,16 @@ void numberGameModule::complete(){
     state = 2;
 }
 
+void numberGameModule::scramble(){
+    scrambled = true;
+    enabled = false;
+}
+
 void numberGameModule::set(std::vector<std::string> args){
     if(args.size() == 1){
         int newState = stoi(args[0]);
+
+        if (newState == state) return;
 
         if(newState == 0){
             state = 0;
@@ -150,7 +158,17 @@ void numberGameModule::update(){
     if (now - lastUpdate < refreshInterval) return;
     lastUpdate = now;
 
-    if(state == 0 || !enabled) return;
+    if(state == 0) return;
+
+    if(scrambled){
+        digitalWrite(latchPin, LOW);
+        shiftOut(dataPin, clockPin, LSBFIRST, static_cast<unsigned char>(rand() % 0xff));
+        shiftOut(dataPin, clockPin, LSBFIRST, static_cast<unsigned char>(rand() % 0xff));
+        digitalWrite(latchPin, HIGH);
+        return;
+    }
+
+    if(!enabled) return;
 
     for(auto& btn : buttons){
         if(state != 2){

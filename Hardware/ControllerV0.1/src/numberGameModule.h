@@ -24,6 +24,7 @@ private:
     SerialController serialController;
 
     bool enabled = true;
+    bool scrambled = false;
 
     unsigned long lastUpdate = 0;
     unsigned long buttonUpdate = 0;
@@ -74,6 +75,7 @@ public:
     void update() override;
     void reset();
     void complete();
+    void scramble() override;
 };
 
 #endif
