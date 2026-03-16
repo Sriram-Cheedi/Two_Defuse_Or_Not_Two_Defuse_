@@ -22,18 +22,18 @@ public class Maze_Trigger : MonoBehaviour
         while (gameActive)
         {
             API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[] {"\"\"", "\"\""});
-            yield return new WaitForSeconds(1.0f);
-            API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[] { "\"-- MAZE SEQ --\"", "\"--------------\"" });
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(0.25f);
+            API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[] { "\"--MAZE-SEQ--\"", "\"------------\"" });
+            yield return new WaitForSeconds(1f);
             for (int i = 0; i < maze_controller.data.correctSequence.Length / 2; i++)
             {
                 string v1 = GetDirectionString(maze_controller.data.correctSequence[i * 2]);
                 string v2 = GetDirectionString(maze_controller.data.correctSequence[i * 2 + 1]);
             
                 API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[] { $"\"{v1}\"", $"\"{v2}\"" });
-                yield return new WaitForSeconds(1.5f); 
+                yield return new WaitForSeconds(0.5f); 
                 API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[] {"\"\"", "\"\""}); // Blankline
-                yield return new WaitForSeconds(1f); 
+                yield return new WaitForSeconds(0.25f); 
             }
         }
     }

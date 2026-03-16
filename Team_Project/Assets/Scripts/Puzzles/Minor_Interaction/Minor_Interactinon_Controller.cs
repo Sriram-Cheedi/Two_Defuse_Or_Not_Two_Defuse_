@@ -24,11 +24,11 @@ namespace Puzzles.Minor_Interaction
         
         [SerializeField] public GameObject[] bars;
         [SerializeField] public GameObject barredDoor;
-
+        
         private Dictionary<String, int> barStates = new Dictionary<String, int>
         {
             { "SW1", 1 },
-            { "SW2", 1 },
+            { "SW2", 0 },
             { "SW3", 1 },
         };
         
@@ -119,7 +119,7 @@ namespace Puzzles.Minor_Interaction
     private void UpdateBarStatus(string header, int value)
     {
         Debug.Log("Updating bar status" +  header);
-        barStates[header] = value;
+        // barStates[header] = value;
 
         if (header == "SW1")
         {
@@ -127,7 +127,7 @@ namespace Puzzles.Minor_Interaction
             else bars[0].SetActive(false);
         } else if (header == "SW2")
         {
-            if (value == 1) bars[1].SetActive(true);
+            if (value == 0) bars[1].SetActive(true);
             else bars[1].SetActive(false);
         } else if (header == "SW3")
         {
@@ -135,20 +135,8 @@ namespace Puzzles.Minor_Interaction
             else bars[2].SetActive(false);
         }
 
-        bool blocked = false;
-        foreach (int state in barStates.Values)
-        {
-            if (state == 1)
-            {
-                blocked = true;
-                break;
-            }
-        }
-    
-        if (!blocked) 
-        {
-            SwingDoor(barredDoor);
-        }
+        if (barStates["SW1"] == 1 &&  barStates["SW2"] == 0 && barStates["SW3"] == 1) SwingDoor(barredDoor);
+        else barredDoor.SetActive(true);
     }
     
     }
