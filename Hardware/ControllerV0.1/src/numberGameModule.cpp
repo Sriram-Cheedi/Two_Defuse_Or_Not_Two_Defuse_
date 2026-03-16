@@ -71,6 +71,8 @@ void numberGameModule::set(std::vector<std::string> args){
     if(args.size() == 1){
         int newState = stoi(args[0]);
 
+        if (newState == state) return;
+
         if(newState == 0){
             state = 0;
             //start writing to the shift registers
