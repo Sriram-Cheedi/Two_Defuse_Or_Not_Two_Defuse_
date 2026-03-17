@@ -136,16 +136,15 @@ namespace Puzzles.Minor_Interaction
                     {
                         UpdateBarStatus("SW1", value);
                         if (value == 1) return;
-                        doorAnimaton.MoveBar(0, Vector3.forward);
-                        doorAnimaton.MoveBar(0, Vector3.forward);
+                        doorAnimaton.MoveBar(0, value);
+                        doorAnimaton.MoveBar(0, value);
                         correctPostion[0] = 1;
 
                     }
                     else
                     {
                         UpdateBarStatus("SW1", value);
-                        if (value == 1) doorAnimaton.MoveBar(0, Vector3.forward);
-                        else doorAnimaton.MoveBar(0, Vector3.back);
+                        if (value == 1) doorAnimaton.MoveBar(0, value);
                     }
 
                     break;
@@ -155,16 +154,15 @@ namespace Puzzles.Minor_Interaction
                     {
                         UpdateBarStatus("SW2", value);
                         if (value == 1) return;
-                        doorAnimaton.MoveBar(1, Vector3.forward);
-                        doorAnimaton.MoveBar(1, Vector3.forward);
+                        doorAnimaton.MoveBar(1, value);
+                        doorAnimaton.MoveBar(1, value);
                         correctPostion[1] = 1;
 
                     }
                     else
                     {
                         UpdateBarStatus("SW2", value);
-                        if (value == 1) doorAnimaton.MoveBar(1, Vector3.forward);
-                        else doorAnimaton.MoveBar(1, Vector3.back);
+                        if (value == 1) doorAnimaton.MoveBar(1, value);
                     }
 
                     // UpdateBarStatus("SW2", value);
@@ -178,16 +176,16 @@ namespace Puzzles.Minor_Interaction
                     {
                         UpdateBarStatus("SW3", value);
                         if (value == 1) return;
-                        doorAnimaton.MoveBar(2, Vector3.forward);
-                        doorAnimaton.MoveBar(2, Vector3.forward);
+                        doorAnimaton.MoveBar(2, value);
+                        doorAnimaton.MoveBar(2, value);
                         correctPostion[2] = 1;
 
                     }
                     else
                     {
                         UpdateBarStatus("SW3", value);
-                        if (value == 1) doorAnimaton.MoveBar(2, Vector3.forward);
-                        else doorAnimaton.MoveBar(2, Vector3.back);
+                        if (value == 1) doorAnimaton.MoveBar(2, value);
+                        else doorAnimaton.MoveBar(2, value);
                     }
 
 
