@@ -131,6 +131,7 @@ namespace Puzzles.Minor_Interaction
                     break;
 
                 case "SW1":
+                    if (hasDoorUnlocked) return;
                     if (barStates["SW1"] == -1)
                     {
                         UpdateBarStatus("SW1", value);
@@ -149,6 +150,7 @@ namespace Puzzles.Minor_Interaction
 
                     break;
                 case "SW2":
+                    if (hasDoorUnlocked) return;
                     if (barStates["SW2"] == -1)
                     {
                         UpdateBarStatus("SW2", value);
@@ -171,6 +173,7 @@ namespace Puzzles.Minor_Interaction
                     // else doorAnimaton.MoveBar(1, Vector3.back);
                     break;
                 case "SW3":
+                    if (hasDoorUnlocked) return;
                     if (barStates["SW3"] == -1)
                     {
                         UpdateBarStatus("SW3", value);
