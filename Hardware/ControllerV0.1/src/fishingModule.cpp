@@ -102,6 +102,7 @@ void fishingModule::scoreCheck(){
     lockout = true;
   }else{
     if(state == 1){
+        lastFishUpdate = millis();
         state = 2;
         status();
     }
