@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +12,6 @@ namespace Puzzles.Minor_Interaction
         {
             BTN1 = 5,
             BTN2 = 6,
-            
             SWT1 = 8,
             SWT2 = 9,
             SWT3 = 0,
@@ -24,6 +24,9 @@ namespace Puzzles.Minor_Interaction
         
         [SerializeField] public GameObject[] bars;
         [SerializeField] public GameObject barredDoor;
+        [SerializeField] private LevelData levelData;
+        [SerializeField] private BarredDoorAnimation doorAnimaton;
+        private bool hasDoorUnlocked;
         
         private Dictionary<String, int> barStates = new Dictionary<String, int>
         {
@@ -62,7 +65,7 @@ namespace Puzzles.Minor_Interaction
                 SwingDoor(spawnRoomDoor);
                 break;
             case  (int)MockButtonValues.BTN2:
-                DisableDeathLazer();
+                HandleDeathLazer();
                 break;
             
             case (int)MockButtonValues.SWT1:
@@ -88,8 +91,7 @@ namespace Puzzles.Minor_Interaction
             case "BTN2":
                 Debug.Log("Controller Recieved BTN2");
 
-                if (value == 1) DisableDeathLazer();
-                else deathLazer.SetActive(true);
+                if (value == 1) HandleDeathLazer();
                 break;
 
             case "SW1":
@@ -105,9 +107,16 @@ namespace Puzzles.Minor_Interaction
     }
     
     // Ingame Effects
-    private void DisableDeathLazer()
+    private void HandleDeathLazer()
+    {
+        StartCoroutine(DisableDeathLazer());
+    }
+
+    IEnumerator DisableDeathLazer()
     {
         deathLazer.SetActive(false);
+        yield return new WaitForSeconds(levelData.doorDelay);
+        deathLazer.SetActive(true);
     }
 
 
@@ -118,25 +127,51 @@ namespace Puzzles.Minor_Interaction
 
     private void UpdateBarStatus(string header, int value)
     {
+        if (hasDoorUnlocked) return;
+
         Debug.Log("Updating bar status" +  header);
-        // barStates[header] = value;
+        barStates[header] = value;
 
-        if (header == "SW1")
+        // if (header == "SW1")
+        // {
+        //     if (value ==0)
+        //     {
+        //         doorAnimaton.MoveBar(0, Vector3.back);
+        //     }
+        //     else
+        //     {
+        //         doorAnimaton.MoveBar(0, Vector3.forward);
+        //     }
+        // } else if (header == "SW2")
+        // {
+        //     if (value == 1)
+        //     {
+        //         doorAnimaton.MoveBar(1, Vector3.forward);
+        //     }
+        //     else
+        //     {
+        //         doorAnimaton.MoveBar(1, Vector3.back);
+        //     }
+        // } else if (header == "SW3")
+        // {
+        //     if (value == 0)
+        //     {
+        //         doorAnimaton.MoveBar(2, Vector3.back);
+        //     }
+        //     else
+        //     {
+        //         doorAnimaton.MoveBar(2, Vector3.forward);
+        //     }
+        // }
+        
+        if (barStates["SW1"] == 0 && barStates["SW2"] == 1 && barStates["SW3"] == 0 )
         {
-            if (value == 1) bars[0].SetActive(true);
-            else bars[0].SetActive(false);
-        } else if (header == "SW2")
-        {
-            if (value == 0) bars[1].SetActive(true);
-            else bars[1].SetActive(false);
-        } else if (header == "SW3")
-        {
-            if (value == 1) bars[2].SetActive(true);
-            else bars[2].SetActive(false);
+            doorAnimaton.MoveBar(0, Vector3.back);
+            doorAnimaton.MoveBar(1, Vector3.forward);
+            doorAnimaton.MoveBar(2, Vector3.back);
+            doorAnimaton.OpenDoor();
+            hasDoorUnlocked = true;
         }
-
-        if (barStates["SW1"] == 1 &&  barStates["SW2"] == 0 && barStates["SW3"] == 1) SwingDoor(barredDoor);
-        else barredDoor.SetActive(true);
     }
     
     }
