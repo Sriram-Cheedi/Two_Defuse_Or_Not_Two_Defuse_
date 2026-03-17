@@ -11,8 +11,6 @@ public class SmokeEmitter : MonoBehaviour
     private float currentAlpha;
     private bool shouldEmitSmoke;
     private bool wasEmitting;
-
-    
     
     private void Awake()
     {
@@ -56,7 +54,7 @@ public class SmokeEmitter : MonoBehaviour
             main.startColor = new ParticleSystem.MinMaxGradient(c);
         }
         if (smokeAudio != null)
-        {
+        { 
             if (shouldEmitSmoke && !wasEmitting)
             {
                 smokeAudio.Play();

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerInputRelay : MonoBehaviour
 {
     private PlayerInput input;
-    
+
     public event Action<Vector2> Move;
     public event Action<Vector2> Look;
     public event Action JumpPressed;
@@ -14,8 +14,9 @@ public class PlayerInputRelay : MonoBehaviour
     public event Action<bool> InvertGravity;
     public event Action<int> NumberPressed;
     public event Action<bool> SmokeReleased;
+    public event Action HudsPressed;
     public event Action GuessSubmitted;
-    private InputAction move, look, jump, crouch, invertGravity, enter, click, smoke;
+    private InputAction move, look, jump, crouch, invertGravity, enter, click, smoke, huds;
     private InputAction keypressNumbers;
 
     [SerializeField] private LayerMask interactableLayer;
@@ -29,8 +30,8 @@ public class PlayerInputRelay : MonoBehaviour
 
     void Awake()
     {
-        input =  GetComponent<PlayerInput>();
-        
+        input = GetComponent<PlayerInput>();
+
         click = input.actions["Attack"];
         move = input.actions["Move"];
         look = input.actions["Look"];
@@ -40,6 +41,7 @@ public class PlayerInputRelay : MonoBehaviour
         keypressNumbers = input.actions["NumKey"];
         enter = input.actions["Enter"];
         smoke = input.actions["Smoke"];
+        huds = input.actions["Huds"];
     }
 
     private void OnEnable()
@@ -48,23 +50,25 @@ public class PlayerInputRelay : MonoBehaviour
 
         move.performed += OnMove;
         move.canceled += OnMove;
-        
+
         look.performed += OnLook;
         look.canceled += OnLook;
-        
+
         jump.performed += OnJump;
         jump.canceled += OnJump;
-        
+
         crouch.performed += OnCrouch;
         crouch.canceled += OnCrouch;
-        
+
         invertGravity.performed += OnInvertGravity;
         invertGravity.canceled += OnInvertGravity;
-        
+
         smoke.performed += OnSmokeReleased;
-        
+
+        huds.performed += OnHudsPressed;
+
         keypressNumbers.performed += OnNumberInput;
-        
+
         enter.performed += OnEnter;
         enter.canceled += OnEnter;
     }
@@ -72,26 +76,28 @@ public class PlayerInputRelay : MonoBehaviour
     private void OnDisable()
     {
         click.performed -= OnClick;
-        
+
         move.performed -= OnMove;
         move.canceled -= OnMove;
-        
+
         look.performed -= OnLook;
         look.canceled -= OnLook;
-        
+
         jump.performed -= OnJump;
         jump.canceled -= OnJump;
-        
+
         crouch.performed -= OnCrouch;
         crouch.canceled -= OnCrouch;
-        
+
         invertGravity.performed -= OnInvertGravity;
         invertGravity.canceled -= OnInvertGravity;
-        
+
         smoke.performed -= OnSmokeReleased;
         
+        huds.performed -= OnHudsPressed;
+
         keypressNumbers.performed -= OnNumberInput;
-        
+
         enter.performed -= OnEnter;
         enter.canceled -= OnEnter;
     }
@@ -100,7 +106,7 @@ public class PlayerInputRelay : MonoBehaviour
     {
         Vector2 screenPosition = Mouse.current.position.ReadValue();
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
-        
+
         if (Physics.Raycast(ray, out RaycastHit hit, 10f))
         {
             hit.collider.GetComponent<Interactible_Interface>()?.Interact(hit);
@@ -143,7 +149,13 @@ public class PlayerInputRelay : MonoBehaviour
         SmokeReleased?.Invoke(SmokeValue);
     }
 
-    private void OnNumberInput(InputAction.CallbackContext ctx)
+    private void OnHudsPressed(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.performed) return;
+        HudsPressed?.Invoke();
+    }
+
+private void OnNumberInput(InputAction.CallbackContext ctx)
     {
         if (!ctx.ReadValueAsButton()) return;
         string keyname = ctx.control.name;
