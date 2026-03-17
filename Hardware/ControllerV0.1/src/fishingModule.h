@@ -22,7 +22,7 @@ class fishingModule : public Component {
     const unsigned int gameInterval = 500;
     unsigned long lastGameUpdate = 0;
 
-    const unsigned int fishInterval = 10000;
+    const unsigned int fishInterval = 15000;
     unsigned long lastFishUpdate = 0;
 
     const unsigned int hookInterval = 500;
