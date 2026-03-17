@@ -16,7 +16,6 @@ namespace Puzzles.Minor_Interaction
             SWT2 = 9,
             SWT3 = 0,
         }
-
         [SerializeField] public PlayerInputRelay relay;
         [SerializeField] public GameObject deathLazer;
         [SerializeField] public GameObject spawnRoomDoor;

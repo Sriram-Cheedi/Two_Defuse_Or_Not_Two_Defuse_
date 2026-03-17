@@ -301,6 +301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HardwareProvider
   useMockHardware: 0
+  hasAPIController: 0
 --- !u!1 &405129717
 GameObject:
   m_ObjectHideFlags: 0
