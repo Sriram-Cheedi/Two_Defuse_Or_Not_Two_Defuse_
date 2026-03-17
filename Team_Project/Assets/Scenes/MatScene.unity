@@ -20830,15 +20830,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.34
+      value: -4.2
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.19
+      value: -13.894
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.55
+      value: 36.612
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -490617,8 +490617,9 @@ MonoBehaviour:
   - {fileID: 1853785959}
   barredDoor: {fileID: 2040255343}
   levelData: {fileID: 11400000, guid: 635145c9625881440805c37de78cd884, type: 2}
+  barredDoorHinge: {fileID: 864518693}
+  spawnDoorHinge: {fileID: 504252472}
   doorAnimaton: {fileID: 2032550400}
-  spawndoorAnimaton: {fileID: 0}
 --- !u!1001 &1666323438
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -520799,10 +520800,6 @@ MonoBehaviour:
   - {fileID: 1477651320}
   - {fileID: 1181463665}
   - {fileID: 1853785960}
-  doorHinge: {fileID: 0}
-  spawn_room_doorHinge: {fileID: 0}
-  door: {fileID: 0}
-  spawn_room_door: {fileID: 0}
   barMoveDistance: 2
   barSpeed: 2
   doorAngle: 90
