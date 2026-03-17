@@ -12,7 +12,6 @@ class fishingModule : public Component {
     const int buttonPin;
 
     int hookPos = 4;
-    int points = 0;
     long randState = 0;
 
     bool lockout = false;
@@ -68,7 +67,7 @@ class fishingModule : public Component {
         0b0000000111,
     };
 
-    int state = 1; // 0 = Off, 1 = On correct position, 2 = On incorrect position
+    int state = 0; // 0 = Off, 1 = On correct position, 2 = On incorrect position
 
     SerialController serialController;
     Button btn;
