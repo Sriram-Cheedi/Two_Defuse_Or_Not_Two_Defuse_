@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,6 +25,7 @@ namespace Puzzles.Minor_Interaction
         
         [SerializeField] public GameObject[] bars;
         [SerializeField] public GameObject barredDoor;
+        [SerializeField] private LevelData levelData;
         
         private Dictionary<String, int> barStates = new Dictionary<String, int>
         {
@@ -62,7 +64,7 @@ namespace Puzzles.Minor_Interaction
                 SwingDoor(spawnRoomDoor);
                 break;
             case  (int)MockButtonValues.BTN2:
-                DisableDeathLazer();
+                HandleDeathLazer();
                 break;
             
             case (int)MockButtonValues.SWT1:
@@ -88,8 +90,7 @@ namespace Puzzles.Minor_Interaction
             case "BTN2":
                 Debug.Log("Controller Recieved BTN2");
 
-                if (value == 1) DisableDeathLazer();
-                else deathLazer.SetActive(true);
+                if (value == 1) HandleDeathLazer();
                 break;
 
             case "SW1":
@@ -105,9 +106,16 @@ namespace Puzzles.Minor_Interaction
     }
     
     // Ingame Effects
-    private void DisableDeathLazer()
+    private void HandleDeathLazer()
+    {
+        StartCoroutine(DisableDeathLazer());
+    }
+
+    IEnumerator DisableDeathLazer()
     {
         deathLazer.SetActive(false);
+        yield return new WaitForSeconds(levelData.doorDelay);
+        deathLazer.SetActive(true);
     }
 
 
