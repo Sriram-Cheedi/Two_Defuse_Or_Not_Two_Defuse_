@@ -34,8 +34,41 @@ cmd: function x y z ...
 | Command                            | Code                | Response             | Notes                                                                                  |
 |------------------------------------|---------------------|----------------------|----------------------------------------------------------------------------------------|
 | Get Status of number game          | $NGM:status#        | $NGM:status _submitting_ _dig1_ _dig2_ _dig3_ _dig4_# | Submitting: 0 = no, 1 = yes                           |
-| Set Status of number game          | $NGM:set _state_#   | None                 | See above                                                                              |
+| Set Status of number game          | $NGM:set _state_#   | None                 | State: 0 = Off, 1 = On                                                                              |
 | Reset number game with new sequence| $NGM:set _sequence_#| None                 | Sequence of format "dig1 dig2 dig3 dig4" where each element is a single digit 0-9. Sets state to 0. |
+
+## Fishing Game
+
+| Command                            | Code                | Response             | Notes                                                                                  |
+|------------------------------------|---------------------|----------------------|----------------------------------------------------------------------------------------|
+| Get Status of fishing game          | $FGM:status#        | $FGM:status _status_# | Status: 0 = Off, 1 = On (In correct position), 2 = On (In incorrect position)                           |
+| Set Status of fishing game          | $FGM:set _state_#   | None                 | State: 0 = Off, 1 = On                                                                              |
+
+## LCD Module
+
+| Command                            | Code                | Response             | Notes                                                                                  |
+|------------------------------------|---------------------|----------------------|----------------------------------------------------------------------------------------|
+| Get Status of LCD          | $LCD:status#        | $LCD:status "_TopLine_" "_BottomLine_"# | Quotes are included in response surrounding each argument                   |
+| Set Status of LCD          | $LCD:set "_TopLine_" "_BottomLine_"#   | None                 | Quotes are included in response surrounding each argument                   |
+
+## Button Component
+
+| Command                            | Code                | Response             | Notes                                                                                  |
+|------------------------------------|---------------------|----------------------|----------------------------------------------------------------------------------------|
+| Get Status of button               | $_BTN_:status#      | $_BTN_:status _state_# | BTN: name of button. State: 0 = Unpressed, 1 = Pressed                               |
+
+## Bomb Power
+
+| Command                            | Code                | Response             | Notes                                                                                  |
+|------------------------------------|---------------------|----------------------|----------------------------------------------------------------------------------------|
+| Get Status of power          | $PWR:status#        | $PWR:status _state_# | 0 = Not Powered, 1 = Powered                   |
+| Set Status of power          | $PWR:set _state_#   | None                 | See above                   |
+
+## Global Status Request
+
+| Command                            | Code                | Response             | Notes                                                                                  |
+|------------------------------------|---------------------|----------------------|----------------------------------------------------------------------------------------|
+| Get Status of all components       | $GLB:status#        | Status Response from all components |                                                               |
 
 ## Asynchronous Minigames
 
