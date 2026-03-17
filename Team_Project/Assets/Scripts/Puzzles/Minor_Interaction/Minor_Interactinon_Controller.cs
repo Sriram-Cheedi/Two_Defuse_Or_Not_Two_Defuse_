@@ -132,40 +132,43 @@ namespace Puzzles.Minor_Interaction
         Debug.Log("Updating bar status" +  header);
         barStates[header] = value;
 
-        if (header == "SW1")
-        {
-            if (value ==0)
-            {
-                doorAnimaton.MoveBar(0, Vector3.back);
-            }
-            else
-            {
-                doorAnimaton.MoveBar(0, Vector3.forward);
-            }
-        } else if (header == "SW2")
-        {
-            if (value == 1)
-            {
-                doorAnimaton.MoveBar(1, Vector3.forward);
-            }
-            else
-            {
-                doorAnimaton.MoveBar(1, Vector3.back);
-            }
-        } else if (header == "SW3")
-        {
-            if (value == 0)
-            {
-                doorAnimaton.MoveBar(2, Vector3.back);
-            }
-            else
-            {
-                doorAnimaton.MoveBar(2, Vector3.forward);
-            }
-        }
+        // if (header == "SW1")
+        // {
+        //     if (value ==0)
+        //     {
+        //         doorAnimaton.MoveBar(0, Vector3.back);
+        //     }
+        //     else
+        //     {
+        //         doorAnimaton.MoveBar(0, Vector3.forward);
+        //     }
+        // } else if (header == "SW2")
+        // {
+        //     if (value == 1)
+        //     {
+        //         doorAnimaton.MoveBar(1, Vector3.forward);
+        //     }
+        //     else
+        //     {
+        //         doorAnimaton.MoveBar(1, Vector3.back);
+        //     }
+        // } else if (header == "SW3")
+        // {
+        //     if (value == 0)
+        //     {
+        //         doorAnimaton.MoveBar(2, Vector3.back);
+        //     }
+        //     else
+        //     {
+        //         doorAnimaton.MoveBar(2, Vector3.forward);
+        //     }
+        // }
         
         if (barStates["SW1"] == 0 && barStates["SW2"] == 1 && barStates["SW3"] == 0 )
         {
+            doorAnimaton.MoveBar(0, Vector3.back);
+            doorAnimaton.MoveBar(1, Vector3.forward);
+            doorAnimaton.MoveBar(2, Vector3.back);
             doorAnimaton.OpenDoor();
             hasDoorUnlocked = true;
         }
