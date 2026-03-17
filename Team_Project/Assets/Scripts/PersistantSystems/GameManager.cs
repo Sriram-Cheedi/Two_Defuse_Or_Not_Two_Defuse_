@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour
         if (currentState == GameState.GameOver) return;
 
         currentState = GameState.GameOver;
+        API_Provider.Instance.ActiveAPIController.SendSet("PWR", 4);
         SceneManager.LoadScene("Explode");
         StartCoroutine(GameoverAnimation());
     }
