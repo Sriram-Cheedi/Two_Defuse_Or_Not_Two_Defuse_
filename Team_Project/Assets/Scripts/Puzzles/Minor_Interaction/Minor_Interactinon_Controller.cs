@@ -11,19 +11,19 @@ namespace Puzzles.Minor_Interaction
         {
             BTN1 = 5,
             BTN2 = 6,
-            
             SWT1 = 8,
             SWT2 = 9,
             SWT3 = 0,
         }
         
-        [SerializeField] public PlayerInputRelay relay;
-
-        [SerializeField] public GameObject deathLazer;
-        [SerializeField] public GameObject spawnRoomDoor;
+        [SerializeField] private PlayerInputRelay relay;
+        [SerializeField] private GameObject deathLazer;
+        [SerializeField] private GameObject spawnRoomDoor;
         
-        [SerializeField] public GameObject[] bars;
-        [SerializeField] public GameObject barredDoor;
+        [SerializeField] private GameObject[] bars;
+        [SerializeField] private GameObject barredDoor;
+        [SerializeField] private BarredDoorAnimation doorAnimaton;
+        private bool hasDoorUnlocked = false;
         
         private Dictionary<String, int> barStates = new Dictionary<String, int>
         {
@@ -66,13 +66,13 @@ namespace Puzzles.Minor_Interaction
                 break;
             
             case (int)MockButtonValues.SWT1:
-                UpdateBarStatus("SW1", 0);
+                UpdateBarStatus("SW1", 1);
                 break;
             case (int)MockButtonValues.SWT2:
-                UpdateBarStatus("SW2", 0);
+                UpdateBarStatus("SW2", 1);
                 break;
             case (int)MockButtonValues.SWT3:
-                UpdateBarStatus("SW3", 0);
+                UpdateBarStatus("SW3", 1);
                 break;
             
         }
@@ -118,25 +118,50 @@ namespace Puzzles.Minor_Interaction
 
     private void UpdateBarStatus(string header, int value)
     {
+        if (hasDoorUnlocked)
+        {
+            return;
+        }
         Debug.Log("Updating bar status" +  header);
-        // barStates[header] = value;
+        barStates[header] = value;
 
         if (header == "SW1")
         {
-            if (value == 1) bars[0].SetActive(true);
-            else bars[0].SetActive(false);
+            if (value ==0)
+            {
+                doorAnimaton.MoveBar(0, Vector3.back);
+            }
+            else
+            {
+                doorAnimaton.MoveBar(0, Vector3.forward);
+            }
         } else if (header == "SW2")
         {
-            if (value == 0) bars[1].SetActive(true);
-            else bars[1].SetActive(false);
+            if (value == 1)
+            {
+                doorAnimaton.MoveBar(1, Vector3.forward);
+            }
+            else
+            {
+                doorAnimaton.MoveBar(1, Vector3.back);
+            }
         } else if (header == "SW3")
         {
-            if (value == 1) bars[2].SetActive(true);
-            else bars[2].SetActive(false);
+            if (value == 0)
+            {
+                doorAnimaton.MoveBar(2, Vector3.back);
+            }
+            else
+            {
+                doorAnimaton.MoveBar(2, Vector3.forward);
+            }
         }
-
-        if (barStates["SW1"] == 1 &&  barStates["SW2"] == 0 && barStates["SW3"] == 1) SwingDoor(barredDoor);
-        else barredDoor.SetActive(true);
+        
+        if (barStates["SW1"] == 0 && barStates["SW2"] == 1 && barStates["SW3"] == 0 )
+        {
+            doorAnimaton.OpenDoor();
+            hasDoorUnlocked = true;
+        }
     }
     
     }
