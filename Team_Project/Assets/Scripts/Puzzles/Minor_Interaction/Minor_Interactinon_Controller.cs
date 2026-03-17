@@ -25,7 +25,11 @@ namespace Puzzles.Minor_Interaction
         [SerializeField] public GameObject[] bars;
         [SerializeField] public GameObject barredDoor;
         [SerializeField] private LevelData levelData;
+        
         [SerializeField] private BarredDoorAnimation doorAnimaton;
+        [SerializeField] private BarredDoorAnimation spawndoorAnimaton;
+
+        
         private bool hasDoorUnlocked;
         
         private Dictionary<String, int> barStates = new Dictionary<String, int>

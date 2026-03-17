@@ -1,4 +1,5 @@
 using System;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 
 public class SmokeManager : MonoBehaviour
@@ -7,6 +8,7 @@ public class SmokeManager : MonoBehaviour
     [SerializeField]private TrackRoom trackPlayerRoom;
     private bool smokeReleased;
     private SmokeEmitter lastRoomActive;
+    public bool isActive = false;
 
     private void Awake()
     {
@@ -32,15 +34,17 @@ public class SmokeManager : MonoBehaviour
     
     private void HandleSmoke(bool smoke)
     {
-        smokeReleased = smoke;
+        if (isActive) smokeReleased = smoke;
+        else isActive = false;
+        
         UpdateRoomSmoke();
     }
 
     private void OnSmokeReleased(String header, int value)
     {
-        Debug.Log("Smoke Released: " + value);
-        if (header == "FGM" && value == 2)
+        if (header == "FGM" && value == 2 && isActive)
         {
+            Debug.Log("Smoke Released: " + value);
             smokeReleased = true;
         } 
         else if (header == "FGM" && value == 1)

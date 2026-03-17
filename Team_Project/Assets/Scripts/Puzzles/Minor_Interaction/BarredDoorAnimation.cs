@@ -5,7 +5,10 @@ public class BarredDoorAnimation : MonoBehaviour
 {
     [SerializeField] private Transform[] bars;
     [SerializeField] private Transform doorHinge;
+    [SerializeField] private Transform spawn_room_doorHinge;
+    
     [SerializeField] private Transform door;
+    [SerializeField] private Transform spawn_room_door;
 
     [SerializeField] private float barMoveDistance = 2f;
     [SerializeField] private float barSpeed = 2f;
@@ -47,4 +50,17 @@ public class BarredDoorAnimation : MonoBehaviour
             yield return null;
         }
     }
+    
+    IEnumerator RotateSpawnDoor()
+    {
+        float rotated = 0;
+        while (rotated < 90f)
+        {
+            float step = 100f * Time.deltaTime;
+            door.RotateAround(spawn_room_doorHinge.position, Vector3.up, step);
+            rotated += step;
+            yield return null;
+        }
+    }
+    
 }
