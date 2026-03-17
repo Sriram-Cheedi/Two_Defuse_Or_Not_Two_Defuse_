@@ -126,7 +126,7 @@ void fishingModule::update(){
         }*/
 
         if(milli - lastFishUpdate > fishInterval){
-            randState = random(0,9);
+            randState = random(0,8);
             lastFishUpdate = milli;
         }
         uint32_t LEDBarState = (fishEncoding[randState] << 14) + (hookLED[hookPos] << 4);
