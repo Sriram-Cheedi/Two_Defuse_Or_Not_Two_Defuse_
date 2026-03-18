@@ -21,6 +21,18 @@ public class BarredDoorAnimation : MonoBehaviour
             originalPositions[i] = bars[i].localPosition;
         }
     }
+
+    
+    public void SnapMoveBar(int index)
+    {
+        Transform bar = bars[index];
+        Vector3 direction = Vector3.forward;
+        Vector3 targetPosition = originalPositions[index] + direction * barMoveDistance;
+
+        bar.localPosition = targetPosition;
+        originalPositions[index] = bar.localPosition + direction * barMoveDistance;
+    }
+
     public void MoveBar(int index, int state)
     {
         StartCoroutine(SlideBar(index, state));
@@ -35,7 +47,7 @@ public class BarredDoorAnimation : MonoBehaviour
         Transform bar = bars[index];
         Vector3 startPostion = bar.localPosition;
         Vector3 direction;
-        if (index == 1)
+        if (state == 1)
         {
             direction = Vector3.forward;
         }
@@ -53,6 +65,9 @@ public class BarredDoorAnimation : MonoBehaviour
         {
             targetPosition = originalPositions[index];
         }
+
+        Debug.Log("Index: " + index + "State: " + state + "Direction: " + direction + "Origin: " + originalPositions[index] + "Target: " + targetPosition);
+
         float step = 0;
         while (step < 1)
         {

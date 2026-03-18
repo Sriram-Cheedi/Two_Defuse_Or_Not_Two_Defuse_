@@ -136,15 +136,14 @@ namespace Puzzles.Minor_Interaction
                     {
                         UpdateBarStatus("SW1", value);
                         if (value == 1) return;
-                        doorAnimaton.MoveBar(0, value);
-                        doorAnimaton.MoveBar(0, value);
+                        doorAnimaton.SnapMoveBar(0);
                         correctPostion[0] = 1;
-
                     }
                     else
                     {
                         UpdateBarStatus("SW1", value);
                         if (value == 1) doorAnimaton.MoveBar(0, value);
+                        else doorAnimaton.MoveBar(0, value);
                     }
 
                     break;
@@ -154,15 +153,14 @@ namespace Puzzles.Minor_Interaction
                     {
                         UpdateBarStatus("SW2", value);
                         if (value == 1) return;
-                        doorAnimaton.MoveBar(1, value);
-                        doorAnimaton.MoveBar(1, value);
+                        doorAnimaton.SnapMoveBar(1);
                         correctPostion[1] = 1;
-
                     }
                     else
                     {
                         UpdateBarStatus("SW2", value);
                         if (value == 1) doorAnimaton.MoveBar(1, value);
+                        else doorAnimaton.MoveBar(1, value);
                     }
 
                     // UpdateBarStatus("SW2", value);
@@ -176,10 +174,8 @@ namespace Puzzles.Minor_Interaction
                     {
                         UpdateBarStatus("SW3", value);
                         if (value == 1) return;
-                        doorAnimaton.MoveBar(2, value);
-                        doorAnimaton.MoveBar(2, value);
+                        doorAnimaton.SnapMoveBar(2);
                         correctPostion[2] = 1;
-
                     }
                     else
                     {
