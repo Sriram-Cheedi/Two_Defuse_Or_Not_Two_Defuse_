@@ -12,13 +12,19 @@ btn("FGM1", buttonPin, serialController,[this](std::string name, int state){butt
 
 void fishingModule::reset(){
     hookPos = 9;
-    points = 0;
     randState = 0;
-    state = 1;
     lastGameUpdate = 0;
     lastFishUpdate = 0;
     lastHookUpdate = 0;
     lastButtonUpdate = 0;
+    int hasScored = fishPos[randState] & hookLED[hookPos];
+    if (hasScored > 0){
+        state = 1;
+    }
+    else{
+        state = 2;
+    }
+    status();
 }
 
 void fishingModule::scramble(){
@@ -96,6 +102,7 @@ void fishingModule::scoreCheck(){
     lockout = true;
   }else{
     if(state == 1){
+        lastFishUpdate = millis();
         state = 2;
         status();
     }
@@ -119,9 +126,7 @@ void fishingModule::update(){
         }*/
 
         if(milli - lastFishUpdate > fishInterval){
-            randState = random(0,9);
-            //randState++;
-            //if(randState > 11) randState = 0;
+            randState = random(0,8);
             lastFishUpdate = milli;
         }
         uint32_t LEDBarState = (fishEncoding[randState] << 14) + (hookLED[hookPos] << 4);
