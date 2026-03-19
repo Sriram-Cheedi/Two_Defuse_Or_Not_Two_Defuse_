@@ -3,6 +3,7 @@ using System.Collections;
 using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,8 +12,12 @@ public class GameManager : MonoBehaviour
     public double bombTimer = 25.0;
     public bool isGameOver = false;
 
-    public enum GameState { Menu, Playing, GameOver }
+    public enum GameState { Menu, CutScene, Playing, GameOver, GameWin }
     public GameState currentState = GameState.Menu;
+    [Header("Cutscene References")]
+    [SerializeField] private VideoPlayer cutscenePlayer;
+    [SerializeField] private GameObject cutsceneDisplay;
+    [SerializeField] private GameObject menuUI;
     [Header("Warning")]
     private AudioSource WarningAudio;
     
@@ -84,8 +89,35 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        if (currentState == GameState.Playing) return;
+        if (currentState == GameState.Playing || currentState == GameState.CutScene)
+            return;
 
+        currentState = GameState.CutScene;
+
+        
+
+        if (cutsceneDisplay != null)
+            cutsceneDisplay.SetActive(true);
+
+        if (cutscenePlayer != null)
+        {
+            cutscenePlayer.loopPointReached -= OnVideoFinished;
+            cutscenePlayer.loopPointReached += OnVideoFinished;
+            cutscenePlayer.Play();
+            if (menuUI != null)
+                menuUI.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("Cutscene player not assigned. Loading game directly.");
+            currentState = GameState.Playing;
+            SceneManager.LoadScene("MatScene");
+        }
+    }
+
+    private void OnVideoFinished(VideoPlayer vp)
+    {
+        cutscenePlayer.loopPointReached -= OnVideoFinished;
         currentState = GameState.Playing;
         SceneManager.LoadScene("MatScene");
     }
@@ -95,9 +127,19 @@ public class GameManager : MonoBehaviour
         if (currentState == GameState.GameOver) return;
 
         currentState = GameState.GameOver;
+        API_Provider.Instance.ActiveAPIController.SendSet("PWR", 4);
         SceneManager.LoadScene("Explode");
         StartCoroutine(GameoverAnimation());
     }
+
+    public void WinGame()
+    {
+        if (currentState == GameState.GameWin) return;
+        currentState = GameState.GameWin;
+        API_Provider.Instance.ActiveAPIController.SendSet("PWR", 4);
+        SceneManager.LoadScene("GameWin");
+    }
+    
 
     IEnumerator GameoverAnimation()
     {

@@ -9,6 +9,7 @@ public class Smoke_Trigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             smokeManager.isActive = true;
+            API_Provider.Instance.ActiveAPIController.SendSet("FGM", 1);
         }
     }
 }

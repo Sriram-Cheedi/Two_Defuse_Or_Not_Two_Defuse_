@@ -6,6 +6,7 @@ public class SmokeManager : MonoBehaviour
 {
     [SerializeField]private PlayerInputRelay relay;
     [SerializeField]private TrackRoom trackPlayerRoom;
+    [SerializeField] private GameObject smokeAlert;
     private bool smokeReleased;
     private SmokeEmitter lastRoomActive;
     public bool isActive = false;
@@ -42,16 +43,21 @@ public class SmokeManager : MonoBehaviour
 
     private void OnSmokeReleased(String header, int value)
     {
-        if (header == "FGM" && value == 2 && isActive)
+        if (isActive)
         {
-            Debug.Log("Smoke Released: " + value);
-            smokeReleased = true;
-        } 
-        else if (header == "FGM" && value == 1)
-        {
-            smokeReleased = false;
+            if (header == "FGM" && value == 2)
+            {
+                Debug.Log("Smoke Released: " + value);
+                smokeAlert.SetActive(true);
+                smokeReleased = true;
+            } 
+            else if (header == "FGM" && value == 1)
+            {
+                smokeAlert.SetActive(false);
+                smokeReleased = false;
+            }
+            UpdateRoomSmoke();
         }
-        UpdateRoomSmoke();
     }
     
     private void Update()
