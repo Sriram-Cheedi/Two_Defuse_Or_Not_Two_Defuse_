@@ -133,6 +133,14 @@ void parseCommand(std::string command){
         cmp->disable();
       }
       return;
+    }else if(std::stoi(func_args[1]) == 5){
+      pwr.enable();
+      pwr.update();
+      powerToggle("PWR", pwr.lastState);
+
+      LCD.set({"\"\"", "\"\""});
+
+      return;
     }
     powerToggle(name, std::stoi(func_args[1]));
   }

@@ -174,9 +174,7 @@ int SimonSaysModule::getInputSequence(){
     while(millis() - startTime < 3000){
 
         for(auto& btn : buttons){
-            btn.status();
             btn.update();
-            btn.status();
 
             if(pressedButton.load(std::memory_order_acquire) == -1){
                 continue;
