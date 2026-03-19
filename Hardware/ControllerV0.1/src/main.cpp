@@ -10,6 +10,7 @@
 #include "SimonSaysModule.h"
 #include "numberGameModule.h"
 #include "fishingModule.h"
+#include "Buzzer.h"
 
 SerialController serialController = SerialController();
 
@@ -20,6 +21,8 @@ Imu gyro = Imu("IMU", serialController);
 
 LCDModule LCD = LCDModule("LCD", serialController);
 
+Buzzer buzzer = Buzzer("BUZZER", 28, serialController, 50);
+
 int flickerThread = -1;
 
 void flickerOn(){
@@ -28,6 +31,7 @@ void flickerOn(){
       if(cmp->name != "IMU" &&
           cmp->name != "PWR") cmp->enable();
     }
+    tone(28, 50);
     uint32_t waitUntil = millis() + 50;
     while (millis() < waitUntil) threads.yield();
 
@@ -35,7 +39,7 @@ void flickerOn(){
       if(cmp->name != "IMU" &&
           cmp->name != "PWR") cmp->disable();
     }
-
+    noTone(28);
     waitUntil = millis() + 100;
     while (millis() < waitUntil) threads.yield();
   }
@@ -43,6 +47,8 @@ void flickerOn(){
   uint32_t waitUntil = millis() + 100;
   while (millis() < waitUntil) threads.yield();
   
+  tone(28, 50);
+
   for(const auto& cmp : components){
     cmp->enable();
   }
@@ -72,6 +78,15 @@ void powerToggle(std::string btnName, int btnState) {
   serialController.serialWrite("PWR", std::to_string(btnState));
 }
 
+void siren(std::string btnName, int btnState){
+  if(btnState == 0){
+    buzzer.sirenOff();
+  }else{
+    buzzer.sirenOn();
+  }
+}
+
+
 Button btn1 = Button("BTN1", 9, serialController);
 Button btn2 = Button("BTN2", 10, serialController);
 Button btn3 = Button("BTN3", 11, serialController);
@@ -81,12 +96,14 @@ Button pwr = Button("PWR", 7, serialController, powerToggle);
 
 Button sw1 = Button("SW1", 6, serialController);
 Button sw2 = Button("SW2", 5, serialController);
-Button sw3 = Button("SW3", 4, serialController);
+Button sw3 = Button("SW3", 4, serialController, siren);
 
 
 numberGameModule ngm = numberGameModule("NGM",33,35,34,{36,37,38,39,40}, serialController);
 fishingModule fgm = fishingModule("FGM",16,14,15,17,serialController);
 SimonSaysModule ssm = SimonSaysModule("SSM", {27, 26, 25, 24}, 0,  serialController);
+
+
 
 
 void powerGame(){
@@ -178,7 +195,7 @@ void setup() {
   components.push_back(&sw2);
   components.push_back(&sw3);
   components.push_back(&LCD);
-
+  components.push_back(&buzzer);
 
   LCD.LCDSetup();
 
