@@ -136,7 +136,6 @@ void parseCommand(std::string command){
     }else if(std::stoi(func_args[1]) == 5){
       pwr.enable();
       pwr.update();
-      Serial.print(pwr.lastState);
       powerToggle("PWR", pwr.lastState);
 
       LCD.set({"\"\"", "\"\""});
