@@ -117,7 +117,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         {
             Debug.LogError("Error: Unable to set serial Controller for REAL API_Controller");
         }
-        
+        SendSet("PWR", 5);
         // Getting inital states of hardware
         RequestStatus("GLB");
     }

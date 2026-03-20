@@ -8,7 +8,7 @@ namespace Puzzles.Controllers
         public PuzzleData data = new PuzzleData 
         { 
             guessSequence = new int[4], 
-            correctSequence = GenerateSequence(4, 4),
+            correctSequence = GenerateSequence(6, 4),
         };
     
         public PuzzleData getData => data;
