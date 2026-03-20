@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Firebase;
 using Firebase.Database;
@@ -61,7 +62,9 @@ public class DatabaseAPI: MonoBehaviour
         if (reference == null) return topScores;
         try
         {
-            var snapshot = await reference.Child("users").GetValueAsync();
+            var query = reference.Child("users").OrderByChild("score").LimitToLast(5);
+            
+            var snapshot = await query.GetValueAsync();
 
             if (snapshot.Exists && snapshot.HasChildren)
             {
@@ -75,6 +78,8 @@ public class DatabaseAPI: MonoBehaviour
                     topScores.Add((playerName, playerScore, playerName));
                     
                 }
+                topScores.Reverse();
+                
                 Debug.Log($"Found {topScores.Count} Scores");
             }
         }
@@ -82,7 +87,8 @@ public class DatabaseAPI: MonoBehaviour
         {
             Debug.LogError("Database error: " + e.Message);
         }
-        return topScores; 
+
+        return topScores;
     }
 
     private void CheckAndUpdateUser(string userId, string username, string score) 
