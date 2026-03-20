@@ -15,7 +15,7 @@ namespace Puzzles.Controllers
             isSafeTile = safeTile;
         }
 
-        private void Awake()
+        private void Awake() 
         {
             spawnManager = GameObject.FindGameObjectWithTag("Respawn").GetComponent<SpawnManager>();
         }
@@ -28,7 +28,6 @@ namespace Puzzles.Controllers
                 {
                     spawnManager.OnRespawn();
                 }
-                Debug.Log("Hit tile" + isSafeTile);
             }
         }
     }
