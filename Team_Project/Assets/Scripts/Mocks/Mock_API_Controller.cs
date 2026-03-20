@@ -64,6 +64,10 @@ public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
     }
 
     public void HandleMessage(string message) => Debug.Log($"<color=orange>MOCK: Handle Message</color>");
+    public void SendMazeSeq(string header, string value)
+    {
+    }
+
     public void SendSet(string header, int value) => Debug.Log("<color=orange>MOCK: SendSet: </color>" + header + ":set " + value + "#");
     public void SendSetSeq(string header, int[] value) => Debug.Log("<color=orange>MOCK: SendSetSeq: </color>" + header + ":set " + value + "#");
     public void SendSetSeqSTRING(string header, string[] value) =>  Debug.Log("<color=orange>MOCK: SendSetSeqSTRING: </color>" + header + ":set " + value + "#");

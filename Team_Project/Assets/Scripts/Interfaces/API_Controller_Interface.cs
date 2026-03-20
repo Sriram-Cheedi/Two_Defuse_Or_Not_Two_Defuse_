@@ -27,6 +27,7 @@ public interface API_Controller_Interface
     public int GetSSMStatus();
     public void SendSetSeq(string header, int[] value);
     public void SendSetSeqSTRING(string header, string[] value);
+    public void SendMazeSeq(string header, string value);
     public void SendSet(string header, int value);
     public void TimerSet(int seconds);
     public void TimerFlash(int times, int delay);
