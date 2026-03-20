@@ -12,6 +12,5 @@ public class HighscoreManager : MonoBehaviour
     void Start()
     {
         dbManager = FindObjectOfType<DatabaseManager>();
-        canvasText.text = "Hi, it's me!";
     }
 }

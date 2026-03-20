@@ -35,7 +35,7 @@ public class DatabaseManager: MonoBehaviour
             
             Debug.Log("Firebase is ready and Database is connected!");
             
-            CheckAndUpdateUser("test_user_123", "PlayerOne", "100"); 
+            CheckAndUpdateUser("test_user_12345", "PlayerTwo", "100"); 
         } 
         else 
         {
