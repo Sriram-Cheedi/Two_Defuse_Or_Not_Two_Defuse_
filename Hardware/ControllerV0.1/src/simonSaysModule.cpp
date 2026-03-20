@@ -18,15 +18,22 @@ SimonSaysModule::SimonSaysModule(std::string name, std::vector<int> buttonPins, 
 }
 
 void SimonSaysModule::update(){
-
-    if(pixelBufferMutex.try_lock()){
+    if(!scrambled){
+        if(pixelBufferMutex.try_lock()){
+            for(int i = 0; i < 4; i++){
+                strip.setPixel(i, pixelBuffer[i]);
+            }
+            strip.show();
+            pixelBufferMutex.unlock();
+        }
+    }else if(state != 0 && millis() - lastScrambleUpdate > 50) {
+        lastScrambleUpdate = millis();
         for(int i = 0; i < 4; i++){
-            strip.setPixel(i, pixelBuffer[i]);
+            int j = rand() % 4;
+            strip.setPixel(i, colourMap[j]);
         }
         strip.show();
-        pixelBufferMutex.unlock();
     }
-
     int newState = state.load(std::memory_order_acquire);
 
     if(newState != oldState){
@@ -34,6 +41,12 @@ void SimonSaysModule::update(){
         status();
     }
 
+}
+
+void SimonSaysModule::scramble(){
+    disable();
+    strip.setBrightness(50);
+    scrambled = true;
 }
 
 void SimonSaysModule::buttonPressed(std::string btnName, int btnState){
@@ -103,12 +116,16 @@ void SimonSaysModule::disable(){
     setPixelBuffer({strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0), strip.Color(0, 0, 0)});    
 
     enabled = false;
+    scrambled = false;
+    strip.setBrightness(100);
 }
 
 void SimonSaysModule::enable(){
     
     enabled = true;
-
+    scrambled = false;
+    strip.setBrightness(100);
+    
     if(state.load(std::memory_order_acquire) == 0) return;
 
     if(threadID != -1){
@@ -157,9 +174,7 @@ int SimonSaysModule::getInputSequence(){
     while(millis() - startTime < 3000){
 
         for(auto& btn : buttons){
-            btn.status();
             btn.update();
-            btn.status();
 
             if(pressedButton.load(std::memory_order_acquire) == -1){
                 continue;

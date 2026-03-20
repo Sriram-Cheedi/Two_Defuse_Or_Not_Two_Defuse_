@@ -44,28 +44,32 @@ public class PuzzleManager : MonoBehaviour
     
     private IEnumerator Start()
     {
-        ssm_controller.data.OnSuccess += HandleSSMVictory;
-        ngm_controller.data.OnSuccess += HandleNGMVictory;
-        
         yield return new WaitUntil(() => 
                 API_Provider.Instance != null && 
                 API_Provider.Instance.ActiveAPIController != null && 
                 API_Provider.Instance.hasAPIController
         );
         
-        
         // Send all Puzzle info AFTER 
         API_Provider.Instance.ActiveAPIController.SendSetSeq("SSM", ssm_controller.data.correctSequence);
         API_Provider.Instance.ActiveAPIController.SendSetSeq("NGM", ngm_controller.data.correctSequence);
         API_Provider.Instance.ActiveAPIController.SendSet("SSM", 1);
-        API_Provider.Instance.ActiveAPIController.SendSet("FGM", 1);
+        API_Provider.Instance.ActiveAPIController.SendSet("FGM", 0);
+        
+        // This is subscriptions for the software side of each puzzle. Triggers off hardware will be handled through the API not Actions such as this
+        ssm_controller.data.OnSuccess += S_HandleSSMVictory;
+        ngm_controller.data.OnSuccess += HandleNGMVictory;
+
+        API_Provider.Instance.ActiveAPIController.OnInputChanged += H_HandleSSMVictory;
+        
+        Debug.Log("Subscriptions Successful!");
+
     }
     
-    
     // Global Changes if correct
-    private void HandleSSMVictory()
+    private void S_HandleSSMVictory()
     {
-        Debug.Log("SSM Solved!");
+        Debug.Log("Software SSM Solved!");
         // Link Lighting and Alarms and stuff to this 
         SSM_Completed?.Invoke(); 
         API_Provider.Instance.ActiveAPIController.SendSet("SSM", 2); // Alert Hardware that puzzle has been completed (Edge case where software guesses before Hardware complete)
@@ -74,6 +78,18 @@ public class PuzzleManager : MonoBehaviour
         // Activate NGM Puzzle after SSM Completed
         API_Provider.Instance.ActiveAPIController.SendSet("NGM", 1);
     }
+    
+    private void H_HandleSSMVictory(string header, int value)
+    {
+        if (header == "SSM" && value == 2)
+        {
+            Debug.Log("Hardware SSM Solved!");
+
+            // Activate NGM Puzzle after SSM Completed - Not invoking SSM_Completed as this is software event when correct seq is inputted
+            API_Provider.Instance.ActiveAPIController.SendSet("NGM", 1);
+        }
+    }
+    
     
     // Global Changes if correct
     private void HandleNGMVictory()

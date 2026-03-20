@@ -21,7 +21,8 @@ Component(name), pin(pin), serialController(serialController), onPressed(onPress
 }
 
 void Button::status(){
-    update();
+    int currentState = digitalRead(pin);
+    serialController.serialWrite(name, std::to_string(currentState));
 }
 
 void Button::set(std::vector<std::string> args){return;}

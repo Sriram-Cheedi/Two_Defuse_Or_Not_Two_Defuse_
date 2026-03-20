@@ -14,11 +14,13 @@ TimerModule::TimerModule(std::string name, int dataPin, int clockPin, int latchP
 void TimerModule::enable(){
 
     enabled = true;
+    scrambled = false;
 
 }
 
 void TimerModule::disable(){
     
+    scrambled = false;
     enabled = false;
 
     //start writing to the shift registers
@@ -66,6 +68,13 @@ void TimerModule::setDigits(int* digits, bool colon){
     colonEnabled = colon;
 }
 
+void TimerModule::scramble(){
+    scrambled = true;
+}
+
+bool TimerModule::getEnabled(){
+    return enabled;
+}
 
 void TimerModule::update(){
 
@@ -77,17 +86,24 @@ void TimerModule::update(){
 
     digitalWrite(latchPin, LOW);
 
-    if (currentDigit < 4){  // Show Digit
-        shiftOut(dataPin, clockPin, LSBFIRST, digit_encodings[currentDigit]);
-        shiftOut(dataPin, clockPin, LSBFIRST, segment_encodings[digitsBuffer[currentDigit]]);
-    } else if (currentDigit == 4 && colonEnabled){  // Show Colon
-        shiftOut(dataPin, clockPin, LSBFIRST, digit_encodings[4]);
-        shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
-    }
-    else{
-        currentDigit = 0;
+    if(!scrambled){
+        if (currentDigit < 4){  // Show Digit
+            shiftOut(dataPin, clockPin, LSBFIRST, digit_encodings[currentDigit]);
+            shiftOut(dataPin, clockPin, LSBFIRST, segment_encodings[digitsBuffer[currentDigit]]);
+        } else if (currentDigit == 4 && colonEnabled){  // Show Colon
+            shiftOut(dataPin, clockPin, LSBFIRST, digit_encodings[4]);
+            shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
+        }
+        else{
+            currentDigit = 0;
+            digitalWrite(latchPin, HIGH);
+            return;
+        }
+    }else{
+        digitalWrite(latchPin, LOW);
+        shiftOut(dataPin, clockPin, LSBFIRST, static_cast<unsigned char>(rand() % 0xff));
+        shiftOut(dataPin, clockPin, LSBFIRST, static_cast<unsigned char>(rand() % 0xff));
         digitalWrite(latchPin, HIGH);
-        return;
     }
 
     digitalWrite(latchPin, HIGH);

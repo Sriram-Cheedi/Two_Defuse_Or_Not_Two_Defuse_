@@ -12,10 +12,10 @@ public class TriggerZone : MonoBehaviour
     {
         if (zoneName == "Mouse")
         {
-            manager.MouseInstructionCard();
+            // manager.MouseInstructionCard();
         } else if (zoneName == "Jump")
         {
-            manager.JumpInstructionCard();
+            // manager.JumpInstructionCard();
         }
         gameObject.SetActive(false);
     }

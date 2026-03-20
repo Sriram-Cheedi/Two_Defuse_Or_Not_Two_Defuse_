@@ -12,17 +12,17 @@ class fishingModule : public Component {
     const int buttonPin;
 
     int hookPos = 4;
-    int points = 0;
     long randState = 0;
 
     bool lockout = false;
 
     bool enabled = true;
+    bool scrambled = false;
 
     const unsigned int gameInterval = 500;
     unsigned long lastGameUpdate = 0;
 
-    const unsigned int fishInterval = 10000;
+    const unsigned int fishInterval = 15000;
     unsigned long lastFishUpdate = 0;
 
     const unsigned int hookInterval = 500;
@@ -67,7 +67,7 @@ class fishingModule : public Component {
         0b0000000111,
     };
 
-    int state = 1; // 0 = Off, 1 = On correct position, 2 = On incorrect position
+    int state = 0; // 0 = Off, 1 = On correct position, 2 = On incorrect position
 
     SerialController serialController;
     Button btn;
@@ -86,4 +86,5 @@ public:
     void disable() override;
     void enable() override;
     void update() override;
+    void scramble() override;
 };
