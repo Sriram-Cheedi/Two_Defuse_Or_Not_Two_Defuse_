@@ -31,7 +31,6 @@ void flickerOn(){
       if(cmp->name != "IMU" &&
           cmp->name != "PWR") cmp->enable();
     }
-    tone(28, 50);
     uint32_t waitUntil = millis() + 50;
     while (millis() < waitUntil) threads.yield();
 
@@ -39,15 +38,12 @@ void flickerOn(){
       if(cmp->name != "IMU" &&
           cmp->name != "PWR") cmp->disable();
     }
-    noTone(28);
     waitUntil = millis() + 100;
     while (millis() < waitUntil) threads.yield();
   }
 
   uint32_t waitUntil = millis() + 100;
   while (millis() < waitUntil) threads.yield();
-  
-  tone(28, 50);
 
   for(const auto& cmp : components){
     cmp->enable();
