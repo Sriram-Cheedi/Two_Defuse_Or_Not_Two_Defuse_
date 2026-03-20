@@ -18,6 +18,8 @@ class LCDModule : public Component {
     std::string tempTopText = "";
     std::string tempBottomText = "";
 
+    std::vector<std::string> textList = std::vector<std::string>();
+
     bool enabled = true;
     bool changed = false;
 public:
