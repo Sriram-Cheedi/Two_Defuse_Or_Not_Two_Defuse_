@@ -12,14 +12,27 @@ private:
 
     int state = 0;
 
-    const unsigned long delay = 0;
+    const unsigned long beepDelay = 10;
     unsigned long lastBeep = 0;
+
+    const unsigned long notificationDelay = 1000;
+    unsigned long lastNotification = 0;
+
+    unsigned long delay = 500;
+    unsigned long lastDelay = 0;
+
+    int duration = 0;
+    int beepNum = 0;
 
     bool enabled = true;
     bool siren = false;
+    bool notificationPlay = false;
+    bool pause = false;
+
     int pitch = 50;
 
     bool rise = true;
+    bool onChange = true;
 
 public:
 
@@ -30,6 +43,8 @@ public:
     void sirenOn();
 
     void sirenOff();
+
+    void notification();
 
     void enable() override;
     void disable() override;

@@ -26,11 +26,21 @@ void Buzzer::set(std::vector<std::string> args){
 void Buzzer::sirenOn(){
     siren = true;
     pitch = 800;
+    onChange = true;
 }
 
 void Buzzer::sirenOff(){
     siren = false;
     pitch = 50;
+    onChange = true;
+}
+
+void Buzzer::notification(){
+    notificationPlay = true;
+    duration = 0;
+    pause = false;
+    beepNum = 0;
+    pitch = 550;
 }
 
 void Buzzer::update(){
@@ -39,20 +49,62 @@ void Buzzer::update(){
 
     if(siren){
         int now = millis();
-        if(now - lastBeep < delay) return;
+        if(now - lastBeep < beepDelay) return;
         if(rise){
             pitch += 50;
+            onChange = true;
             if(pitch > 1500) rise = false;
         }
         else{
             pitch -= 50;
+            onChange = true;
             if(pitch < 800) rise = true;
         }
         lastBeep = now;
+
+    }
+    else if(notificationPlay){
+        int now = millis();
+        if (!pause) {
+            if (now - lastDelay >= 200) {
+                lastDelay = now;
+
+                if (beepNum % 2 == 0) {
+                    pitch = 550;
+                    onChange = true;
+                } else {
+                    pitch = 50;
+                    onChange = true;
+                }
+
+                beepNum++;
+
+                if (beepNum >= 5) {
+                    beepNum = 0;
+                    pause = true;
+                    pitch = 50;
+                    onChange = true;
+                }
+            }
+        } else {
+            if (now - lastDelay >= 1000) {
+                pause = false;
+                lastDelay = now;
+                duration += 1;
+
+                if(duration > 4){
+                    duration = 0;
+                    notificationPlay = false;
+                    pitch = 50;
+                    onChange = true;
+                }
+            }
+        }
     }
 
-    tone(pin, pitch);
-
-
+    if(onChange){
+        tone(pin,pitch);
+        onChange = false;
+    }
 }
-
+ 

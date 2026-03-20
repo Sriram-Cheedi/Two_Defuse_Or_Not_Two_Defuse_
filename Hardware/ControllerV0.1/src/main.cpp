@@ -86,6 +86,10 @@ void siren(std::string btnName, int btnState){
   }
 }
 
+void startNotification(std::string btnName, int btnState){
+  if(btnState == 1) buzzer.notification();
+}
+
 
 Button btn1 = Button("BTN1", 9, serialController);
 Button btn2 = Button("BTN2", 10, serialController);
@@ -96,7 +100,7 @@ Button pwr = Button("PWR", 7, serialController, powerToggle);
 
 Button sw1 = Button("SW1", 6, serialController);
 Button sw2 = Button("SW2", 5, serialController);
-Button sw3 = Button("SW3", 4, serialController, siren);
+Button sw3 = Button("SW3", 4, serialController);
 
 
 numberGameModule ngm = numberGameModule("NGM",33,35,34,{36,37,38,39,40}, serialController);
@@ -181,6 +185,7 @@ void parseCommand(std::string command){
 }
 
 void setup() {
+  components.push_back(&buzzer);
   components.push_back(&timer);
   components.push_back(&gyro);  
   components.push_back(&ssm);
@@ -195,7 +200,7 @@ void setup() {
   components.push_back(&sw2);
   components.push_back(&sw3);
   components.push_back(&LCD);
-  components.push_back(&buzzer);
+  
 
   LCD.LCDSetup();
 
