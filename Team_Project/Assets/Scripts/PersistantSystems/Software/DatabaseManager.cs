@@ -20,7 +20,6 @@ public class DatabaseManager: MonoBehaviour
 {
     private DatabaseReference reference;
     
-    // Paste the URL you copied from the Firebase Console here!
     private string databaseURL = "https://teamproject-c1ec1-default-rtdb.europe-west1.firebasedatabase.app/";
     
     async void Start() 

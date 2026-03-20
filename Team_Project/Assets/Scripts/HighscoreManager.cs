@@ -12,5 +12,6 @@ public class HighscoreManager : MonoBehaviour
     void Start()
     {
         dbManager = FindObjectOfType<DatabaseManager>();
+        if (dbManager == null) Debug.LogError("Database Manager not found");
     }
 }
