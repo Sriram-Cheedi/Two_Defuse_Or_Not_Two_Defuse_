@@ -54,7 +54,7 @@ public class DatabaseAPI: MonoBehaviour
                 var db = FirebaseDatabase.GetInstance(DatabaseURL);
                 reference = db.RootReference;
 
-                Debug.Log("Firebase is ready and Database is connected!");
+                Debug.Log("db Connected");
 
                 if (mockPopulateDatabase) MockPopulateDatabase();
 
@@ -95,8 +95,6 @@ public class DatabaseAPI: MonoBehaviour
                     
                 }
                 topScores.Reverse();
-                
-                Debug.Log($"Found {topScores.Count} Scores");
             }
         }
         catch (Exception e)

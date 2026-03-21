@@ -113,7 +113,7 @@ namespace Puzzles.Controllers
         {
             data.completed = true;
             TriggerSuccess(this.gameObject);
-        }
+        } else TriggerFailure(this.gameObject);
     }
 
     private void DigitMisplaced(bool[] solutionSlotUsed, bool[] guessSlotUsed)

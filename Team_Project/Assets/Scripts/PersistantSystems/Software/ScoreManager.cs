@@ -1,5 +1,6 @@
 using System;
 using Puzzles;
+using Puzzles.Controllers;
 using UnityEngine;
 
 namespace PersistantSystems.Software
@@ -7,7 +8,7 @@ namespace PersistantSystems.Software
     public class ScoreManager : MonoBehaviour
     {
         private int deathCount = 0;
-        public string username;
+        public string username = "Unknown";
         private DatabaseAPI dbAPI;
         
         private int puzzleScores = 0;
@@ -22,6 +23,7 @@ namespace PersistantSystems.Software
         
         public void OnUsernameEntered(string newUsername)
         {
+            if (string.IsNullOrEmpty(newUsername)) return;
             username = newUsername;
             Debug.Log("Username entered: " + username);
         }
@@ -50,9 +52,12 @@ namespace PersistantSystems.Software
 
         private void FailPuzzle(GameObject puzzle)
         {
-            Debug.Log("Subtracting Score");
-
-            puzzleScores -= 20;
+            int subtractVal = 0;
+            if (puzzle.GetComponent<SSM_Controller>() != null) subtractVal = 20;
+            else if (puzzle.GetComponent<NGM_Controller>() != null) subtractVal = 10;
+            
+            Debug.Log($"Subtracting {subtractVal}");
+            puzzleScores -= subtractVal;
         }
         
         private void CompletePuzzle(GameObject puzzle)

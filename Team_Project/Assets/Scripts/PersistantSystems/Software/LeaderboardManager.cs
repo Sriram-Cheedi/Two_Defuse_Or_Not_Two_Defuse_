@@ -37,12 +37,10 @@ namespace PersistantSystems.Software
                 {
                     if (i >= topScores.Count)
                     {
-                        Debug.Log($"Despawning ScoreTile {i}");
                         scoreTiles[i].SetActive(false);
                     }
                     else
                     {
-                        Debug.Log($"Setting ScoreTile {i}");
                         scoreTiles[i].GetComponent<ScoreTile>().SetData(topScores[i].Item1, topScores[i].Item2);
                     }
                 }
