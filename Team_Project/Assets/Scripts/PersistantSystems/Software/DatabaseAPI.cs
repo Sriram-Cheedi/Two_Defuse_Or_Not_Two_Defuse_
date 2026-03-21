@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Firebase;
+using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
 using UnityEngine;
@@ -32,6 +33,8 @@ public class DatabaseAPI: MonoBehaviour
     
     [SerializeField] private bool mockPopulateDatabase = false;
     
+    private FirebaseAuth auth;
+    private FirebaseUser currentUser;
     
     private async void Awake() 
     {
@@ -51,14 +54,7 @@ public class DatabaseAPI: MonoBehaviour
 
             if (dependencyStatus == DependencyStatus.Available)
             {
-                var db = FirebaseDatabase.GetInstance(DatabaseURL);
-                reference = db.RootReference;
-
-                Debug.Log("db Connected");
-
-                if (mockPopulateDatabase) MockPopulateDatabase();
-
-                OnFirebaseInitialized?.Invoke();
+                InitializeFirebaseAuthentication();
             }
             else
             {
@@ -70,6 +66,40 @@ public class DatabaseAPI: MonoBehaviour
             Debug.LogError("Exception during db initialization: " + e.Message);
         }
     }
+    
+    private void InitializeFirebaseAuthentication()
+    {
+        auth = FirebaseAuth.DefaultInstance;
+
+        auth.SignInAnonymouslyAsync().ContinueWithOnMainThread(task => {
+            if (task.IsCanceled) {
+                Debug.LogError("SignInAnonymouslyAsync was canceled.");
+                return;
+            }
+            if (task.IsFaulted) {
+                Debug.LogError("SignInAnonymouslyAsync encountered an error: " + task.Exception);
+                return;
+            }
+
+            currentUser = task.Result.User;
+            Debug.Log($"User signed in anonymously. Auth ID: {currentUser.UserId}");
+
+            InitializeDatabase();
+        });
+    }
+
+    private void InitializeDatabase()
+    {
+        var db = FirebaseDatabase.GetInstance(DatabaseURL);
+        reference = db.RootReference;
+
+        Debug.Log("db Connected");
+
+        if (mockPopulateDatabase) MockPopulateDatabase();
+
+        OnFirebaseInitialized?.Invoke();
+    }
+    
 
     public async Task<List<(string, int)>> GetScoresAsync()
     {
