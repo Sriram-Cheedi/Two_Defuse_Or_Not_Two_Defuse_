@@ -12,10 +12,10 @@ namespace PersistantSystems.Software
     [Serializable]
     public class User {
     public string username = string.Empty;
-    public string score = string.Empty;
+    public int score = 0;
 
     public User() {}
-    public User(string username, string score) {
+    public User(string username, int score) {
         this.username = username;
         this.score = score;
     }
@@ -23,14 +23,30 @@ namespace PersistantSystems.Software
 
 public class DatabaseAPI: MonoBehaviour
 {
+    
+    public static DatabaseAPI Instance { get; private set; }
+    
     public event Action OnFirebaseInitialized;
     private const string DatabaseURL = "https://teamproject-c1ec1-default-rtdb.europe-west1.firebasedatabase.app/";
     private DatabaseReference reference;
+    
+    [SerializeField] private bool mockPopulateDatabase = false;
+    
     
     private async void Awake() 
     {
         try
         {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+                return;
+            }
+            
             var dependencyStatus = await FirebaseApp.CheckAndFixDependenciesAsync();
 
             if (dependencyStatus == DependencyStatus.Available)
@@ -40,7 +56,7 @@ public class DatabaseAPI: MonoBehaviour
 
                 Debug.Log("Firebase is ready and Database is connected!");
 
-                MockPopulateDatabase();
+                if (mockPopulateDatabase) MockPopulateDatabase();
 
                 OnFirebaseInitialized?.Invoke();
             }
@@ -55,9 +71,9 @@ public class DatabaseAPI: MonoBehaviour
         }
     }
 
-    public async Task<List<(string, string, string)>> GetScoresAsync()
+    public async Task<List<(string, int)>> GetScoresAsync()
     {
-        List<(string, string, string)> topScores = new();
+        List<(string, int)> topScores = new();
 
         if (reference == null) return topScores;
         try
@@ -73,9 +89,9 @@ public class DatabaseAPI: MonoBehaviour
                     if (!childSnapshot.HasChild("username") || !childSnapshot.HasChild("score")) continue;
                     
                     var playerName = childSnapshot.Child("username").Value.ToString();
-                    var playerScore = childSnapshot.Child("score").Value.ToString();
+                    var playerScore = Convert.ToInt32(childSnapshot.Child("score").Value);
 
-                    topScores.Add((playerName, playerScore, playerName));
+                    topScores.Add((playerName, playerScore));
                     
                 }
                 topScores.Reverse();
@@ -90,45 +106,65 @@ public class DatabaseAPI: MonoBehaviour
 
         return topScores;
     }
-
-    private void CheckAndUpdateUser(string userId, string username, string score) 
+    
+    public void SubmitScore(string username, int score) 
     { 
-        var userRef = reference.Child("users").Child(userId);
+        var newScoreRef = reference.Child("users").Push();
 
-        userRef.GetValueAsync().ContinueWithOnMainThread(task =>
+        var newUser = new User(username, score);
+        var json = JsonUtility.ToJson(newUser);
+        
+        newScoreRef.SetRawJsonValueAsync(json).ContinueWithOnMainThread(task =>
         {
             if (task.IsFaulted)
             {
                 Debug.LogError("Database error: " + task.Exception);
-                return;
             }
-
-            var snapshot = task.Result;
-
-            if (snapshot.Exists)
+            else 
             {
-                userRef.Child("score").SetValueAsync(score);
-                Debug.Log($"Updated score for existing user: {userId}");
-            }
-            else
-            {
-                var newUser = new User(username, score);
-                var json = JsonUtility.ToJson(newUser);
-                
-                userRef.SetRawJsonValueAsync(json);
-                Debug.Log($"Created new user: {userId}");
+                Debug.Log($"Created new arcade entry for: {username} with score: {score}");
             }
         });
     }
 
+    // public void CheckAndUpdateUser(string userId, string username, string score) 
+    // { 
+    //     var userRef = reference.Child("users").Child(userId);
+    //
+    //     userRef.GetValueAsync().ContinueWithOnMainThread(task =>
+    //     {
+    //         if (task.IsFaulted)
+    //         {
+    //             Debug.LogError("Database error: " + task.Exception);
+    //             return;
+    //         }
+    //
+    //         var snapshot = task.Result;
+    //
+    //         if (snapshot.Exists)
+    //         {
+    //             userRef.Child("score").SetValueAsync(score);
+    //             Debug.Log($"Updated score for existing user: {userId}");
+    //         }
+    //         else
+    //         {
+    //             var newUser = new User(username, score);
+    //             var json = JsonUtility.ToJson(newUser);
+    //             
+    //             userRef.SetRawJsonValueAsync(json);
+    //             Debug.Log($"Created new user: {userId}");
+    //         }
+    //     });
+    // }
+
     private void MockPopulateDatabase()
     {
-        CheckAndUpdateUser("1", "Felix", "2000");
-        CheckAndUpdateUser("2", "Jude", "1000");
-        CheckAndUpdateUser("3", "Elijah", "3000");
-        CheckAndUpdateUser("4", "Eddie", "5000");
-        CheckAndUpdateUser("5", "Sriram", "7000");
-        CheckAndUpdateUser("5", "Kevin", "92000");
+        SubmitScore("Felix", -2000);
+        SubmitScore("Jude", -1000);
+        SubmitScore("Elijah", -3000);
+        SubmitScore("Eddie", -5000);
+        SubmitScore("Sriram", -7000);
+        SubmitScore("Kevin", -3200);
     }
 }
 }

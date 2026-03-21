@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Puzzles.Controllers
 {
-    public class MazeController : MonoBehaviour, IPuzzle
+    public class MazeController : Puzzle
     {
         
         public PuzzleData getData => data;

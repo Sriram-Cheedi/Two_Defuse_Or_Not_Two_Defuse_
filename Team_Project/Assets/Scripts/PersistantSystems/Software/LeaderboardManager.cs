@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace PersistantSystems.Software
 {
-    public class HighScoreManager : MonoBehaviour
+    public class LeaderboardManager : MonoBehaviour
     {
-        public GameObject[] scoreTiles;
-        public DatabaseAPI dbAPI;
-
-        private List<(string, string, string)> topScores = new();
+        [SerializeField] private GameObject[] scoreTiles;
+        private DatabaseAPI dbAPI;
+        
+        private List<(string, int)> topScores = new();
 
         private void Awake()
         {

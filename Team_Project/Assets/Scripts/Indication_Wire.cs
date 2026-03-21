@@ -1,4 +1,6 @@
 using System;
+using Ionic.BZip2;
+using Puzzles;
 using Puzzles.Controllers;
 using UnityEngine;
 
@@ -16,16 +18,18 @@ public class Indication_Wire : MonoBehaviour
 
     private void OnEnable()
     {
-        ssm_controller.data.OnSuccess += ShowComplete;
+        Puzzle.OnSuccess += ShowComplete;
     }
 
     private void OnDisable()
     {
-        ssm_controller.data.OnSuccess -= ShowComplete;
+        Puzzle.OnSuccess -= ShowComplete;
     }
 
-    private void ShowComplete()
+    private void ShowComplete(GameObject obj)
     {
+        if (obj != ssm_controller.gameObject) return;
+        
         _renderer.material = _materialON;
     }
 }
