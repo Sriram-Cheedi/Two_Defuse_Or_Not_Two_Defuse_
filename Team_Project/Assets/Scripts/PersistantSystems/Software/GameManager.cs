@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using PersistantSystems.Software;
 using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,14 +19,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private VideoPlayer cutscenePlayer;
     [SerializeField] private GameObject cutsceneDisplay;
     [SerializeField] private GameObject menuUI;
-    [Header("Warning")]
-    private AudioSource WarningAudio;
-    
+    [Header("Warning")] private AudioSource WarningAudio;
     
     private bool pause = false;
     private float PreviousTimeScale = 1f;
     
     private bool isMatSceneLoaded = false;
+
+    public static event Action<double> onGameEnd;
+    private string curr_username;
     
     private void OnEnable()
     {
@@ -85,7 +87,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     public void StartGame()
     {
         if (currentState == GameState.Playing || currentState == GameState.CutScene)
@@ -123,6 +124,7 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
+        onGameEnd?.Invoke(bombTimer);
         if (currentState == GameState.GameOver) return;
 
         currentState = GameState.GameOver;
@@ -133,6 +135,7 @@ public class GameManager : MonoBehaviour
 
     public void WinGame()
     {
+        onGameEnd?.Invoke(bombTimer);
         if (currentState == GameState.GameWin) return;
         currentState = GameState.GameWin;
         API_Provider.Instance.ActiveAPIController.SendSet("PWR", 4);

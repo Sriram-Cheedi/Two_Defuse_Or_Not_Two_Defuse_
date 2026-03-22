@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 
 namespace Puzzles.Controllers
 {
-    public class NGM_Controller : MonoBehaviour, IPuzzle 
+    public class NGM_Controller : Puzzle 
     {
         [SerializeField] public PlayerInputRelay relay;
         
@@ -111,8 +112,8 @@ namespace Puzzles.Controllers
         if (solutionSlotUsed[0] && solutionSlotUsed[1] && solutionSlotUsed[2] && solutionSlotUsed[3])
         {
             data.completed = true;
-            data.OnSuccess?.Invoke();
-        }
+            TriggerSuccess(this.gameObject);
+        } else TriggerFailure(this.gameObject);
     }
 
     private void DigitMisplaced(bool[] solutionSlotUsed, bool[] guessSlotUsed)

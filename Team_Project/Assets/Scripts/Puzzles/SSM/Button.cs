@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Puzzles;
 using Puzzles.Controllers;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
@@ -23,19 +24,20 @@ public class Button : MonoBehaviour, Interactible_Interface
 
     private void OnEnable()
     {
-        ssm_controller.data.OnFailure += FlashRed;
-        ssm_controller.data.OnSuccess += DisableInteractionSetOn;
+        Puzzle.OnFailure += FlashRed;
+        Puzzle.OnSuccess += DisableInteractionSetOn;
     }
 
     private void OnDisable()
     {
-        ssm_controller.data.OnFailure -= FlashRed;
-        ssm_controller.data.OnSuccess -= DisableInteractionSetOn;
+        Puzzle.OnFailure -= FlashRed;
+        Puzzle.OnSuccess -= DisableInteractionSetOn;
 
     }
     
-    private void DisableInteractionSetOn()
+    private void DisableInteractionSetOn(GameObject obj)
     {
+        if (obj != ssm_controller.gameObject) return;
         gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
         
         StopAllCoroutines();
@@ -43,15 +45,18 @@ public class Button : MonoBehaviour, Interactible_Interface
     }
     
     public void Interact(RaycastHit hit)
-    {
+    {  
         StartCoroutine(HighlightSelected());
         ssm_controller.CheckSSMButtonPress(button_number);
     }
     
-    private void FlashRed()
+    private void FlashRed(GameObject puzzle)
     {
-        StopAllCoroutines(); 
-        StartCoroutine(FlashColorRoutine( 1.0f));
+        if (puzzle == ssm_controller.gameObject)
+        {
+            StopAllCoroutines(); 
+            StartCoroutine(FlashColorRoutine( 1.0f));
+        }
     }
     
     private IEnumerator FlashColorRoutine(float duration)

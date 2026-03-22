@@ -1,22 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Puzzles;
+using Puzzles.Controllers;
 using UnityEngine;
 using UnityEngine.Serialization;
-
-
-public class PuzzleData
-{
-    public bool completed = false;
-    
-    public int[] guessSequence;
-    public int[] correctSequence;
-    
-    public int currentSequenceIndex = 0;
-    
-    public Action OnSuccess;
-    public Action OnFailure;
-}
 
 // Global Room State Manager
 public class PuzzleManager : MonoBehaviour
@@ -58,8 +46,8 @@ public class PuzzleManager : MonoBehaviour
         API_Provider.Instance.ActiveAPIController.SendSet("FGM", 0);
         
         // This is subscriptions for the software side of each puzzle. Triggers off hardware will be handled through the API not Actions such as this
-        ssm_controller.data.OnSuccess += S_HandleSSMVictory;
-        ngm_controller.data.OnSuccess += HandleNGMVictory;
+        Puzzle.OnSuccess += S_HandleSSMVictory;
+        Puzzle.OnSuccess += HandleNGMVictory;
 
         API_Provider.Instance.ActiveAPIController.OnInputChanged += H_HandleSSMVictory;
         
@@ -68,8 +56,10 @@ public class PuzzleManager : MonoBehaviour
     }
     
     // Global Changes if correct
-    private void S_HandleSSMVictory()
+    private void S_HandleSSMVictory(GameObject obj)
     {
+        if (obj != ssm_controller.gameObject) return;
+        
         Debug.Log("Software SSM Solved!");
         // Link Lighting and Alarms and stuff to this 
         SSM_Completed?.Invoke(); 
@@ -93,8 +83,10 @@ public class PuzzleManager : MonoBehaviour
     
     
     // Global Changes if correct
-    private void HandleNGMVictory()
+    private void HandleNGMVictory(GameObject obj)
     {
+        if (obj != ngm_controller.gameObject) return;
+        
         Debug.Log("NGM Solved!");
         // Link Lighting and Alarms and stuff to this 
         NGM_Completed?.Invoke(); 
