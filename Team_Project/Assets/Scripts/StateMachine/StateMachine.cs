@@ -8,6 +8,7 @@ namespace RigidBodyPlayer.PlayerStates
     {
         protected Dictionary<Estate, BaseState<Estate>> States = new Dictionary<Estate, BaseState<Estate>>();
         protected BaseState<Estate> CurrentState { get; private set; }
+        public Estate CurrentStateKey => CurrentState.StateKey;
         private Estate queuedState;
         private bool isTransitionQueued = false;
         private bool isTransitioning = false;

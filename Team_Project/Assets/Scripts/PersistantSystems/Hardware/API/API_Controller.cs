@@ -373,6 +373,13 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         ActivePortController.SendToArduino(message);
     }
 
+    public void SendMazeSeq(string header, string value)
+    {
+        string message = "$" + header + ":maze " + value + "#";
+        Debug.Log(message);
+        ActivePortController.SendToArduino(message);
+    }
+
     public void SendSet(string header, int value)
     {
         string message = "$" + header + ":set " + value + "#";

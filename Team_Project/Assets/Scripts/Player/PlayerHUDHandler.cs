@@ -9,19 +9,12 @@ public class PlayerHUDHandler : MonoBehaviour
     
     public void Update()
     {
-        if (GameManager.Instance == null)
-        {
-            return;
-        }
-        if (GameManager.Instance != null)
-        {
-            timerText.text = GameManager.Instance.bombTimer.ToString("F2");
-        }
-
-        if (GameManager.Instance.bombTimer < 20.0 && !time_bars.activeSelf)
-        {
-            TogglePopup();
-        }
+        timerText.text = GameManager.Instance.bombTimer.ToString("F2");
+        
+        // if (GameManager.Instance.bombTimer < 20.0 && time_bars.gameObject != null && !time_bars.activeSelf)
+        // {
+        //     TogglePopup();
+        // }
     }
     public void TogglePopup()
     {
