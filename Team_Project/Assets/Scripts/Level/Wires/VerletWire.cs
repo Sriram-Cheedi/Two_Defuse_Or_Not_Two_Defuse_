@@ -27,6 +27,14 @@ public class VerletWire : MonoBehaviour
     [Range(0, 20)]    public int   cutSettleIterations    = 12;
     [Range(0f, 1f)]   public float cutImpulseScale        = 0.35f;
 
+    
+    public enum WireColor { Red, Green, Grey, Brown }
+
+    [Header("Wire Identity")]
+    public WireColor wireColor;
+
+    public static VerletWire CutWire { get; set; }
+    
     [Header("Anchors")]
     public Transform anchor1;
     public Transform anchor2;
@@ -577,6 +585,7 @@ public class VerletWire : MonoBehaviour
     public void CutAtWorldPosition(Vector3 worldPos)
     {
         if (hasBeenCut) return;
+        CutWire = this;
         if (RopePoint == null || RopePoint.Length < 2) return;
         if (wirePiecePrefab == null) { Debug.LogWarning($"{name}: wirePiecePrefab missing."); return; }
 

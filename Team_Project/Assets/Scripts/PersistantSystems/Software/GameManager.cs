@@ -126,7 +126,6 @@ public class GameManager : MonoBehaviour
     {
         onGameEnd?.Invoke(bombTimer);
         if (currentState == GameState.GameOver) return;
-
         currentState = GameState.GameOver;
         API_Provider.Instance.ActiveAPIController.SendSet("PWR", 4);
         SceneManager.LoadScene("Explode");
