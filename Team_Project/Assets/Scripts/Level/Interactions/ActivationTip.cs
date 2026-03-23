@@ -1,34 +1,40 @@
 using System;
 using UnityEngine;
 
-public class Activtion_Tip : MonoBehaviour
+public class ActivationTip : MonoBehaviour
 {
    public GameObject[] activationTips;
-   [SerializeField] private LightingManager lightingManager;
    private bool bombActive;
+   public static Action IsBombActive;
 
    private void Awake()
    {
       if(activationTips == null) return;
-      HandleActivateKeyTip(false);
    }
 
    private void OnEnable()
    {
-      lightingManager.isBombActivated += ActivateBomb;
+      // lightingManager.isBombActivated += ActivateBomb;
+      GameManager.onGameStateChanged += ActivateBomb;
    }
 
    private void OnDisable()
    {
-      lightingManager.isBombActivated -= ActivateBomb;
+      GameManager.onGameStateChanged -= ActivateBomb;
    }
 
-   private void ActivateBomb()
+   private void ActivateBomb(GameManager.GameState gameState)
    {
       if(activationTips == null) return;
-
-      HandleActivateKeyTip(true);
-      lightingManager.isBombActivated -= ActivateBomb;
+      if (gameState == GameManager.GameState.ReadyUP)
+      {
+         HandleActivateKeyTip(false);
+      }else if (gameState == GameManager.GameState.Playing)
+      {
+         HandleActivateKeyTip(true);
+         IsBombActive?.Invoke();
+         GameManager.onGameStateChanged -= ActivateBomb;
+      }
    }
    
    private void HandleActivateKeyTip(bool bombActive)

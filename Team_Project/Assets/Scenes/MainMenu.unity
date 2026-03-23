@@ -812,11 +812,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42cd7dea592b14c92ae732a57add6146, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  bombTimer: 30
+  bombTimer: 100
   isGameOver: 0
   currentState: 0
-  cutscenePlayer: {fileID: 13934480}
-  cutsceneDisplay: {fileID: 572522889}
+  cutscenePlayer: {fileID: 0}
+  cutsceneDisplay: {fileID: 0}
   menuUI: {fileID: 1333288042}
 --- !u!82 &518062553
 AudioSource:

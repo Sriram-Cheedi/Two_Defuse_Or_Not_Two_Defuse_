@@ -180,6 +180,7 @@ Transform:
   m_Children:
   - {fileID: 4006395944684881460}
   - {fileID: 2638078167227912885}
+  - {fileID: 5964553875259370676}
   - {fileID: 143542692655207337}
   - {fileID: 5216223848223787045}
   - {fileID: 7431438467871266804}
@@ -255,6 +256,80 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2457820525369236254}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &3024898318050095353
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5964553875259370676}
+  - component: {fileID: 2288925315927622859}
+  - component: {fileID: 8481601036491773754}
+  m_Layer: 0
+  m_Name: MovementHuds
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5964553875259370676
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3024898318050095353}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -21.991, y: 8.7, z: 2.54087}
+  m_LocalScale: {x: 7.31578, y: 7.003852, z: 6.8041644}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 348120647187867410}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2288925315927622859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3024898318050095353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c35855882b172b14bac310dcef7a0959, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDTrigger
+  myHUDs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  targetRenderers: []
+  offMaterial: {fileID: 0}
+  flashMaterial: {fileID: 0}
+  levelData: {fileID: 0}
+--- !u!65 &8481601036491773754
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3024898318050095353}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -389,7 +464,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Game.Main::TutorialManagerSimple
   cards:
-  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -870,8 +944,8 @@ Transform:
   m_GameObject: {fileID: 9001587323313784309}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.31694, y: 2.7613602, z: 2.54087}
-  m_LocalScale: {x: 7.31578, y: 7.8793235, z: 6.8041644}
+  m_LocalPosition: {x: -11.31694, y: 1.42, z: 2.54087}
+  m_LocalScale: {x: 7.31578, y: 7.003852, z: 6.8041644}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 348120647187867410}
@@ -889,8 +963,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Game.Main::HUDTrigger
   myHUDs:
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   targetRenderers: []

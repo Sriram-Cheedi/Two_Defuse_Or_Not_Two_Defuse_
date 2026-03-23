@@ -45,7 +45,7 @@ public class HUDManager : MonoBehaviour
 
     public void ActivateTrigger(GameObject[] huds)
     {
-        if (huds == null || SameHUDs(huds)) return;
+        if (huds == null || huds.Length == 0 || SameHUDs(huds)) return;
         // Clear current HUDs when entering a new trigger
         foreach (var hud in currentActiveHUDs)
         {

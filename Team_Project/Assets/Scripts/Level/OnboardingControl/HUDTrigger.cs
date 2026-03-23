@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,6 +9,20 @@ public class HUDTrigger : MonoBehaviour
     [SerializeField] private Material offMaterial;
     [SerializeField] private Material flashMaterial;
     [SerializeField] private LevelData levelData;
+    [SerializeField] private GameObject[] movementHuds;
+    GameManager.GameState currentState;
+
+    private void OnEnable()
+    {
+        GameManager.onGameStateChanged += UpdateGameState;
+        ActivationTip.IsBombActive += initializeHUDs;
+    }
+    
+    private void OnDisable()
+    {
+        GameManager.onGameStateChanged -= UpdateGameState;
+        ActivationTip.IsBombActive -= initializeHUDs;
+    }
 
     private IEnumerator FlashLoop()
     {
@@ -34,16 +49,36 @@ public class HUDTrigger : MonoBehaviour
         if (!other.CompareTag("Player"))
             return;
 
-        TriggerHUDs();
+        if (currentState == GameManager.GameState.Playing)
+        {
+            triggerHUDs();
+        }
+        //testing purpose
+        triggerHUDs();
         if (targetRenderers.Length != 0 && offMaterial != null && flashMaterial  != null)
         {
             StartCoroutine(FlashLoop());
         }
     }
 
-    private void TriggerHUDs()
+    private void triggerHUDs()
     {
         if (HUDManager.Instance != null)
             HUDManager.Instance.ActivateTrigger(myHUDs);
+    }
+
+    private void UpdateGameState(GameManager.GameState state)
+    {
+        if (state == GameManager.GameState.Playing)
+        {
+            currentState = state;
+        }
+    }
+
+    private void initializeHUDs()
+    {
+        if (movementHuds.Length == 0) return;
+        HUDManager.Instance.ActivateTrigger(movementHuds);
+        ActivationTip.IsBombActive -= initializeHUDs;
     }
 }

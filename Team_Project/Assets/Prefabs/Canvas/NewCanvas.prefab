@@ -153,6 +153,7 @@ GameObject:
   - component: {fileID: 4299573913679147347}
   - component: {fileID: 7321084095237149304}
   - component: {fileID: 4731997937499874626}
+  - component: {fileID: 4504786954827723966}
   m_Layer: 5
   m_Name: Smoke_Card
   m_TagString: Untagged
@@ -217,6 +218,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4504786954827723966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456026210578524560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &652102813882967790
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,6 +414,7 @@ GameObject:
   - component: {fileID: 5259436543889087526}
   - component: {fileID: 6137627309136671277}
   - component: {fileID: 5089387542165213535}
+  - component: {fileID: 6386090209360446037}
   m_Layer: 5
   m_Name: Mouse_Card
   m_TagString: Untagged
@@ -465,6 +479,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6386090209360446037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 964822767317519488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &974593436053225725
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,6 +534,7 @@ GameObject:
   - component: {fileID: 4137079648339037438}
   - component: {fileID: 2376977335669563388}
   - component: {fileID: 8377648011492018416}
+  - component: {fileID: 4441876826686436794}
   m_Layer: 5
   m_Name: Explore_Card
   m_TagString: Untagged
@@ -526,7 +553,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: -7.7621}
   m_LocalScale: {x: 0.0058241426, y: 0.1734171, z: 0.008388113}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3735739468196270136}
   m_Father: {fileID: 6614919140073920372}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -572,6 +600,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4441876826686436794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057785577294633465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &1182416352658999307
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,6 +623,7 @@ GameObject:
   - component: {fileID: 813290536356187263}
   - component: {fileID: 6397124990172112459}
   - component: {fileID: 4533419345403068982}
+  - component: {fileID: 3786795420110389364}
   m_Layer: 5
   m_Name: Escape_Card
   m_TagString: Untagged
@@ -648,6 +689,50 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3786795420110389364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1182416352658999307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
+--- !u!1 &1204878416369806476
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 876998904264624273}
+  m_Layer: 0
+  m_Name: SSM_Init_Tip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &876998904264624273
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204878416369806476}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5234794161915051221}
+  m_Father: {fileID: 2040690627141191843}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1293370020292439397
 GameObject:
   m_ObjectHideFlags: 0
@@ -677,7 +762,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3735739468196270136}
   - {fileID: 2334498064341810801}
   - {fileID: 4137079648339037438}
   m_Father: {fileID: 7236328682204391605}
@@ -876,6 +960,7 @@ GameObject:
   - component: {fileID: 1271866715693061017}
   - component: {fileID: 564791929046180623}
   - component: {fileID: 8894022231370249527}
+  - component: {fileID: 5286616804833234657}
   m_Layer: 5
   m_Name: Symbol_Card
   m_TagString: Untagged
@@ -941,6 +1026,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5286616804833234657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1788528615006091720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &1944943487440237050
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,6 +1083,7 @@ GameObject:
   - component: {fileID: 7024026685890224008}
   - component: {fileID: 4093360357532535314}
   - component: {fileID: 8355614625698365266}
+  - component: {fileID: 5051581373774625655}
   m_Layer: 5
   m_Name: Maze_Manual_Card
   m_TagString: Untagged
@@ -1051,6 +1149,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5051581373774625655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994630707558800963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &2032362109369000180
 GameObject:
   m_ObjectHideFlags: 0
@@ -1077,15 +1187,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2032362109369000180}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -7.760001}
-  m_LocalScale: {x: 0.0067776707, y: 0.18700463, z: 0.008388113}
+  m_LocalPosition: {x: 0, y: 0, z: 0.2502395}
+  m_LocalScale: {x: 1.1637199, y: 1.0783516, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6614919140073920372}
+  m_Father: {fileID: 4137079648339037438}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 11.089661, y: 309.75098}
+  m_AnchoredPosition: {x: 85.79094, y: 275.3535}
   m_SizeDelta: {x: 1017, y: 612}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6377443124017844703
@@ -1137,6 +1247,7 @@ GameObject:
   - component: {fileID: 8341939913955989780}
   - component: {fileID: 4019846457739223061}
   - component: {fileID: 8217643431355203333}
+  - component: {fileID: 5605497141863629787}
   m_Layer: 5
   m_Name: WASD_Card
   m_TagString: Untagged
@@ -1201,6 +1312,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5605497141863629787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2056718907564116090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &2242076212998080242
 GameObject:
   m_ObjectHideFlags: 0
@@ -1212,6 +1335,7 @@ GameObject:
   - component: {fileID: 7283866321129448379}
   - component: {fileID: 2490643510838076581}
   - component: {fileID: 8329316420820606741}
+  - component: {fileID: 7807684418112075186}
   m_Layer: 5
   m_Name: Crouch_Card
   m_TagString: Untagged
@@ -1276,6 +1400,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7807684418112075186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2242076212998080242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &2342234354158236580
 GameObject:
   m_ObjectHideFlags: 0
@@ -1449,6 +1585,7 @@ GameObject:
   - component: {fileID: 1832308334641984458}
   - component: {fileID: 9214175943830420987}
   - component: {fileID: 5276662504184766105}
+  - component: {fileID: 8028986716272785431}
   m_Layer: 5
   m_Name: Disable_Gravity_Card
   m_TagString: Untagged
@@ -1513,6 +1650,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8028986716272785431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2609507463371844910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &2801311301595392150
 GameObject:
   m_ObjectHideFlags: 0
@@ -1524,6 +1673,7 @@ GameObject:
   - component: {fileID: 5921110933941237354}
   - component: {fileID: 4716760903619917933}
   - component: {fileID: 1454983279834127263}
+  - component: {fileID: 4966384571380484152}
   m_Layer: 5
   m_Name: Show_Card
   m_TagString: Untagged
@@ -1588,6 +1738,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4966384571380484152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2801311301595392150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &2889075764550565679
 GameObject:
   m_ObjectHideFlags: 0
@@ -1599,6 +1761,7 @@ GameObject:
   - component: {fileID: 1840195928106384594}
   - component: {fileID: 859650349067293093}
   - component: {fileID: 4894420011478306194}
+  - component: {fileID: 4792247299185142035}
   m_Layer: 5
   m_Name: Switch_Manual_Card
   m_TagString: Untagged
@@ -1664,6 +1827,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4792247299185142035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2889075764550565679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &2889186245914280641
 GameObject:
   m_ObjectHideFlags: 0
@@ -1729,6 +1904,7 @@ GameObject:
   - component: {fileID: 4254926899008198008}
   - component: {fileID: 4993594517417430942}
   - component: {fileID: 8942202516046845857}
+  - component: {fileID: 3165700355848108465}
   m_Layer: 5
   m_Name: Jump_Card
   m_TagString: Untagged
@@ -1793,6 +1969,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3165700355848108465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3021505880550267653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &3084659350509739637
 GameObject:
   m_ObjectHideFlags: 0
@@ -1912,6 +2100,7 @@ GameObject:
   - component: {fileID: 7486558327268851814}
   - component: {fileID: 9133671023716397196}
   - component: {fileID: 1442100601753118029}
+  - component: {fileID: 2241089958997091348}
   m_Layer: 5
   m_Name: Disable_Gravity_Card
   m_TagString: Untagged
@@ -1976,6 +2165,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2241089958997091348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3204514835007038105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &3240634304884518209
 GameObject:
   m_ObjectHideFlags: 0
@@ -2476,7 +2677,6 @@ Transform:
   m_Children:
   - {fileID: 8341939913955989780}
   - {fileID: 5259436543889087526}
-  - {fileID: 5234794161915051221}
   m_Father: {fileID: 2040690627141191843}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &4452894000589374910
@@ -2511,6 +2711,7 @@ GameObject:
   - component: {fileID: 7816218786098568546}
   - component: {fileID: 7975008798616530704}
   - component: {fileID: 1205088520554107431}
+  - component: {fileID: 2947416700178495544}
   m_Layer: 5
   m_Name: Ventilation_Manual_Card
   m_TagString: Untagged
@@ -2576,6 +2777,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2947416700178495544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3793796688264616443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &4147542289508721778
 GameObject:
   m_ObjectHideFlags: 0
@@ -2737,6 +2950,7 @@ GameObject:
   - component: {fileID: 6675144676953639301}
   - component: {fileID: 8161376780662751015}
   - component: {fileID: 4245450759482367297}
+  - component: {fileID: 6540559063737023219}
   m_Layer: 5
   m_Name: Gravity_Card
   m_TagString: Untagged
@@ -2801,6 +3015,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6540559063737023219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4357918628090573843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &4395226406306702143
 GameObject:
   m_ObjectHideFlags: 0
@@ -3138,6 +3364,7 @@ GameObject:
   - component: {fileID: 7464847477457714055}
   - component: {fileID: 746708221063825303}
   - component: {fileID: 2259142772581190734}
+  - component: {fileID: 4851614836610080291}
   m_Layer: 5
   m_Name: SMM_Success_Card
   m_TagString: Untagged
@@ -3202,6 +3429,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4851614836610080291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4956007296894911252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &4989667937046815647
 GameObject:
   m_ObjectHideFlags: 0
@@ -3414,6 +3653,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3322840040368054617}
+  - {fileID: 876998904264624273}
   - {fileID: 9211131817592773531}
   - {fileID: 3068723811216630459}
   - {fileID: 3757901022996275511}
@@ -3495,6 +3735,7 @@ GameObject:
   - component: {fileID: 6691790506744003588}
   - component: {fileID: 3628266786576151246}
   - component: {fileID: 7560084035168399322}
+  - component: {fileID: 8654434791855198036}
   m_Layer: 5
   m_Name: Activation_Card
   m_TagString: Untagged
@@ -3559,6 +3800,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8654434791855198036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5617069008346671615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &5647766847523854221
 GameObject:
   m_ObjectHideFlags: 0
@@ -3570,6 +3823,7 @@ GameObject:
   - component: {fileID: 8424826047020919623}
   - component: {fileID: 8807470713539478598}
   - component: {fileID: 1229935019485836244}
+  - component: {fileID: 8301589660964541161}
   m_Layer: 5
   m_Name: Color_Seq_Card
   m_TagString: Untagged
@@ -3635,6 +3889,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8301589660964541161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5647766847523854221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &5724919005081690901
 GameObject:
   m_ObjectHideFlags: 0
@@ -3807,6 +4073,7 @@ GameObject:
   - component: {fileID: 4827786532345134874}
   - component: {fileID: 7269598601471539975}
   - component: {fileID: 4886879866278639703}
+  - component: {fileID: 6668709607953591755}
   m_Layer: 5
   m_Name: Symbol_Card
   m_TagString: Untagged
@@ -3872,6 +4139,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6668709607953591755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6107413310817561489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &6256133490175341886
 GameObject:
   m_ObjectHideFlags: 0
@@ -3991,6 +4270,7 @@ GameObject:
   - component: {fileID: 8406693396264356755}
   - component: {fileID: 1724244050801155352}
   - component: {fileID: 758620156538749651}
+  - component: {fileID: 4291154835005499904}
   m_Layer: 5
   m_Name: SSM_Manual_Card
   m_TagString: Untagged
@@ -4056,6 +4336,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4291154835005499904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6469341141830831125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &6723177232904289741
 GameObject:
   m_ObjectHideFlags: 0
@@ -4067,6 +4359,7 @@ GameObject:
   - component: {fileID: 2334498064341810801}
   - component: {fileID: 6674977622931433476}
   - component: {fileID: 6630801646312285872}
+  - component: {fileID: 7176370873194282796}
   m_Layer: 5
   m_Name: Descent_Card
   m_TagString: Untagged
@@ -4131,6 +4424,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7176370873194282796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6723177232904289741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &6858064376369163357
 GameObject:
   m_ObjectHideFlags: 0
@@ -4239,6 +4544,7 @@ GameObject:
   - component: {fileID: 8559202078353359892}
   - component: {fileID: 6555985493943555393}
   - component: {fileID: 7116985656373452247}
+  - component: {fileID: 7648078252901538560}
   m_Layer: 5
   m_Name: NGB_Objective_Card
   m_TagString: Untagged
@@ -4304,6 +4610,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7648078252901538560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7103625298223004912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &7363710908776756506
 GameObject:
   m_ObjectHideFlags: 0
@@ -4315,6 +4633,7 @@ GameObject:
   - component: {fileID: 6050207732334498059}
   - component: {fileID: 6917715661267482305}
   - component: {fileID: 7002631668314086273}
+  - component: {fileID: 1591983945239660032}
   m_Layer: 5
   m_Name: Switch_Objective_Card
   m_TagString: Untagged
@@ -4380,6 +4699,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1591983945239660032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7363710908776756506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &7411418986744896396
 GameObject:
   m_ObjectHideFlags: 0
@@ -4391,6 +4722,7 @@ GameObject:
   - component: {fileID: 5287730529895100614}
   - component: {fileID: 952935221599822873}
   - component: {fileID: 5051816300760057005}
+  - component: {fileID: 1349984039343231209}
   m_Layer: 5
   m_Name: Maze_Explore_Card
   m_TagString: Untagged
@@ -4456,6 +4788,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1349984039343231209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7411418986744896396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &7432748712077397315
 GameObject:
   m_ObjectHideFlags: 0
@@ -4467,6 +4811,7 @@ GameObject:
   - component: {fileID: 5234794161915051221}
   - component: {fileID: 5305952972989625343}
   - component: {fileID: 69189000360071512}
+  - component: {fileID: 4498396712917111465}
   m_Layer: 5
   m_Name: SSM_init_Card
   m_TagString: Untagged
@@ -4482,16 +4827,16 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7432748712077397315}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -8.019794}
-  m_LocalScale: {x: 0.040963944, y: 0.40123498, z: 0.013980188}
+  m_LocalPosition: {x: 0, y: 0, z: -247.1101}
+  m_LocalScale: {x: 0.8490731, y: 0.40123504, z: 0.45028883}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1006703723660923318}
-  m_Father: {fileID: 9211131817592773531}
+  m_Father: {fileID: 876998904264624273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 17.92, y: -240.2}
+  m_AnchoredPosition: {x: -155.06633, y: -26}
   m_SizeDelta: {x: 464, y: 349}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5305952972989625343
@@ -4532,6 +4877,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4498396712917111465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7432748712077397315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &7445420107795815156
 GameObject:
   m_ObjectHideFlags: 0
@@ -4543,6 +4900,7 @@ GameObject:
   - component: {fileID: 7316348271559386480}
   - component: {fileID: 4569329890708162480}
   - component: {fileID: 2812933244470646485}
+  - component: {fileID: 7531037064501821267}
   m_Layer: 5
   m_Name: Hide_Card
   m_TagString: Untagged
@@ -4607,6 +4965,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7531037064501821267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7445420107795815156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &7644437204117721019
 GameObject:
   m_ObjectHideFlags: 0
@@ -4854,6 +5224,7 @@ GameObject:
   - component: {fileID: 6730101646031684393}
   - component: {fileID: 4227247445805559472}
   - component: {fileID: 6746162618497371001}
+  - component: {fileID: 487770676729195472}
   m_Layer: 5
   m_Name: NGB_Manual_Card
   m_TagString: Untagged
@@ -4919,6 +5290,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &487770676729195472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8704182607275655378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &8836542000224495275
 GameObject:
   m_ObjectHideFlags: 0
@@ -4930,6 +5313,7 @@ GameObject:
   - component: {fileID: 161399402445943568}
   - component: {fileID: 3906758006405900774}
   - component: {fileID: 5933487220123966169}
+  - component: {fileID: 8588249432507089662}
   m_Layer: 5
   m_Name: Explore_Card
   m_TagString: Untagged
@@ -4995,6 +5379,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8588249432507089662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8836542000224495275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &8904970942334603581
 GameObject:
   m_ObjectHideFlags: 0
@@ -5006,6 +5402,7 @@ GameObject:
   - component: {fileID: 3529354469539889768}
   - component: {fileID: 1038884591179475585}
   - component: {fileID: 7905173614445330904}
+  - component: {fileID: 5423514425372862331}
   m_Layer: 5
   m_Name: Disable_Gravity_Card
   m_TagString: Untagged
@@ -5070,6 +5467,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5423514425372862331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8904970942334603581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &8967180593256017419
 GameObject:
   m_ObjectHideFlags: 0
@@ -5081,6 +5490,7 @@ GameObject:
   - component: {fileID: 7234126678791021606}
   - component: {fileID: 1700438232707424798}
   - component: {fileID: 8475045295133360266}
+  - component: {fileID: 1910127046728086606}
   m_Layer: 5
   m_Name: Maze_Nav_Card
   m_TagString: Untagged
@@ -5145,6 +5555,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1910127046728086606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8967180593256017419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725baf20e37544742a34b883488518f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::HUDCardController
 --- !u!1 &9035993236654157182
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,7 +8,6 @@ public class LightingManager : MonoBehaviour
     private Light[] allLights;
     
     [SerializeField] public PlayerInputRelay relay;
-    public Action isBombActivated;
     
     // Variables to store your original ambient settings
     private UnityEngine.Rendering.AmbientMode originalAmbientMode;
@@ -84,7 +83,6 @@ public class LightingManager : MonoBehaviour
                 else
                 {
                     TurnOnLights();
-                    isBombActivated?.Invoke();
                 }
                 break;
            
