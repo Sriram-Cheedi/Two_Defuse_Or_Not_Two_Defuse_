@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
 {
-    public event Action<string, int> OnInputChanged;
+    public static event Action<string, int> OnInputChanged;
     public event Action<Vector3> OnGyroChanged;
     public event Action<Vector3, Vector3> OnImuChanged;
     
