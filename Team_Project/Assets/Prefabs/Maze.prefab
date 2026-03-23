@@ -248,7 +248,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -604,7 +604,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1080,7 +1080,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1202,8 +1202,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 3
   x: 5
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &7889691763973762252
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1223,8 +1223,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390251}
+  m_Size: {x: 3, y: 1, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5500002, z: 0.17390251}
 --- !u!1 &600309261164733651
 GameObject:
   m_ObjectHideFlags: 0
@@ -1475,7 +1475,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1597,8 +1597,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 2
   x: 0
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &671105301787841722
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1618,8 +1618,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390251}
+  m_Size: {x: 3, y: 1.1000001, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5000001, z: 0.17390251}
 --- !u!1 &1244599378689647292
 GameObject:
   m_ObjectHideFlags: 0
@@ -1868,7 +1868,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2226,7 +2226,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2348,8 +2348,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 4
   x: 5
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &7964833244318499503
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2369,8 +2369,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390251}
+  m_Size: {x: 3, y: 1.1000001, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5000001, z: 0.17390251}
 --- !u!1 &1735651768182276551
 GameObject:
   m_ObjectHideFlags: 0
@@ -2623,7 +2623,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2745,8 +2745,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 2
   x: 4
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &8831564936951867482
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3047,7 +3047,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -3169,8 +3169,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 2
   x: 3
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &964813143870240156
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3471,7 +3471,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -3593,8 +3593,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 1
   x: 4
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &9089392084334460454
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3893,7 +3893,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -4015,8 +4015,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 2
   x: 2
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &837844701835999829
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4036,8 +4036,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390203}
+  m_Size: {x: 3, y: 1.1000001, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5000001, z: 0.17390206}
 --- !u!1 &1879620591310693328
 GameObject:
   m_ObjectHideFlags: 0
@@ -4290,7 +4290,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -4412,8 +4412,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 1
   x: 3
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &984941849764845676
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4710,7 +4710,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -5068,7 +5068,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -5190,8 +5190,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 3
   x: 3
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &8869941738200959674
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5211,8 +5211,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390156}
+  m_Size: {x: 3, y: 1.1000001, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5000001, z: 0.17390153}
 --- !u!1 &2357256852234426879
 GameObject:
   m_ObjectHideFlags: 0
@@ -5463,7 +5463,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -5585,8 +5585,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 2
   x: 1
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &3624834618560859467
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5606,8 +5606,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390299}
+  m_Size: {x: 3, y: 1.1000001, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5000001, z: 0.17390294}
 --- !u!1 &2418726808220159040
 GameObject:
   m_ObjectHideFlags: 0
@@ -5856,7 +5856,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -6214,7 +6214,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -6336,8 +6336,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 6
   x: 3
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &2431434964363355575
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6357,8 +6357,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390156}
+  m_Size: {x: 3, y: 1.1000001, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5000001, z: 0.17390153}
 --- !u!1 &2571257175943213017
 GameObject:
   m_ObjectHideFlags: 0
@@ -6611,7 +6611,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -6733,8 +6733,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 1
   x: 1
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &311447870563428251
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7031,7 +7031,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -7387,7 +7387,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -7747,7 +7747,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -7869,8 +7869,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 5
   x: 0
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &7313797564791827521
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8167,7 +8167,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -8523,7 +8523,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -8879,7 +8879,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -9239,7 +9239,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -9361,8 +9361,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 0
   x: 1
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &81575527766405390
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9715,7 +9715,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -9837,8 +9837,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 1
   x: 2
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &1413428617304497951
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9858,8 +9858,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390203}
+  m_Size: {x: 3, y: 1.1000001, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5000001, z: 0.17390206}
 --- !u!1 &3501796412479179214
 GameObject:
   m_ObjectHideFlags: 0
@@ -10112,7 +10112,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -10234,8 +10234,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 5
   x: 1
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &2825422214699332655
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10532,7 +10532,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -10888,7 +10888,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -11246,7 +11246,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -11368,8 +11368,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 6
   x: 5
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &6195607368524140319
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11389,8 +11389,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390251}
+  m_Size: {x: 3, y: 1.1000001, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5000001, z: 0.17390251}
 --- !u!1 &4160994556439590122
 GameObject:
   m_ObjectHideFlags: 0
@@ -11643,7 +11643,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -11765,8 +11765,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 5
   x: 4
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &4816800193469535291
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12067,7 +12067,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -12189,8 +12189,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 5
   x: 2
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &834314162954006806
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12491,7 +12491,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -12613,8 +12613,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 4
   x: 4
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &2526443111311618774
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12913,7 +12913,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -13035,8 +13035,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 5
   x: 5
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &4784210164083350164
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13056,8 +13056,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390251}
+  m_Size: {x: 3, y: 1.1000001, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5000001, z: 0.17390251}
 --- !u!1 &4778062781260823263
 GameObject:
   m_ObjectHideFlags: 0
@@ -13306,7 +13306,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -13666,7 +13666,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -13788,8 +13788,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 1
   x: 0
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &4501874061878253291
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14090,7 +14090,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -14212,8 +14212,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 3
   x: 1
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &8794802961614665131
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14597,7 +14597,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -14719,8 +14719,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 4
   x: 2
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &6927182784206032285
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14740,8 +14740,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390203}
+  m_Size: {x: 3, y: 1.1000001, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5000001, z: 0.17390206}
 --- !u!1 &5515686940127479711
 GameObject:
   m_ObjectHideFlags: 0
@@ -15057,7 +15057,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -15415,7 +15415,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -15537,8 +15537,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 3
   x: 0
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &85963110089137603
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15558,8 +15558,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390251}
+  m_Size: {x: 3, y: 1.1000001, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5000001, z: 0.17390251}
 --- !u!1 &6067737869120125579
 GameObject:
   m_ObjectHideFlags: 0
@@ -15810,7 +15810,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -15932,8 +15932,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 4
   x: 0
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &7071448632711490466
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15953,8 +15953,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390251}
+  m_Size: {x: 3, y: 1.1000001, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5000001, z: 0.17390251}
 --- !u!1 &6137445563324069914
 GameObject:
   m_ObjectHideFlags: 0
@@ -16207,7 +16207,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -16329,8 +16329,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 6
   x: 0
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &2340717385207470806
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16627,7 +16627,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -17018,7 +17018,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -17140,8 +17140,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 0
   x: 4
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &1502879893331704720
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17442,7 +17442,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -17564,8 +17564,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 0
   x: 3
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &4072712206723300811
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17866,7 +17866,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -17988,8 +17988,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 1
   x: 5
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &5010750861934115384
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18288,7 +18288,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -18410,8 +18410,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 3
   x: 4
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &9086567101142647811
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18431,8 +18431,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390251}
+  m_Size: {x: 3, y: 1.1000001, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5000001, z: 0.17390251}
 --- !u!1 &6800630637621345221
 GameObject:
   m_ObjectHideFlags: 0
@@ -18716,7 +18716,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -18838,8 +18838,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 6
   x: 2
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &5740401420757690080
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18859,8 +18859,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390203}
+  m_Size: {x: 3, y: 1.1000001, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5000001, z: 0.17390206}
 --- !u!1 &6906663324589615466
 GameObject:
   m_ObjectHideFlags: 0
@@ -19111,7 +19111,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -19233,8 +19233,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 4
   x: 3
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &9155598106059231025
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19254,8 +19254,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390156}
+  m_Size: {x: 3, y: 1.1000001, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5000001, z: 0.17390153}
 --- !u!1 &7109339385576734499
 GameObject:
   m_ObjectHideFlags: 0
@@ -19508,7 +19508,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -19630,8 +19630,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 0
   x: 5
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &3535944433187828223
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19930,7 +19930,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -20052,8 +20052,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 6
   x: 4
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &7424972344580274391
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20073,8 +20073,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390251}
+  m_Size: {x: 3, y: 1.1000001, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5000001, z: 0.17390251}
 --- !u!1 &7452075408403857751
 GameObject:
   m_ObjectHideFlags: 0
@@ -20327,7 +20327,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -20449,8 +20449,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 2
   x: 5
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &9216160913139823414
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20749,7 +20749,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -20871,8 +20871,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 0
   x: 2
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &4697431050462244006
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20892,8 +20892,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390203}
+  m_Size: {x: 3, y: 1.1000001, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5000001, z: 0.17390206}
 --- !u!1 &7594443874096117890
 GameObject:
   m_ObjectHideFlags: 0
@@ -21142,7 +21142,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -21502,7 +21502,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -21624,8 +21624,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 6
   x: 1
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &5101957327362239463
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -21926,7 +21926,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -22048,8 +22048,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 5
   x: 3
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &5707107848963444111
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -22350,7 +22350,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -22472,8 +22472,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 0
   x: 0
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &6653266618340501539
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -22770,7 +22770,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -23126,7 +23126,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -23486,7 +23486,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -23608,8 +23608,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 3
   x: 2
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &3686995256327829840
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23908,7 +23908,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9545
+  m_VersionIndex: 9551
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -24030,8 +24030,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::Puzzles.Controllers.MazeCell
   y: 4
   x: 1
-  matCorrect: {fileID: 0}
-  matDefault: {fileID: 0}
+  matCorrect: {fileID: 2100000, guid: e61bf9d938e2d4eefa42493ee75dd00e, type: 2}
+  matIncorrect: {fileID: 2100000, guid: f93846c1958a54841871a07d537404f1, type: 2}
 --- !u!65 &2134347576407936328
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -24051,8 +24051,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 0.1, z: 3}
-  m_Center: {x: -1.1235523, y: 0, z: 0.17390299}
+  m_Size: {x: 3, y: 1.1000001, z: 3}
+  m_Center: {x: -1.1235523, y: 0.5000001, z: 0.17390294}
 --- !u!1001 &133371915114259371
 PrefabInstance:
   m_ObjectHideFlags: 0
