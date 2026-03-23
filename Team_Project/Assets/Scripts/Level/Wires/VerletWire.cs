@@ -26,15 +26,19 @@ public class VerletWire : MonoBehaviour
     [Range(0f, 0.2f)] public float cutPieceDamping        = 0.012f;
     [Range(0, 20)]    public int   cutSettleIterations    = 12;
     [Range(0f, 1f)]   public float cutImpulseScale        = 0.35f;
+    [System.NonSerialized] private bool initialized = false;
 
+    [Header("Gravity")]
+    public bool useDynamicGravity = true;          
+    public bool ignoreGravity = false;           
+    public Vector3 customGravity = new Vector3(0, 9.81f, 0); 
     
-    public enum WireColor { Red, Green, Grey, Brown }
+    public enum WireColor { Red, Blue, Grey, Brown }
 
     [Header("Wire Identity")]
     public WireColor wireColor;
 
-    public static VerletWire CutWire { get; set; }
-    
+    public static WireColor? CutWireColor { get; set; }    
     [Header("Anchors")]
     public Transform anchor1;
     public Transform anchor2;
@@ -45,8 +49,8 @@ public class VerletWire : MonoBehaviour
     public bool pinEnd   = true;
 
     [Header("Ceiling Collision")]
-    public bool       ceilingCollision = true;
-    public float      ropeRadius       = 0.25f;
+    public bool        ceilingCollision = true;
+    public float       ropeRadius       = 0.25f;
     public BoxCollider ceilingBox;
 
     [Header("Left Wall Collision")]
@@ -68,6 +72,11 @@ public class VerletWire : MonoBehaviour
     public bool ropeRopeCollision = true;
     [Range(0, 4)] public int ropeRopePasses = 1;
     public int pointSkip = 1;
+
+    // How much velocity is preserved on rope-rope contact (0=sticky, 1=elastic)
+    [Range(0f, 1f)] public float ropeRopeFriction = 0.3f;
+    // Extra separation bias to prevent sinking
+    [Range(0f, 0.5f)] public float ropeRopeSlop = 0.02f;
 
     [Header("Self Collision")]
     public bool selfCollision = true;
@@ -106,8 +115,12 @@ public class VerletWire : MonoBehaviour
     private Vector3[]          RopePointOld;
     private CapsuleCollider[]  segmentColliders;
 
-    private bool initialized = false;
-    private bool hasBeenCut  = false;
+    private bool hasBeenCut = false;
+
+    // Used to ignore collision with our "parent" wire for a few frames after cut
+    [System.NonSerialized] public VerletWire ignoreCollisionWith = null;
+    private int _ignoreCollisionFrames = 0;
+    private const int IGNORE_COLLISION_FRAMES = 20;
 
     private int MyIndex => allwires.IndexOf(this);
     public  int PointCount => RopePoint != null ? RopePoint.Length : 0;
@@ -124,15 +137,15 @@ public class VerletWire : MonoBehaviour
         lr = GetComponent<LineRenderer>();
         if (lr == null) lr = gameObject.AddComponent<LineRenderer>();
 
-        lr.useWorldSpace    = true;
-        lr.alignment        = LineAlignment.View;
-        lr.textureMode      = LineTextureMode.Tile;
-        lr.startWidth       = insulatedWidth;
-        lr.endWidth         = insulatedWidth;
-        lr.numCapVertices   = 0;
+        lr.useWorldSpace     = true;
+        lr.alignment         = LineAlignment.View;
+        lr.textureMode       = LineTextureMode.Tile;
+        lr.startWidth        = insulatedWidth;
+        lr.endWidth          = insulatedWidth;
+        lr.numCapVertices    = 0;
         lr.numCornerVertices = 4;
         lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-        lr.receiveShadows   = false;
+        lr.receiveShadows    = false;
         lr.material = insulatedMat != null
             ? insulatedMat
             : new Material(Shader.Find("Sprites/Default"));
@@ -143,6 +156,8 @@ public class VerletWire : MonoBehaviour
         if (gravitySource == null)
             gravitySource = FindFirstObjectByType<WireGravity>();
 
+        if (anchor1 == null || anchor2 == null) return;
+
         if (!initialized)
             InitializeBetweenAnchors();
 
@@ -152,7 +167,7 @@ public class VerletWire : MonoBehaviour
 
     private void InitializeBetweenAnchors()
     {
-        points = Mathf.Max(points, 2);
+        points       = Mathf.Max(points, 2);
         RopePoint    = new Vector3[points];
         RopePointOld = new Vector3[points];
 
@@ -179,11 +194,11 @@ public class VerletWire : MonoBehaviour
         Transform  newAnchor2)
     {
         pinStart = newPinStart;
-        pinEnd   = newPinEnd;
+        pinEnd   = newAnchor2 != null ? newPinEnd : false;
         anchor1  = newAnchor1;
         anchor2  = newAnchor2;
 
-        points = Mathf.Max(newPoints.Length, 2);
+        points       = Mathf.Max(newPoints.Length, 2);
         RopePoint    = (Vector3[])newPoints.Clone();
         RopePointOld = (Vector3[])newOldPoints.Clone();
 
@@ -197,7 +212,6 @@ public class VerletWire : MonoBehaviour
         RebuildColliders();
         UpdateLineRendererNow();
     }
-
 
     private void RebuildColliders()
     {
@@ -256,9 +270,10 @@ public class VerletWire : MonoBehaviour
         Vector3 newDir = gravity.normalized;
         float   dot    = Vector3.Dot(_lastGravityDir, newDir);
 
-        if (dot < 0.85f) 
+        if (dot < 0.85f)
         {
-            float killFraction = Mathf.Lerp(0.3f, gravityFlipVelocityKill, Mathf.Clamp01((0.85f - dot) / 1.85f));
+            float killFraction = Mathf.Lerp(0.3f, gravityFlipVelocityKill,
+                                            Mathf.Clamp01((0.85f - dot) / 1.85f));
             DampenAllVelocities(killFraction);
             _gravityFlipFramesLeft = gravityFlipSettleFrames;
         }
@@ -283,21 +298,24 @@ public class VerletWire : MonoBehaviour
     {
         if (!initialized || RopePoint == null || RopePoint.Length < 2) return;
 
-        Vector3 gravity = (gravitySource != null) ? gravitySource.Gravity : Physics.gravity;
+        if (_ignoreCollisionFrames > 0)
+            _ignoreCollisionFrames--;
+        else
+            ignoreCollisionWith = null;
+
+        Vector3 gravity;
+        if (ignoreGravity)
+            gravity = Vector3.zero;
+        else if (useDynamicGravity)
+            gravity = (gravitySource != null) ? gravitySource.Gravity : Physics.gravity;
+        else
+            gravity = customGravity;
 
         CheckGravityFlip(gravity);
-        float effectiveDamping = damping;
-        if (_gravityFlipFramesLeft > 0)
-        {
-            effectiveDamping += gravityFlipExtraDamping;
-            _gravityFlipFramesLeft--;
-        }
 
-        if (_postCutFrames > 0)
-        {
-            effectiveDamping += 0.12f;
-            _postCutFrames--;
-        }
+        float effectiveDamping = damping;
+        if (_gravityFlipFramesLeft > 0) { effectiveDamping += gravityFlipExtraDamping; _gravityFlipFramesLeft--; }
+        if (_postCutFrames > 0)         { effectiveDamping += 0.12f;                   _postCutFrames--;         }
 
         int simStart        = pinStart ? 1 : 0;
         int simEndExclusive = pinEnd   ? points - 1 : points;
@@ -346,7 +364,6 @@ public class VerletWire : MonoBehaviour
         UpdateLineRendererNow();
         UpdateColliders();
     }
-
 
     private void SolveDistanceConstraints()
     {
@@ -468,35 +485,57 @@ public class VerletWire : MonoBehaviour
     private void SolveRopeRope()
     {
         if (!ropeRopeCollision) return;
-        float minDistance       = ropeRadius * 2f;
-        float minSquareDistance = minDistance * minDistance;
-        int   myIdx             = MyIndex;
 
-        foreach (VerletWire rope in allwires)
+        float minDist   = ropeRadius * 2f;
+        float minDistSq = minDist * minDist;
+        int   myIdx     = MyIndex;
+
+        foreach (VerletWire other in allwires)
         {
-            if (rope == null || rope == this || rope.RopePoint == null) continue;
-            if (rope.MyIndex <= myIdx) continue;
+            if (other == null || other == this || other.RopePoint == null) continue;
+            if (other.MyIndex <= myIdx) continue;
 
-            for (int i = 2; i < points; i += Mathf.Max(1, pointSkip))
+            if (ignoreCollisionWith != null && other == ignoreCollisionWith) continue;
+            if (other.ignoreCollisionWith != null && other.ignoreCollisionWith == this) continue;
+
+            for (int i = 0; i < points; i += Mathf.Max(1, pointSkip))
             {
-                Vector3 pointI = RopePoint[i];
-                for (int j = 2; j < rope.points; j += Mathf.Max(1, rope.pointSkip))
+                if (IsPinnedPoint(i)) continue;
+
+                Vector3 pI = RopePoint[i];
+
+                for (int j = 0; j < other.points; j += Mathf.Max(1, other.pointSkip))
                 {
-                    Vector3 pointJ = rope.RopePoint[j];
-                    Vector3 diff   = pointI - pointJ;
-                    float   sqr    = diff.sqrMagnitude;
-                    if (sqr >= minSquareDistance) continue;
+                    if (other.IsPinnedPoint(j)) continue;
+
+                    Vector3 pJ   = other.RopePoint[j];
+                    Vector3 diff = pI - pJ;
+                    float   sqr  = diff.sqrMagnitude;
+
+                    if (sqr >= minDistSq || sqr < 0.000001f) continue;
 
                     float   dist   = Mathf.Sqrt(sqr);
-                    Vector3 normal = dist < 0.0001f ? Vector3.right : diff / dist;
-                    if (dist < 0.0001f) dist = 0.0001f;
+                    Vector3 normal = diff / dist;
 
-                    float push = (minDistance - dist) * 0.5f;
-                    RopePoint[i]        += normal * push;
-                    rope.RopePoint[j]   -= normal * push;
-                    RopePointOld[i]      = RopePoint[i];
-                    rope.RopePointOld[j] = rope.RopePoint[j];
-                    pointI               = RopePoint[i];
+                    float penetration = minDist - dist + ropeRopeSlop;
+                    float half        = penetration * 0.5f;
+
+                    RopePoint[i]        += normal * half;
+                    other.RopePoint[j]  -= normal * half;
+
+                    Vector3 velI = RopePoint[i]       - RopePointOld[i];
+                    Vector3 velJ = other.RopePoint[j] - other.RopePointOld[j];
+
+                    float relVelAlongNormal = Vector3.Dot(velI - velJ, normal);
+
+                    if (relVelAlongNormal < 0f)
+                    {
+                        Vector3 impulse = normal * relVelAlongNormal * (1f - ropeRopeFriction);
+                        RopePointOld[i]        += impulse;
+                        other.RopePointOld[j]  -= impulse;
+                    }
+
+                    pI = RopePoint[i]; 
                 }
             }
         }
@@ -505,29 +544,44 @@ public class VerletWire : MonoBehaviour
     private void SolveSelfCollision()
     {
         if (!selfCollision) return;
-        float minDistance       = ropeRadius * 2f;
-        float minSquareDistance = minDistance * minDistance;
 
-        for (int i = 2; i < points; i += Mathf.Max(1, pointSkip))
+        float minDist   = ropeRadius * 2f;
+        float minDistSq = minDist * minDist;
+
+        for (int i = 0; i < points; i += Mathf.Max(1, pointSkip))
         {
-            Vector3 pointI = RopePoint[i];
+            if (IsPinnedPoint(i)) continue;
+            Vector3 pI = RopePoint[i];
+
             for (int j = i + selfCollisionSkipNear; j < points; j += Mathf.Max(1, pointSkip))
             {
-                Vector3 pointJ = RopePoint[j];
-                Vector3 diff   = pointI - pointJ;
-                float   sqr    = diff.sqrMagnitude;
-                if (sqr >= minSquareDistance) continue;
+                if (IsPinnedPoint(j)) continue;
+
+                Vector3 pJ   = RopePoint[j];
+                Vector3 diff = pI - pJ;
+                float   sqr  = diff.sqrMagnitude;
+
+                if (sqr >= minDistSq || sqr < 0.000001f) continue;
 
                 float   dist   = Mathf.Sqrt(sqr);
-                Vector3 normal = dist < 0.0001f ? Vector3.right : diff / dist;
-                if (dist < 0.0001f) dist = 0.0001f;
+                Vector3 normal = diff / dist;
+                float   half   = (minDist - dist) * 0.5f;
 
-                float push = (minDistance - dist) * 0.5f;
-                RopePoint[i]     += normal * push;
-                RopePoint[j]     -= normal * push;
-                RopePointOld[i]   = RopePoint[i];
-                RopePointOld[j]   = RopePoint[j];
-                pointI            = RopePoint[i];
+                RopePoint[i] += normal * half;
+                RopePoint[j] -= normal * half;
+
+                // Preserve velocity — don't zero it out
+                Vector3 velI = RopePoint[i] - RopePointOld[i];
+                Vector3 velJ = RopePoint[j] - RopePointOld[j];
+                float relVel = Vector3.Dot(velI - velJ, normal);
+                if (relVel < 0f)
+                {
+                    Vector3 impulse = normal * relVel * 0.5f;
+                    RopePointOld[i] += impulse;
+                    RopePointOld[j] -= impulse;
+                }
+
+                pI = RopePoint[i];
             }
         }
     }
@@ -541,43 +595,25 @@ public class VerletWire : MonoBehaviour
             {
                 if ((pinStart && i == 0) || (pinEnd && i == points - 1)) continue;
 
-                Vector3 point = RopePoint[i];
+                Vector3 point   = RopePoint[i];
                 Vector3 closest = hit.ClosestPoint(point);
-                Vector3 delta = point - closest;
-                float dist = delta.magnitude;
+                Vector3 delta   = point - closest;
+                float   dist    = delta.magnitude;
 
                 float influenceRadius = ropeRadius * 3f;
                 if (dist > influenceRadius || dist < 0.0001f) continue;
 
-                Vector3 dir = delta / dist;
-                float falloff = 1f - (dist / influenceRadius);
-                Vector3 offset = dir * playerPushForce * falloff;
+                Vector3 dir     = delta / dist;
+                float   falloff = 1f - (dist / influenceRadius);
+                Vector3 offset  = dir * playerPushForce * falloff;
 
-                RopePoint[i] += offset;
+                RopePoint[i]    += offset;
                 RopePointOld[i] += offset * 0.85f;
-                if (i - 1 >= 0)
-                {
-                    RopePoint[i - 1] += offset * 0.5f;
-                    RopePointOld[i - 1] += offset * 0.4f;
-                }
 
-                if (i + 1 < points)
-                {
-                    RopePoint[i + 1] += offset * 0.5f;
-                    RopePointOld[i + 1] += offset * 0.4f;
-                }
-
-                if (i - 2 >= 0)
-                {
-                    RopePoint[i - 2] += offset * 0.2f;
-                    RopePointOld[i - 2] += offset * 0.15f;
-                }
-
-                if (i + 2 < points)
-                {
-                    RopePoint[i + 2] += offset * 0.2f;
-                    RopePointOld[i + 2] += offset * 0.15f;
-                }
+                if (i - 1 >= 0) { RopePoint[i-1] += offset * 0.5f; RopePointOld[i-1] += offset * 0.4f; }
+                if (i + 1 < points) { RopePoint[i+1] += offset * 0.5f; RopePointOld[i+1] += offset * 0.4f; }
+                if (i - 2 >= 0) { RopePoint[i-2] += offset * 0.2f; RopePointOld[i-2] += offset * 0.15f; }
+                if (i + 2 < points) { RopePoint[i+2] += offset * 0.2f; RopePointOld[i+2] += offset * 0.15f; }
             }
         }
     }
@@ -585,7 +621,8 @@ public class VerletWire : MonoBehaviour
     public void CutAtWorldPosition(Vector3 worldPos)
     {
         if (hasBeenCut) return;
-        CutWire = this;
+        CutWireColor = wireColor;
+        Debug.Log("Cut wire color stored: " + wireColor);
         if (RopePoint == null || RopePoint.Length < 2) return;
         if (wirePiecePrefab == null) { Debug.LogWarning($"{name}: wirePiecePrefab missing."); return; }
 
@@ -634,19 +671,19 @@ public class VerletWire : MonoBehaviour
         if (tangent.sqrMagnitude < 0.000001f) tangent = Vector3.right;
         else tangent.Normalize();
 
-        float   gap          = ropeRadius * 0.35f;
-        Vector3 leftCutPos   = cutPos - tangent * gap;
-        Vector3 rightCutPos  = cutPos + tangent * gap;
+        float   gap         = ropeRadius * 0.35f;
+        Vector3 leftCutPos  = cutPos - tangent * gap;
+        Vector3 rightCutPos = cutPos + tangent * gap;
 
-        int      leftCount  = segIdx + 2;
+        int       leftCount = segIdx + 2;
         Vector3[] leftPts   = new Vector3[leftCount];
         Vector3[] leftOld   = new Vector3[leftCount];
         for (int i = 0; i <= segIdx; i++) { leftPts[i] = RopePoint[i]; leftOld[i] = RopePointOld[i]; }
         leftPts[leftCount - 1] = leftOld[leftCount - 1] = leftCutPos;
 
-        int      rightCount = points - segIdx;
-        Vector3[] rightPts  = new Vector3[rightCount];
-        Vector3[] rightOld  = new Vector3[rightCount];
+        int       rightCount = points - segIdx;
+        Vector3[] rightPts   = new Vector3[rightCount];
+        Vector3[] rightOld   = new Vector3[rightCount];
         rightPts[0] = rightOld[0] = rightCutPos;
         for (int src = segIdx + 1, dst = 1; src < points; src++, dst++)
         { rightPts[dst] = RopePoint[src]; rightOld[dst] = RopePointOld[src]; }
@@ -654,10 +691,10 @@ public class VerletWire : MonoBehaviour
         VerletWire leftWire = Instantiate(wirePiecePrefab, transform.position, transform.rotation);
         CopySettingsTo(leftWire);
         leftWire.InitializeCutPiece(leftPts, leftOld, true, anchor1, false, null);
-        leftWire.bendStiffness = cutPieceBendStiffness;
-        leftWire.damping       = cutPieceDamping;
+        leftWire.bendStiffness  = cutPieceBendStiffness;
+        leftWire.damping        = cutPieceDamping;
         leftWire.ApplyCutImpulse(freeEndIsLast: true);
-        leftWire.RunSettlePass();  
+        leftWire.RunSettlePass();
 
         VerletWire rightWire = Instantiate(wirePiecePrefab, transform.position, transform.rotation);
         CopySettingsTo(rightWire);
@@ -665,37 +702,51 @@ public class VerletWire : MonoBehaviour
         rightWire.bendStiffness = cutPieceBendStiffness;
         rightWire.damping       = cutPieceDamping;
         rightWire.ApplyCutImpulse(freeEndIsLast: false);
-        rightWire.RunSettlePass(); 
+        rightWire.RunSettlePass();
+
+        leftWire.ignoreCollisionWith   = rightWire;
+        rightWire.ignoreCollisionWith  = leftWire;
+        leftWire._ignoreCollisionFrames  = IGNORE_COLLISION_FRAMES;
+        rightWire._ignoreCollisionFrames = IGNORE_COLLISION_FRAMES;
+
+        foreach (VerletWire w in allwires)
+        {
+            if (w == null || w == this) continue;
+            w.ignoreCollisionWith   = leftWire;
+            w._ignoreCollisionFrames = IGNORE_COLLISION_FRAMES;
+        }
 
         Destroy(gameObject);
     }
 
     private void CopySettingsTo(VerletWire other)
     {
-        other.gravitySource         = gravitySource;
-        other.ceilingCollision      = ceilingCollision;
-        other.ropeRadius            = ropeRadius;
-        other.ceilingBox            = ceilingBox;
-        other.leftWallCollision     = leftWallCollision;
-        other.leftBox               = leftBox;
-        other.segmentLength         = segmentLength;
-        other.damping               = damping;
-        other.iterations            = iterations;
-        other.insulatedWidth        = insulatedWidth;
-        other.insulatedMat          = insulatedMat;
-        other.ropeRopeCollision     = ropeRopeCollision;
-        other.ropeRopePasses        = ropeRopePasses;
-        other.pointSkip             = pointSkip;
-        other.selfCollision         = selfCollision;
-        other.selfCollisionSkipNear = selfCollisionSkipNear;
-        other.selfCollisionPasses   = selfCollisionPasses;
-        other.enableCollision       = enableCollision;
-        other.playerPushForce       = playerPushForce;
-        other.playerLayer           = playerLayer;
-        other.wirePiecePrefab       = wirePiecePrefab;
-        other.cutSnapImpulse        = cutSnapImpulse;
-        other.cutImpulsePoints      = cutImpulsePoints;
-        other.minPointsPerPiece     = minPointsPerPiece;
+        other.gravitySource            = gravitySource;
+        other.ceilingCollision         = ceilingCollision;
+        other.ropeRadius               = ropeRadius;
+        other.ceilingBox               = ceilingBox;
+        other.leftWallCollision        = leftWallCollision;
+        other.leftBox                  = leftBox;
+        other.segmentLength            = segmentLength;
+        other.damping                  = damping;
+        other.iterations               = iterations;
+        other.insulatedWidth           = insulatedWidth;
+        other.insulatedMat             = insulatedMat;
+        other.ropeRopeCollision        = ropeRopeCollision;
+        other.ropeRopePasses           = ropeRopePasses;
+        other.pointSkip                = pointSkip;
+        other.ropeRopeFriction         = ropeRopeFriction;
+        other.ropeRopeSlop             = ropeRopeSlop;
+        other.selfCollision            = selfCollision;
+        other.selfCollisionSkipNear    = selfCollisionSkipNear;
+        other.selfCollisionPasses      = selfCollisionPasses;
+        other.enableCollision          = enableCollision;
+        other.playerPushForce          = playerPushForce;
+        other.playerLayer              = playerLayer;
+        other.wirePiecePrefab          = wirePiecePrefab;
+        other.cutSnapImpulse           = cutSnapImpulse;
+        other.cutImpulsePoints         = cutImpulsePoints;
+        other.minPointsPerPiece        = minPointsPerPiece;
         other.gravityFlipVelocityKill  = gravityFlipVelocityKill;
         other.gravityFlipSettleFrames  = gravityFlipSettleFrames;
         other.gravityFlipExtraDamping  = gravityFlipExtraDamping;
@@ -740,10 +791,36 @@ public class VerletWire : MonoBehaviour
 
     private void RunSettlePass()
     {
+
+        float[] restLengths = new float[points - 1];
+        for (int i = 0; i < points - 1; i++)
+            restLengths[i] = Vector3.Distance(RopePoint[i], RopePoint[i + 1]);
+        for (int i = 0; i < restLengths.Length; i++)
+            restLengths[i] = Mathf.Min(restLengths[i], segmentLength * 1.5f);
+
         for (int it = 0; it < cutSettleIterations; it++)
         {
             PinEndpoints();
-            SolveDistanceConstraints();
+            for (int i = 0; i < points - 1; i++)
+            {
+                Vector3 delta    = RopePoint[i + 1] - RopePoint[i];
+                float   distance = delta.magnitude;
+                if (distance < 0.0001f) continue;
+
+                float difference = (distance - restLengths[i]) / distance;
+
+                bool pinA = pinStart && i == 0;
+                bool pinB = pinEnd   && i + 1 == points - 1;
+
+                if      (pinA && pinB) continue;
+                else if (pinA)        RopePoint[i + 1] -= delta * difference;
+                else if (pinB)        RopePoint[i]     += delta * difference;
+                else
+                {
+                    RopePoint[i]     += delta * difference * 0.3f;
+                    RopePoint[i + 1] -= delta * difference * 0.3f;
+                }
+            }
         }
         UpdateLineRendererNow();
     }

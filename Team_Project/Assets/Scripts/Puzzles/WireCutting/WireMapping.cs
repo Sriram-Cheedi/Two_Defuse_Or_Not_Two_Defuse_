@@ -1,37 +1,32 @@
-using System;
-using System.Collections.Generic;
-using Codice.Client.BaseCommands;
 using UnityEngine;
 
 public class WireMapping : MonoBehaviour
 {
     public Puzzles.Controllers.SSM_Controller ssm_controller;
-    public int finalSSMColour;
+    private int finalSSMColour;
     public string cutWire;
-    
-    
+
     private void Start()
     {
-        finalSSMColour = ssm_controller.data.correctSequence[ssm_controller.data.correctSequence.Length - 1];
-    }
+        if (ssm_controller == null)
+        {
+            Debug.LogError("SSM Controller is not assigned.");
+            return;
+        }
 
-    private void Update()
-    {
-        if(finalSSMColour == 0)
-        {
+        finalSSMColour = ssm_controller.data.correctSequence[
+            ssm_controller.data.correctSequence.Length - 1
+        ];
+
+        if (finalSSMColour == 0)//yellow
             cutWire = "red";
-        }
-        else if(finalSSMColour == 1)
-        {
-            cutWire = "green";
-        }
-        else if(finalSSMColour == 2)
-        {
+        else if (finalSSMColour == 1) //green
+            cutWire = "blue";
+        else if (finalSSMColour == 2) //blue
             cutWire = "grey";
-        }
-        else if(finalSSMColour == 3)
-        {
+        else if (finalSSMColour == 3) //red
             cutWire = "brown";
-        }
+
+        Debug.Log("Expected cut wire is: " + cutWire);
     }
 }

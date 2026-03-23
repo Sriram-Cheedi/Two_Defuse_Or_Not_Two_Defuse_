@@ -275,7 +275,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 13934475}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: e954d8e908f911f4b988c82b331fe666, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 8d7c5f9a3b2b81c40b4f4b190f75b74d, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 13934477}
@@ -812,7 +812,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42cd7dea592b14c92ae732a57add6146, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  bombTimer: 30
+  bombTimer: 400
   isGameOver: 0
   currentState: 0
   cutscenePlayer: {fileID: 13934480}
@@ -982,7 +982,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &572522890
 RectTransform:
   m_ObjectHideFlags: 0

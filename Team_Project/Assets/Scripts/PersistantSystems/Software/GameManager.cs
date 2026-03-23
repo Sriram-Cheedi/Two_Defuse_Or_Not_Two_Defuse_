@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
     
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
     {
-        isMatSceneLoaded = (scene.name == "MatScene");
+        isMatSceneLoaded = (scene.name == "WireCutting");
     }
     
     
@@ -50,13 +50,17 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
+            Debug.Log("GameManager created and preserved.");
         }
         else
         {
+            Debug.Log("Duplicate GameManager destroyed.");
             Destroy(gameObject);
+            return;
         }
+
         WarningAudio = GetComponent<AudioSource>();
-        
     }
     public void Update()
     {
@@ -111,7 +115,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning("Cutscene player not assigned. Loading game directly.");
             currentState = GameState.Playing;
-            SceneManager.LoadScene("MatScene");
+            SceneManager.LoadScene("WireCutting");
         }
     }
 
@@ -119,15 +123,21 @@ public class GameManager : MonoBehaviour
     {
         cutscenePlayer.loopPointReached -= OnVideoFinished;
         currentState = GameState.Playing;
-        SceneManager.LoadScene("MatScene");
+        SceneManager.LoadScene("WireCutting");
     }
 
     public void EndGame()
     {
         onGameEnd?.Invoke(bombTimer);
         if (currentState == GameState.GameOver) return;
+
         currentState = GameState.GameOver;
-        API_Provider.Instance.ActiveAPIController.SendSet("PWR", 4);
+
+        if (API_Provider.Instance != null && API_Provider.Instance.ActiveAPIController != null)
+        {
+            API_Provider.Instance.ActiveAPIController.SendSet("PWR", 4);
+        }
+
         SceneManager.LoadScene("Explode");
         StartCoroutine(GameoverAnimation());
     }
@@ -136,8 +146,14 @@ public class GameManager : MonoBehaviour
     {
         onGameEnd?.Invoke(bombTimer);
         if (currentState == GameState.GameWin) return;
+
         currentState = GameState.GameWin;
-        API_Provider.Instance.ActiveAPIController.SendSet("PWR", 4);
+
+        if (API_Provider.Instance != null && API_Provider.Instance.ActiveAPIController != null)
+        {
+            API_Provider.Instance.ActiveAPIController.SendSet("PWR", 4);
+        }
+
         SceneManager.LoadScene("GameWin");
     }
     

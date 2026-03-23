@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerHUDHandler : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
-    public GameObject time_bars;
+    // public GameObject time_bars;
     
     public void Update()
     {
@@ -18,7 +18,7 @@ public class PlayerHUDHandler : MonoBehaviour
     }
     public void TogglePopup()
     {
-        time_bars.SetActive(true);
+        // time_bars.SetActive(true);
     }
 }
 
