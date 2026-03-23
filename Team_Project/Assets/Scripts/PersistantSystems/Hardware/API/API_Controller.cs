@@ -18,7 +18,8 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 {
     public I_SerialPortController ActivePortController { get; private set; }
     
-    public event Action<string, int> OnInputChanged;
+    public static event Action<string, int> OnInputChanged;
+    
     public event Action<Vector3> OnGyroChanged;
     public event Action<Vector3, Vector3> OnImuChanged;
     public event Action<int[]> OnNGMSubmit;
@@ -37,7 +38,6 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public Dictionary<string, int> getComponentStateManager => hardwareState.componentStates;
     public int[] GetcurrentHardwareNGMValues => hardwareState.currentHardwareNGMValues;
     public int[] GetLastNGMSubmissionValues => hardwareState.LastNGMSubmissionValues;
-
     
     
     private void OnDestroy() => Exit();
