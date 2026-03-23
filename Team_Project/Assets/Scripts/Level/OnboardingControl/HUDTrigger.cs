@@ -1,78 +1,49 @@
-using System;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class HUDTrigger : MonoBehaviour
 {
-    public GameObject[] myHUDs;
-    private static List<GameObject> currentActiveHUDs = new List<GameObject>();
-    [SerializeField] private GameObject showHud;
-    [SerializeField] private PlayerInputRelay relay;
-    private static bool hideHuds;
-    private static GameObject globalShowHud;
+    [SerializeField] private GameObject[] myHUDs;
+    [SerializeField] private MeshRenderer[] targetRenderers;
+    [SerializeField] private Material offMaterial;
+    [SerializeField] private Material flashMaterial;
+    [SerializeField] private LevelData levelData;
 
-    private void Awake()
+    private IEnumerator FlashLoop()
     {
-        if (globalShowHud == null && showHud != null)
+        while (true)
         {
-            globalShowHud = showHud;
+            // ON
+            for (int i = 0; i < targetRenderers.Length; i++)
+            {
+                targetRenderers[i].material = flashMaterial;
+            }
+            yield return new WaitForSeconds(levelData.flashDuration); // flash duration
+
+            // OFF
+            for (int i = 0; i < targetRenderers.Length; i++)
+            {
+                targetRenderers[i].material = offMaterial;
+            }
+            yield return new WaitForSeconds(levelData.offDuration);
         }
     }
 
-    private void OnEnable()
-    {
-        if (relay == null) return;
-        relay.HudsPressed += OnHudsPressed;
-    }
-
-    private void OnDisable()
-    {
-        if (relay == null) return;
-        relay.HudsPressed -= OnHudsPressed;
-    }
-
-    private void OnHudsPressed()
-    {
-        hideHuds = !hideHuds;
-        UpdateHUDVisuals();
-    }
-    
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            if (currentActiveHUDs != null && currentActiveHUDs.Count > 0)
-            {
-                foreach (var currentActiveHUD in currentActiveHUDs)
-                {
-                    currentActiveHUD.SetActive(false);
-                }
-                currentActiveHUDs.Clear();
-            }
+        if (!other.CompareTag("Player"))
+            return;
 
-            if (myHUDs.Length > 0)
-            {
-                foreach (var myHud in myHUDs)
-                {
-                    myHud.SetActive(true);
-                    currentActiveHUDs.Add(myHud);
-                }
-            }
-            hideHuds = false;
-            UpdateHUDVisuals();
+        TriggerHUDs();
+        if (targetRenderers.Length != 0 && offMaterial != null && flashMaterial  != null)
+        {
+            StartCoroutine(FlashLoop());
         }
     }
 
-    private void UpdateHUDVisuals()
+    private void TriggerHUDs()
     {
-        if (relay == null) return;
-        if (showHud == null) return;
-        if (currentActiveHUDs.Count <= 0) return;
-        Debug.Log("Switching HUDs" + hideHuds);
-        showHud.SetActive(hideHuds);
-        foreach (var currentActiveHUD in currentActiveHUDs)
-        {
-            currentActiveHUD.SetActive(!hideHuds);
-        }
+        if (HUDManager.Instance != null)
+            HUDManager.Instance.ActivateTrigger(myHUDs);
     }
 }

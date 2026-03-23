@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class LightingManager : MonoBehaviour
@@ -7,6 +8,7 @@ public class LightingManager : MonoBehaviour
     private Light[] allLights;
     
     [SerializeField] public PlayerInputRelay relay;
+    public Action isBombActivated;
     
     // Variables to store your original ambient settings
     private UnityEngine.Rendering.AmbientMode originalAmbientMode;
@@ -74,9 +76,16 @@ public class LightingManager : MonoBehaviour
         switch (header)
         {
             case "PWR":
-                if (API_Provider.Instance.ActiveAPIController.getComponentStateManager["PWR"] == 0) 
+                if (API_Provider.Instance.ActiveAPIController.getComponentStateManager["PWR"] == 0)
+                {
                     TurnOffLights();
-                else TurnOnLights();
+                }
+
+                else
+                {
+                    TurnOnLights();
+                    isBombActivated?.Invoke();
+                }
                 break;
            
         }

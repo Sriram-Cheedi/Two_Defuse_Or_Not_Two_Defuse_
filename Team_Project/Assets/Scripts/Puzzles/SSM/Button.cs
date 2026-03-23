@@ -14,6 +14,9 @@ public class Button : MonoBehaviour, Interactible_Interface
     [SerializeField] public Material _materialON;
     [SerializeField] public Material _materialOFF;
     [SerializeField] public Material _incorrectMaterial;
+    [SerializeField] public Material _materialSuccess;
+    [SerializeField] public GameObject _successAlert;
+    public LevelData levelData;
 
     private Renderer _renderer;
     
@@ -41,7 +44,9 @@ public class Button : MonoBehaviour, Interactible_Interface
         gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
         
         StopAllCoroutines();
-        _renderer.material = _materialON; 
+        _renderer.material = _materialSuccess;
+        if (_successAlert == null || levelData ==  null) return;
+        StartCoroutine(ShowSuccessAlertForSeconds());
     }
     
     public void Interact(RaycastHit hit)
@@ -82,5 +87,12 @@ public class Button : MonoBehaviour, Interactible_Interface
         }
         
         _renderer.material = _materialOFF;
+    }
+
+    IEnumerator ShowSuccessAlertForSeconds()
+    {
+        _successAlert.SetActive(true);
+        yield return new WaitForSeconds(levelData.ssmSuccessAlertDuration);
+        _successAlert.SetActive(false);
     }
 }
