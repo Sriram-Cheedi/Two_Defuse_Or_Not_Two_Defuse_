@@ -40,13 +40,13 @@ public class LightingManager : MonoBehaviour
             relay.NumberPressed += HandleMockButtonPress;
         }
         
-        API_Provider.Instance.ActiveAPIController.OnInputChanged += HandleButtonPress;
+        API_Controller.OnInputChanged += HandleButtonPress;
     }
     
     
     void OnDisable()
     {
-        API_Provider.Instance.ActiveAPIController.OnInputChanged -= HandleButtonPress;
+        API_Controller.OnInputChanged -= HandleButtonPress;
         
         if (relay != null)
         {

@@ -49,7 +49,7 @@ public class PuzzleManager : MonoBehaviour
         Puzzle.OnSuccess += S_HandleSSMVictory;
         Puzzle.OnSuccess += HandleNGMVictory;
 
-        API_Provider.Instance.ActiveAPIController.OnInputChanged += H_HandleSSMVictory;
+        API_Controller.OnInputChanged += H_HandleSSMVictory;
         
         Debug.Log("Subscriptions Successful!");
 
