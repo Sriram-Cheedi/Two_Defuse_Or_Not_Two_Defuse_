@@ -43,13 +43,12 @@ public class WireTubeMesh : MonoBehaviour
 
     void LateUpdate()
     {
-        if (_wire == null || _wire.PointCount < 2) return;
         BuildMesh();
     }
 
     void BuildMesh()
     {
-        int ptCount  = _wire.PointCount;
+        int ptCount  = _wire.ropePointsCount();
         int rings    = ptCount;
         int vertRing = sides + 1;
         int capVerts = showEndCaps ? 2 * (sides + 2) : 0;
