@@ -19,13 +19,13 @@ public class WireMapping : MonoBehaviour
         ];
 
         if (finalSSMColour == 0)//yellow
-            cutWire = "red";
-        else if (finalSSMColour == 1) //green
-            cutWire = "blue";
-        else if (finalSSMColour == 2) //blue
             cutWire = "grey";
-        else if (finalSSMColour == 3) //red
+        else if (finalSSMColour == 1) //green
             cutWire = "brown";
+        else if (finalSSMColour == 2) //blue
+            cutWire = "red";
+        else if (finalSSMColour == 3) //red
+            cutWire = "blue";
 
         Debug.Log("Expected cut wire is: " + cutWire);
     }

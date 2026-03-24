@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: points
-      value: 24
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: damping
@@ -30,11 +30,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: ignoreGravity
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: segmentLength
-      value: 0.38
+      value: 0.33
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: cutSnapImpulse
@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: useDynamicGravity
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1124373018860803955, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: m_Layer
@@ -82,7 +82,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7807770635642956764, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.02
+      value: -3.6
       objectReference: {fileID: 0}
     - target: {fileID: 7812715456705789742, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: m_LocalPosition.x

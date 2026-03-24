@@ -1117,10 +1117,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3765647492358494634, guid: f9965e07084a22e4b8953c5b209d07eb, type: 3}
-      propertyPath: points
-      value: 22
-      objectReference: {fileID: 0}
-    - target: {fileID: 3765647492358494634, guid: f9965e07084a22e4b8953c5b209d07eb, type: 3}
       propertyPath: ceilingBox
       value: 
       objectReference: {fileID: 562011142}
@@ -1128,22 +1124,6 @@ PrefabInstance:
       propertyPath: gravitySource
       value: 
       objectReference: {fileID: 2002357308}
-    - target: {fileID: 3765647492358494634, guid: f9965e07084a22e4b8953c5b209d07eb, type: 3}
-      propertyPath: ignoreGravity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3765647492358494634, guid: f9965e07084a22e4b8953c5b209d07eb, type: 3}
-      propertyPath: segmentLength
-      value: 0.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 3765647492358494634, guid: f9965e07084a22e4b8953c5b209d07eb, type: 3}
-      propertyPath: useDynamicGravity
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3765647492358494634, guid: f9965e07084a22e4b8953c5b209d07eb, type: 3}
-      propertyPath: flippedLengthCompression
-      value: 0.7
-      objectReference: {fileID: 0}
     - target: {fileID: 6145149329007889810, guid: f9965e07084a22e4b8953c5b209d07eb, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.717
@@ -1184,17 +1164,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6156813866922760544, guid: f9965e07084a22e4b8953c5b209d07eb, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -3.6
-      objectReference: {fileID: 0}
     - target: {fileID: 7259440270673826244, guid: f9965e07084a22e4b8953c5b209d07eb, type: 3}
       propertyPath: m_Name
       value: Wire_1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7259440270673826244, guid: f9965e07084a22e4b8953c5b209d07eb, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
