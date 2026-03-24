@@ -9,6 +9,7 @@ public class WireCutter : MonoBehaviour
 
     void Update()
     {
+        if (VerletWire.HasAnyWireBeenCut) return;
         if (!Input.GetKeyDown(cutKey)) return;
         if (cam == null) return;
 

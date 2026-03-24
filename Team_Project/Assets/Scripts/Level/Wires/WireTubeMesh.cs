@@ -1,10 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// Drop this on the same GameObject as VerletWire.
-/// Builds a smooth 3D tube mesh every frame following the rope points.
-/// Automatically disables the LineRenderer so they don't overlap.
-/// </summary>
 [RequireComponent(typeof(VerletWire))]
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
@@ -36,7 +31,6 @@ public class WireTubeMesh : MonoBehaviour
     private int _lastPointCount = -1;
     private int _lastSides      = -1;
 
-    // ══════════════════════════════════════════════════════════════════════════
     void Awake()
     {
         _wire = GetComponent<VerletWire>();
@@ -50,7 +44,6 @@ public class WireTubeMesh : MonoBehaviour
         if (wireMaterial != null)
             _mr.material = wireMaterial;
 
-        // Disable LineRenderer completely
         var lr = GetComponent<LineRenderer>();
         if (lr != null)
         {
@@ -65,9 +58,6 @@ public class WireTubeMesh : MonoBehaviour
         BuildMesh();
     }
 
-    // ══════════════════════════════════════════════════════════════════════════
-    //  Mesh construction
-    // ══════════════════════════════════════════════════════════════════════════
     void BuildMesh()
     {
         int ptCount  = _wire.PointCount;
@@ -90,21 +80,18 @@ public class WireTubeMesh : MonoBehaviour
             _lastSides      = sides;
         }
 
-        // ── gather rope points in WORLD space, then convert to LOCAL ─────────
         Vector3[] worldPoints = new Vector3[ptCount];
-        Vector3[] points      = new Vector3[ptCount];   // local-space points for mesh
+        Vector3[] points      = new Vector3[ptCount];  
         for (int i = 0; i < ptCount; i++)
         {
             worldPoints[i] = _wire.GetPoint(i);
             points[i]      = transform.InverseTransformPoint(worldPoints[i]);
         }
 
-        // ── build smooth per-ring frames (in world space for correctness) ────
         Vector3[] tangents   = BuildTangents(worldPoints, ptCount);
         Vector3[] frameNorms = BuildFrames(tangents, ptCount);
 
-        // Convert frame vectors to local space directions
-        // (InverseTransformDirection handles rotation+scale, no translation)
+
         for (int i = 0; i < ptCount; i++)
         {
             tangents[i]   = transform.InverseTransformDirection(tangents[i]);
@@ -114,7 +101,6 @@ public class WireTubeMesh : MonoBehaviour
         float angleStep = Mathf.PI * 2f / sides;
         float runningV  = 0f;
 
-        // ── tube rings ───────────────────────────────────────────────────────
         for (int ring = 0; ring < rings; ring++)
         {
             Vector3 center  = points[ring];
@@ -141,7 +127,6 @@ public class WireTubeMesh : MonoBehaviour
             }
         }
 
-        // ── tube triangles ───────────────────────────────────────────────────
         int ti = 0;
         for (int ring = 0; ring < rings - 1; ring++)
         {
@@ -157,7 +142,6 @@ public class WireTubeMesh : MonoBehaviour
             }
         }
 
-        // ── end caps ─────────────────────────────────────────────────────────
         if (showEndCaps)
         {
             int baseVert = rings * vertRing;
@@ -180,7 +164,6 @@ public class WireTubeMesh : MonoBehaviour
                 true);
         }
 
-        // ── upload ───────────────────────────────────────────────────────────
         _mesh.Clear();
         _mesh.vertices  = _verts;
         _mesh.normals   = _normals;
@@ -237,10 +220,7 @@ public class WireTubeMesh : MonoBehaviour
         return triBase;
     }
 
-    // ══════════════════════════════════════════════════════════════════════════
-    //  Frame math (operates on world-space points)
-    // ══════════════════════════════════════════════════════════════════════════
-
+    
     static Vector3[] BuildTangents(Vector3[] pts, int count)
     {
         var t = new Vector3[count];
