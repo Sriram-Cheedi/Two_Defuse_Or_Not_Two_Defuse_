@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
     public void Update()
     {
         // Initial ReadyUp
+        onGameStateChanged?.Invoke(currentState);
         if (currentState == GameState.ReadyUP)
         {
             if (isHardwareReady && isSoftwareReady)
@@ -137,7 +138,8 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.LogWarning("Cutscene player not assigned. Loading game directly.");
-            currentState = GameState.Playing;
+            currentState = GameState.ReadyUP;
+            isSoftwareReady = true;
             SceneManager.LoadScene("MatScene");
         }
     }

@@ -1,78 +1,84 @@
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class HUDTrigger : MonoBehaviour
 {
-    public GameObject[] myHUDs;
-    private static List<GameObject> currentActiveHUDs = new List<GameObject>();
-    [SerializeField] private GameObject showHud;
-    [SerializeField] private PlayerInputRelay relay;
-    private static bool hideHuds;
-    private static GameObject globalShowHud;
-
-    private void Awake()
-    {
-        if (globalShowHud == null && showHud != null)
-        {
-            globalShowHud = showHud;
-        }
-    }
+    [SerializeField] private GameObject[] myHUDs;
+    [SerializeField] private MeshRenderer[] targetRenderers;
+    [SerializeField] private Material offMaterial;
+    [SerializeField] private Material flashMaterial;
+    [SerializeField] private LevelData levelData;
+    [SerializeField] private GameObject[] movementHuds;
+    GameManager.GameState currentState;
 
     private void OnEnable()
     {
-        if (relay == null) return;
-        relay.HudsPressed += OnHudsPressed;
-    }
-
-    private void OnDisable()
-    {
-        if (relay == null) return;
-        relay.HudsPressed -= OnHudsPressed;
-    }
-
-    private void OnHudsPressed()
-    {
-        hideHuds = !hideHuds;
-        UpdateHUDVisuals();
+        GameManager.onGameStateChanged += UpdateGameState;
+        ActivationTip.IsBombActive += initializeHUDs;
     }
     
-    private void OnTriggerEnter(Collider other)
+    private void OnDisable()
     {
-        if (other.CompareTag("Player"))
-        {
-            if (currentActiveHUDs != null && currentActiveHUDs.Count > 0)
-            {
-                foreach (var currentActiveHUD in currentActiveHUDs)
-                {
-                    currentActiveHUD.SetActive(false);
-                }
-                currentActiveHUDs.Clear();
-            }
+        GameManager.onGameStateChanged -= UpdateGameState;
+        ActivationTip.IsBombActive -= initializeHUDs;
+    }
 
-            if (myHUDs.Length > 0)
+    private IEnumerator FlashLoop()
+    {
+        while (true)
+        {
+            // ON
+            for (int i = 0; i < targetRenderers.Length; i++)
             {
-                foreach (var myHud in myHUDs)
-                {
-                    myHud.SetActive(true);
-                    currentActiveHUDs.Add(myHud);
-                }
+                targetRenderers[i].material = flashMaterial;
             }
-            hideHuds = false;
-            UpdateHUDVisuals();
+            yield return new WaitForSeconds(levelData.flashDuration); // flash duration
+
+            // OFF
+            for (int i = 0; i < targetRenderers.Length; i++)
+            {
+                targetRenderers[i].material = offMaterial;
+            }
+            yield return new WaitForSeconds(levelData.offDuration);
         }
     }
 
-    private void UpdateHUDVisuals()
+    private void OnTriggerEnter(Collider other)
     {
-        if (relay == null) return;
-        if (showHud == null) return;
-        if (currentActiveHUDs.Count <= 0) return;
-        Debug.Log("Switching HUDs" + hideHuds);
-        showHud.SetActive(hideHuds);
-        foreach (var currentActiveHUD in currentActiveHUDs)
+        if (!other.CompareTag("Player"))
+            return;
+
+        if (currentState == GameManager.GameState.Playing)
         {
-            currentActiveHUD.SetActive(!hideHuds);
+            triggerHUDs();
         }
+        //testing purpose
+        triggerHUDs();
+        if (targetRenderers.Length != 0 && offMaterial != null && flashMaterial  != null)
+        {
+            StartCoroutine(FlashLoop());
+        }
+    }
+
+    private void triggerHUDs()
+    {
+        if (HUDManager.Instance != null)
+            HUDManager.Instance.ActivateTrigger(myHUDs);
+    }
+
+    private void UpdateGameState(GameManager.GameState state)
+    {
+        if (state == GameManager.GameState.Playing)
+        {
+            currentState = state;
+        }
+    }
+
+    private void initializeHUDs()
+    {
+        if (movementHuds.Length == 0) return;
+        HUDManager.Instance.ActivateTrigger(movementHuds);
+        ActivationTip.IsBombActive -= initializeHUDs;
     }
 }

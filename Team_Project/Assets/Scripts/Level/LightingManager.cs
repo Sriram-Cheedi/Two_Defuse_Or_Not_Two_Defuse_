@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class LightingManager : MonoBehaviour
@@ -74,9 +75,15 @@ public class LightingManager : MonoBehaviour
         switch (header)
         {
             case "PWR":
-                if (API_Provider.Instance.ActiveAPIController.getComponentStateManager["PWR"] == 0) 
+                if (API_Provider.Instance.ActiveAPIController.getComponentStateManager["PWR"] == 0)
+                {
                     TurnOffLights();
-                else TurnOnLights();
+                }
+
+                else
+                {
+                    TurnOnLights();
+                }
                 break;
            
         }
