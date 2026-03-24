@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class LightingManager : MonoBehaviour
@@ -40,13 +41,13 @@ public class LightingManager : MonoBehaviour
             relay.NumberPressed += HandleMockButtonPress;
         }
         
-        API_Provider.Instance.ActiveAPIController.OnInputChanged += HandleButtonPress;
+        API_Controller.OnInputChanged += HandleButtonPress;
     }
     
     
     void OnDisable()
     {
-        API_Provider.Instance.ActiveAPIController.OnInputChanged -= HandleButtonPress;
+        API_Controller.OnInputChanged -= HandleButtonPress;
         
         if (relay != null)
         {
@@ -74,9 +75,15 @@ public class LightingManager : MonoBehaviour
         switch (header)
         {
             case "PWR":
-                if (API_Provider.Instance.ActiveAPIController.getComponentStateManager["PWR"] == 0) 
+                if (API_Provider.Instance.ActiveAPIController.getComponentStateManager["PWR"] == 0)
+                {
                     TurnOffLights();
-                else TurnOnLights();
+                }
+
+                else
+                {
+                    TurnOnLights();
+                }
                 break;
            
         }

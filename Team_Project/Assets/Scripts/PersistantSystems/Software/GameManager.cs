@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public double bombTimer = 25.0;
     public bool isGameOver = false;
 
-    public enum GameState { Menu, CutScene, Playing, GameOver, GameWin }
+    public enum GameState { Menu, CutScene, ReadyUP ,Playing, GameOver, GameWin }
     public GameState currentState = GameState.Menu;
     [Header("Cutscene References")]
     [SerializeField] private VideoPlayer cutscenePlayer;
@@ -21,27 +21,35 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject menuUI;
     [Header("Warning")] private AudioSource WarningAudio;
     
+    public static event Action<GameState> onGameStateChanged;
+    
     private bool pause = false;
     private float PreviousTimeScale = 1f;
     
     private bool isMatSceneLoaded = false;
-
+    private bool isHardwareReady = false;
+    private bool isSoftwareReady = false;
+    
     public static event Action<double> onGameEnd;
     private string curr_username;
     
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        API_Controller.OnInputChanged += SetHardwareReady;
+        Mock_API_Controller.OnInputChanged += SetHardwareReady;
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        API_Controller.OnInputChanged -= SetHardwareReady;
+        Mock_API_Controller.OnInputChanged -= SetHardwareReady;
     }
     
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
     {
-        isMatSceneLoaded = (scene.name == "WireCutting");
+        isMatSceneLoaded = (scene.name == "MatScene");
     }
     
     
@@ -51,21 +59,29 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            Debug.Log("GameManager created and preserved.");
         }
         else
         {
-            Debug.Log("Duplicate GameManager destroyed.");
             Destroy(gameObject);
-            return;
         }
-
         WarningAudio = GetComponent<AudioSource>();
+        
     }
+    
     public void Update()
     {
+        // Initial ReadyUp
+        onGameStateChanged?.Invoke(currentState);
+        if (currentState == GameState.ReadyUP)
+        {
+            if (isHardwareReady && isSoftwareReady)
+            {
+                currentState = GameState.Playing;
+                onGameStateChanged?.Invoke(currentState);
+            }
+        }
 
-        if (bombTimer > 0.0f &&  currentState == GameState.Playing && !pause)
+        if (currentState == GameState.Playing && bombTimer > 0.0f && !pause)
         {
             bombTimer -= Time.deltaTime;
             if (currentState == GameState.Playing && bombTimer <= 5f && bombTimer > 0f)
@@ -91,9 +107,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void SetHardwareReady(string mod, int val)
+    {
+        if (mod == "PWR" && val == 1)
+        {
+            isHardwareReady = true;
+            Debug.Log("Hardware ready");
+        }
+    }
+
     public void StartGame()
     {
-        if (currentState == GameState.Playing || currentState == GameState.CutScene)
+        if (currentState == GameState.Playing || currentState == GameState.CutScene ||  currentState == GameState.ReadyUP)
             return;
 
         currentState = GameState.CutScene;
@@ -114,16 +139,18 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.LogWarning("Cutscene player not assigned. Loading game directly.");
-            currentState = GameState.Playing;
-            SceneManager.LoadScene("WireCutting");
+            currentState = GameState.ReadyUP;
+            isSoftwareReady = true;
+            SceneManager.LoadScene("MatScene");
         }
     }
 
     private void OnVideoFinished(VideoPlayer vp)
     {
         cutscenePlayer.loopPointReached -= OnVideoFinished;
-        currentState = GameState.Playing;
-        SceneManager.LoadScene("WireCutting");
+        currentState = GameState.ReadyUP;
+        SceneManager.LoadScene("MatScene");
+        isSoftwareReady = true;
     }
 
     public void EndGame()
@@ -132,12 +159,7 @@ public class GameManager : MonoBehaviour
         if (currentState == GameState.GameOver) return;
 
         currentState = GameState.GameOver;
-
-        if (API_Provider.Instance != null && API_Provider.Instance.ActiveAPIController != null)
-        {
-            API_Provider.Instance.ActiveAPIController.SendSet("PWR", 4);
-        }
-
+        API_Provider.Instance.ActiveAPIController.SendSet("PWR", 4);
         SceneManager.LoadScene("Explode");
         StartCoroutine(GameoverAnimation());
     }
@@ -146,14 +168,8 @@ public class GameManager : MonoBehaviour
     {
         onGameEnd?.Invoke(bombTimer);
         if (currentState == GameState.GameWin) return;
-
         currentState = GameState.GameWin;
-
-        if (API_Provider.Instance != null && API_Provider.Instance.ActiveAPIController != null)
-        {
-            API_Provider.Instance.ActiveAPIController.SendSet("PWR", 4);
-        }
-
+        API_Provider.Instance.ActiveAPIController.SendSet("PWR", 4);
         SceneManager.LoadScene("GameWin");
     }
     

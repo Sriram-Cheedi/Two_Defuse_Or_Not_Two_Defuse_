@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6329800456400314080}
   - component: {fileID: 1188572398259561297}
   m_Layer: 0
-  m_Name: HUDManager
+  m_Name: TimerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,4 +45,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHUDHandler
   timerText: {fileID: 0}
-  time_bars: {fileID: 0}

@@ -22,13 +22,13 @@ public class SmokeManager : MonoBehaviour
     private void OnEnable()
     {
         relay.SmokeReleased += HandleSmoke; 
-        API_Provider.Instance.ActiveAPIController.OnInputChanged += OnSmokeReleased;
+        API_Controller.OnInputChanged += OnSmokeReleased;
     }
 
     private void OnDisable()
     {
         relay.SmokeReleased -= HandleSmoke; 
-        API_Provider.Instance.ActiveAPIController.OnInputChanged -= OnSmokeReleased;
+        API_Controller.OnInputChanged -= OnSmokeReleased;
     }
     
     void Start() { }

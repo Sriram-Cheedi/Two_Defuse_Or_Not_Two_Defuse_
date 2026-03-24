@@ -13,7 +13,9 @@ namespace Puzzles.Controllers
         private Transform electricity;
         private RigidBodyMovement hub;
         [SerializeField] public Material matCorrect;
-        [SerializeField] public Material matDefault;
+        [SerializeField] public Material matIncorrect;
+        private Material matDefault;
+        private MeshRenderer tileRenderer;
 
 
         public void SetSafeZone(bool safeTile)
@@ -26,6 +28,8 @@ namespace Puzzles.Controllers
             spawnManager = GameObject.FindGameObjectWithTag("Respawn").GetComponent<SpawnManager>();
             electricity = transform.Find("Electricity");
             hub = FindAnyObjectByType<RigidBodyMovement>();
+            tileRenderer = GetComponent<MeshRenderer>();
+            matDefault = tileRenderer.material;
             if (electricity != null)
             {
                 electricity.gameObject.SetActive(false);
@@ -46,34 +50,49 @@ namespace Puzzles.Controllers
 
         private void OnTriggerEnter(Collider other)
         {
+            if (matCorrect == null || matDefault == null || matIncorrect == null) return;
             if (other.CompareTag("Player") && !IsPlayerRespawning())
             {
                 if (!isSafeTile)
                 {
                     spawnManager.OnRespawn();
+                    tileRenderer.material = matIncorrect;
+                }
+                else
+                {
+                    tileRenderer.material = matCorrect;
                 }
             }
         }
 
         private void OnTriggerStay(Collider other)
         {
+            if (matCorrect == null || matDefault == null || matIncorrect == null) return;
             if (other.CompareTag("Player"))
             {
-                if (electricity != null)
+                if (!isSafeTile && electricity != null)
                 {
                     electricity.gameObject.SetActive(true);
+                    tileRenderer.material = matIncorrect;
+                }
+
+                if (isSafeTile)
+                {
+                    tileRenderer.material = matCorrect;
                 }
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
+            if (matCorrect == null || matDefault == null || matIncorrect == null) return;
             if (other.CompareTag("Player"))
             {
                 if (electricity != null)
                 {
                     electricity.gameObject.SetActive(false);
                 }
+                tileRenderer.material = matDefault;
             }
         }
     }
