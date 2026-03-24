@@ -5,7 +5,7 @@ public class VerletWire : MonoBehaviour
 {
     private static readonly List<VerletWire> allwires = new();
 
-    private const int POST_CUT_SETTLE_FRAMES = 30;
+    private const int POST_CUT_SETTLE_FRAMES = 8;
     private const int IGNORE_COLLISION_FRAMES = 20;
     private const float EPS = 0.000001f;
 
@@ -51,7 +51,19 @@ public class VerletWire : MonoBehaviour
     [Header("Rope")]
     public int points = 35;
     public float segmentLength = 0.4f;
+    [Header("Gravity Flip Retraction")]
+    public bool retractWireOnUpwardGravity = true;
 
+    [Range(0f, 1f)] public float ceilingRetractionSlackThreshold = 0.02f;
+
+    [Range(0f, 1f)] public float ceilingRetractionAmount = 1f;
+
+    [Range(0.1f, 20f)] public float ceilingRetractionSpeed = 6f;
+
+    [Range(0.1f, 20f)] public float ceilingRestoreSpeed = 3f;
+
+    private float dynamicSegmentLength;
+    private float targetSegmentLength;
     [Range(0f, 0.2f)] public float damping = 0.02f;
     [Range(1, 30)] public int iterations = 18;
 
@@ -76,6 +88,7 @@ public class VerletWire : MonoBehaviour
     public LayerMask playerLayer;
 
     [Header("Cutting")]
+    public bool isCuttable = true;
     public VerletWire wirePiecePrefab;
     public float cutSnapImpulse = 0.6f;
     public int cutImpulsePoints = 4;
@@ -104,7 +117,6 @@ public class VerletWire : MonoBehaviour
     private int ignoreCollisionFrames = 0;
     private bool hasBeenCut = false;
 
-    private LineRenderer lr;
     private Vector3[] RopePoint;
     private Vector3[] RopePointOld;
     private CapsuleCollider[] segmentColliders;
@@ -128,24 +140,6 @@ public class VerletWire : MonoBehaviour
         allwires.Remove(this);
     }
 
-    void Awake()
-    {
-        lr = GetComponent<LineRenderer>();
-        if (lr == null)
-        {
-            lr = gameObject.AddComponent<LineRenderer>();
-        }
-        lr.useWorldSpace = true;
-        lr.alignment = LineAlignment.View;
-        lr.textureMode = LineTextureMode.Tile;
-        lr.startWidth = insulatedWidth;
-        lr.endWidth = insulatedWidth;
-        lr.numCapVertices = 0;
-        lr.numCornerVertices = 4;
-        lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-        lr.receiveShadows = false;
-        lr.material = insulatedMat != null ? insulatedMat : new Material(Shader.Find("Sprites/Default"));
-    }
 
     void Start()
     {
@@ -165,7 +159,6 @@ public class VerletWire : MonoBehaviour
         }
 
         RebuildColliders();
-        UpdateLineRendererNow();
     }
 
     void FixedUpdate()
@@ -177,6 +170,7 @@ public class VerletWire : MonoBehaviour
         TickIgnoreCollision();
         Vector3 gravity = Gravity();
         CheckGravityFlip(gravity);
+        UpdateDynamicSegmentLength(gravity);
 
         float dt2 = Time.fixedDeltaTime * Time.fixedDeltaTime;
         for (int i = 1; i < points - 1; i++)
@@ -186,7 +180,6 @@ public class VerletWire : MonoBehaviour
             RopePoint[i] += velocity + gravity * dt2;
         }
         StabilizeDoublePinnedAfterFlip();
-
         PushWireFromPlayer();
         SetAnchors();
 
@@ -219,7 +212,6 @@ public class VerletWire : MonoBehaviour
                 SolveSelfCollision();
             }
         }
-        UpdateLineRendererNow();
         UpdateColliders();
     }
 
@@ -342,6 +334,8 @@ public class VerletWire : MonoBehaviour
             RopePoint[i] = position;
             RopePointOld[i] = position;
         }
+        dynamicSegmentLength = segmentLength;
+        targetSegmentLength = segmentLength;
         initialiseWire = true;
     }
 
@@ -351,10 +345,13 @@ public class VerletWire : MonoBehaviour
         {
             return 0f;
         }
-        float ropeLength = segmentLength * (points - 1);
+
+        float effectiveSegLen = dynamicSegmentLength > 0f ? dynamicSegmentLength : segmentLength;
+        float ropeLength = effectiveSegLen * (points - 1);
         float distanceBtwAnchors = Vector3.Distance(RopePoint[0], RopePoint[points - 1]);
         float slack = ropeLength - distanceBtwAnchors;
-        return Mathf.Clamp(slack / ropeLength,0,1);
+
+        return ropeLength > EPS ? Mathf.Clamp(slack / ropeLength, 0f, 1f) : 0f;
     }
 
     public void InitializeCutPiece(Vector3[] newPoints, Vector3[] newOldPoints, bool newPinStart, Transform newAnchor1, bool newPinEnd, Transform newAnchor2)
@@ -366,14 +363,58 @@ public class VerletWire : MonoBehaviour
         points = Mathf.Max(newPoints.Length, 2);
         RopePoint = (Vector3[])newPoints.Clone();
         RopePointOld = (Vector3[])newOldPoints.Clone();
+
+        dynamicSegmentLength = segmentLength;
+        targetSegmentLength = segmentLength;
+
         initialiseWire = true;
+
         if (gravitySource == null)
         {
             gravitySource = FindFirstObjectByType<WireGravity>();
         }
+
         postCutFrames = POST_CUT_SETTLE_FRAMES;
         RebuildColliders();
-        UpdateLineRendererNow();
+    }
+    private void UpdateDynamicSegmentLength(Vector3 gravity)
+    {
+        if (!retractWireOnUpwardGravity || RopePoint == null || RopePoint.Length < 2)
+        {
+            dynamicSegmentLength = segmentLength;
+            targetSegmentLength = segmentLength;
+            return;
+        }
+
+        Vector3 gDir = gravity.sqrMagnitude > EPS ? gravity.normalized : Vector3.zero;
+        bool upwardGravity = Vector3.Dot(gDir, Vector3.up) > 0.75f;
+
+        float anchorDistance = Vector3.Distance(RopePoint[0], RopePoint[points - 1]);
+        float currentTotalLength = segmentLength * (points - 1);
+        float minRequiredLength = anchorDistance;
+
+        float slack = currentTotalLength - minRequiredLength;
+        float slackRatio = currentTotalLength > EPS ? slack / currentTotalLength : 0f;
+
+        if (upwardGravity && slackRatio > ceilingRetractionSlackThreshold)
+        {
+            float desiredTotalLength = Mathf.Lerp(
+                currentTotalLength,
+                minRequiredLength,
+                ceilingRetractionAmount
+            );
+
+            desiredTotalLength = Mathf.Max(desiredTotalLength, minRequiredLength);
+
+            targetSegmentLength = desiredTotalLength / (points - 1);
+        }
+        else
+        {
+            targetSegmentLength = segmentLength;
+        }
+
+        float speed = upwardGravity ? ceilingRetractionSpeed : ceilingRestoreSpeed;
+        dynamicSegmentLength = Mathf.Lerp(dynamicSegmentLength, targetSegmentLength, Time.fixedDeltaTime * speed);
     }
 
     private void RebuildColliders()
@@ -435,21 +476,7 @@ public class VerletWire : MonoBehaviour
         }
     }
 
-    private void UpdateLineRendererNow()
-    {
-        if (lr == null || RopePoint == null)
-        {
-            return;
-        }
-
-        lr.startWidth = insulatedWidth;
-        lr.endWidth = insulatedWidth;
-        lr.positionCount = RopePoint.Length;
-        for (int i = 0; i < RopePoint.Length; i++)
-        {
-            lr.SetPosition(i, RopePoint[i]);
-        }
-    }
+   
 
     private void TickIgnoreCollision()
     {
@@ -493,7 +520,7 @@ public class VerletWire : MonoBehaviour
 
         if (postCutFrames > 0)
         {
-            effective += 0.12f;
+            effective += 0.08f;
             postCutFrames--;
         }
 
@@ -523,11 +550,14 @@ public class VerletWire : MonoBehaviour
             RopePointOld[i] = RopePoint[i] - vel;
         }
     }
+
     private void SolveDistanceConstraints()
     {
+        float targetLen = dynamicSegmentLength > 0f ? dynamicSegmentLength : segmentLength;
+
         for (int i = 0; i < points - 1; i++)
         {
-            SolveSegmentDistance(i, i + 1, segmentLength);
+            SolveSegmentDistance(i, i + 1, targetLen);
         }
     }
 
@@ -850,11 +880,13 @@ public class VerletWire : MonoBehaviour
 
     public void CutAtWorldPosition(Vector3 worldPos)
     {
+        if (!isCuttable) return;
         if (hasBeenCut || HasAnyWireBeenCut) return;
 
         HasAnyWireBeenCut = true;
         CutWireColor = wireColor;
         Debug.Log("Cut wire color stored: " + wireColor);
+
         if (RopePoint == null || RopePoint.Length < 2) return;
 
         int minSeg = Mathf.Max(0, minPointsPerPiece - 2);
@@ -990,9 +1022,7 @@ public class VerletWire : MonoBehaviour
         other.cutSettleIterations = cutSettleIterations;
         other.gravityFlipMinBendStiffness = gravityFlipMinBendStiffness;
         other.gravityFlipMinSlackStiffness = gravityFlipMinSlackStiffness;
-        other.lr.startWidth = insulatedWidth;
-        other.lr.endWidth = insulatedWidth;
-        if (insulatedMat != null) other.lr.material = insulatedMat;
+
     }
 
     private void ApplyCutImpulse(bool freeEndIsLast)
@@ -1038,8 +1068,6 @@ public class VerletWire : MonoBehaviour
             for (int i = 0; i < points - 1; i++)
                 SolveSegmentDistance(i, i + 1, restLengths[i]);
         }
-
-        UpdateLineRendererNow();
     }
 
     private static void ApplyPointCorrection(VerletWire wire, int indexA, int indexB, float tOnSegment, Vector3 correction)

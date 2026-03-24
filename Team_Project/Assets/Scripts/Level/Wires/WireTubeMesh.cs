@@ -10,34 +10,28 @@ public class WireTubeMesh : MonoBehaviour
     public bool showEndCaps = true;
     public Material wireMaterial;
     public float uvTileLength = 1f;
-    private VerletWire   _wire;
-    private Mesh         _mesh;
-    private MeshFilter   _mf;
+    private VerletWire _wire;
+    private Mesh _mesh;
+    private MeshFilter _mf;
     private MeshRenderer _mr;
     private Vector3[] _verts;
     private Vector3[] _normals;
     private Vector2[] _uvs;
-    private int[]     _tris;
+    private int[] _tris;
     private int _lastPointCount = -1;
-    private int _lastSides      = -1;
+    private int _lastSides = -1;
 
     void Awake()
     {
         _wire = GetComponent<VerletWire>();
-        _mf   = GetComponent<MeshFilter>();
-        _mr   = GetComponent<MeshRenderer>();
-        _mesh           = new Mesh { name = "WireTube" };
+        _mf = GetComponent<MeshFilter>();
+        _mr = GetComponent<MeshRenderer>();
+        _mesh = new Mesh { name = "WireTube" };
         _mesh.MarkDynamic();
-        _mf.mesh        = _mesh;
+        _mf.mesh = _mesh;
         if (wireMaterial != null)
         {
             _mr.material = wireMaterial;
-        }
-        var lr = GetComponent<LineRenderer>();
-        if (lr != null)
-        {
-            lr.enabled = false;
-            lr.forceRenderingOff = true;
         }
     }
 
@@ -48,13 +42,13 @@ public class WireTubeMesh : MonoBehaviour
 
     void BuildMesh()
     {
-        int ptCount  = _wire.ropePointsCount();
-        int rings    = ptCount;
+        int ptCount = _wire.ropePointsCount();
+        int rings = ptCount;
         int vertRing = sides + 1;
         int capVerts = showEndCaps ? 2 * (sides + 2) : 0;
-        int capTris  = showEndCaps ? 2 * sides * 3   : 0;
+        int capTris = showEndCaps ? 2 * sides * 3   : 0;
         int totalVerts = rings * vertRing + capVerts;
-        int totalTris  = (rings - 1) * sides * 6 + capTris;
+        int totalTris = (rings - 1) * sides * 6 + capTris;
         if (_lastPointCount != ptCount || _lastSides != sides)
         {
             _verts = new Vector3[totalVerts];
@@ -89,7 +83,9 @@ public class WireTubeMesh : MonoBehaviour
             Vector3 b0 = Vector3.Cross(tangent, n0).normalized;
 
             if (ring > 0)
+            {
                 runningV += Vector3.Distance(points[ring], points[ring - 1]);
+            }
 
             float v = runningV / Mathf.Max(uvTileLength, 0.001f);
 
@@ -144,9 +140,9 @@ public class WireTubeMesh : MonoBehaviour
         _uvs[vertBase] = new Vector2(0.5f, 0.5f);
         for (int s = 0; s <= sides; s++)
         {
-            float   angle = s * angleStep;
+            float angle = s * angleStep;
             Vector3 dir = Mathf.Cos(angle) * n + Mathf.Sin(angle) * b;
-            int     idx = vertBase + 1 + s;
+            int idx = vertBase + 1 + s;
             _verts[idx] = center + dir * radius;
             _normals[idx] = normal;
             _uvs[idx] = new Vector2(Mathf.Cos(angle) * 0.5f + 0.5f, Mathf.Sin(angle) * 0.5f + 0.5f);
