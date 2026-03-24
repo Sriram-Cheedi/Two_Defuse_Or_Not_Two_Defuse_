@@ -27,7 +27,10 @@ public class API_Provider : MonoBehaviour
             mockChild.transform.SetParent(transform);
 
             ActiveAPIController = mockChild.AddComponent<Mock_API_Controller>();
+            ActiveAPIController.InitializeSelf();
+            ActiveAPIController.InitializeHardware();
         }
+
         else
         {
             GameObject child = new GameObject("API_Controller");
@@ -57,9 +60,9 @@ public class API_Provider : MonoBehaviour
 
     public void Update()
     {
-        if (useMockHardware && ActiveAPIController is Mock_API_Controller mock)
-        {
-            mock.UpdateSimulation();
-        }
+        // if (useMockHardware && ActiveAPIController is Mock_API_Controller mock)
+        // {
+        //     mock.UpdateSimulation();
+        // }
     }
 }

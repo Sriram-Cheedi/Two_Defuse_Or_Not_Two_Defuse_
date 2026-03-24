@@ -47,7 +47,7 @@ public class SmokeEmitter : MonoBehaviour
             if (smoke == null) continue;
             var emission = smoke.emission;
             emission.rateOverTime = currentRate;
-            Debug.Log(currentAlpha);
+            // Debug.Log(currentAlpha);
             var main = smoke.main;
             Color c = main.startColor.color;
             c.a = currentAlpha;
