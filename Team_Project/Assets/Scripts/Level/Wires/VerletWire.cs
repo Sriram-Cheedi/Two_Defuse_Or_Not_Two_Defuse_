@@ -180,7 +180,7 @@ public class VerletWire : MonoBehaviour
             RopePoint[i] += velocity + gravity * dt2;
         }
         StabilizeDoublePinnedAfterFlip();
-        PushWireFromPlayer();
+        // PushWireFromPlayer();
         SetAnchors();
 
         for (int i = 0; i < iterations; i++)
@@ -843,39 +843,6 @@ public class VerletWire : MonoBehaviour
                 pI = RopePoint[i];
             }
         }
-    }
-
-    private void PushWireFromPlayer()
-    {
-        Collider[] hits = Physics.OverlapSphere(transform.position, 3f, playerLayer);
-        foreach (Collider hit in hits)
-        {
-            for (int i = 1; i < points - 1; i++)
-            {
-                if (CheckAnchor(i)) continue;
-                Vector3 point = RopePoint[i];
-                Vector3 closestHitPoint = hit.ClosestPoint(point);
-                Vector3 direction = point - closestHitPoint;
-                float distance = direction.magnitude;
-                float influenceRadius = ropeRadius * 3f;
-                if (distance > influenceRadius || distance < 0.0001f) continue;
-                Vector3 dir = direction / distance;
-                float falloff = 1f - (distance / influenceRadius);
-                Vector3 offset = dir * playerPushForce * falloff;
-                ApplyOffset(i, offset, 1f, 0.85f);
-                ApplyOffset(i - 1, offset, 0.5f, 0.4f);
-                ApplyOffset(i + 1, offset, 0.5f, 0.4f);
-                ApplyOffset(i - 2, offset, 0.2f, 0.15f);
-                ApplyOffset(i + 2, offset, 0.2f, 0.15f);
-            }
-        }
-    }
-
-    private void ApplyOffset(int index, Vector3 offset, float pointMul, float oldMul)
-    {
-        if (index < 0 || index >= points) return;
-        RopePoint[index] += offset * pointMul;
-        RopePointOld[index] += offset * oldMul;
     }
 
     public void CutAtWorldPosition(Vector3 worldPos)
