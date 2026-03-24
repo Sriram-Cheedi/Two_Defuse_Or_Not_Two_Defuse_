@@ -23,6 +23,7 @@ class LCDModule : public Component {
     bool enabled = true;
     bool changed = false;
 public:
+
     LCDModule(std::string name, SerialController serialController);
     void LCDSetup();
     void LCDScroll();
@@ -36,7 +37,6 @@ public:
     void scramble() override{
         disable();
     };
-
 };
 
 #endif

@@ -13,12 +13,16 @@
 
 SerialController serialController = SerialController();
 
+Buzzer buzzer = Buzzer("BUZZER", 28, serialController, 50);
+
+
 std::vector<Component*> components; 
 
 TimerModule timer = TimerModule("TMR", 30, 32, 31, serialController);
 Imu gyro = Imu("IMU", serialController);
 
 LCDModule LCD = LCDModule("LCD", serialController);
+
 
 int flickerThread = -1;
 
@@ -144,6 +148,7 @@ void parseCommand(std::string command){
     }
     powerToggle(name, std::stoi(func_args[1]));
   }
+
 
   if(name == "GLB" && func_args[0] == "status"){
     for(const auto& cmp : components){
