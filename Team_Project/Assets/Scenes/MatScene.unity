@@ -37700,6 +37700,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 455919772}
+    - target: {fileID: 1797992467152474154, guid: dfb9d4a7507d07d4383a9d17350b387b, type: 3}
+      propertyPath: m_VersionIndex
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 4624222108281862809, guid: dfb9d4a7507d07d4383a9d17350b387b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -87579,6 +87583,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 94938215}
+    - target: {fileID: 1797992467152474154, guid: dfb9d4a7507d07d4383a9d17350b387b, type: 3}
+      propertyPath: m_VersionIndex
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 4624222108281862809, guid: dfb9d4a7507d07d4383a9d17350b387b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -142503,6 +142511,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2083775044}
+    - target: {fileID: 1797992467152474154, guid: dfb9d4a7507d07d4383a9d17350b387b, type: 3}
+      propertyPath: m_VersionIndex
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 4624222108281862809, guid: dfb9d4a7507d07d4383a9d17350b387b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -208386,6 +208398,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1875448927}
+    - target: {fileID: 1797992467152474154, guid: dfb9d4a7507d07d4383a9d17350b387b, type: 3}
+      propertyPath: m_VersionIndex
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 4624222108281862809, guid: dfb9d4a7507d07d4383a9d17350b387b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -609990,7 +610006,7 @@ PrefabInstance:
       objectReference: {fileID: 902483012}
     - target: {fileID: 1797992467152474154, guid: dfb9d4a7507d07d4383a9d17350b387b, type: 3}
       propertyPath: m_VersionIndex
-      value: 13
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7238387404909418787, guid: dfb9d4a7507d07d4383a9d17350b387b, type: 3}
       propertyPath: m_LocalPosition.x
