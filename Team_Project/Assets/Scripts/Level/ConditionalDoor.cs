@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Puzzles;
+using Puzzles.Minor_Interaction;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -41,6 +42,7 @@ public class ConditionalDoor : MonoBehaviour
         if (!_isOpen)
         {
             StartCoroutine(OpenDoors());
+            Minor_Interactinon_Controller.DoorOpened?.Invoke();
             _isOpen = true; 
         }
     }

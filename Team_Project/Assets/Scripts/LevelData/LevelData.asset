@@ -17,6 +17,7 @@ MonoBehaviour:
   fillSpeed: 20
   clearSpeed: 10
   alphaSpeed: 0.04
-  targetAlpha: 0.6
+  targetAlpha: 0.7
   flashDuration: 1
   offDuration: 1
+  ssmSuccessAlertDuration: 5

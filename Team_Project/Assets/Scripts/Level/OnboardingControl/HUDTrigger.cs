@@ -53,8 +53,6 @@ public class HUDTrigger : MonoBehaviour
         {
             triggerHUDs();
         }
-        //testing purpose
-        triggerHUDs();
         if (targetRenderers.Length != 0 && offMaterial != null && flashMaterial  != null)
         {
             StartCoroutine(FlashLoop());

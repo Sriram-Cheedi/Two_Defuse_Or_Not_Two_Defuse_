@@ -47,7 +47,6 @@ public class SmokeManager : MonoBehaviour
         {
             if (header == "FGM" && value == 2)
             {
-                Debug.Log("Smoke Released: " + value);
                 smokeAlert.SetActive(true);
                 smokeReleased = true;
             } 
