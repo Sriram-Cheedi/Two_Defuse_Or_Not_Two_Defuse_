@@ -7,13 +7,23 @@ public class Maze_Trigger : MonoBehaviour
     
     private bool gameActive = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void OnTriggerEnter(Collider other)
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     if (other.CompareTag("Player"))
+    //     {
+    //         gameActive = true;
+    //         StartCoroutine(startScreen());
+    //     }
+    // }
+
+    private void Start()
     {
-        if (other.CompareTag("Player"))
-        {
-            gameActive = true;
-            StartCoroutine(startScreen());
-        }
+        SendSetSeq();
+    }
+
+    private void SendSetSeq()
+    {
+        // API_Provider.Instance.ActiveAPIController.SendMazeSeq("LCD", "U U U L L U U R R R D R R U U U L L L");
     }
 
     IEnumerator startScreen()

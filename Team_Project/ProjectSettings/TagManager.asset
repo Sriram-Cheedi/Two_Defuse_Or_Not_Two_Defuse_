@@ -14,8 +14,7 @@ TagManager:
   - GridManager
   - Orientation
   - CameraPosition
-  - MetalSurface
-  - PlasticSurface
+  - Electricity
   layers:
   - Default
   - TransparentFX
@@ -26,7 +25,7 @@ TagManager:
   - Ground
   - Interactable
   - PostProcessing
-  - 
+  - Wire
   - 
   - 
   - 

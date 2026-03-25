@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Puzzles;
 using Puzzles.Controllers;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
@@ -13,6 +14,9 @@ public class Button : MonoBehaviour, Interactible_Interface
     [SerializeField] public Material _materialON;
     [SerializeField] public Material _materialOFF;
     [SerializeField] public Material _incorrectMaterial;
+    [SerializeField] public Material _materialSuccess;
+    [SerializeField] public GameObject _successAlert;
+    public LevelData levelData;
 
     private Renderer _renderer;
     
@@ -23,35 +27,41 @@ public class Button : MonoBehaviour, Interactible_Interface
 
     private void OnEnable()
     {
-        ssm_controller.data.OnFailure += FlashRed;
-        ssm_controller.data.OnSuccess += DisableInteractionSetOn;
+        Puzzle.OnFailure += FlashRed;
+        Puzzle.OnSuccess += DisableInteractionSetOn;
     }
 
     private void OnDisable()
     {
-        ssm_controller.data.OnFailure -= FlashRed;
-        ssm_controller.data.OnSuccess -= DisableInteractionSetOn;
+        Puzzle.OnFailure -= FlashRed;
+        Puzzle.OnSuccess -= DisableInteractionSetOn;
 
     }
     
-    private void DisableInteractionSetOn()
+    private void DisableInteractionSetOn(GameObject obj)
     {
+        if (obj != ssm_controller.gameObject) return;
         gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
         
         StopAllCoroutines();
-        _renderer.material = _materialON; 
+        _renderer.material = _materialSuccess;
+        if (_successAlert == null || levelData ==  null) return;
+        StartCoroutine(ShowSuccessAlertForSeconds());
     }
     
     public void Interact(RaycastHit hit)
-    {
+    {  
         StartCoroutine(HighlightSelected());
         ssm_controller.CheckSSMButtonPress(button_number);
     }
     
-    private void FlashRed()
+    private void FlashRed(GameObject puzzle)
     {
-        StopAllCoroutines(); 
-        StartCoroutine(FlashColorRoutine( 1.0f));
+        if (puzzle == ssm_controller.gameObject)
+        {
+            StopAllCoroutines(); 
+            StartCoroutine(FlashColorRoutine( 1.0f));
+        }
     }
     
     private IEnumerator FlashColorRoutine(float duration)
@@ -77,5 +87,12 @@ public class Button : MonoBehaviour, Interactible_Interface
         }
         
         _renderer.material = _materialOFF;
+    }
+
+    IEnumerator ShowSuccessAlertForSeconds()
+    {
+        _successAlert.SetActive(true);
+        yield return new WaitForSeconds(levelData.ssmSuccessAlertDuration);
+        _successAlert.SetActive(false);
     }
 }

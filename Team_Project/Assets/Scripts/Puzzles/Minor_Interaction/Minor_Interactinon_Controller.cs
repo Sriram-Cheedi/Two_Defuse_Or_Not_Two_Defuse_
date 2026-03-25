@@ -75,12 +75,12 @@ namespace Puzzles.Minor_Interaction
                 relay.NumberPressed += HandleMockButtonPress;
             }
 
-            API_Provider.Instance.ActiveAPIController.OnInputChanged += HandleButtonPress;
+            API_Controller.OnInputChanged += HandleButtonPress;
         }
 
         void OnDisable()
         {
-            API_Provider.Instance.ActiveAPIController.OnInputChanged -= HandleButtonPress;
+            API_Controller.OnInputChanged -= HandleButtonPress;
 
             if (relay != null)
             {
@@ -221,7 +221,6 @@ namespace Puzzles.Minor_Interaction
 
             if (barStates["SW1"] == correctPostion[0] && barStates["SW2"] == correctPostion[1] && barStates["SW3"] == correctPostion[2])
             {
-                
                 doorAnimaton.OpenDoor(barredDoor.transform, barredDoorHinge, Vector3.up, 1f);
                 hasDoorUnlocked = true;
             }

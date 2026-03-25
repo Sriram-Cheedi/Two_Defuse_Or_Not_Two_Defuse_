@@ -18,21 +18,6 @@ public class ConditionalDoor : MonoBehaviour
     [Header("Drag the Puzzle GameObject here")]
     public GameObject puzzleObject;
     
-    private IPuzzle linkedPuzzleController;
-
-    void Awake()
-    {
-        if (puzzleObject != null)
-        {
-            linkedPuzzleController = puzzleObject.GetComponent<IPuzzle>();
-            
-            if (linkedPuzzleController == null)
-            {
-                Debug.LogError("The object you dragged in doesn't have an IPuzzle script on it!");
-            }
-        }
-    }
-    
     void Start()
     {
         left_door = transform.Find("Door_Left").gameObject;
@@ -41,17 +26,18 @@ public class ConditionalDoor : MonoBehaviour
 
     private void OnEnable()
     {
-        linkedPuzzleController.getData.OnSuccess += OpenDoorWrapper; 
+        Puzzle.OnSuccess += OpenDoorWrapper; 
     }
 
     private void OnDisable()
     {
-        linkedPuzzleController.getData.OnSuccess -= OpenDoorWrapper;
+        Puzzle.OnSuccess -= OpenDoorWrapper;
     }
 
     // Update is called once per frame
-    private void OpenDoorWrapper()
+    private void OpenDoorWrapper(GameObject puzzle)
     {
+        if (puzzle != puzzleObject) return;
         if (!_isOpen)
         {
             StartCoroutine(OpenDoors());

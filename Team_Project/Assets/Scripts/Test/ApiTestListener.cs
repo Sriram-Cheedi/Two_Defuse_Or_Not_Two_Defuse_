@@ -8,12 +8,12 @@ public class ApiTestListener : MonoBehaviour
 
     void OnEnable()
     {
-        api.OnInputChanged += DigitalChanged;
+        API_Controller.OnInputChanged += DigitalChanged;
     }
 
     void OnDisable()
     {
-        api.OnInputChanged -= DigitalChanged;
+        API_Controller.OnInputChanged -= DigitalChanged;
 
     }
 

@@ -10,6 +10,7 @@ public class BarredDoorAnimation : MonoBehaviour
     [SerializeField] private float barSpeed = 2f;
     [SerializeField] private float doorAngle = 90f;
     [SerializeField] private float doorSpeed = 2f;
+    private bool DoorOpened = false;
 
     
     void Start()
@@ -40,6 +41,10 @@ public class BarredDoorAnimation : MonoBehaviour
 
     public void OpenDoor(Transform door, Transform hinge, Vector3 axis, float direction)
     {
+        if (DoorOpened)
+        {
+            return;
+        }
         StartCoroutine(RotateDoor(door, hinge, axis, direction));
     }
     IEnumerator SlideBar(int index, int state)
@@ -66,7 +71,7 @@ public class BarredDoorAnimation : MonoBehaviour
             targetPosition = originalPositions[index];
         }
 
-        Debug.Log("Index: " + index + "State: " + state + "Direction: " + direction + "Origin: " + originalPositions[index] + "Target: " + targetPosition);
+        // Debug.Log("Index: " + index + "State: " + state + "Direction: " + direction + "Origin: " + originalPositions[index] + "Target: " + targetPosition);
 
         float step = 0;
         while (step < 1)

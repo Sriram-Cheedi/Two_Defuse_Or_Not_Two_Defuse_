@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
 {
-    public event Action<string, int> OnInputChanged;
+    public static event Action<string, int> OnInputChanged;
     public event Action<Vector3> OnGyroChanged;
     public event Action<Vector3, Vector3> OnImuChanged;
     
@@ -64,11 +64,15 @@ public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
     }
 
     public void HandleMessage(string message) => Debug.Log($"<color=orange>MOCK: Handle Message</color>");
+    public void SendMazeSeq(string header, string value)
+    {
+    }
+
     public void SendSet(string header, int value) => Debug.Log("<color=orange>MOCK: SendSet: </color>" + header + ":set " + value + "#");
     public void SendSetSeq(string header, int[] value) => Debug.Log("<color=orange>MOCK: SendSetSeq: </color>" + header + ":set " + value + "#");
     public void SendSetSeqSTRING(string header, string[] value) =>  Debug.Log("<color=orange>MOCK: SendSetSeqSTRING: </color>" + header + ":set " + value + "#");
     public int GetButton(string id) => _componentStateManager.ContainsKey("BTN" + id) ? _componentStateManager["BTN" + id] : 0;
-    public void TimerSet(int seconds) => Debug.Log("<color=orange>MOCK: Timer Set: </color>" + seconds);
+    public void TimerSet(int seconds) {}
     public void ResetHardware(string header) => Debug.Log("<color=orange>MOCK: Reset: </color>" + header);
     public int GetDigital(string h) => 0;
     public int GetSSMStatus() => mockSSMStatus;
