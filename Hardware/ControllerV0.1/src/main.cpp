@@ -10,9 +10,10 @@
 #include "SimonSaysModule.h"
 #include "numberGameModule.h"
 #include "fishingModule.h"
-#include "Buzzer.h"
+#include "mazeModule.h"
 
 SerialController serialController = SerialController();
+
 
 std::vector<Component*> components; 
 
@@ -20,6 +21,8 @@ TimerModule timer = TimerModule("TMR", 30, 32, 31, serialController);
 Imu gyro = Imu("IMU", serialController);
 
 LCDModule LCD = LCDModule("LCD", serialController);
+MazeModule maze = MazeModule("MAZE", serialController, LCD);
+
 
 Buzzer buzzer = Buzzer("BUZZER", 28, serialController, 50);
 
@@ -162,6 +165,7 @@ void parseCommand(std::string command){
     powerToggle(name, std::stoi(func_args[1]));
   }
 
+
   if(name == "GLB" && func_args[0] == "status"){
     for(const auto& cmp : components){
       cmp->update();
@@ -196,7 +200,7 @@ void setup() {
   components.push_back(&sw2);
   components.push_back(&sw3);
   components.push_back(&LCD);
-  
+  components.push_back(&maze);
 
   LCD.LCDSetup();
 
