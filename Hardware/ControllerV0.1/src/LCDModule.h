@@ -12,6 +12,30 @@ class LCDModule : public Component {
 
     SerialController serialController;
 
+    LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x20,16,2); 
+
+    byte upArrow[8] = {
+        0x00,
+        0x04,  //   *  
+        0x0E,  //  *** 
+        0x15,  // * * *
+        0x04,  //   *  
+        0x04,  //   *  
+        0x04,  //   *  
+        0x00
+    };  
+
+    byte downArrow[8] = {
+        0x00,
+        0x04,  //   *  
+        0x04,  //   *  
+        0x04,  //   *  
+        0x15,  // * * *
+        0x0E,  //  *** 
+        0x04,  //   * 
+        0x00 
+    };
+
     std::string topText = "";
     std::string bottomText  = "";
 
@@ -21,6 +45,7 @@ class LCDModule : public Component {
     bool enabled = true;
     bool changed = false;
 public:
+
     LCDModule(std::string name, SerialController serialController);
     void LCDSetup();
     void LCDScroll();
@@ -34,7 +59,6 @@ public:
     void scramble() override{
         disable();
     };
-
 };
 
 #endif
