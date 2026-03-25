@@ -215,7 +215,6 @@ namespace Puzzles.Minor_Interaction
 
         private void UpdateBarStatus(string header, int value)
         {
-            if (hasDoorUnlocked) return;
 
             Debug.Log("Updating bar status" + header);
             barStates[header] = value;
@@ -223,7 +222,7 @@ namespace Puzzles.Minor_Interaction
             if (barStates["SW1"] == correctPostion[0] && barStates["SW2"] == correctPostion[1] && barStates["SW3"] == correctPostion[2])
             {
                 doorAnimaton.OpenDoor(barredDoor.transform, barredDoorHinge, Vector3.up, 1f);
-                hasDoorUnlocked = true;
+
             }
         }
 

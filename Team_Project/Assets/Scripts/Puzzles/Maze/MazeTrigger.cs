@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -18,12 +19,20 @@ public class Maze_Trigger : MonoBehaviour
 
     private void Start()
     {
-        SendSetSeq();
+        
     }
 
-    private void SendSetSeq()
+    private void OnTriggerEnter(Collider other)
     {
-        // API_Provider.Instance.ActiveAPIController.SendMazeSeq("LCD", "U U U L L U U R R R D R R U U U L L L");
+        if (other.CompareTag("Player"))
+        {
+            SendSet();
+        }
+    }
+
+    private void SendSet()
+    {
+        API_Provider.Instance.ActiveAPIController.SendSet("MAZE", 1);
     }
 
     IEnumerator startScreen()

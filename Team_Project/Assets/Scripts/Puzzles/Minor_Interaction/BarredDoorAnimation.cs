@@ -37,7 +37,7 @@ public class BarredDoorAnimation : MonoBehaviour
 
     private void HandleDoorOpened()
     {
-        hasDoorOpened = true;
+        // hasDoorOpened = true;
         Minor_Interactinon_Controller.DoorOpened -= HandleDoorOpened;
     }
 
@@ -59,10 +59,10 @@ public class BarredDoorAnimation : MonoBehaviour
 
     public void OpenDoor(Transform door, Transform hinge, Vector3 axis, float direction)
     {
-        if (hasDoorOpened)
-        {
-            return;
-        }
+        // if (hasDoorOpened)
+        // {
+        //     return;
+        // }
         StartCoroutine(RotateDoor(door, hinge, axis, direction));
     }
     IEnumerator SlideBar(int index, int state)
