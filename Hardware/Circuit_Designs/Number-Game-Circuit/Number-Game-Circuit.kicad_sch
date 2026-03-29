@@ -231,214 +231,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "DTS-62N-V:DTS-62N-V"
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "S"
-				(at 29.21 7.62 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-				)
-			)
-			(property "Value" "DTS-62N-V"
-				(at 29.21 5.08 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-				)
-			)
-			(property "Footprint" "DTS62NV"
-				(at 29.21 -94.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "http://akizukidenshi.com/download/ds/cosland/DTS-6-V.PDF"
-				(at 29.21 -194.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Description" "Tactile Switches Through Hole 6*6"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Height" "7"
-				(at 29.21 -394.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Manufacturer_Name" "Diptronics"
-				(at 29.21 -494.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Manufacturer_Part_Number" "DTS-62N-V"
-				(at 29.21 -594.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Mouser Part Number" "113-DTS-62N-V"
-				(at 29.21 -694.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Diptronics/DTS-62N-V?qs=gTYE2QTfZfSKTB5KYn%252Brkw%3D%3D"
-				(at 29.21 -794.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Arrow Part Number" ""
-				(at 29.21 -894.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Arrow Price/Stock" ""
-				(at 29.21 -994.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(symbol "DTS-62N-V_1_1"
-				(rectangle
-					(start 5.08 2.54)
-					(end 27.94 -5.08)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(pin passive line
-					(at 0 0 0)
-					(length 5.08)
-					(name "COM_1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -2.54 0)
-					(length 5.08)
-					(name "N.O._1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 33.02 0 180)
-					(length 5.08)
-					(name "COM_2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 33.02 -2.54 180)
-					(length 5.08)
-					(name "N.O._2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Device:LED"
 			(pin_numbers
 				(hide yes)
@@ -3593,154 +3385,6 @@
 		)
 	)
 	(symbol
-		(lib_id "DTS-62N-V:DTS-62N-V")
-		(at 248.92 33.02 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "0a3520f6-d67c-4f39-933e-4bd75a8df667")
-		(property "Reference" "S5"
-			(at 231.902 32.258 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "DTS-62N-V"
-			(at 233.6799 26.67 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "DTS62NV"
-			(at 219.71 -61.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://akizukidenshi.com/download/ds/cosland/DTS-6-V.PDF"
-			(at 219.71 -161.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Description" "Tactile Switches Through Hole 6*6"
-			(at 248.92 33.02 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Height" "7"
-			(at 219.71 -361.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Name" "Diptronics"
-			(at 219.71 -461.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Part_Number" "DTS-62N-V"
-			(at 219.71 -561.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Mouser Part Number" "113-DTS-62N-V"
-			(at 219.71 -661.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Diptronics/DTS-62N-V?qs=gTYE2QTfZfSKTB5KYn%252Brkw%3D%3D"
-			(at 219.71 -761.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Arrow Part Number" ""
-			(at 219.71 -861.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Arrow Price/Stock" ""
-			(at 219.71 -961.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "5c1c81ad-8ca6-43c2-a893-a3ddacb24b97")
-		)
-		(pin "3"
-			(uuid "cf3fd8a8-bf36-4b99-af15-a35bba657665")
-		)
-		(pin "4"
-			(uuid "fc023b66-95c4-4eec-8ddb-fb44898a9ed6")
-		)
-		(pin "2"
-			(uuid "b99b6228-4b0e-49c1-8e41-cf00a510e2af")
-		)
-		(instances
-			(project "Number-Game-Circuit"
-				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "S5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "SamacSys_Parts:LDQ-M516RI")
 		(at 167.64 82.55 0)
 		(unit 1)
@@ -3911,6 +3555,152 @@
 		)
 	)
 	(symbol
+		(lib_id "SamacSys_Parts:TL1105CF160Q")
+		(at 215.9 30.48 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2bc92c7f-5a25-4a44-acda-a880db484f9e")
+		(property "Reference" "S1"
+			(at 226.06 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TL1105CF160Q"
+			(at 226.06 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TL1105CF160Q"
+			(at 232.41 125.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://componentsearchengine.com/Datasheets/1/TL1105CF160Q.pdf"
+			(at 232.41 225.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "Tactile Switches 6X6X8MM 160GF"
+			(at 215.9 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" "8"
+			(at 232.41 425.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "E-Switch"
+			(at 232.41 525.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "TL1105CF160Q"
+			(at 232.41 625.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "612-TL1105C"
+			(at 232.41 725.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/E-Switch/TL1105CF160Q?qs=YXf4ACKMM4yAAz%252BbnhourA%3D%3D"
+			(at 232.41 825.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Arrow Part Number" ""
+			(at 232.41 925.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Arrow Price/Stock" ""
+			(at 232.41 1025.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(pin "4"
+			(uuid "6b38cfbf-a479-4692-a4cc-1849fd0bd653")
+		)
+		(pin "1"
+			(uuid "1dfc01db-09a0-483d-b15c-1c0973f11e5e")
+		)
+		(pin "3"
+			(uuid "94dd2ed5-713f-41a6-a018-e1dc703239bb")
+		)
+		(pin "2"
+			(uuid "993639a2-c218-4fcb-a674-ddbfa2a3ce8b")
+		)
+		(instances
+			(project "Number-Game-Circuit"
+				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
+					(reference "S1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R_Small")
 		(at 193.04 87.63 90)
 		(unit 1)
@@ -3990,7 +3780,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4c31f1f9-a2c4-4b33-8406-db5a75b1eec0")
-		(property "Reference" "S6"
+		(property "Reference" "S2"
 			(at 214.63 80.0099 90)
 			(effects
 				(font
@@ -4122,7 +3912,7 @@
 		(instances
 			(project ""
 				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "S6")
+					(reference "S2")
 					(unit 1)
 				)
 			)
@@ -4551,7 +4341,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "6d635026-8c13-449e-a10a-9da2846d6b0d")
-		(property "Reference" "S7"
+		(property "Reference" "S3"
 			(at 231.14 80.0099 90)
 			(effects
 				(font
@@ -4683,7 +4473,7 @@
 		(instances
 			(project "Number-Game-Circuit"
 				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "S7")
+					(reference "S3")
 					(unit 1)
 				)
 			)
@@ -4699,7 +4489,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "775d775a-90f9-4b0e-8e2b-9345f7a319ce")
-		(property "Reference" "S9"
+		(property "Reference" "S5"
 			(at 278.13 81.2799 90)
 			(effects
 				(font
@@ -4831,7 +4621,7 @@
 		(instances
 			(project "Number-Game-Circuit"
 				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "S9")
+					(reference "S5")
 					(unit 1)
 				)
 			)
@@ -5141,7 +4931,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a7c65e34-ab9b-4ef7-a7af-63de81acff65")
-		(property "Reference" "S8"
+		(property "Reference" "S4"
 			(at 264.16 80.0099 90)
 			(effects
 				(font
@@ -5273,7 +5063,7 @@
 		(instances
 			(project "Number-Game-Circuit"
 				(path "/6645a9cf-330e-4f59-9cb4-0d1951e143a7"
-					(reference "S8")
+					(reference "S4")
 					(unit 1)
 				)
 			)
