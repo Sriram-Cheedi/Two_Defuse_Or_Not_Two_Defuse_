@@ -25,6 +25,7 @@ public class WireGravity : MonoBehaviour
         {
             return;
         }
+
         Vector3 gravity = new Vector3(accel.x, accel.z, accel.y);
         Vector3 down = -gravity.normalized;
         Gravity = down * gravityMagnitude;
@@ -37,4 +38,29 @@ public class WireGravity : MonoBehaviour
             controller.OnImuChanged -= OnImuChanged;
         }
     }
+    
+     // public float gravityStrength = 9.81f;
+     //
+     // public Vector3 Gravity { get; private set; } = new Vector3(0f, -9.81f, 0f);
+     //
+     // void Update()
+     // {
+     //     Vector3 dir = Vector3.zero;
+     //
+     //     if (Input.GetKeyDown(KeyCode.H))
+     //         dir = Vector3.left;
+     //     else if (Input.GetKeyDown(KeyCode.L))
+     //         dir = Vector3.right;
+     //     else if (Input.GetKeyDown(KeyCode.J))
+     //         dir = Vector3.down;
+     //     else if (Input.GetKeyDown(KeyCode.K))
+     //         dir = Vector3.up;
+     //
+     //     if (dir != Vector3.zero)
+     //     {
+     //         Gravity = dir * gravityStrength;
+     //         Debug.Log("Gravity changed to: " + Gravity);
+     //     }
+     // }
+
 }

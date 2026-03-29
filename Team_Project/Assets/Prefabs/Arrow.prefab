@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 4624222108281862809}
   - component: {fileID: 6774274176220345865}
   - component: {fileID: 1797992467152474154}
+  - component: {fileID: 7944530510033330225}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -100,7 +101,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fedee730b1b35e5448ca125ebf9e87e8, type: 2}
+  - {fileID: -167906427434553992, guid: 472e2454e8c0a8f4d89f94733b669c1a, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -320,11 +321,25 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 10
+  m_VersionIndex: 13
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!114 &7944530510033330225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4734030791618881932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfdac01ab24cea24eae3beff66279703, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::ArrowFlash
+  materialOn: {fileID: 2100000, guid: fedee730b1b35e5448ca125ebf9e87e8, type: 2}
+  materialOff: {fileID: -817613205732023585, guid: 206b6188bcaee5b4399fe51d00cac303, type: 3}
 --- !u!1 &7499248820798781190
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,9 +364,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7499248820798781190}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5.4132385, y: -181.56116, z: 6.770996}
-  m_LocalScale: {x: 0.25, y: 0.5, z: 0.25}
+  m_LocalScale: {x: 0.174645, y: 0.1603865, z: 0.12423844}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 634442882815753931}
@@ -370,6 +385,7 @@ GameObject:
   - component: {fileID: 5761436959561231877}
   - component: {fileID: 5561236651265602445}
   - component: {fileID: 7848648905177894662}
+  - component: {fileID: 2668968254007380263}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -425,7 +441,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fedee730b1b35e5448ca125ebf9e87e8, type: 2}
+  - {fileID: -167906427434553992, guid: 472e2454e8c0a8f4d89f94733b669c1a, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -470,3 +486,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2668968254007380263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9033873531168022262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfdac01ab24cea24eae3beff66279703, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::ArrowFlash
+  materialOn: {fileID: 2100000, guid: fedee730b1b35e5448ca125ebf9e87e8, type: 2}
+  materialOff: {fileID: -817613205732023585, guid: 206b6188bcaee5b4399fe51d00cac303, type: 3}

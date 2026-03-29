@@ -123,7 +123,7 @@ public class GameManager : MonoBehaviour
 
         currentState = GameState.CutScene;
 
-        
+      
 
         if (cutsceneDisplay != null)
             cutsceneDisplay.SetActive(true);

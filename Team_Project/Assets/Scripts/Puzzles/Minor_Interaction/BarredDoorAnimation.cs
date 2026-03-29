@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using Puzzles.Minor_Interaction;
 using UnityEngine;
 public class BarredDoorAnimation : MonoBehaviour
 {
@@ -10,7 +12,7 @@ public class BarredDoorAnimation : MonoBehaviour
     [SerializeField] private float barSpeed = 2f;
     [SerializeField] private float doorAngle = 90f;
     [SerializeField] private float doorSpeed = 2f;
-    private bool DoorOpened = false;
+    private bool hasDoorOpened;
 
     
     void Start()
@@ -23,7 +25,23 @@ public class BarredDoorAnimation : MonoBehaviour
         }
     }
 
-    
+    private void OnEnable()
+    {
+        Minor_Interactinon_Controller.DoorOpened += HandleDoorOpened;
+    }
+
+    private void OnDisable()
+    {
+        Minor_Interactinon_Controller.DoorOpened -= HandleDoorOpened;
+    }
+
+    private void HandleDoorOpened()
+    {
+        // hasDoorOpened = true;
+        Minor_Interactinon_Controller.DoorOpened -= HandleDoorOpened;
+    }
+
+
     public void SnapMoveBar(int index)
     {
         Transform bar = bars[index];
@@ -41,10 +59,10 @@ public class BarredDoorAnimation : MonoBehaviour
 
     public void OpenDoor(Transform door, Transform hinge, Vector3 axis, float direction)
     {
-        if (DoorOpened)
-        {
-            return;
-        }
+        // if (hasDoorOpened)
+        // {
+        //     return;
+        // }
         StartCoroutine(RotateDoor(door, hinge, axis, direction));
     }
     IEnumerator SlideBar(int index, int state)

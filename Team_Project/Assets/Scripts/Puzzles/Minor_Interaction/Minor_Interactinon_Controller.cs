@@ -27,6 +27,7 @@ namespace Puzzles.Minor_Interaction
         [SerializeField] private Transform spawnDoorHinge;
         [SerializeField] private BarredDoorAnimation doorAnimaton;
         private bool hasDoorUnlocked;
+        public static Action DoorOpened;
 
         private bool bar1solved = false;
         private bool bar2solved = false;
@@ -122,11 +123,11 @@ namespace Puzzles.Minor_Interaction
                     if (value == 1)
                     {
                         doorAnimaton.OpenDoor(spawnRoomDoor.transform, spawnDoorHinge, Vector3.forward, 1f);
+                        DoorOpened?.Invoke();
                     }
                     break;
                 case "BTN2":
                     Debug.Log("Controller Recieved BTN2");
-
                     if (value == 1) HandleDeathLazer();
                     break;
 
@@ -214,7 +215,6 @@ namespace Puzzles.Minor_Interaction
 
         private void UpdateBarStatus(string header, int value)
         {
-            if (hasDoorUnlocked) return;
 
             Debug.Log("Updating bar status" + header);
             barStates[header] = value;
@@ -222,7 +222,7 @@ namespace Puzzles.Minor_Interaction
             if (barStates["SW1"] == correctPostion[0] && barStates["SW2"] == correctPostion[1] && barStates["SW3"] == correctPostion[2])
             {
                 doorAnimaton.OpenDoor(barredDoor.transform, barredDoorHinge, Vector3.up, 1f);
-                hasDoorUnlocked = true;
+
             }
         }
 
