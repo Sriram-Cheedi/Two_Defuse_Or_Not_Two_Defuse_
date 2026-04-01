@@ -150,8 +150,7 @@ namespace Puzzles.Minor_Interaction
                 case "BTN1":
                     if (value == 1)
                     {
-                        doorAnimaton.OpenDoor(spawnRoomDoor.transform, spawnDoorHinge, Vector3.forward, 1f);
-                        DoorOpened?.Invoke();
+                        RequestOpenDoor(DoorID.TutorialDoor);
                     }
                     break;
                 case "BTN2":
