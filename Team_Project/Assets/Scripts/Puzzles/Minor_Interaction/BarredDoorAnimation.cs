@@ -2,6 +2,12 @@ using System;
 using System.Collections;
 using Puzzles.Minor_Interaction;
 using UnityEngine;
+
+public enum Directive
+{
+    OPEN,
+    CLOSE,
+}
 public class BarredDoorAnimation : MonoBehaviour
 {
     [SerializeField] private Transform[] bars;
@@ -13,7 +19,8 @@ public class BarredDoorAnimation : MonoBehaviour
     [SerializeField] private float doorAngle = 90f;
     [SerializeField] private float doorSpeed = 2f;
     private bool hasDoorOpened;
-
+    
+    private float moveDistance = 2.0f;
     
     void Start()
     {
@@ -110,5 +117,44 @@ public class BarredDoorAnimation : MonoBehaviour
             rotated += step;
             yield return null;
         }
+    }
+
+    public void OpenSlidingDoor(Transform leftDoor, Transform rightDoor, Directive directive)
+    { 
+        StartCoroutine(OpenDoors(leftDoor, rightDoor, directive));
+    }
+    
+    IEnumerator OpenDoors(Transform leftDoor, Transform rightDoor, Directive directive)
+    {
+        float direction = 1f;
+        switch (directive)
+        {
+            case Directive.OPEN:
+                direction *= 1f;
+                break;
+            case Directive.CLOSE:
+                direction *= -1f;
+                break;
+        }
+        float elapsed = 0;
+        float duration = 1.0f;
+    
+        Vector3 leftStart = leftDoor.transform.position;
+        Vector3 rightStart = rightDoor.transform.position;
+    
+        Vector3 leftTarget = leftStart + direction * transform.forward * moveDistance;
+        Vector3 rightTarget = rightStart - direction * transform.forward * moveDistance;
+
+        while (elapsed < duration)
+        {
+            leftDoor.transform.position = Vector3.Lerp(leftStart, leftTarget, elapsed / duration);
+            rightDoor.transform.position = Vector3.Lerp(rightStart, rightTarget, elapsed / duration);
+        
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+    
+        leftDoor.transform.position = leftTarget;
+        rightDoor.transform.position = rightTarget;
     }
 }

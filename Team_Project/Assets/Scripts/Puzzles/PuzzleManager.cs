@@ -56,9 +56,9 @@ public class PuzzleManager : MonoBehaviour
     }
     
     // Global Changes if correct
-    private void S_HandleSSMVictory(GameObject obj)
+    private void S_HandleSSMVictory(PuzzleGame puzzleGame)
     {
-        if (obj != ssm_controller.gameObject) return;
+        if (puzzleGame != PuzzleGame.SSM) return;
         
         Debug.Log("Software SSM Solved!");
         // Link Lighting and Alarms and stuff to this 
@@ -83,9 +83,9 @@ public class PuzzleManager : MonoBehaviour
     
     
     // Global Changes if correct
-    private void HandleNGMVictory(GameObject obj)
+    private void HandleNGMVictory(PuzzleGame puzzleGame)
     {
-        if (obj != ngm_controller.gameObject) return;
+        if (puzzleGame != PuzzleGame.NGM) return;
         
         Debug.Log("NGM Solved!");
         // Link Lighting and Alarms and stuff to this 

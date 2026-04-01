@@ -14,19 +14,19 @@ public class DoorAudioController : MonoBehaviour
 
     private void OnEnable()
     {
-        Minor_Interactinon_Controller.DoorOpened += PlayDoorOpenAudio;
+        // Minor_Interactinon_Controller.DoorOpened += PlayDoorOpenAudio;
     }
 
     private void OnDisable()
     {
-        Minor_Interactinon_Controller.DoorOpened -= PlayDoorOpenAudio;
+        // Minor_Interactinon_Controller.DoorOpened -= PlayDoorOpenAudio;
     }
 
     private void PlayDoorOpenAudio()
     {
         Debug.Log("Door open audio event received");
         audioSource.PlayOneShot(doorOpeningClip);
-        Minor_Interactinon_Controller.DoorOpened -= PlayDoorOpenAudio;
+        // Minor_Interactinon_Controller.DoorOpened -= PlayDoorOpenAudio;
     }
 
     // Update is called once per frame

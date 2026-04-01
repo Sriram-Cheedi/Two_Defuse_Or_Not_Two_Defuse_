@@ -50,17 +50,17 @@ namespace PersistantSystems.Software
             deathCount++;
         }
 
-        private void FailPuzzle(GameObject puzzle)
+        private void FailPuzzle(PuzzleGame puzzle)
         {
             int subtractVal = 0;
-            if (puzzle.GetComponent<SSM_Controller>() != null) subtractVal = 20;
-            else if (puzzle.GetComponent<NGM_Controller>() != null) subtractVal = 10;
+            if (puzzle == PuzzleGame.SSM) subtractVal = 20;
+            else if (puzzle == PuzzleGame.NGM) subtractVal = 10;
             
             Debug.Log($"Subtracting {subtractVal}");
             puzzleScores -= subtractVal;
         }
         
-        private void CompletePuzzle(GameObject puzzle)
+        private void CompletePuzzle(PuzzleGame puzzle)
         {
             Debug.Log("Adding Score");
             puzzleScores += 100;
