@@ -9,7 +9,7 @@ public class HUDTrigger : MonoBehaviour
     [SerializeField] private Material offMaterial;
     [SerializeField] private Material flashMaterial;
     [SerializeField] private LevelData levelData;
-    [SerializeField] private GameObject[] movementHuds;
+    [SerializeField] private GameObject[] movementHuds; 
     GameManager.GameState currentState;
 
     private void OnEnable()

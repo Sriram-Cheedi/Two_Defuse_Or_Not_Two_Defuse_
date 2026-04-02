@@ -36,9 +36,9 @@ public class ConditionalDoor : MonoBehaviour
     }
 
     // Update is called once per frame
-    private void OpenDoorWrapper(GameObject puzzle)
+    private void OpenDoorWrapper(PuzzleGame puzzle)
     {
-        if (puzzle != puzzleObject) return;
+        // if (puzzle != puzzleObject) return;
         if (!_isOpen)
         {
             StartCoroutine(OpenDoors());
