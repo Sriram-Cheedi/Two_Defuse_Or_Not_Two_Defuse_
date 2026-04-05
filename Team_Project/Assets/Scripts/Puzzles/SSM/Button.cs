@@ -38,9 +38,9 @@ public class Button : MonoBehaviour, Interactible_Interface
 
     }
     
-    private void DisableInteractionSetOn(GameObject obj)
+    private void DisableInteractionSetOn(PuzzleGame puzzleGame)
     {
-        if (obj != ssm_controller.gameObject) return;
+        if (puzzleGame != PuzzleGame.SSM) return;
         gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
         
         StopAllCoroutines();
@@ -55,9 +55,9 @@ public class Button : MonoBehaviour, Interactible_Interface
         ssm_controller.CheckSSMButtonPress(button_number);
     }
     
-    private void FlashRed(GameObject puzzle)
+    private void FlashRed(PuzzleGame puzzle)
     {
-        if (puzzle == ssm_controller.gameObject)
+        if (puzzle == PuzzleGame.SSM)
         {
             StopAllCoroutines(); 
             StartCoroutine(FlashColorRoutine( 1.0f));

@@ -5,6 +5,20 @@ using UnityEngine;
 
 namespace Puzzles.Minor_Interaction
 {
+    public enum DoorID
+    {
+        TutorialDoor,
+        SSMDoor,
+        MazeDoor,
+        NGMDoor,
+    }
+
+    public enum DoorType
+    {
+        Hinged,
+        Sliding,
+    }
+    
     public class Minor_Interactinon_Controller : MonoBehaviour
     {
 
@@ -33,6 +47,8 @@ namespace Puzzles.Minor_Interaction
         private bool bar2solved = false;
         private bool bar3solved = false;
 
+        public event Action<DoorID> DoorOpenRequested;
+        public event Action<DoorID> DoorCloseRequested;
 
         private Dictionary<int, Vector3> spawnPositions = new Dictionary<int, Vector3>();
 
@@ -88,6 +104,16 @@ namespace Puzzles.Minor_Interaction
                 relay.NumberPressed -= HandleMockButtonPress;
             }
         }
+        
+        public void RequestOpenDoor(DoorID doorId)
+        {
+            DoorOpenRequested?.Invoke(doorId);
+        }
+
+        public void RequestCloseDoor(DoorID doorId)
+        {
+            DoorCloseRequested?.Invoke(doorId);
+        }
 
         // Handle with hardware or corresponding software button presses and activate relevent ingame effect.
         private void HandleMockButtonPress(int digit)
@@ -95,7 +121,9 @@ namespace Puzzles.Minor_Interaction
             switch (digit)
             {
                 case (int)MockButtonValues.BTN1:
-                    doorAnimaton.OpenDoor(spawnRoomDoor.transform, spawnDoorHinge, Vector3.forward, 1f);
+                    Debug.Log("Controller Recieved BTN1");
+                    // doorAnimaton.OpenDoor(spawnRoomDoor.transform, spawnDoorHinge, Vector3.forward, 1f);
+                    RequestOpenDoor(DoorID.TutorialDoor);
                     break;
                 case (int)MockButtonValues.BTN2:
                     HandleDeathLazer();
@@ -122,8 +150,7 @@ namespace Puzzles.Minor_Interaction
                 case "BTN1":
                     if (value == 1)
                     {
-                        doorAnimaton.OpenDoor(spawnRoomDoor.transform, spawnDoorHinge, Vector3.forward, 1f);
-                        DoorOpened?.Invoke();
+                        RequestOpenDoor(DoorID.TutorialDoor);
                     }
                     break;
                 case "BTN2":
@@ -221,8 +248,8 @@ namespace Puzzles.Minor_Interaction
 
             if (barStates["SW1"] == correctPostion[0] && barStates["SW2"] == correctPostion[1] && barStates["SW3"] == correctPostion[2])
             {
-                doorAnimaton.OpenDoor(barredDoor.transform, barredDoorHinge, Vector3.up, 1f);
-
+                // doorAnimaton.OpenDoor(barredDoor.transform, barredDoorHinge, Vector3.up, 1f);
+                RequestOpenDoor(DoorID.MazeDoor);
             }
         }
 

@@ -24,9 +24,9 @@ public class Indication_Wire : MonoBehaviour
         Puzzle.OnSuccess -= ShowComplete;
     }
 
-    private void ShowComplete(GameObject obj)
+    private void ShowComplete(PuzzleGame puzzleGame)
     {
-        if (obj != ssm_controller.gameObject) return;
+        if (puzzleGame != PuzzleGame.SSM) return;
         
         _renderer.material = _materialON;
     }

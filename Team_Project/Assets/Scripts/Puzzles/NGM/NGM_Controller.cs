@@ -112,8 +112,8 @@ namespace Puzzles.Controllers
         if (solutionSlotUsed[0] && solutionSlotUsed[1] && solutionSlotUsed[2] && solutionSlotUsed[3])
         {
             data.completed = true;
-            TriggerSuccess(this.gameObject);
-        } else TriggerFailure(this.gameObject);
+            TriggerSuccess(PuzzleGame.NGM);
+        } else TriggerFailure(PuzzleGame.NGM);
     }
 
     private void DigitMisplaced(bool[] solutionSlotUsed, bool[] guessSlotUsed)

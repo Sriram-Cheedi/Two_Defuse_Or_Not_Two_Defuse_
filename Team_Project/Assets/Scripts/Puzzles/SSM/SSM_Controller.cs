@@ -8,8 +8,8 @@ namespace Puzzles.Controllers
         public PuzzleData data = new PuzzleData 
         { 
             guessSequence = new int[4], 
-            // correctSequence = new int[4] {0, 0, 0,0},
-            correctSequence = GenerateSequence(5, 4),
+            correctSequence = new int[4] {0, 0, 0,0},
+            // correctSequence = GenerateSequence(5, 4),
         };
 
         
@@ -26,13 +26,13 @@ namespace Puzzles.Controllers
                 {
                     Debug.Log("SSM Complate" + pressedValue);
                     data.completed = true;
-                    TriggerSuccess(this.gameObject);
+                    TriggerSuccess(PuzzleGame.SSM);
                 }
             }
             else
             {
                 Debug.Log("Wrong button! Resetting sequence.");
-                TriggerFailure(this.gameObject);
+                TriggerFailure(PuzzleGame.SSM);
                 data.currentSequenceIndex = 0;
             }
         }

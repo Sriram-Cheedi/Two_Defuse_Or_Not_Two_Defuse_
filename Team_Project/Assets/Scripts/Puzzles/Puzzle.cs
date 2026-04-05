@@ -12,20 +12,26 @@ namespace Puzzles
     
         public int currentSequenceIndex = 0;
     }
+
+    public enum PuzzleGame
+    {
+        SSM,
+        NGM,
+    }
     
     public abstract class Puzzle : MonoBehaviour
     {
         PuzzleData getData { get; }
         
-        public static event Action<GameObject> OnSuccess;
-        public static event Action<GameObject> OnFailure;
+        public static event Action<PuzzleGame> OnSuccess;
+        public static event Action<PuzzleGame> OnFailure;
 
-        protected static void TriggerSuccess(GameObject puzzleObject)
+        protected static void TriggerSuccess(PuzzleGame puzzleObject)
         {
             OnSuccess?.Invoke(puzzleObject);
         }
         
-        protected static void TriggerFailure(GameObject puzzleObject)
+        protected static void TriggerFailure(PuzzleGame puzzleObject)
         {
             OnFailure?.Invoke(puzzleObject);
         }
