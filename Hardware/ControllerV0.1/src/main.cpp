@@ -11,6 +11,7 @@
 #include "numberGameModule.h"
 #include "fishingModule.h"
 #include "mazeModule.h"
+#include "Buzzer.h"
 
 SerialController serialController = SerialController();
 
@@ -95,6 +96,11 @@ Button btn2 = Button("BTN2", 10, serialController);
 Button btn3 = Button("BTN3", 11, serialController);
 Button btn4 = Button("BTN4", 12, serialController);
 
+Button wire1 = Button("WR1", 23, serialController);
+Button wire2 = Button("WR2", 22, serialController);
+Button wire3 = Button("WR3", 21, serialController);
+Button wire4 = Button("WR4", 20, serialController);
+
 Button pwr = Button("PWR", 7, serialController, powerToggle);
 
 Button sw1 = Button("SW1", 6, serialController);
@@ -104,7 +110,7 @@ Button sw3 = Button("SW3", 4, serialController);
 
 numberGameModule ngm = numberGameModule("NGM",33,35,34,{36,37,38,39,40}, serialController);
 fishingModule fgm = fishingModule("FGM",16,14,15,17,serialController);
-SimonSaysModule ssm = SimonSaysModule("SSM", {27, 26, 25, 24}, 0,  serialController);
+SimonSaysModule ssm = SimonSaysModule("SSM", {24, 25, 26, 27}, 0,  serialController);
 
 
 
@@ -201,6 +207,10 @@ void setup() {
   components.push_back(&sw3);
   components.push_back(&LCD);
   components.push_back(&maze);
+  components.push_back(&wire1);
+  components.push_back(&wire2);
+  components.push_back(&wire3);
+  components.push_back(&wire4);
 
   LCD.LCDSetup();
 
