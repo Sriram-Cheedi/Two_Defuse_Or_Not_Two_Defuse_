@@ -4391,13 +4391,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 047c863e50fcafc4a81ad6a5c7c986b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game.Main::TutorialManagerSimple
-  WASDcard: {fileID: 6479981524032256667}
-  crouchCard: {fileID: 331879345772809712}
-  mouseCard: {fileID: 3941492572706056418}
-  jumpCard: {fileID: 4076083182321417445}
-  DifficultyCard: {fileID: 3230999506828239483}
-  jumpRestrictionCard: {fileID: 2893216540724961837}
-  gravityCard: {fileID: 4552378289649455055}
+  cards: []
   delay: 1.5
   duration: 4
 --- !u!1 &561119466329993008
@@ -14503,6 +14497,11 @@ MonoBehaviour:
   myHUDs:
   - {fileID: 6479981524032256667}
   - {fileID: 3941492572706056418}
+  targetRenderers: []
+  offMaterial: {fileID: 0}
+  flashMaterial: {fileID: 0}
+  levelData: {fileID: 0}
+  movementHuds: []
 --- !u!65 &7188586423222268611
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -21690,6 +21689,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Game.Main::HUDTrigger
   myHUDs: []
+  targetRenderers: []
+  offMaterial: {fileID: 0}
+  flashMaterial: {fileID: 0}
+  levelData: {fileID: 0}
+  movementHuds: []
 --- !u!65 &8260672188139685100
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -34013,6 +34017,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::HUDTrigger
   myHUDs:
   - {fileID: 4552378289649455055}
+  targetRenderers: []
+  offMaterial: {fileID: 0}
+  flashMaterial: {fileID: 0}
+  levelData: {fileID: 0}
+  movementHuds: []
 --- !u!65 &8900101269332327310
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -43209,6 +43218,11 @@ MonoBehaviour:
   myHUDs:
   - {fileID: 4076083182321417445}
   - {fileID: 2893216540724961837}
+  targetRenderers: []
+  offMaterial: {fileID: 0}
+  flashMaterial: {fileID: 0}
+  levelData: {fileID: 0}
+  movementHuds: []
 --- !u!65 &8752376897808295718
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -74852,6 +74866,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::HUDTrigger
   myHUDs:
   - {fileID: 3230999506828239483}
+  targetRenderers: []
+  offMaterial: {fileID: 0}
+  flashMaterial: {fileID: 0}
+  levelData: {fileID: 0}
+  movementHuds: []
 --- !u!65 &6217740203375965549
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -79549,6 +79568,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::HUDTrigger
   myHUDs:
   - {fileID: 3230999506828239483}
+  targetRenderers: []
+  offMaterial: {fileID: 0}
+  flashMaterial: {fileID: 0}
+  levelData: {fileID: 0}
+  movementHuds: []
 --- !u!65 &2250851864461803215
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -79986,6 +80010,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::HUDTrigger
   myHUDs:
   - {fileID: 331879345772809712}
+  targetRenderers: []
+  offMaterial: {fileID: 0}
+  flashMaterial: {fileID: 0}
+  levelData: {fileID: 0}
+  movementHuds: []
 --- !u!65 &3630039125399680444
 BoxCollider:
   m_ObjectHideFlags: 0
