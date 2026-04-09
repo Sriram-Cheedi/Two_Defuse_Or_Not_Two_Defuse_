@@ -3,11 +3,11 @@
 
 Buzzer::Buzzer(std::string name, int pin, SerialController serialController, int pitch) : 
 Component(name), pin(pin), serialController(serialController), pitch(pitch) {
-    pinMode(pin, OUTPUT);
 }
 
 void Buzzer::enable(){
     enabled = true;
+    onChange = true;
 }
 
 void Buzzer::disable(){
@@ -95,10 +95,13 @@ void Buzzer::update(){
                 if(duration > 4){
                     duration = 0;
                     notificationPlay = false;
-                    pitch = 50;
-                    onChange = true;
                 }
             }
+        }
+    }else{
+        if(pitch != 50){
+            onChange = true;
+            pitch = 50;
         }
     }
 

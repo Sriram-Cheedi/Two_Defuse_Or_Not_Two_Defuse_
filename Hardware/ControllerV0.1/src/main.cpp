@@ -18,14 +18,15 @@ SerialController serialController = SerialController();
 
 std::vector<Component*> components; 
 
+Buzzer buzzer = Buzzer("BUZZER", 28, serialController, 50);
+
 TimerModule timer = TimerModule("TMR", 30, 32, 31, serialController);
 Imu gyro = Imu("IMU", serialController);
 
-LCDModule LCD = LCDModule("LCD", serialController);
+LCDModule LCD = LCDModule("LCD", serialController, buzzer);
 MazeModule maze = MazeModule("MAZE", serialController, LCD);
 
 
-Buzzer buzzer = Buzzer("BUZZER", 28, serialController, 50);
 
 int flickerThread = -1;
 
@@ -103,13 +104,13 @@ Button wire4 = Button("WR4", 20, serialController);
 
 Button pwr = Button("PWR", 7, serialController, powerToggle);
 
-Button sw1 = Button("SW1", 6, serialController);
-Button sw2 = Button("SW2", 5, serialController);
+Button sw1 = Button("SW1", 6, serialController, siren);
+Button sw2 = Button("SW2", 5, serialController, startNotification);
 Button sw3 = Button("SW3", 4, serialController);
 
 
 numberGameModule ngm = numberGameModule("NGM",33,35,34,{36,37,38,39,40}, serialController);
-fishingModule fgm = fishingModule("FGM",16,14,15,17,serialController);
+fishingModule fgm = fishingModule("FGM",16,14,15,17,serialController, buzzer);
 SimonSaysModule ssm = SimonSaysModule("SSM", {24, 25, 26, 27}, 0,  serialController);
 
 

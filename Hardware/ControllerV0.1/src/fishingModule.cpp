@@ -1,7 +1,7 @@
 #include "fishingModule.h"
 
-fishingModule::fishingModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin, SerialController serialController)
-: Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), buttonPin(buttonPin), state(0), serialController(serialController),
+fishingModule::fishingModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin, SerialController serialController, Buzzer& buzzer)
+: Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), buttonPin(buttonPin), state(0), serialController(serialController), buzzer(buzzer),
 btn("FGM1", buttonPin, serialController,[this](std::string name, int state){buttonUpdate(name, state);})
 {
     pinMode(dataPin, OUTPUT);
@@ -98,6 +98,7 @@ void fishingModule::scoreCheck(){
     if(state == 2){
         state = 1;
         status();
+        buzzer.sirenOff();
     }
     lockout = true;
   }else{
@@ -105,6 +106,7 @@ void fishingModule::scoreCheck(){
         lastFishUpdate = millis();
         state = 2;
         status();
+        buzzer.sirenOn();
     }
     lockout = false;
   }

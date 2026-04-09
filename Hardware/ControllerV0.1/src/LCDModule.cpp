@@ -1,6 +1,6 @@
 #include "LCDModule.h"
 
-LCDModule::LCDModule(std::string name, SerialController serialController) : Component(name), serialController(serialController){
+LCDModule::LCDModule(std::string name, SerialController serialController, Buzzer& buzzer) : Component(name), serialController(serialController), buzzer(buzzer){
   lcd.init();
   
   delay(50);
@@ -118,6 +118,8 @@ void LCDModule::update(){
 
   lcd.clear();
   lcd.backlight();
+
+  buzzer.notification();
 
   for(auto& ch : topText){
     if(ch == '\x00') {lcd.write((char)0); continue;;}

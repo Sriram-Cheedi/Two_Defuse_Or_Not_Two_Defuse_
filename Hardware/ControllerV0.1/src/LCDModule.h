@@ -7,10 +7,13 @@
 #include <string>
 #include <Component.h>
 #include <SerialController.h>
+#include "Buzzer.h"
 
 class LCDModule : public Component {
 
     SerialController serialController;
+
+    Buzzer& buzzer;
 
     LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x20,16,2); 
 
@@ -46,7 +49,7 @@ class LCDModule : public Component {
     bool changed = false;
 public:
 
-    LCDModule(std::string name, SerialController serialController);
+    LCDModule(std::string name, SerialController serialController, Buzzer& buzzer);
     void LCDSetup();
     void LCDScroll();
     void LCDSet(char word[]);
