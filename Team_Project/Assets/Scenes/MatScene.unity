@@ -24521,6 +24521,7 @@ GameObject:
   - component: {fileID: 225826736}
   - component: {fileID: 225826735}
   - component: {fileID: 225826734}
+  - component: {fileID: 225826737}
   m_Layer: 0
   m_Name: CloseMazeDoorTrigger
   m_TagString: Untagged
@@ -24605,6 +24606,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::DoorClose
   doorID: 2
   interactinonController: {fileID: 1664299766}
+--- !u!114 &225826737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225826732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5db04a5578fa7da44bf76ea59480807f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::MazeClear
 --- !u!1001 &228619780
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26139,15 +26152,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -21.727945
+      value: -18.67
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -6.6941576
+      value: -0.79
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -23.010153
+      value: -35.516
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -91142,11 +91155,19 @@ PrefabInstance:
       objectReference: {fileID: 458320931}
     - target: {fileID: 4370896198063512044, guid: dd54c18f026a5744dbf8b8ea22f163ed, type: 3}
       propertyPath: m_LocalScale.x
-      value: 25.026958
+      value: 17.860237
+      objectReference: {fileID: 0}
+    - target: {fileID: 4370896198063512044, guid: dd54c18f026a5744dbf8b8ea22f163ed, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 14.474168
       objectReference: {fileID: 0}
     - target: {fileID: 4370896198063512044, guid: dd54c18f026a5744dbf8b8ea22f163ed, type: 3}
       propertyPath: m_LocalPosition.x
       value: -22.73
+      objectReference: {fileID: 0}
+    - target: {fileID: 4370896198063512044, guid: dd54c18f026a5744dbf8b8ea22f163ed, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -10.27
       objectReference: {fileID: 0}
     - target: {fileID: 5186636086825145208, guid: dd54c18f026a5744dbf8b8ea22f163ed, type: 3}
       propertyPath: myHUDs.Array.size
@@ -91243,6 +91264,10 @@ PrefabInstance:
     - target: {fileID: 9001587323313784309, guid: dd54c18f026a5744dbf8b8ea22f163ed, type: 3}
       propertyPath: m_Name
       value: SSM_Init_Huds
+      objectReference: {fileID: 0}
+    - target: {fileID: 9001587323313784309, guid: dd54c18f026a5744dbf8b8ea22f163ed, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9002160197126994757, guid: dd54c18f026a5744dbf8b8ea22f163ed, type: 3}
       propertyPath: myHUDs.Array.size

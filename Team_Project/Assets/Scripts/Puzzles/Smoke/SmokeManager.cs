@@ -10,6 +10,8 @@ public class SmokeManager : MonoBehaviour
     private bool smokeReleased;
     private SmokeEmitter lastRoomActive;
     public bool isActive = false;
+    private int ssmStatus;
+    private int mazeStatus;
 
     private void Awake()
     {
@@ -45,13 +47,26 @@ public class SmokeManager : MonoBehaviour
     {
         if (isActive)
         {
+            mazeStatus = API_Provider.Instance.ActiveAPIController.GetMazeStatus();
             if (header == "FGM" && value == 2)
             {
+                API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[] { "\"Module Activated\"", "\"------VENT------\"" });
                 smokeAlert.SetActive(true);
                 smokeReleased = true;
-            } 
+            }
+            
             else if (header == "FGM" && value == 1)
             {
+                ssmStatus = API_Provider.Instance.ActiveAPIController.GetSSMStatus();
+                if (ssmStatus != 2)
+                {
+                    API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[] { "\"Module Activated\"", "\"------SSM------\"" });
+                }
+                else
+                {
+                    API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[] { "\"\"", "\"\"" });
+
+                }
                 smokeAlert.SetActive(false);
                 smokeReleased = false;
             }

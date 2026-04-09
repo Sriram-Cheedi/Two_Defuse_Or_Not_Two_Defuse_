@@ -80,6 +80,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         hardwareState.componentStates["FGM"] = 0;
         
         hardwareState.componentStates["PWR"] = 0;
+        hardwareState.componentStates["MAZE"] = 0;
 
         GameObject child = new GameObject("Serial_Port_Controller");
         child.transform.SetParent(this.transform);
@@ -192,7 +193,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         {
             return;
         }
-
+        
         string command = commandPart.Substring(0, spaceIndex);
         string value = commandPart.Substring(spaceIndex + 1);
 
@@ -347,6 +348,14 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         return hardwareState.componentStates["FGM"];
     }
 
+    public int GetMazeStatus()
+    {
+        return hardwareState.componentStates["MAZE"];
+    }
+    public void SetMazeStatus(string header, int value)
+    {
+        hardwareState.componentStates[header] = value;
+    }
     public void SendSetSeq(string header, int[] seq)
     {
         string strseq = "";

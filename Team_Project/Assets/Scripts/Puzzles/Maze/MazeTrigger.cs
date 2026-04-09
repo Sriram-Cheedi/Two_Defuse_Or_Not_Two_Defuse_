@@ -32,8 +32,11 @@ public class Maze_Trigger : MonoBehaviour
 
     private void SendSet()
     {
+        
+        API_Provider.Instance.ActiveAPIController.SetMazeStatus("MAZE", 1);
         API_Provider.Instance.ActiveAPIController.SendSet("MAZE", 1);
     }
+    
 
     IEnumerator startScreen()
     {

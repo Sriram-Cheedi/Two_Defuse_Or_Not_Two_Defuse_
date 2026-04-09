@@ -25,7 +25,9 @@ public interface API_Controller_Interface
     public int GetSwitch(string id);
     public int GetLed(string id);
     public int GetSSMStatus();
+    public int GetMazeStatus();
     public void SendSetSeq(string header, int[] value);
+    public void SetMazeStatus(string header, int value);
     public void SendSetSeqSTRING(string header, string[] value);
     public void SendMazeSeq(string header, string value);
     public void SendSet(string header, int value);

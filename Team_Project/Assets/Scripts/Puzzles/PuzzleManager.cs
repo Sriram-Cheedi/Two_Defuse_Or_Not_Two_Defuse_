@@ -29,7 +29,7 @@ public class PuzzleManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
     private IEnumerator Start()
     {
         yield return new WaitUntil(() => 
@@ -39,11 +39,20 @@ public class PuzzleManager : MonoBehaviour
         );
         
         // Send all Puzzle info AFTER 
+        API_Provider.Instance.ActiveAPIController.SendSet("MAZE", 0);
         API_Provider.Instance.ActiveAPIController.SendMazeSeq("MAZE", "U U U L L U U R R R D R R U U U L L L");
+        // API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[]{"\"Module Activated: \"", "\"SSM\""});
+        API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[] { "\"Module Activated\"", "\"------SSM------\"" });
         API_Provider.Instance.ActiveAPIController.SendSetSeq("SSM", ssm_controller.data.correctSequence);
         API_Provider.Instance.ActiveAPIController.SendSetSeq("NGM", ngm_controller.data.correctSequence);
         API_Provider.Instance.ActiveAPIController.SendSet("SSM", 1);
+        // API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[]{"module activated SSM"});
         API_Provider.Instance.ActiveAPIController.SendSet("FGM", 0);
+        // API_Provider.Instance.ActiveAPIController.SendSet("MAZE", 0);
+        // API_Provider.Instance.ActiveAPIController.SendSet("MAZE", 1);
+        
+        // API_Provider.Instance.ActiveAPIController.SendMazeSeq("LCD", "\"module activated SSM\"");
+
         
         // This is subscriptions for the software side of each puzzle. Triggers off hardware will be handled through the API not Actions such as this
         Puzzle.OnSuccess += S_HandleSSMVictory;
@@ -65,7 +74,6 @@ public class PuzzleManager : MonoBehaviour
         SSM_Completed?.Invoke(); 
         API_Provider.Instance.ActiveAPIController.SendSet("SSM", 2); // Alert Hardware that puzzle has been completed (Edge case where software guesses before Hardware complete)
         
-        
         // Activate NGM Puzzle after SSM Completed
         API_Provider.Instance.ActiveAPIController.SendSet("NGM", 1);
     }
@@ -77,6 +85,7 @@ public class PuzzleManager : MonoBehaviour
             Debug.Log("Hardware SSM Solved!");
 
             // Activate NGM Puzzle after SSM Completed - Not invoking SSM_Completed as this is software event when correct seq is inputted
+            // API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[] { "\"Module Activated\"", "\"--Number Game--\"" });
             API_Provider.Instance.ActiveAPIController.SendSet("NGM", 1);
         }
     }
