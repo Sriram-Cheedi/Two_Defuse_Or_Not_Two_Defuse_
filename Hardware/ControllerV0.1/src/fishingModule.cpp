@@ -20,9 +20,11 @@ void fishingModule::reset(){
     int hasScored = fishPos[randState] & hookLED[hookPos];
     if (hasScored > 0){
         state = 1;
+        buzzer.sirenOff();
     }
     else{
         state = 2;
+        buzzer.sirenOn();
     }
     status();
 }
