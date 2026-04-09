@@ -1,8 +1,8 @@
 #include "fishingModule.h"
 
 fishingModule::fishingModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin, SerialController serialController, Buzzer& buzzer)
-: Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), buttonPin(buttonPin), state(0), serialController(serialController), buzzer(buzzer),
-btn("FGM1", buttonPin, serialController,[this](std::string name, int state){buttonUpdate(name, state);})
+: Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), buttonPin(buttonPin), state(0), serialController(serialController),
+btn("FGM1", buttonPin, serialController,[this](std::string name, int state){buttonUpdate(name, state);}), buzzer(buzzer)
 {
     pinMode(dataPin, OUTPUT);
     pinMode(clockPin, OUTPUT);
@@ -75,6 +75,8 @@ void fishingModule::enable(){
 
     enabled = true;
     scrambled = false;
+
+    scoreCheck();
 }
 
 void fishingModule::shift(uint32_t digit){

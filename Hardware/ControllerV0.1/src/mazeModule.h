@@ -8,11 +8,13 @@
 #include "serialController.h"
 #include "LCDModule.h"
 #include "Button.h"
+#include "Buzzer.h"
 
 class MazeModule : public Component {
 
     SerialController serialController;
     LCDModule& lcd;
+    Buzzer& buzzer;
 
     int32_t lastUpdate = 0;
 
@@ -27,7 +29,7 @@ class MazeModule : public Component {
 
     public:
 
-    MazeModule(std::string name, SerialController serialController, LCDModule& lcd);
+    MazeModule(std::string name, SerialController serialController, LCDModule& lcd, Buzzer& buzzer);
     void set(std::vector<std::string> args) override;
     void status() override;
     void disable() override;

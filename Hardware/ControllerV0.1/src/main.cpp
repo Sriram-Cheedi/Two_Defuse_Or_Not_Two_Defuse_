@@ -24,7 +24,7 @@ TimerModule timer = TimerModule("TMR", 30, 32, 31, serialController);
 Imu gyro = Imu("IMU", serialController);
 
 LCDModule LCD = LCDModule("LCD", serialController, buzzer);
-MazeModule maze = MazeModule("MAZE", serialController, LCD);
+MazeModule maze = MazeModule("MAZE", serialController, LCD, buzzer);
 
 
 
@@ -104,8 +104,8 @@ Button wire4 = Button("WR4", 20, serialController);
 
 Button pwr = Button("PWR", 7, serialController, powerToggle);
 
-Button sw1 = Button("SW1", 6, serialController, siren);
-Button sw2 = Button("SW2", 5, serialController, startNotification);
+Button sw1 = Button("SW1", 6, serialController);
+Button sw2 = Button("SW2", 5, serialController);
 Button sw3 = Button("SW3", 4, serialController);
 
 
@@ -179,6 +179,8 @@ void parseCommand(std::string command){
       cmp->status();
     }
   }
+
+  if(name == "LCD") buzzer.notification();
 
   for(const auto& cmp : components){
     if(cmp->name == name){

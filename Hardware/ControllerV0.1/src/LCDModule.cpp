@@ -2,21 +2,17 @@
 
 LCDModule::LCDModule(std::string name, SerialController serialController, Buzzer& buzzer) : Component(name), serialController(serialController), buzzer(buzzer){
   lcd.init();
-  
-  delay(50);
-  
-  lcd.createChar(0, upArrow);
-
-  delay(50);
-
-  lcd.createChar(1, downArrow);
 }
 
 
 void LCDModule::LCDSetup() {
-  lcd.init();                      // initialize the lcd
 
-  lcd.backlight();
+  lcd.setDelay(0, 0);
+  
+  lcd.createChar(0, upArrow);
+
+  lcd.createChar(1, downArrow);
+
 }
 
 void LCDModule::LCDScroll(){
@@ -118,8 +114,6 @@ void LCDModule::update(){
 
   lcd.clear();
   lcd.backlight();
-
-  buzzer.notification();
 
   for(auto& ch : topText){
     if(ch == '\x00') {lcd.write((char)0); continue;;}

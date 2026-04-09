@@ -8,6 +8,7 @@ Component(name), pin(pin), serialController(serialController), pitch(pitch) {
 void Buzzer::enable(){
     enabled = true;
     onChange = true;
+    scrambleNoise = false;
 }
 
 void Buzzer::disable(){
@@ -43,11 +44,31 @@ void Buzzer::notification(){
     pitch = 550;
 }
 
+void Buzzer::scramble(){
+    scrambleNoise = true;
+}
+
 void Buzzer::update(){
 
     if(!enabled) return;
 
-    if(siren){
+    if(scrambleNoise){
+        int now = millis();
+        if(now - lastScramble > scrambleDelay){
+            lastScramble = now;
+            pitch = random(100, 2000);
+            onChange = true;
+
+            if(scrambleRise){
+                if(scrambleDelay < 100) scrambleDelay += 5;
+                else scrambleRise = false;
+            }else{
+                if(scrambleDelay > 10) scrambleDelay -= 5;
+                else scrambleRise = true;
+            }
+        }
+        
+    }else if(siren){
         int now = millis();
         if(now - lastBeep < beepDelay) return;
         if(rise){
