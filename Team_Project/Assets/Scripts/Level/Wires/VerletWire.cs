@@ -20,7 +20,7 @@ public class VerletWire : MonoBehaviour
     public Vector3 customGravity = new(0, 9.81f, 0);
     public static bool HasAnyWireBeenCut { get; private set; } = false;
 
-    public enum WireColor { Red, Blue, Grey, Brown }
+    public enum WireColor { None, Red, Blue, Grey, Brown }
 
     [Range(0f, 1f)] public float scaleHangingWireGravity = 0.08f;
     [Range(0f, 1f)] public float dampHangingWireVelocity = 0.85f;

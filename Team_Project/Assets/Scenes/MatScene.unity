@@ -26152,15 +26152,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -18.67
+      value: -19.44
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.79
+      value: -0.6
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -35.516
+      value: -35.42
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -36678,7 +36678,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: wireColor
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: insulatedMat
@@ -49205,7 +49205,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5243526631993717791, guid: 073cf2f585b66f44c9a28f2f86a8df75, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2005978910}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 073cf2f585b66f44c9a28f2f86a8df75, type: 3}
 --- !u!1 &458320931 stripped
@@ -64393,7 +64396,6 @@ Transform:
   - {fileID: 470741510}
   - {fileID: 586956565}
   - {fileID: 797468794}
-  - {fileID: 2005978910}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &599362733
@@ -116254,7 +116256,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: wireColor
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: insulatedMat
@@ -137032,7 +137034,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: wireColor
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: insulatedMat
@@ -187308,7 +187310,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: wireColor
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: iterations
@@ -550625,6 +550627,11 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!224 &1824153148 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5243526631993717791, guid: 073cf2f585b66f44c9a28f2f86a8df75, type: 3}
+  m_PrefabInstance: {fileID: 458320930}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1826495950
 GameObject:
   m_ObjectHideFlags: 0
@@ -584337,12 +584344,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2005978909}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1062.0645, y: -488.10593, z: 0}
+  m_LocalScale: {x: 1.9292724, y: 1.9292724, z: 1.9292724}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 598994155}
+  m_Father: {fileID: 1824153148}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2005978911
 MonoBehaviour:

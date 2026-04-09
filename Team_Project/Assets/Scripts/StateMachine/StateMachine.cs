@@ -13,6 +13,12 @@ namespace RigidBodyPlayer.PlayerStates
         private bool isTransitionQueued = false;
         private bool isTransitioning = false;
         
+        protected void InitializeState(Estate initialState)
+        {
+            CurrentState = States[initialState];
+        }
+
+        
         protected void Start()
         {
             CurrentState?.EnterState();

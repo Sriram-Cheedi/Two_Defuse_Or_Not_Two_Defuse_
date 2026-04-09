@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using PersistantSystems.Software.GameStateMachine;
 
 struct HardwareState
 {
@@ -81,6 +82,11 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         
         hardwareState.componentStates["PWR"] = 0;
         hardwareState.componentStates["MAZE"] = 0;
+        
+        hardwareState.componentStates["WR1"] = 0;
+        hardwareState.componentStates["WR2"] = 0;
+        hardwareState.componentStates["WR3"] = 0;
+        hardwareState.componentStates["WR4"] = 0;
 
         GameObject child = new GameObject("Serial_Port_Controller");
         child.transform.SetParent(this.transform);

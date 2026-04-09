@@ -1,3 +1,4 @@
+using PersistantSystems.Software.GameStateMachine;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -8,7 +9,7 @@ public class PlayerHUDHandler : MonoBehaviour
     
     public void Update()
     {
-        timerText.text = GameManager.Instance.bombTimer.ToString("F2");
+        timerText.text = GameManager.Instance.BombTimer.ToString("F2");
     }
 }
 

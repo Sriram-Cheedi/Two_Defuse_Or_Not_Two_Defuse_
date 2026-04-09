@@ -776,8 +776,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 518062551}
-  - component: {fileID: 518062552}
   - component: {fileID: 518062553}
+  - component: {fileID: 518062554}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -800,24 +800,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1622320732}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &518062552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 518062550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42cd7dea592b14c92ae732a57add6146, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  bombTimer: 300
-  isGameOver: 0
-  currentState: 0
-  cutscenePlayer: {fileID: 13934480}
-  cutsceneDisplay: {fileID: 572522889}
-  menuUI: {fileID: 1333288042}
 --- !u!82 &518062553
 AudioSource:
   m_ObjectHideFlags: 0
@@ -915,6 +897,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &518062554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518062550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddf2ff60aa5e479983531da022562d01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::PersistantSystems.Software.GameStateMachine.GameManager
+  cutscenePlayer: {fileID: 13934480}
+  cutsceneDisplay: {fileID: 572522889}
+  menuUI: {fileID: 1333288042}
+  warningAudio: {fileID: 518062553}
 --- !u!1 &555081426
 GameObject:
   m_ObjectHideFlags: 0
@@ -2265,8 +2263,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 518062552}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 518062554}
+        m_TargetAssemblyTypeName: PersistantSystems.Software.GameStateMachine.GameManager,
+          Game.Main
         m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:

@@ -1,4 +1,5 @@
 using System;
+using PersistantSystems.Software.GameStateMachine;
 using Puzzles;
 using Puzzles.Controllers;
 using UnityEngine;
@@ -31,7 +32,7 @@ namespace PersistantSystems.Software
         private void OnEnable()
         {
             SpawnManager.RespawnRequested += AddDeath;
-            GameManager.onGameEnd += CalculateFinalScore;
+            GameManager.OnGameEnd += CalculateFinalScore;
             Puzzle.OnSuccess += CompletePuzzle;
             Puzzle.OnFailure += FailPuzzle;
 
@@ -40,7 +41,7 @@ namespace PersistantSystems.Software
         private void OnDisable()
         {
             SpawnManager.RespawnRequested -= AddDeath;
-            GameManager.onGameEnd -= CalculateFinalScore;
+            GameManager.OnGameEnd -= CalculateFinalScore;
             Puzzle.OnSuccess -= CompletePuzzle;
             Puzzle.OnFailure -= FailPuzzle;
         }

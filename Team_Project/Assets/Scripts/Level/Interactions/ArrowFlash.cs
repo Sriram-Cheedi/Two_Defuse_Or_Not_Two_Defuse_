@@ -1,4 +1,5 @@
 using System;
+using PersistantSystems.Software.GameStateMachine.GameStates;
 using UnityEngine;
 
 public class ArrowFlash : MonoBehaviour
@@ -18,12 +19,12 @@ public class ArrowFlash : MonoBehaviour
 
     private void OnEnable()
     {
-        ActivationTip.IsBombActive += SwitchMaterial;
+        ReadyUpState.TrapDoorOpened += SwitchMaterial;
     }
 
     private void OnDisable()
     {
-        ActivationTip.IsBombActive -= SwitchMaterial;
+        ReadyUpState.TrapDoorOpened -= SwitchMaterial;
     }
 
     private void SwitchMaterial()
