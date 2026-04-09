@@ -3426,16 +3426,6 @@
 	)
 	(wire
 		(pts
-			(xy 77.47 113.03) (xy 104.14 113.03)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "30db290f-708d-451c-a431-f1ec2f1931e3")
-	)
-	(wire
-		(pts
 			(xy 74.93 153.67) (xy 104.14 153.67)
 		)
 		(stroke
@@ -3823,6 +3813,16 @@
 			(type default)
 		)
 		(uuid "7e497916-26a8-4952-a8de-5614e7286df5")
+	)
+	(wire
+		(pts
+			(xy 77.47 113.03) (xy 104.14 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "800b2bd4-020f-4c48-b574-d8ec8078c8a3")
 	)
 	(wire
 		(pts
@@ -4544,7 +4544,7 @@
 		)
 		(uuid "ff410c61-e17c-4953-ada0-ff55b38b0147")
 	)
-	(label "Digit4"
+	(label "Latch Pin"
 		(at 187.96 99.06 0)
 		(effects
 			(font
@@ -4564,7 +4564,7 @@
 		)
 		(uuid "1458de06-0adc-4691-b62c-b6c697851f80")
 	)
-	(label "Digit3"
+	(label "DS_Pin"
 		(at 187.96 96.52 0)
 		(effects
 			(font
@@ -4593,16 +4593,6 @@
 			(justify left bottom)
 		)
 		(uuid "2346f29f-4bf2-4ea2-9a66-fbe7842b7f51")
-	)
-	(label "Digit2"
-		(at 187.96 93.98 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "2a3606a6-5ea9-422e-92c5-9e8f1f844506")
 	)
 	(label "Signal"
 		(at 185.42 69.85 0)
@@ -4794,16 +4784,6 @@
 		)
 		(uuid "acb23e6b-7407-40cd-aebc-916663bbe495")
 	)
-	(label "Switch Power"
-		(at 77.47 113.03 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "b438d7f5-b07f-4f3e-a119-fe54f1a99447")
-	)
 	(label "3.3V"
 		(at 78.74 125.73 0)
 		(effects
@@ -4833,6 +4813,16 @@
 			(justify left bottom)
 		)
 		(uuid "bcad9465-7d28-4163-ba38-3523be96af30")
+	)
+	(label "Switch_Power"
+		(at 78.74 113.03 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "be5d6890-ff38-4e63-9d54-64cf5ea74996")
 	)
 	(label "BTN1"
 		(at 77.47 161.29 0)
@@ -4873,16 +4863,6 @@
 			(justify left bottom)
 		)
 		(uuid "d8e0ea9c-847a-4852-946d-ce75bee11516")
-	)
-	(label "Digit1"
-		(at 187.96 91.44 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "dc1761ac-9d95-44aa-b98a-6bc4595b0b88")
 	)
 	(label "Yellow Switch"
 		(at 77.47 102.87 0)
@@ -4944,7 +4924,7 @@
 		)
 		(uuid "ff4e8d01-cf41-4cd7-8f72-9642d775feca")
 	)
-	(label "Enter"
+	(label "Clock_Pin"
 		(at 187.96 101.6 0)
 		(effects
 			(font
