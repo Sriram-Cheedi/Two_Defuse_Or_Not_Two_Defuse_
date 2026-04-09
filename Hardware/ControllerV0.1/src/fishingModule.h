@@ -3,8 +3,10 @@
 #include <component.h>
 #include <SerialController.h>
 #include "Button.h"
+#include "Buzzer.h"
 
 class fishingModule : public Component {
+
 
     const int dataPin;
     const int clockPin;
@@ -71,6 +73,7 @@ class fishingModule : public Component {
 
     SerialController serialController;
     Button btn;
+    Buzzer& buzzer;
 
     void reset();     // Reset Module to the initial state
     void complete();  // Auto complete the module 
@@ -80,7 +83,7 @@ class fishingModule : public Component {
 
 public:
 
-    fishingModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin, SerialController SerialController);
+    fishingModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin, SerialController SerialController, Buzzer& buzzer);
     void set(std::vector<std::string> args) override;
     void status() override;
     void disable() override;

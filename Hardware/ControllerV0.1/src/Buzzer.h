@@ -21,12 +21,17 @@ private:
     unsigned long delay = 500;
     unsigned long lastDelay = 0;
 
+    unsigned long lastScramble = 0;
+    unsigned long scrambleDelay = 50;
+    bool scrambleRise = false;
+
     int duration = 0;
     int beepNum = 0;
 
     bool enabled = true;
     bool siren = false;
     bool notificationPlay = false;
+    bool scrambleNoise = false;
     bool pause = false;
 
     int pitch = 50;
@@ -36,9 +41,7 @@ private:
 
 public:
 
-    void scramble() override{
-        disable();
-    };
+    void scramble() override;
 
     void sirenOn();
 

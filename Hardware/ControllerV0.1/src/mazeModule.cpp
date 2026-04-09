@@ -1,8 +1,7 @@
 #include <mazeModule.h>
 
-MazeModule::MazeModule(std::string name, SerialController serialController, LCDModule& lcd) 
-: Component(name), serialController(serialController), lcd(lcd)
-{}
+MazeModule::MazeModule(std::string name, SerialController serialController, LCDModule& lcd, Buzzer& buzzer) 
+: Component(name), serialController(serialController), lcd(lcd), buzzer(buzzer) {}
 
 void MazeModule::set(std::vector<std::string> args)
 {
@@ -12,17 +11,18 @@ void MazeModule::set(std::vector<std::string> args)
             lcd.set({"\"\"", "\"\""});
         }else{
             state = 1;
+            buzzer.notification();
         }
     }else{
         
-        pageLength = std::ceil(args.size()/16.0);
+        pageLength = std::ceil(args.size()/8.0);
 
         route = std::vector<std::vector<int>>(pageLength);
 
         for (int i = 0; i < pageLength; i++) {
 
-            int startIndex = i * 16;
-            int endIndex   = std::min((int)args.size(), startIndex + 16);
+            int startIndex = i * 8;
+            int endIndex   = std::min((int)args.size(), startIndex + 8);
             int pageSize   = endIndex - startIndex;
 
             route[i] = std::vector<int>(pageSize);
@@ -74,6 +74,7 @@ void MazeModule::update()
         }else if(route[currentPage][i] == 3){
             routeString.push_back('\x02');
         }
+        routeString.push_back(' ');
     }
 
     lcd.set({"\"Maze Route (" + std::to_string(currentPage + 1) + "/" + std::to_string(pageLength) + ")\"", routeString});
