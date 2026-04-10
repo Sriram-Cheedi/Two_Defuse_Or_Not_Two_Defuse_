@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using PersistantSystems.Software.GameStateMachine.GameStates;
 using UnityEngine;
 
 public class LightingManager : MonoBehaviour
@@ -13,6 +15,9 @@ public class LightingManager : MonoBehaviour
     private UnityEngine.Rendering.AmbientMode originalAmbientMode;
     private Color originalAmbientColor;
     private Material originalSkybox;
+    private bool isWarningStarted;
+    [SerializeField] private LevelData levelData;
+    private Coroutine warningCoroutine;
     
     enum MockButtonValues
     {
@@ -42,12 +47,14 @@ public class LightingManager : MonoBehaviour
         }
         
         API_Controller.OnInputChanged += HandleButtonPress;
+        PlayingState.ExplosionWarning +=  HandleWarningLighting;
     }
     
     
     void OnDisable()
     {
         API_Controller.OnInputChanged -= HandleButtonPress;
+        PlayingState.ExplosionWarning -=  HandleWarningLighting;
         
         if (relay != null)
         {
@@ -88,8 +95,26 @@ public class LightingManager : MonoBehaviour
            
         }
     }
-    
-    
+
+    private void HandleWarningLighting()
+    {
+        if (warningCoroutine == null)
+        {
+            warningCoroutine = StartCoroutine(StartWarningLighting());
+        }
+    }
+
+    IEnumerator StartWarningLighting()
+    {
+        while (true)
+        {
+            TurnOffLights();
+            yield return new WaitForSeconds(levelData.warningFlashingDuration);
+            TurnOnLights();
+            yield return new WaitForSeconds(levelData.warningFlashingDuration);
+        }
+    }
+
     private void Start()
     {
         allLights = FindObjectsOfType<Light>(); 
@@ -97,6 +122,7 @@ public class LightingManager : MonoBehaviour
         originalAmbientMode = RenderSettings.ambientMode;
         originalAmbientColor = RenderSettings.ambientLight;
         originalSkybox = RenderSettings.skybox;
+        TurnOffLights();
     }
 
     public void TurnOffLights()

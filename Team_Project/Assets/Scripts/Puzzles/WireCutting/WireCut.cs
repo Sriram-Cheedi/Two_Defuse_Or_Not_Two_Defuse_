@@ -7,12 +7,13 @@ using UnityEngine;
 public class WireCut : MonoBehaviour
 {
     public WireMapping wireMapping;
-    public bool hasCut = false;
     private Dictionary<string, VerletWire.WireColor> wireDict = new Dictionary<string, VerletWire.WireColor>();
     VerletWire.WireColor hardwareWireColor = VerletWire.WireColor.None;
     VerletWire.WireColor softwareWireColor = VerletWire.WireColor.None;
     private float timeToCut = 3f;
     private string cutColor = null;
+    public static event Action HasCutSoftwareWire;
+    public static event Action HasCutAnyWire;
 
     private void Awake()
     {
@@ -74,7 +75,10 @@ public class WireCut : MonoBehaviour
 
         if (softwareWireColor != VerletWire.WireColor.None) // software wire is cut first
         {
-            //if software wire cut is wrong in the first place
+            // CheckWireCutColor(softwareWireColor, hardwareWireColor);
+            HasCutSoftwareWire?.Invoke();
+            HasCutAnyWire?.Invoke();
+            // //if software wire cut is wrong in the first place
             if (softwareWireColor != wireDict[wireMapping.cutWire])
             {
                 //starts the timer
@@ -104,6 +108,8 @@ public class WireCut : MonoBehaviour
             }
         }else if (hardwareWireColor != VerletWire.WireColor.None) // hardware wire is cut first
         {
+            // CheckWireCutColor(hardwareWireColor, softwareWireColor);
+            HasCutAnyWire?.Invoke();
             if (hardwareWireColor != wireDict[wireMapping.cutWire])
             {
                 //starts the timer
@@ -137,7 +143,33 @@ public class WireCut : MonoBehaviour
 
     private void CheckWireCutColor(VerletWire.WireColor wireCutFirst, VerletWire.WireColor wireCutLater)
     {
-        
+        if (wireCutFirst != wireDict[wireMapping.cutWire])
+        {
+            //starts the timer
+            timeToCut -= Time.deltaTime;
+            if (timeToCut <= 0f || wireCutLater != VerletWire.WireColor.None)
+            {//game lost if timer hits 0 or any physical color is cut
+                GameManager.Instance.EndGame();
+            }
+        }
+        else//software wire cut is correct wait for physical wire color
+        {
+            //starts the timer
+            timeToCut -= Time.deltaTime;
+            if (timeToCut <= 0f)
+            {
+                //game lost if timer hits 0
+                GameManager.Instance.EndGame();
+            }
+            else
+            {
+                //if it's the same we are good
+                if (wireCutFirst == wireCutLater)
+                {
+                    GameManager.Instance.WinGame();
+                }
+            }
+        }
     }
 
     private void CutWithinTimeWindow()

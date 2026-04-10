@@ -15,10 +15,12 @@ public class API_Provider : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
+            return;
         }
         
         if (useMockHardware)
@@ -53,6 +55,8 @@ public class API_Provider : MonoBehaviour
                 mockChild.transform.SetParent(transform);
 
                 ActiveAPIController = mockChild.AddComponent<Mock_API_Controller>();
+                ActiveAPIController.InitializeSelf();      
+                ActiveAPIController.InitializeHardware(); 
             }
         }
         hasAPIController = true;

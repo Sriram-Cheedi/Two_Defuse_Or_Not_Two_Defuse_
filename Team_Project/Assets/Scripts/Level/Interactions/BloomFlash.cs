@@ -7,13 +7,18 @@ public class SymbolAutoFlash : MonoBehaviour
     [SerializeField] private Material offMaterial;
     [SerializeField] private Material flashMaterial;
     [SerializeField] private LevelData levelData;
+    
+    private Coroutine bloomFlashCoroutine;
 
     private void Start()
     {
         if (targetRenderer == null)
             targetRenderer = GetComponent<MeshRenderer>();
 
-        StartCoroutine(FlashLoop());
+        if (bloomFlashCoroutine == null)
+        {
+            bloomFlashCoroutine = StartCoroutine(FlashLoop());
+        }
     }
 
     private IEnumerator FlashLoop()

@@ -133,11 +133,14 @@ public class VerletWire : MonoBehaviour
         {
             allwires.Add(this);
         }
+
+        WireCut.HasCutSoftwareWire += HandelHasCutWire;
     }
 
     void OnDisable()
     {
         allwires.Remove(this);
+        WireCut.HasCutSoftwareWire -= HandelHasCutWire;
     }
 
 
@@ -867,6 +870,11 @@ public class VerletWire : MonoBehaviour
         t = Mathf.Clamp(t, 0.25f, 0.75f);
 
         CreateCutPieces(segIdx, a + ab * t);
+    }
+
+    private void HandelHasCutWire()
+    {
+        // isCuttable = false;
     }
 
     private int FindClosestSegment(Vector3 worldPos)

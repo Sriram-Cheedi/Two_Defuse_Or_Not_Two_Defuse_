@@ -9,7 +9,7 @@ namespace PersistantSystems.Software.GameStateMachine
     public class GameManager : GameStateMachine
     {
         public static GameManager Instance { get; private set; }
-        public double BombTimer      { get; set; } = 300.0;
+        public double BombTimer;
         public bool IsHardwareReady  { get; private set; }
 
         public bool IsMatSceneLoaded { get; private set; }
@@ -21,6 +21,7 @@ namespace PersistantSystems.Software.GameStateMachine
 
         [Header("Audio")]
         [SerializeField] private AudioSource warningAudio;
+        [SerializeField] private AudioSource winningAudio;
         
         public static event Action<double> OnGameEnd;
 
@@ -46,6 +47,7 @@ namespace PersistantSystems.Software.GameStateMachine
             SceneManager.sceneLoaded += OnSceneLoaded;
             API_Controller.OnInputChanged += OnHardwareInputChanged;
             Mock_API_Controller.OnInputChanged += OnHardwareInputChanged;
+            // WireCut.HasCutAnyWire += PlayWarningAudio;
         }
 
         private void OnDisable()
@@ -53,6 +55,7 @@ namespace PersistantSystems.Software.GameStateMachine
             SceneManager.sceneLoaded -= OnSceneLoaded;
             API_Controller.OnInputChanged -= OnHardwareInputChanged;
             Mock_API_Controller.OnInputChanged -= OnHardwareInputChanged;
+            // WireCut.HasCutAnyWire -= PlayWarningAudio;
         }
 
         private void GetAudioComponent()
@@ -114,12 +117,6 @@ namespace PersistantSystems.Software.GameStateMachine
             QueueNextState(GameState.ReadyUp);
         }
         
-        public void SetHardwareReady(bool isReady)
-        {
-            IsHardwareReady = isReady;
-        }
-        
-        
         public void ResetSession(double startingBombTimer = 300.0)
         {
             BombTimer = startingBombTimer;
@@ -154,5 +151,16 @@ namespace PersistantSystems.Software.GameStateMachine
         {
             IsMatSceneLoaded = scene.name == "MatScene";
         }
+
+        // public void PlayWarningAudio()
+        // {
+        //     while (true)
+        //     {
+        //         if (warningAudio != null && !warningAudio.isPlaying)
+        //         {
+        //             warningAudio.Play();
+        //         }
+        //     }
+        // }
     }
 }

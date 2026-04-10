@@ -8,6 +8,7 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
     {
         private readonly GameManager gameManager;
         private readonly AudioSource warningAudio;
+        public static Action ExplosionWarning;
         
         private bool isPaused;
         private float previousTimeScale = 1f;
@@ -90,6 +91,7 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
 
             if (gameManager.BombTimer <= 5f && gameManager.BombTimer > 0f)
             {
+                ExplosionWarning?.Invoke();
                 if (!warningAudio.isPlaying)
                     warningAudio.Play();
             }
