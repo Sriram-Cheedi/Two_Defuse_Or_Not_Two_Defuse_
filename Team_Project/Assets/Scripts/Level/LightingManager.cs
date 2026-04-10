@@ -16,7 +16,7 @@ public class LightingManager : MonoBehaviour
     private Color originalAmbientColor;
     private Material originalSkybox;
     private bool isWarningStarted;
-    [SerializeField] private LevelData levelData;
+    private float flashingInterval = 0.3f;
     private Coroutine warningCoroutine;
     
     enum MockButtonValues
@@ -82,7 +82,7 @@ public class LightingManager : MonoBehaviour
         switch (header)
         {
             case "PWR":
-                if (API_Provider.Instance.ActiveAPIController.getComponentStateManager["PWR"] == 0)
+                if (API_Provider.Instance.ActiveAPIController.GetDigital("PWR") == 0)
                 {
                     TurnOffLights();
                 }
@@ -109,9 +109,9 @@ public class LightingManager : MonoBehaviour
         while (true)
         {
             TurnOffLights();
-            yield return new WaitForSeconds(levelData.warningFlashingDuration);
+            yield return new WaitForSeconds(flashingInterval);
             TurnOnLights();
-            yield return new WaitForSeconds(levelData.warningFlashingDuration);
+            yield return new WaitForSeconds(flashingInterval);
         }
     }
 

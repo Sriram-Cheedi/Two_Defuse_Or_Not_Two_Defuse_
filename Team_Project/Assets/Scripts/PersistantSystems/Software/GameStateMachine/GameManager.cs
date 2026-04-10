@@ -21,7 +21,9 @@ namespace PersistantSystems.Software.GameStateMachine
 
         [Header("Audio")]
         [SerializeField] private AudioSource warningAudio;
-        [SerializeField] private AudioSource winningAudio;
+        [SerializeField] private AudioSource audioSource;
+        [SerializeField] private AudioClip loseSound;
+        [SerializeField] private AudioClip winSound;
         
         public static event Action<double> OnGameEnd;
 
@@ -47,7 +49,7 @@ namespace PersistantSystems.Software.GameStateMachine
             SceneManager.sceneLoaded += OnSceneLoaded;
             API_Controller.OnInputChanged += OnHardwareInputChanged;
             Mock_API_Controller.OnInputChanged += OnHardwareInputChanged;
-            // WireCut.HasCutAnyWire += PlayWarningAudio;
+            WireCut.HasCutAnyWire += HandleWireCut;
         }
 
         private void OnDisable()
@@ -55,7 +57,7 @@ namespace PersistantSystems.Software.GameStateMachine
             SceneManager.sceneLoaded -= OnSceneLoaded;
             API_Controller.OnInputChanged -= OnHardwareInputChanged;
             Mock_API_Controller.OnInputChanged -= OnHardwareInputChanged;
-            // WireCut.HasCutAnyWire -= PlayWarningAudio;
+            WireCut.HasCutAnyWire -= HandleWireCut;
         }
 
         private void GetAudioComponent()
@@ -69,8 +71,8 @@ namespace PersistantSystems.Software.GameStateMachine
             States[GameState.CutScene] = new CutSceneState(this, cutscenePlayer, cutsceneDisplay, menuUI);
             States[GameState.ReadyUp] = new ReadyUpState(this);
             States[GameState.Playing] = new PlayingState(this, warningAudio);
-            States[GameState.GameOver] = new GameOverState(this);
-            States[GameState.GameWin] = new GameWinState(this);
+            States[GameState.GameOver] = new GameOverState(this, audioSource, loseSound);
+            States[GameState.GameWin] = new GameWinState(this, audioSource, winSound);
         }
 
         public void StartGame()
@@ -152,15 +154,9 @@ namespace PersistantSystems.Software.GameStateMachine
             IsMatSceneLoaded = scene.name == "MatScene";
         }
 
-        // public void PlayWarningAudio()
-        // {
-        //     while (true)
-        //     {
-        //         if (warningAudio != null && !warningAudio.isPlaying)
-        //         {
-        //             warningAudio.Play();
-        //         }
-        //     }
-        // }
+        private void HandleWireCut()
+        {
+            BombTimer = 3.0f;
+        }
     }
 }

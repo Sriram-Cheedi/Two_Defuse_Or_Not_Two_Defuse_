@@ -337,7 +337,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     }
     public int GetSwitch(string id)
     {
-        return hardwareState.componentStates["SWT" + id];
+        return hardwareState.componentStates["SW" + id];
     }
     public int GetLed(string id)
     {

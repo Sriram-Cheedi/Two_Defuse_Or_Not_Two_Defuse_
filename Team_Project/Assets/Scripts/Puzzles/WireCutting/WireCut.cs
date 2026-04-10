@@ -14,6 +14,7 @@ public class WireCut : MonoBehaviour
     private string cutColor = null;
     public static event Action HasCutSoftwareWire;
     public static event Action HasCutAnyWire;
+    private bool hasCut = false;
 
     private void Awake()
     {
@@ -22,17 +23,17 @@ public class WireCut : MonoBehaviour
 
     private void InitializeWireDict()
     {
-        wireDict["WR1"] = VerletWire.WireColor.Brown;
-        wireDict["WR2"] = VerletWire.WireColor.Grey;
-        wireDict["WR3"] = VerletWire.WireColor.Blue;
-        wireDict["WR4"] = VerletWire.WireColor.Red;
+        wireDict["WR1"] = VerletWire.WireColor.Red;
+        wireDict["WR2"] = VerletWire.WireColor.Blue;
+        wireDict["WR3"] = VerletWire.WireColor.Grey;
+        wireDict["WR4"] = VerletWire.WireColor.Brown;
         wireDict["grey"] = VerletWire.WireColor.Grey;
         wireDict["brown"] = VerletWire.WireColor.Brown;
         wireDict["blue"] = VerletWire.WireColor.Blue;
         wireDict["red"] = VerletWire.WireColor.Red;
     }
 
-    private void Start()
+    private void OnEnable()
     {
         API_Controller.OnInputChanged += HandleHardwareWire;
     }
@@ -75,67 +76,21 @@ public class WireCut : MonoBehaviour
 
         if (softwareWireColor != VerletWire.WireColor.None) // software wire is cut first
         {
-            // CheckWireCutColor(softwareWireColor, hardwareWireColor);
-            HasCutSoftwareWire?.Invoke();
-            HasCutAnyWire?.Invoke();
-            // //if software wire cut is wrong in the first place
-            if (softwareWireColor != wireDict[wireMapping.cutWire])
+            CheckWireCutColor(softwareWireColor, hardwareWireColor);
+            if (!hasCut)
             {
-                //starts the timer
-                timeToCut -= Time.deltaTime;
-                if (timeToCut <= 0f || hardwareWireColor != VerletWire.WireColor.None)
-                {//game lost if timer hits 0 or any physical color is cut
-                    GameManager.Instance.EndGame();
-                }
+                HasCutSoftwareWire?.Invoke();
+                HasCutAnyWire?.Invoke();
+                hasCut = true;
             }
-            else//software wire cut is correct wait for physical wire color
-            {
-                //starts the timer
-                timeToCut -= Time.deltaTime;
-                if (timeToCut <= 0f)
-                {
-                    //game lost if timer hits 0
-                    GameManager.Instance.EndGame();
-                }
-                else
-                {
-                    //if it's the same we are good
-                    if (hardwareWireColor == softwareWireColor)
-                    {
-                        GameManager.Instance.WinGame();
-                    }
-                }
-            }
+            
         }else if (hardwareWireColor != VerletWire.WireColor.None) // hardware wire is cut first
         {
-            // CheckWireCutColor(hardwareWireColor, softwareWireColor);
-            HasCutAnyWire?.Invoke();
-            if (hardwareWireColor != wireDict[wireMapping.cutWire])
+            CheckWireCutColor(hardwareWireColor, softwareWireColor);
+            if (!hasCut)
             {
-                //starts the timer
-                timeToCut -= Time.deltaTime;
-                if (timeToCut <= 0f || softwareWireColor != VerletWire.WireColor.None)
-                {//game lost if timer hits 0 or any software color is cut
-                    GameManager.Instance.EndGame();
-                }
-            }
-            else//hardware wire cut is correct wait for software wire color
-            {
-                //starts the timer
-                timeToCut -= Time.deltaTime;
-                if (timeToCut <= 0f)
-                {
-                    //game lost if timer hits 0
-                    GameManager.Instance.EndGame();
-                }
-                else
-                {
-                    //if it's the same we are good
-                    if (softwareWireColor == hardwareWireColor)
-                    {
-                        GameManager.Instance.WinGame();
-                    }
-                }
+                HasCutAnyWire?.Invoke();
+                hasCut = true;
             }
         }
         VerletWire.CutWireColor = null;
@@ -191,6 +146,7 @@ public class WireCut : MonoBehaviour
     private void HandleHardwareWire(string header, int value)
     {
         if(value == 1) return;
+        if(header != "WR1" && header != "WR2" &&  header != "WR3" && header != "WR4") return;
         hardwareWireColor = wireDict[header];
     }
 }

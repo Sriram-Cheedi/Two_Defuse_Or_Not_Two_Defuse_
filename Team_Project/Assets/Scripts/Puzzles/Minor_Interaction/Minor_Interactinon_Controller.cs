@@ -82,6 +82,9 @@ namespace Puzzles.Minor_Interaction
             // }
             //
             // setup = false;
+            HandleButtonPress("SW1", API_Provider.Instance.ActiveAPIController.GetSwitch("1"));
+            HandleButtonPress("SW2", API_Provider.Instance.ActiveAPIController.GetSwitch("2"));
+            HandleButtonPress("SW3", API_Provider.Instance.ActiveAPIController.GetSwitch("3"));
         }
 
         void OnEnable()

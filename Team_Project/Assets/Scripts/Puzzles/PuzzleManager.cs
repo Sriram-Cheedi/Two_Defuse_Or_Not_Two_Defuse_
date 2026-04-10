@@ -55,15 +55,27 @@ public class PuzzleManager : MonoBehaviour
 
         
         // This is subscriptions for the software side of each puzzle. Triggers off hardware will be handled through the API not Actions such as this
-        Puzzle.OnSuccess += S_HandleSSMVictory;
-        Puzzle.OnSuccess += HandleNGMVictory;
-
-        API_Controller.OnInputChanged += H_HandleSSMVictory;
+        
         
         Debug.Log("Subscriptions Successful!");
 
     }
-    
+
+    private void OnEnable()
+    {
+        Puzzle.OnSuccess += S_HandleSSMVictory;
+        Puzzle.OnSuccess += HandleNGMVictory;
+
+        API_Controller.OnInputChanged += H_HandleSSMVictory;
+    }
+
+    private void OnDisable()
+    {
+        Puzzle.OnSuccess -= S_HandleSSMVictory;
+        Puzzle.OnSuccess -= HandleNGMVictory;
+        API_Controller.OnInputChanged -= H_HandleSSMVictory;
+    }
+
     // Global Changes if correct
     private void S_HandleSSMVictory(PuzzleGame puzzleGame)
     {

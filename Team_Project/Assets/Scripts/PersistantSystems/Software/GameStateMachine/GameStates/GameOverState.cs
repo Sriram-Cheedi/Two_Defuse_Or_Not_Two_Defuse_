@@ -9,9 +9,13 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
 
     {
         private readonly GameManager gameManager;
-        public GameOverState(GameManager gameManager) : base(GameState.GameOver)
+        private readonly AudioSource audioSource;
+        private readonly AudioClip loseSound;
+        public GameOverState(GameManager gameManager, AudioSource audioSource, AudioClip loseSound) : base(GameState.GameOver)
         {
             this.gameManager = gameManager;
+            this.audioSource = audioSource;
+            this.loseSound = loseSound;
         }
 
         public override void EnterState()
@@ -36,6 +40,7 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
         private IEnumerator LoadGameOverScene()
         {
             yield return new WaitForSeconds(1f);
+            audioSource.PlayOneShot(loseSound);
             SceneManager.LoadScene("GameOver");
         }
     }
