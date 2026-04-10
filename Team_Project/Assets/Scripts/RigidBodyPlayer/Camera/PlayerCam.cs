@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerCam : MonoBehaviour
 {
+    [SerializeField] private Camera playerCamera;
     [SerializeField] private float sensX = 10f;
     [SerializeField] private float sensY = 10f;
     [SerializeField] private Transform orientation;
@@ -12,6 +13,8 @@ public class PlayerCam : MonoBehaviour
     private float xRotation;
     private float yRotation;
     private PlayerInputRelay relay;
+    private const string fovKEY = "FOV";
+    private const float fovDefault = 90f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
@@ -52,6 +55,15 @@ public class PlayerCam : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        if (playerCamera == null)
+        {
+            playerCamera = GetComponent<Camera>() ?? GetComponentInChildren<Camera>();
+        }
+
+        if (playerCamera != null)
+        {
+            playerCamera.fieldOfView = PlayerPrefs.GetFloat(fovKEY, fovDefault);
+        }
     }
 
     private void SetLookInput(Vector2 v)

@@ -1,8 +1,8 @@
 #include "fishingModule.h"
 
-fishingModule::fishingModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin, SerialController serialController)
+fishingModule::fishingModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin, SerialController serialController, Buzzer& buzzer)
 : Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), buttonPin(buttonPin), state(0), serialController(serialController),
-btn("FGM1", buttonPin, serialController,[this](std::string name, int state){buttonUpdate(name, state);})
+btn("FGM1", buttonPin, serialController,[this](std::string name, int state){buttonUpdate(name, state);}), buzzer(buzzer)
 {
     pinMode(dataPin, OUTPUT);
     pinMode(clockPin, OUTPUT);
@@ -20,9 +20,11 @@ void fishingModule::reset(){
     int hasScored = fishPos[randState] & hookLED[hookPos];
     if (hasScored > 0){
         state = 1;
+        buzzer.sirenOff();
     }
     else{
         state = 2;
+        buzzer.sirenOn();
     }
     status();
 }
@@ -75,6 +77,8 @@ void fishingModule::enable(){
 
     enabled = true;
     scrambled = false;
+
+    scoreCheck();
 }
 
 void fishingModule::shift(uint32_t digit){
@@ -98,6 +102,7 @@ void fishingModule::scoreCheck(){
     if(state == 2){
         state = 1;
         status();
+        buzzer.sirenOff();
     }
     lockout = true;
   }else{
@@ -105,6 +110,7 @@ void fishingModule::scoreCheck(){
         lastFishUpdate = millis();
         state = 2;
         status();
+        buzzer.sirenOn();
     }
     lockout = false;
   }
