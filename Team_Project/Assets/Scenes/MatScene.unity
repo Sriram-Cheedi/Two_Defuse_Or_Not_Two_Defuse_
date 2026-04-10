@@ -34618,15 +34618,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -21.01
+      value: -19.464
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -6.56
+      value: -0.027
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -31.04
+      value: -37.363
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -46378,7 +46378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fda1049bf7e476da3453eb4318e1afd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game.Main::RigidBodyPlayer.PlayerData.SurfaceIdentity
-  type: 2
+  type: 1
   isMovingPlatform: 0
 --- !u!64 &325253846
 MeshCollider:
@@ -48307,7 +48307,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: wireColor
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: insulatedMat
@@ -99290,7 +99290,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Game.Main::WireCut
   wireMapping: {fileID: 717286212}
-  hasCut: 0
 --- !u!114 &717286212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105338,7 +105337,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &740190519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142944,7 +142943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: wireColor
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: insulatedMat
@@ -169049,7 +169048,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: wireColor
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: insulatedMat
@@ -226073,7 +226072,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: wireColor
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
       propertyPath: iterations
@@ -580535,7 +580534,7 @@ MonoBehaviour:
   barredDoor: {fileID: 2040255343}
   levelData: {fileID: 11400000, guid: 635145c9625881440805c37de78cd884, type: 2}
   barredDoorHinge: {fileID: 864518693}
-  spawnDoorHinge: {fileID: 0}
+  spawnDoorHinge: {fileID: 1248726931}
   doorAnimaton: {fileID: 2032550400}
 --- !u!1001 &1666323438
 PrefabInstance:
@@ -580632,36 +580631,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8875449794350654438, guid: b581fdbd127292d44ab21c4b16d91d05, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1223468451}
-    - targetCorrespondingSourceObject: {fileID: 8875449794350654444, guid: b581fdbd127292d44ab21c4b16d91d05, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1666323443}
   m_SourcePrefab: {fileID: 100100000, guid: b581fdbd127292d44ab21c4b16d91d05, type: 3}
 --- !u!1 &1666323439 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8875449794350654444, guid: b581fdbd127292d44ab21c4b16d91d05, type: 3}
   m_PrefabInstance: {fileID: 1666323438}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &1666323443
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1666323439}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.008600005, y: 0.21909478, z: 0.125198}
-  m_Center: {x: 0.00000020023435, y: 0.000000026077032, z: -0.00000001117587}
 --- !u!4 &1666323444 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8875449794350432204, guid: b581fdbd127292d44ab21c4b16d91d05, type: 3}
