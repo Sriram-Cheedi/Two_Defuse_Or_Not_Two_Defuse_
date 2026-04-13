@@ -183,6 +183,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: CPU-Right
       objectReference: {fileID: 0}
+    - target: {fileID: 5148817236446094103, guid: 5e8567d27d0711e42bc4b5c5f4ea2375, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6507901977716847365, guid: 5e8567d27d0711e42bc4b5c5f4ea2375, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7339356831882890532, guid: 5e8567d27d0711e42bc4b5c5f4ea2375, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 

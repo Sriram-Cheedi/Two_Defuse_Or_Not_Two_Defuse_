@@ -12,6 +12,7 @@ public class HUDTrigger : MonoBehaviour
     [SerializeField] private Material flashMaterial;
     [SerializeField] private LevelData levelData;
     [SerializeField] private GameObject[] movementHuds; 
+    private Coroutine flashCoroutine;
     private bool isGamePlaying = false;
     // GameManager.GameState currentState;
 
@@ -58,7 +59,10 @@ public class HUDTrigger : MonoBehaviour
         }
         if (targetRenderers.Length != 0 && offMaterial != null && flashMaterial  != null)
         {
-            StartCoroutine(FlashLoop());
+            if (flashCoroutine == null)
+            {
+                flashCoroutine = StartCoroutine(FlashLoop());
+            }
         }
     }
 

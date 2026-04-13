@@ -17,6 +17,8 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
 
         public override void EnterState()
         {
+            isBombActivated = false;
+            isTrapDoorOpened = false;
         }
 
         public override void ExitState()

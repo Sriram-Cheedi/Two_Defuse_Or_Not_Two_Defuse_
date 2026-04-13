@@ -163,6 +163,13 @@ public class VerletWire : MonoBehaviour
 
         RebuildColliders();
     }
+    
+    public static void ResetStaticState()
+    {
+        HasAnyWireBeenCut = false;
+        CutWireColor = null;
+        allwires.Clear();
+    }
 
     void FixedUpdate()
     {

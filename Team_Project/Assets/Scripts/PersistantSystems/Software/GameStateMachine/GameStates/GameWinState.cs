@@ -1,4 +1,5 @@
-﻿using RigidBodyPlayer.PlayerStates;
+﻿using System.Collections;
+using RigidBodyPlayer.PlayerStates;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,8 +21,7 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
         {
             gameManager.FireOnGameEnd();
             API_Provider.Instance?.ActiveAPIController?.SendSet("PWR", 4);
-            audioSource.PlayOneShot(winClip);
-            SceneManager.LoadScene("GameWin");
+            gameManager.StartCoroutine(LoadGameWinScene());
         }
 
         public override void ExitState()
@@ -34,6 +34,14 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
 
         public override void FixedUpdateState()
         {
+        }
+
+        private IEnumerator LoadGameWinScene()
+        {
+            audioSource.PlayOneShot(winClip);
+            SceneManager.LoadScene("GameWin");
+            yield return new WaitForSeconds(2f);
+            gameManager.OnLoadingScoreBoard();
         }
     }
 }
