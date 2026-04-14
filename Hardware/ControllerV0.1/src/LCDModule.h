@@ -54,6 +54,11 @@ public:
     void LCDScroll();
     void LCDSet(char word[]);
 
+    void refresh();
+
+    void backLightOff();
+    void backLightOn();
+
     void enable() override;
     void disable() override;
     void set(std::vector<std::string> args) override;
