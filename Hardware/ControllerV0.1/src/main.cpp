@@ -34,14 +34,18 @@ void flickerOn(){
   for(int i = 0; i < 4; i++){
     for(const auto& cmp : components){
       if(cmp->name != "IMU" &&
-          cmp->name != "PWR") cmp->enable();
+          cmp->name != "PWR" && 
+          cmp->name != "LCD") cmp->enable();
+      if(cmp->name == "LCD") LCD.backLightOn();
     }
     uint32_t waitUntil = millis() + 50;
     while (millis() < waitUntil) threads.yield();
 
     for(const auto& cmp : components){
       if(cmp->name != "IMU" &&
-          cmp->name != "PWR") cmp->disable();
+          cmp->name != "PWR"&& 
+          cmp->name != "LCD") cmp->disable();
+          if(cmp->name == "LCD") LCD.backLightOff();
     }
     waitUntil = millis() + 100;
     while (millis() < waitUntil) threads.yield();
@@ -91,10 +95,13 @@ void startNotification(std::string btnName, int btnState){
   if(btnState == 1) buzzer.notification();
 }
 
+void refreshLCD(std::string btnName, int buttonState){
+  LCD.refresh();
+}
 
 Button btn1 = Button("BTN1", 9, serialController);
 Button btn2 = Button("BTN2", 10, serialController);
-Button btn3 = Button("BTN3", 11, serialController);
+Button btn3 = Button("BTN3", 11, serialController, refreshLCD);
 Button btn4 = Button("BTN4", 12, serialController);
 
 Button wire1 = Button("WR1", 23, serialController);
