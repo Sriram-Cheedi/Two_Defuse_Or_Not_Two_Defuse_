@@ -6,6 +6,7 @@ using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
+using PersistantSystems.Software.FirebaseModels;
 using UnityEngine;
 
 namespace PersistantSystems.Software
@@ -27,9 +28,15 @@ public class DatabaseAPI: MonoBehaviour
     
     public static DatabaseAPI Instance { get; private set; }
     
-    public event Action OnFirebaseInitialized;
+    public event Action OnFirebaseInitialized; 
+    public event Action<List<LeaderboardEntryData>> OnTopLeaderboardUpdated;
+    public event Action<string, StationStatusData> OnStationStatusUpdated;
     private const string DatabaseURL = "https://teamproject-c1ec1-default-rtdb.europe-west1.firebasedatabase.app/";
     private DatabaseReference reference;
+    private Query leaderboardQuery;
+    private DatabaseReference station1Ref;
+    private DatabaseReference station2Ref;
+
     
     [SerializeField] private bool mockPopulateDatabase = false;
     
@@ -65,6 +72,12 @@ public class DatabaseAPI: MonoBehaviour
         {
             Debug.LogError("Exception during db initialization: " + e.Message);
         }
+    }
+    
+    private void OnDestroy()
+    {
+        UnsubscribeFromLeaderboard();
+        UnsubscribeFromStationStatuses();
     }
     
     private void InitializeFirebaseAuthentication()
@@ -154,7 +167,202 @@ public class DatabaseAPI: MonoBehaviour
             }
         });
     }
+    
+    public void SubmitLeaderboardEntry(string username, int score, bool defused, string stationId)
+    {
+        if (reference == null)
+        {
+            Debug.LogError("Cannot submit leaderboard entry because database reference is null.");
+            return;
+        }
 
+        var newScoreRef = reference.Child("leaderboard").Push();
+
+        var newEntry = new LeaderboardEntryData(username, score, defused, stationId);
+        var json = JsonUtility.ToJson(newEntry);
+
+        newScoreRef.SetRawJsonValueAsync(json).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.LogError("Leaderboard submit error: " + task.Exception);
+            }
+            else
+            {
+                Debug.Log($"Created new leaderboard entry for: {username} with score: {score}, defused: {defused}, station: {stationId}");
+            }
+        });
+    }
+    
+    public void UpdateStationStatus(string stationId, string teamName, string status)
+    {
+        if (reference == null)
+        {
+            Debug.LogError("Cannot update station status because database reference is null.");
+            return;
+        }
+
+        var stationData = new StationStatusData(teamName, status);
+        var json = JsonUtility.ToJson(stationData);
+
+        reference.Child("stations").Child(stationId).SetRawJsonValueAsync(json).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.LogError($"Station update error for {stationId}: " + task.Exception);
+            }
+            else
+            {
+                Debug.Log($"Updated station {stationId}: {teamName} / {status}");
+            }
+        });
+    }
+    
+    public void SubscribeToTopScores(int amount = 10)
+    {
+        if (reference == null)
+        {
+            Debug.LogWarning("Cannot subscribe to top scores because database reference is null.");
+            return;
+        }
+
+        UnsubscribeFromLeaderboard();
+
+        leaderboardQuery = reference.Child("leaderboard").OrderByChild("score").LimitToLast(amount);
+        leaderboardQuery.ValueChanged += HandleLeaderboardChanged;
+    }
+
+    public void SubscribeToStationStatuses()
+    {
+        if (reference == null)
+        {
+            Debug.LogWarning("Cannot subscribe to station statuses because database reference is null.");
+            return;
+        }
+
+        UnsubscribeFromStationStatuses();
+
+        station1Ref = reference.Child("stations").Child("station1");
+        station2Ref = reference.Child("stations").Child("station2");
+
+        station1Ref.ValueChanged += HandleStation1Changed;
+        station2Ref.ValueChanged += HandleStation2Changed;
+    }
+    
+    public void UnsubscribeFromLeaderboard()
+    {
+        if (leaderboardQuery != null)
+        {
+            leaderboardQuery.ValueChanged -= HandleLeaderboardChanged;
+            leaderboardQuery = null;
+        }
+    }
+
+    public void UnsubscribeFromStationStatuses()
+    {
+        if (station1Ref != null)
+        {
+            station1Ref.ValueChanged -= HandleStation1Changed;
+            station1Ref = null;
+        }
+
+        if (station2Ref != null)
+        {
+            station2Ref.ValueChanged -= HandleStation2Changed;
+            station2Ref = null;
+        }
+    }
+
+        private void HandleLeaderboardChanged(object sender, ValueChangedEventArgs args)
+        {
+            if (args.DatabaseError != null)
+            {
+                Debug.LogError("Leaderboard update error: " + args.DatabaseError.Message);
+                return;
+            }
+
+            List<LeaderboardEntryData> entries = new();
+
+            if (args.Snapshot != null && args.Snapshot.Exists && args.Snapshot.HasChildren)
+            {
+                foreach (var childSnapshot in args.Snapshot.Children)
+                {
+                    try
+                    {
+                        string username = childSnapshot.HasChild("username")
+                            ? childSnapshot.Child("username").Value.ToString()
+                            : "---";
+
+                        int score = childSnapshot.HasChild("score")
+                            ? Convert.ToInt32(childSnapshot.Child("score").Value)
+                            : 0;
+
+                        bool defused = childSnapshot.HasChild("defused") &&
+                                       Convert.ToBoolean(childSnapshot.Child("defused").Value);
+
+                        string stationId = childSnapshot.HasChild("stationId")
+                            ? childSnapshot.Child("stationId").Value.ToString()
+                            : string.Empty;
+
+                        entries.Add(new LeaderboardEntryData(username, score, defused, stationId));
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogWarning("Failed to parse leaderboard entry: " + e.Message);
+                    }
+                }
+
+                entries = entries
+                    .OrderByDescending(x => x.score)
+                    .Take(10)
+                    .ToList();
+            }
+
+            OnTopLeaderboardUpdated?.Invoke(entries);
+        }
+
+        private void HandleStation1Changed(object sender, ValueChangedEventArgs args)
+        {
+            HandleStationChanged("station1", args);
+        }
+
+        private void HandleStation2Changed(object sender, ValueChangedEventArgs args)
+        {
+            HandleStationChanged("station2", args);
+        }
+
+        private void HandleStationChanged(string stationId, ValueChangedEventArgs args)
+        {
+            if (args.DatabaseError != null)
+            {
+                Debug.LogError($"Station update error for {stationId}: " + args.DatabaseError.Message);
+                return;
+            }
+
+            StationStatusData data = new("---", "Waiting");
+
+            if (args.Snapshot != null && args.Snapshot.Exists)
+            {
+                try
+                {
+                    if (args.Snapshot.HasChild("teamName"))
+                    {
+                        data.teamName = args.Snapshot.Child("teamName").Value?.ToString() ?? "---";
+                    }
+
+                    if (args.Snapshot.HasChild("status"))
+                    {
+                        data.status = args.Snapshot.Child("status").Value?.ToString() ?? "Waiting";
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogWarning($"Failed to parse station status for {stationId}: " + e.Message);
+                }
+            }
+
+            OnStationStatusUpdated?.Invoke(stationId, data);
+        }
     // public void CheckAndUpdateUser(string userId, string username, string score) 
     // { 
     //     var userRef = reference.Child("users").Child(userId);

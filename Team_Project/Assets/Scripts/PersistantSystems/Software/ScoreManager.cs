@@ -26,9 +26,23 @@ namespace PersistantSystems.Software
         {
             if (string.IsNullOrEmpty(newUsername)) return;
             username = newUsername;
+            deathCount = 0;
+            puzzleScores = 0;
+
             Debug.Log("Username entered: " + username);
+
+            if (dbAPI != null)
+            {
+                dbAPI.UpdateStationStatus(GameplayStationConfig.StationId, username, "Waiting");
+            }
         }
 
+        public string GetCurrentUsername()
+        {
+            return string.IsNullOrWhiteSpace(username) ? "---" : username;
+        }
+        
+        
         private void OnEnable()
         {
             SpawnManager.RespawnRequested += AddDeath;
@@ -73,8 +87,19 @@ namespace PersistantSystems.Software
             var finalScore = puzzleScores + (int)bombTime + deathCount * -50;
             if (finalScore < 0) finalScore = 0;
             
+            bool defused = GameManager.Instance != null &&
+                           GameManager.Instance.CurrentStateKey == GameState.GameWin;
+
             Debug.Log($"Final Score {finalScore}");
-            dbAPI.SubmitScore(username, finalScore);
+
+            if (dbAPI != null)
+            {
+                dbAPI.SubmitScore(username, finalScore);
+
+                dbAPI.SubmitLeaderboardEntry(username, finalScore, defused, GameplayStationConfig.StationId);
+
+                dbAPI.UpdateStationStatus(GameplayStationConfig.StationId, username, defused ? "Defused" : "Exploded");
+            }
         }
     }
 }

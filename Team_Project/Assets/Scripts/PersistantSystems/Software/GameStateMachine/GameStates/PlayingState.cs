@@ -1,5 +1,6 @@
 ﻿using System;
 using RigidBodyPlayer.PlayerStates;
+using PersistantSystems.Software;
 using UnityEngine;
 
 namespace PersistantSystems.Software.GameStateMachine.GameStates
@@ -23,6 +24,9 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
         {
             isPaused = false;
             previousTimeScale = 1f;
+            ScoreManager scoreManager = UnityEngine.Object.FindFirstObjectByType<ScoreManager>();
+            string currentUser = scoreManager != null ? scoreManager.GetCurrentUsername() : "---";
+            DatabaseAPI.Instance?.UpdateStationStatus(GameplayStationConfig.StationId, currentUser, "Playing");
         }
 
         public override void ExitState()
@@ -107,6 +111,8 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
                     warningAudio.Stop();
             }
         }
+        
+        
 
         private void SyncHardwareTimer()
         {
