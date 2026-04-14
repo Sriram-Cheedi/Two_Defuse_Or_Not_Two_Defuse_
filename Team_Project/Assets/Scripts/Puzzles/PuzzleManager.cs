@@ -40,7 +40,6 @@ public class PuzzleManager : MonoBehaviour
         
         // Send all Puzzle info AFTER 
         API_Provider.Instance.ActiveAPIController.SendSet("MAZE", 0);
-        API_Provider.Instance.ActiveAPIController.SendMazeSeq("MAZE", "U U U L L U U R R R D R R U U U L L L");
         // API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[]{"\"Module Activated: \"", "\"SSM\""});
         API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[] { "\"Module Activated\"", "\"------SSM------\"" });
         API_Provider.Instance.ActiveAPIController.SendSetSeq("SSM", ssm_controller.data.correctSequence);

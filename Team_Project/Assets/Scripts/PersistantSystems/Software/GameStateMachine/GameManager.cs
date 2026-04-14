@@ -164,8 +164,9 @@ namespace PersistantSystems.Software.GameStateMachine
                 return;
             }
 
-            API_Provider.Instance?.ActiveAPIController?.SendSet("PWR", 1);
-            Debug.Log("Queueing CutScene state.");
+
+            API_Provider.Instance?.ActiveAPIController?.RequestStatus("PWR");
+            API_Provider.Instance?.ActiveAPIController?.SendSet("PWR", API_Provider.Instance.ActiveAPIController.GetDigital("PWR"));
             QueueNextState(GameState.CutScene);
         }
         
