@@ -9,14 +9,16 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
     {
         private readonly GameManager gameManager;
         private readonly AudioSource warningAudio;
+        private readonly ScoreManager scoreManager;
         public static Action ExplosionWarning;
         private bool hasWarningFired;
         
         private bool isPaused;
         private float previousTimeScale = 1f;
-        public PlayingState(GameManager gameManager, AudioSource warningAudio) : base(GameState.Playing)
+        public PlayingState(GameManager gameManager, AudioSource warningAudio, ScoreManager scoreManager) : base(GameState.Playing)
         {
             this.gameManager = gameManager;
+            this.scoreManager = scoreManager;
             this.warningAudio = warningAudio;
         }
 
@@ -24,7 +26,6 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
         {
             isPaused = false;
             previousTimeScale = 1f;
-            ScoreManager scoreManager = UnityEngine.Object.FindFirstObjectByType<ScoreManager>();
             string currentUser = scoreManager != null ? scoreManager.GetCurrentUsername() : "---";
             DatabaseAPI.Instance?.UpdateStationStatus(GameplayStationConfig.StationId, currentUser, "Playing");
         }
@@ -123,3 +124,4 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
         }
     }
 }
+
