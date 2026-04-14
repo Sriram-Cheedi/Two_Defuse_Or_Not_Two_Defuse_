@@ -659,12 +659,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 350913615}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1622320732}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &350913617
 MonoBehaviour:
@@ -956,11 +956,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 443310875}
   m_CullTransparentMesh: 1
---- !u!4 &518062551 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3114230283748851557, guid: 780d65a9f204ca9478403ee3b25519d0, type: 3}
-  m_PrefabInstance: {fileID: 5643812940517230429}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &518062554 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9142198550357336973, guid: 780d65a9f204ca9478403ee3b25519d0, type: 3}
@@ -1656,50 +1651,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
---- !u!1 &912633816
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 912633818}
-  - component: {fileID: 912633817}
-  m_Layer: 0
-  m_Name: MainMenuController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &912633817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 912633816}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d26f0a0a065732e4c857dc3d59a88bc6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Game.Main::MainMenuController
---- !u!4 &912633818
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 912633816}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 868.9962, y: 0.00003, z: 1228.2715}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &921155610 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6720363856758137409, guid: ab21d1a1426c2824f83b7a404ca929d3, type: 3}
@@ -2150,7 +2101,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1272880430}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2158,8 +2109,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -136, y: -67}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -66, y: -67}
+  m_SizeDelta: {x: 350, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1272880432
 MonoBehaviour:
@@ -2907,8 +2858,6 @@ Transform:
   - {fileID: 610761538}
   - {fileID: 555081427}
   - {fileID: 1478664882}
-  - {fileID: 518062551}
-  - {fileID: 350913616}
   - {fileID: 951855716}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3390,7 +3339,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1622320732}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3114230283748851557, guid: 780d65a9f204ca9478403ee3b25519d0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3450,6 +3399,10 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: add6665e3af3f0e4989236a9303bde7f, type: 3}
     - target: {fileID: 9142198550357336973, guid: 780d65a9f204ca9478403ee3b25519d0, type: 3}
       propertyPath: loadingPage
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 9142198550357336973, guid: 780d65a9f204ca9478403ee3b25519d0, type: 3}
+      propertyPath: scoreManager
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 9142198550357336973, guid: 780d65a9f204ca9478403ee3b25519d0, type: 3}
@@ -3540,9 +3493,10 @@ SceneRoots:
   - {fileID: 702796036}
   - {fileID: 4219631685404338285}
   - {fileID: 1622320732}
-  - {fileID: 912633818}
   - {fileID: 278276469}
   - {fileID: 1345614077}
   - {fileID: 1748149431}
   - {fileID: 980892700}
   - {fileID: 105458128}
+  - {fileID: 5643812940517230429}
+  - {fileID: 350913616}

@@ -12,6 +12,8 @@ namespace PersistantSystems.Software.GameStateMachine
         public double BombTimer;
 
         public bool IsMatSceneLoaded { get; private set; }
+
+        [SerializeField] private ScoreManager scoreManager;
         
         [Header("Cutscene References")]
         [SerializeField] private VideoPlayer cutscenePlayer;
@@ -63,20 +65,51 @@ namespace PersistantSystems.Software.GameStateMachine
 
         public void CacheRefs()
         {
-            var canvas = FindFirstObjectByType<Canvas>(FindObjectsInactive.Include);
-            if (cutscenePlayer == null)
-                cutscenePlayer = FindFirstObjectByType<VideoPlayer>(FindObjectsInactive.Include);
+            Scene mainMenuScene = SceneManager.GetSceneByName("MainMenu");
 
-            if (cutsceneDisplay == null)
-                cutsceneDisplay = FindChildByName(canvas.transform, "CutSceneDisplay");
+            if (!mainMenuScene.IsValid() || !mainMenuScene.isLoaded)
+            {
+                Debug.LogWarning("MainMenu scene is not loaded, cannot cache menu references yet.");
+                return;
+            }
 
-            if (menuUI == null)
-                menuUI = FindChildByName(canvas.transform, "Background");
+            GameObject[] rootObjects = mainMenuScene.GetRootGameObjects();
 
-            if (loadingPage == null)
-                loadingPage = FindChildByName(canvas.transform, "LoadingPage");
+            cutscenePlayer = null;
+            cutsceneDisplay = null;
+            menuUI = null;
+            loadingPage = null;
+
+            Debug.Log("---- CacheRefs START ----");
+            Debug.Log("Root objects in MainMenu: " + rootObjects.Length);
+
+            foreach (GameObject root in rootObjects)
+            {
+                Debug.Log("Checking root: " + root.name);
+
+                if (cutscenePlayer == null)
+                    cutscenePlayer = root.GetComponentInChildren<VideoPlayer>(true);
+
+                if (cutsceneDisplay == null)
+                    cutsceneDisplay = FindChildByName(root.transform, "CutSceneDisplay");
+
+                if (menuUI == null)
+                    menuUI = FindChildByName(root.transform, "Background");
+
+                if (loadingPage == null)
+                    loadingPage = FindChildByName(root.transform, "LoadingPage");
+            }
+
+            if (scoreManager == null)
+                scoreManager = FindFirstObjectByType<ScoreManager>(FindObjectsInactive.Include);
+
+            Debug.Log("cutscenePlayer = " + (cutscenePlayer != null ? cutscenePlayer.name : "NULL"));
+            Debug.Log("cutsceneDisplay = " + (cutsceneDisplay != null ? cutsceneDisplay.name : "NULL"));
+            Debug.Log("menuUI = " + (menuUI != null ? menuUI.name : "NULL"));
+            Debug.Log("loadingPage = " + (loadingPage != null ? loadingPage.name : "NULL"));
+            Debug.Log("scoreManager = " + (scoreManager != null ? scoreManager.name : "NULL"));
+            Debug.Log("---- CacheRefs END ----");
         }
-        
         private void OnEnable()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -115,13 +148,24 @@ namespace PersistantSystems.Software.GameStateMachine
 
         public void StartGame()
         {
+            Debug.Log("StartGame called.");
+            Debug.Log("CurrentStateKey before StartGame: " + CurrentStateKey);
+
+            Debug.Log("cutscenePlayer = " + (cutscenePlayer != null ? cutscenePlayer.name : "NULL"));
+            Debug.Log("cutsceneDisplay = " + (cutsceneDisplay != null ? cutsceneDisplay.name : "NULL"));
+            Debug.Log("menuUI = " + (menuUI != null ? menuUI.name : "NULL"));
+            Debug.Log("loadingPage = " + (loadingPage != null ? loadingPage.name : "NULL"));
+
             if (CurrentStateKey == GameState.CutScene ||
                 CurrentStateKey == GameState.ReadyUp ||
                 CurrentStateKey == GameState.Playing)
             {
+                Debug.Log("StartGame ignored because state is already in progress.");
                 return;
             }
+
             API_Provider.Instance?.ActiveAPIController?.SendSet("PWR", 1);
+            Debug.Log("Queueing CutScene state.");
             QueueNextState(GameState.CutScene);
         }
         
