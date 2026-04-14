@@ -1,38 +1,21 @@
 using System;
 using System.Linq;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Puzzles.Controllers
 {
     public class MazeController : Puzzle
     {
-        
+        public PuzzleData data;
         public PuzzleData getData => data;
         private MazeCell[] cells;
         private Vector2 startPos = new Vector2(2 , -1);
         private int gridHorizontalSize = 6;
-        
-        private enum Dir
+        private static Random rand;  
+        public int[][] mazeSequences = new int[][]
         {
-            UP,
-            DOWN,
-            LEFT,
-            RIGHT
-        }
-
-        private int[,] maze = new int[,]
-        {
-            { 0, 0, 1, 1, 1, 1 },
-            { 0, 0, 0, 0, 0, 1 },
-            { 1, 1, 1, 1, 0, 1 },
-            { 1, 0, 0, 1, 1, 1 },
-            { 1, 1, 1, 0, 0, 0 },
-            { 0, 0, 1, 0, 0, 0 }
-        };
-        
-        public PuzzleData data = new PuzzleData 
-        { 
-            correctSequence = new int[] { 
+            new int[]{
                 (int)Dir.UP, 
                 (int)Dir.UP, 
                 (int)Dir.UP,
@@ -53,10 +36,68 @@ namespace Puzzles.Controllers
                 (int)Dir.LEFT,
                 (int)Dir.LEFT
             },
+            new int[]{
+                (int)Dir.UP, 
+                (int)Dir.UP, 
+                (int)Dir.RIGHT,
+                (int)Dir.UP,
+                (int)Dir.RIGHT,
+                (int)Dir.UP,
+                (int)Dir.UP,
+                (int)Dir.UP,
+                (int)Dir.LEFT,
+                (int)Dir.DOWN,
+                (int)Dir.LEFT,
+                (int)Dir.LEFT,
+                (int)Dir.LEFT,
+                (int)Dir.UP,
+                (int)Dir.UP,
+                (int)Dir.RIGHT,
+                (int)Dir.RIGHT
+            },
+            new int[]{
+                (int)Dir.UP, 
+                (int)Dir.LEFT, 
+                (int)Dir.UP,
+                (int)Dir.UP,
+                (int)Dir.LEFT,
+                (int)Dir.UP,
+                (int)Dir.UP,
+                (int)Dir.RIGHT,
+                (int)Dir.RIGHT,
+                (int)Dir.DOWN,
+                (int)Dir.RIGHT,
+                (int)Dir.RIGHT,
+                (int)Dir.RIGHT,
+                (int)Dir.UP,
+                (int)Dir.UP,
+                (int)Dir.LEFT,
+                (int)Dir.LEFT,
+                (int)Dir.UP,
+                (int)Dir.LEFT,
+            },
             
         };
+        
+        public enum Dir
+        {
+            UP,
+            DOWN,
+            LEFT,
+            RIGHT
+        }
 
-        private void InitializeMaze()
+        private int[,] maze = new int[,]
+        {
+            { 0, 0, 1, 1, 1, 1 },
+            { 0, 0, 0, 0, 0, 1 },
+            { 1, 1, 1, 1, 0, 1 },
+            { 1, 0, 0, 1, 1, 1 },
+            { 1, 1, 1, 0, 0, 0 },
+            { 0, 0, 1, 0, 0, 0 }
+        };
+
+        private void InitializeMazePath()
         {
             cells = FindObjectsByType<MazeCell>(FindObjectsSortMode.None)
                 .OrderBy(c => c.y)
@@ -88,9 +129,19 @@ namespace Puzzles.Controllers
             }
         }
 
+        private void InitializeMazeData()
+        {
+            rand = new Random();
+            data = new PuzzleData
+            {
+                correctSequence = mazeSequences[rand.Next(mazeSequences.Length)]
+            };
+        }
+
         private void Awake()
         {
-            InitializeMaze();
+            InitializeMazeData();
+            InitializeMazePath();
         }
     }
    

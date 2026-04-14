@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using PersistantSystems.Software.GameStateMachine;
+using PersistantSystems.Software.GameStateMachine.GameStates;
 using UnityEngine;
 
 public class HUDTrigger : MonoBehaviour
@@ -10,18 +12,20 @@ public class HUDTrigger : MonoBehaviour
     [SerializeField] private Material flashMaterial;
     [SerializeField] private LevelData levelData;
     [SerializeField] private GameObject[] movementHuds; 
-    GameManager.GameState currentState;
+    private Coroutine flashCoroutine;
+    private bool isGamePlaying = false;
+    // GameManager.GameState currentState;
 
     private void OnEnable()
     {
-        GameManager.onGameStateChanged += UpdateGameState;
-        ActivationTip.IsBombActive += initializeHUDs;
+        ReadyUpState.BombActivated += initializeHUDs;
+        ReadyUpState.TrapDoorOpened += UpdateGameState;
     }
     
     private void OnDisable()
     {
-        GameManager.onGameStateChanged -= UpdateGameState;
-        ActivationTip.IsBombActive -= initializeHUDs;
+        ReadyUpState.BombActivated -= initializeHUDs;
+        ReadyUpState.TrapDoorOpened -= UpdateGameState;
     }
 
     private IEnumerator FlashLoop()
@@ -49,13 +53,16 @@ public class HUDTrigger : MonoBehaviour
         if (!other.CompareTag("Player"))
             return;
 
-        if (currentState == GameManager.GameState.Playing)
+        if (isGamePlaying)
         {
             triggerHUDs();
         }
         if (targetRenderers.Length != 0 && offMaterial != null && flashMaterial  != null)
         {
-            StartCoroutine(FlashLoop());
+            if (flashCoroutine == null)
+            {
+                flashCoroutine = StartCoroutine(FlashLoop());
+            }
         }
     }
 
@@ -65,18 +72,22 @@ public class HUDTrigger : MonoBehaviour
             HUDManager.Instance.ActivateTrigger(myHUDs);
     }
 
-    private void UpdateGameState(GameManager.GameState state)
-    {
-        if (state == GameManager.GameState.Playing)
-        {
-            currentState = state;
-        }
-    }
+    // private void UpdateGameState(GameManager.GameState state)
+    // {
+    //     if (state == GameManager.GameState.Playing)
+    //     {
+    //         currentState = state;
+    //     }
+    // }
 
     private void initializeHUDs()
     {
         if (movementHuds.Length == 0) return;
         HUDManager.Instance.ActivateTrigger(movementHuds);
-        ActivationTip.IsBombActive -= initializeHUDs;
+    }
+    
+    private void UpdateGameState()
+    {
+        isGamePlaying = true;
     }
 }

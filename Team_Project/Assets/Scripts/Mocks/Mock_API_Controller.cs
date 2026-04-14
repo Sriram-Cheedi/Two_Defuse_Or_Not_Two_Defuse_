@@ -69,7 +69,17 @@ public class Mock_API_Controller : MonoBehaviour, API_Controller_Interface
     }
 
     public void SendSet(string header, int value) => Debug.Log("<color=orange>MOCK: SendSet: </color>" + header + ":set " + value + "#");
+    public int GetMazeStatus()
+    {
+        return 0;
+    }
+
     public void SendSetSeq(string header, int[] value) => Debug.Log("<color=orange>MOCK: SendSetSeq: </color>" + header + ":set " + value + "#");
+    public void SetMazeStatus(string header, int value)
+    {
+        return; 
+    }
+
     public void SendSetSeqSTRING(string header, string[] value) =>  Debug.Log("<color=orange>MOCK: SendSetSeqSTRING: </color>" + header + ":set " + value + "#");
     public int GetButton(string id) => _componentStateManager.ContainsKey("BTN" + id) ? _componentStateManager["BTN" + id] : 0;
     public void TimerSet(int seconds) {}

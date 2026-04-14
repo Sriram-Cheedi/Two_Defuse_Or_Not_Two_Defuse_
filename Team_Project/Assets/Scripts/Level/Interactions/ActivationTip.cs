@@ -1,58 +1,36 @@
 using System;
+using PersistantSystems.Software.GameStateMachine.GameStates;
 using UnityEngine;
 
 public class ActivationTip : MonoBehaviour
 {
    public GameObject[] activationTips;
-   private bool bombActive;
-   public static Action IsBombActive;
 
    private void Awake()
    {
       if(activationTips == null) return;
+      foreach (var tip in activationTips)
+      {
+         tip.SetActive(true);
+      }
    }
 
    private void OnEnable()
    {
-      // lightingManager.isBombActivated += ActivateBomb;
-      GameManager.onGameStateChanged += ActivateBomb;
+      ReadyUpState.BombActivated += hideCards;
    }
 
    private void OnDisable()
    {
-      GameManager.onGameStateChanged -= ActivateBomb;
+      ReadyUpState.BombActivated -= hideCards;
    }
 
-   private void ActivateBomb(GameManager.GameState gameState)
+   private void hideCards()
    {
       if(activationTips == null) return;
-      if (gameState == GameManager.GameState.ReadyUP)
+      foreach (var tip in activationTips)
       {
-         HandleActivateKeyTip(false);
-      }else if (gameState == GameManager.GameState.Playing)
-      {
-         HandleActivateKeyTip(true);
-         IsBombActive?.Invoke();
-         GameManager.onGameStateChanged -= ActivateBomb;
+         tip.SetActive(false);
       }
-   }
-   
-   private void HandleActivateKeyTip(bool bombActive)
-   {
-      if (bombActive)
-      {
-         foreach (var tip in activationTips)
-         {
-            tip.SetActive(false);
-         }
-      }
-      else
-      {
-         foreach (var tip in activationTips)
-         {
-            tip.SetActive(true);
-         }
-      }
-      
    }
 }

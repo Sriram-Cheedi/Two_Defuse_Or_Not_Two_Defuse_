@@ -52,8 +52,6 @@ public class RigidBodyMovement : MonoBehaviour
 
     private void Start()
     {
-        //external wiring
-        // InitializeModules();
         InitializeModules();
         
         if (playerCam == null)
@@ -80,20 +78,6 @@ public class RigidBodyMovement : MonoBehaviour
             rb.rotation = Quaternion.Euler(0, 0, 0);
         }
         rb.isKinematic = false;
-    }
-
-    private void InitializeComponents()
-    {
-        controller = GetComponent<CapsuleCollider>();
-        rb = GetComponent<Rigidbody>();
-        if (relay == null) relay = GetComponent<PlayerInputRelay>();    
-        if (stateMachine == null) stateMachine = GetComponent<PlayerStateMachine>();
-        
-        if (orientation == null) orientation = transform.Find("Orientation");
-
-        rb.useGravity = false;
-        rb.freezeRotation = true;
-        rb.interpolation = RigidbodyInterpolation.Interpolate;
     }
 
     private void CacheReferences()
@@ -130,29 +114,11 @@ public class RigidBodyMovement : MonoBehaviour
             module.Initialize(this);
         }
     }
-
     
     private void CacheModules()
     {
         modules = GetComponentsInChildren<IPlayerModule>(true);
     }
-
-    // private void InitializeModules()
-    // {
-    //     if (playerCam == null) playerCam = FindAnyObjectByType<PlayerCam>();
-    //     
-    //     if (sensor == null) sensor = GetComponent<PlayerSensor>();
-    //     if (gravity == null) gravity = GetComponent<PlayerGravity>();
-    //     if (crouch == null) crouch = GetComponent<PlayerCrouch>();
-    //     if (cameraHandler == null) cameraHandler = GetComponent<PlayerCameraHandler>();
-    //     if (jump == null) jump = GetComponent<PlayerJump>();
-    //     
-    //     modules = GetComponentsInChildren<IPlayerModule>();
-    //     foreach (var module in modules)
-    //     {
-    //         module.Initialize(this);
-    //     }
-    // }
 
     private void ValidateDependencies()
     {

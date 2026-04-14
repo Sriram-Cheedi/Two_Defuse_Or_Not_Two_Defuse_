@@ -1,15 +1,21 @@
 using System;
+using PersistantSystems.Software.GameStateMachine.GameStates;
 using UnityEngine;
 
 public class Trapdoor : MonoBehaviour
 {
     private void OnEnable()
     {
-        GameManager.onGameStateChanged += Despawn;
+        ReadyUpState.TrapDoorOpened += Despawn;
     }
-    
-    private void Despawn(GameManager.GameState gameState)
+
+    private void OnDisable()
     {
-        if (gameState == GameManager.GameState.Playing) gameObject.SetActive(false);
+        ReadyUpState.TrapDoorOpened -= Despawn;
+    }
+
+    private void Despawn()
+    {
+        gameObject.SetActive(false);
     }
 }

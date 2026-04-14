@@ -6,9 +6,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 
-public class GameManager : MonoBehaviour
+public class OldGameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+    public static OldGameManager Instance { get; private set; }
 
     public double bombTimer = 25.0;
     public bool isGameOver = false;
@@ -65,7 +65,6 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         WarningAudio = GetComponent<AudioSource>();
-        
     }
     
     public void Update()

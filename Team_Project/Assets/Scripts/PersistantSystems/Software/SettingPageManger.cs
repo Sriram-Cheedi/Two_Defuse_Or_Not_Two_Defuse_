@@ -6,7 +6,20 @@ namespace PersistantSystems.Software
     {
         [SerializeField] private GameObject mainMenuPanel;
         [SerializeField] private GameObject settingsPanel;
-
+        public static SettingPageManager Instance { get; private set; }
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+                return;
+            }
+        }
+        
         private void Start()
         {
             if (mainMenuPanel != null)

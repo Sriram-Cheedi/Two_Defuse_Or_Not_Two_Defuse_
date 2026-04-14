@@ -32,6 +32,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/WireCutting.unity
     guid: 774e2a9175e92814b89e7f34e543d83c
+  - enabled: 1
+    path: Assets/Scenes/ScoreDashBoard.unity
+    guid: 3cdc2ba688781024f90f92d0869c631e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

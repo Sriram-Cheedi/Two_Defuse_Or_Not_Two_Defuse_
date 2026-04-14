@@ -22,7 +22,7 @@ public class BarredDoorAnimation : MonoBehaviour
     
     private float moveDistance = 2.0f;
     
-    void Start()
+    private void Awake()
     {
         originalPositions = new Vector3[bars.Length];
 

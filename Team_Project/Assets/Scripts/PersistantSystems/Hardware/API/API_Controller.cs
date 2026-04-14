@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using PersistantSystems.Software.GameStateMachine;
 
 struct HardwareState
 {
@@ -80,6 +81,12 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         hardwareState.componentStates["FGM"] = 0;
         
         hardwareState.componentStates["PWR"] = 0;
+        hardwareState.componentStates["MAZE"] = 0;
+        
+        hardwareState.componentStates["WR1"] = 0;
+        hardwareState.componentStates["WR2"] = 0;
+        hardwareState.componentStates["WR3"] = 0;
+        hardwareState.componentStates["WR4"] = 0;
 
         GameObject child = new GameObject("Serial_Port_Controller");
         child.transform.SetParent(this.transform);
@@ -192,7 +199,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         {
             return;
         }
-
+        
         string command = commandPart.Substring(0, spaceIndex);
         string value = commandPart.Substring(spaceIndex + 1);
 
@@ -330,7 +337,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     }
     public int GetSwitch(string id)
     {
-        return hardwareState.componentStates["SWT" + id];
+        return hardwareState.componentStates["SW" + id];
     }
     public int GetLed(string id)
     {
@@ -347,6 +354,14 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         return hardwareState.componentStates["FGM"];
     }
 
+    public int GetMazeStatus()
+    {
+        return hardwareState.componentStates["MAZE"];
+    }
+    public void SetMazeStatus(string header, int value)
+    {
+        hardwareState.componentStates[header] = value;
+    }
     public void SendSetSeq(string header, int[] seq)
     {
         string strseq = "";
