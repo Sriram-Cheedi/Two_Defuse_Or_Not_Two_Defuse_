@@ -170,7 +170,7 @@ void parseCommand(std::string command){
     }else if(std::stoi(func_args[1]) == 5){
       pwr.enable();
       pwr.update();
-      powerToggle("PWR", pwr.lastState);
+      powerToggle("PWR", pwr.buttonState);
 
       LCD.set({"\"\"", "\"\""});
 
