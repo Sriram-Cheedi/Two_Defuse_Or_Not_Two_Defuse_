@@ -34,6 +34,12 @@ public class LeaderboardDisplayManager : MonoBehaviour
         dbAPI.OnStationStatusUpdated += HandleStationStatusUpdated;
 
         SetEmptyBoard();
+
+        if (dbAPI.IsInitialized)
+        {
+            Debug.Log("DatabaseAPI already initialized, subscribing immediately.");
+            HandleFirebaseInitialized();
+        }
     }
 
     private void OnDestroy()
@@ -53,6 +59,9 @@ public class LeaderboardDisplayManager : MonoBehaviour
             Debug.LogError("LeaderboardDisplayManager is missing rowPrefab or rowsContainer.");
             return;
         }
+
+        if (spawnedRows.Count > 0)
+            return;
 
         for (int i = 0; i < maxRows; i++)
         {

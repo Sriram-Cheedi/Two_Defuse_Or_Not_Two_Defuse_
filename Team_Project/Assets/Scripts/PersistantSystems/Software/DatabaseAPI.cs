@@ -27,6 +27,7 @@ public class DatabaseAPI: MonoBehaviour
 {
     
     public static DatabaseAPI Instance { get; private set; }
+    public bool IsInitialized => reference != null;
     
     public event Action OnFirebaseInitialized; 
     public event Action<List<LeaderboardEntryData>> OnTopLeaderboardUpdated;
