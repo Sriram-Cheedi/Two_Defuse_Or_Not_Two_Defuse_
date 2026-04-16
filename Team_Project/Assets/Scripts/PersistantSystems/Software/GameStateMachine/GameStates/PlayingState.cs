@@ -7,15 +7,17 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
     public class PlayingState : BaseState<GameState>, IHardwareListener
     {
         private readonly GameManager gameManager;
-        private readonly AudioSource warningAudio;
+        private readonly AudioSource audioSource;
+        private readonly AudioClip warningAudio;
         public static Action ExplosionWarning;
         private bool hasWarningFired;
         
         private bool isPaused;
         private float previousTimeScale = 1f;
-        public PlayingState(GameManager gameManager, AudioSource warningAudio) : base(GameState.Playing)
+        public PlayingState(GameManager gameManager, AudioSource audioSource, AudioClip warningAudio) : base(GameState.Playing)
         {
             this.gameManager = gameManager;
+            this.audioSource = audioSource;
             this.warningAudio = warningAudio;
         }
 
@@ -31,8 +33,7 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
 
         public override void ExitState()
         {
-            if (warningAudio != null && warningAudio.isPlaying)
-                warningAudio.Stop();
+            audioSource.Stop();
         }
 
         public override void UpdateState()
@@ -67,8 +68,7 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
             previousTimeScale = Time.timeScale;
             Time.timeScale    = 0f;
 
-            if (warningAudio != null && warningAudio.isPlaying)
-                warningAudio.Stop();
+            audioSource.Stop();
         }
 
         public void OnHardwareReconnect()
@@ -102,13 +102,14 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
                     hasWarningFired = true;
                 }
                 
-                if (!warningAudio.isPlaying)
-                    warningAudio.Play();
+                audioSource.time = 0f;
+                audioSource.clip = warningAudio;
+                audioSource.loop = true;
+                audioSource.Play();
             }
             else
             {
-                if (warningAudio.isPlaying)
-                    warningAudio.Stop();
+                    audioSource.Stop();;
             }
         }
 

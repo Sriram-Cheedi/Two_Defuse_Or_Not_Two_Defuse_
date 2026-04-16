@@ -22,7 +22,7 @@ namespace PersistantSystems.Software.GameStateMachine
         [SerializeField] private GameObject  loadingPage;
 
         [Header("Audio")]
-        [SerializeField] private AudioSource warningAudio;
+        [SerializeField] private AudioClip warningAudio;
         [SerializeField] private AudioSource audioSource;
         [SerializeField] private AudioClip loseSound;
         [SerializeField] private AudioClip winSound;
@@ -132,7 +132,7 @@ namespace PersistantSystems.Software.GameStateMachine
 
         private void GetAudioComponent()
         {
-            warningAudio =  GetComponent<AudioSource>();
+            audioSource =  GetComponent<AudioSource>();
         }
 
         private void RegisterStates()
@@ -140,7 +140,7 @@ namespace PersistantSystems.Software.GameStateMachine
             States[GameState.Menu] = new MenuState(this, audioSource, menuSound);
             States[GameState.CutScene] = new CutSceneState(this, cutscenePlayer, menuUI, cutsceneDisplay, loadingPage, audioSource, cutSceneSound);
             States[GameState.ReadyUp] = new ReadyUpState(this);
-            States[GameState.Playing] = new PlayingState(this, warningAudio);
+            States[GameState.Playing] = new PlayingState(this, audioSource, warningAudio);
             States[GameState.GameOver] = new GameOverState(this, audioSource, loseSound);
             States[GameState.GameWin] = new GameWinState(this, audioSource, winSound);
             States[GameState.DashBoard] = new ScoreDashBoardState(this, audioSource, scoreBoardSound);
