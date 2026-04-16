@@ -99,9 +99,8 @@ namespace PersistantSystems.Software.GameStateMachine
                 if (loadingPage == null)
                     loadingPage = FindChildByName(root.transform, "LoadingPage");
             }
-
-            if (scoreManager == null)
-                scoreManager = FindFirstObjectByType<ScoreManager>(FindObjectsInactive.Include);
+            
+            scoreManager = FindFirstObjectByType<ScoreManager>(FindObjectsInactive.Include);
 
             Debug.Log("cutscenePlayer = " + (cutscenePlayer != null ? cutscenePlayer.name : "NULL"));
             Debug.Log("cutsceneDisplay = " + (cutsceneDisplay != null ? cutsceneDisplay.name : "NULL"));
