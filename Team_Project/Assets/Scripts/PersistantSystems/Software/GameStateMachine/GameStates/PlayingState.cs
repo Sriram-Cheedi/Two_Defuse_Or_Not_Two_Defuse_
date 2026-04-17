@@ -23,6 +23,7 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
 
         public override void EnterState()
         {
+            hasWarningFired = false;
             isPaused = false;
             previousTimeScale = 1f;
             ScoreManager scoreManager = UnityEngine.Object.FindFirstObjectByType<ScoreManager>();
@@ -100,16 +101,17 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
                 {
                     ExplosionWarning?.Invoke();
                     hasWarningFired = true;
+                    
+                    audioSource.clip = warningAudio;
+                    audioSource.loop = true;
+                    audioSource.Play();
                 }
                 
-                audioSource.time = 0f;
-                audioSource.clip = warningAudio;
-                audioSource.loop = true;
-                audioSource.Play();
             }
             else
             {
-                    audioSource.Stop();;
+                if (audioSource.isPlaying)
+                    audioSource.Stop();
             }
         }
 

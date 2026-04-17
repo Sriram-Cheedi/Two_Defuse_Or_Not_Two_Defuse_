@@ -89,6 +89,7 @@ public class PuzzleManager : MonoBehaviour
         
         // Activate NGM Puzzle after SSM Completed
         API_Provider.Instance.ActiveAPIController.SendSet("NGM", 1);
+        API_Provider.Instance.ActiveAPIController.SendSet("PWR", 3);
     }
     
     private void H_HandleSSMVictory(string header, int value)
@@ -100,7 +101,6 @@ public class PuzzleManager : MonoBehaviour
             // Activate NGM Puzzle after SSM Completed - Not invoking SSM_Completed as this is software event when correct seq is inputted
             // API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[] { "\"Module Activated\"", "\"--Number Game--\"" });
             API_Provider.Instance.ActiveAPIController.SendSet("NGM", 1);
-            API_Provider.Instance.ActiveAPIController.SendSet("PWR", 3);
         }
     }
     
