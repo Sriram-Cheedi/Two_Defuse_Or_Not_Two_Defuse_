@@ -127,6 +127,7 @@ namespace PersistantSystems.Software.GameStateMachine
             WireCut.HasCutAnyWire -= HandleWireCut;
             GameEvents.OnReplay -= ReplayGame;
             GameEvents.OnQuit -= QuitGame;
+            
         }
 
         private void GetAudioComponent()

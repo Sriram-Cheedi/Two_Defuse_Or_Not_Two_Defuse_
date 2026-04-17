@@ -13,6 +13,7 @@ public class RigidBodyMovement : MonoBehaviour
     [Header("Modules")] [SerializeField] public PlayerSensor sensor;
     [SerializeField] public PlayerGravity gravity;
     [SerializeField] public PlayerCrouch crouch;
+    [SerializeField] public PlayerStepHandler stepHandler;
     [SerializeField] public PlayerCameraHandler cameraHandler;
     [SerializeField] public PlayerJump jump;
     [SerializeField] public FootStepSystem footStepSystem;
@@ -86,10 +87,10 @@ public class RigidBodyMovement : MonoBehaviour
         if (rb == null) rb = GetComponent<Rigidbody>();
         if (relay == null) relay = GetComponent<PlayerInputRelay>();    
         if (stateMachine == null) stateMachine = GetComponent<PlayerStateMachine>();
-        
         if (sensor == null) sensor = GetComponent<PlayerSensor>();
         if (gravity == null) gravity = GetComponent<PlayerGravity>();
         if (crouch == null) crouch = GetComponent<PlayerCrouch>();
+        if (stepHandler == null) stepHandler = GetComponent<PlayerStepHandler>();
         if (cameraHandler == null) cameraHandler = GetComponent<PlayerCameraHandler>();
         if (jump == null) jump = GetComponent<PlayerJump>();
         if (orientation == null) orientation = transform.Find("Orientation");

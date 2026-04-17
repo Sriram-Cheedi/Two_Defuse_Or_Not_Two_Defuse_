@@ -1,4 +1,5 @@
 using System;
+using PersistantSystems.Software.GameStateMachine.GameStates;
 using Puzzles;
 using Puzzles.Minor_Interaction;
 using UnityEngine;
@@ -34,6 +35,7 @@ public class DoorController : MonoBehaviour
         interactinonController.DoorOpenRequested += HandleDoorOpenRequested;
         interactinonController.DoorCloseRequested += HandleDoorCloseRequested;
         Puzzle.OnSuccess += OpenPuzzleDoor;
+        ReadyUpState.TrapDoorOpened += OpenTrapDoor;
     }
 
     private void OnDisable()
@@ -41,6 +43,7 @@ public class DoorController : MonoBehaviour
         interactinonController.DoorOpenRequested -= HandleDoorOpenRequested;
         interactinonController.DoorCloseRequested -= HandleDoorCloseRequested;
         Puzzle.OnSuccess -= OpenPuzzleDoor;
+        ReadyUpState.TrapDoorOpened -= OpenTrapDoor;
     }
 
     private void OpenPuzzleDoor(PuzzleGame puzzleGame)
@@ -54,6 +57,11 @@ public class DoorController : MonoBehaviour
                 HandleDoorOpenRequested(DoorID.NGMDoor);
                 break;
         }
+    }
+
+    private void OpenTrapDoor()
+    {
+        HandleDoorOpenRequested(DoorID.TrapDoor);
     }
 
     private void HandleDoorOpenRequested(DoorID requestedDoorId)
@@ -126,6 +134,9 @@ public class DoorController : MonoBehaviour
         hasOpened = true;
         switch (doorID)
         {
+            case DoorID.TrapDoor:
+                doorAnimation.OpenSlidingDoor(leftDoor, rightDoor, Directive.OPEN);
+                break;
             case DoorID.SSMDoor:
                 doorAnimation.OpenSlidingDoor(leftDoor, rightDoor, Directive.OPEN);
                 break;
@@ -142,6 +153,9 @@ public class DoorController : MonoBehaviour
         hasClosed = true;
         switch (doorID)
         {
+            case DoorID.TrapDoor:
+                doorAnimation.OpenSlidingDoor(leftDoor, rightDoor, Directive.CLOSE);
+                break;
             case DoorID.SSMDoor:
                 doorAnimation.OpenSlidingDoor(leftDoor, rightDoor, Directive.CLOSE);
                 break;

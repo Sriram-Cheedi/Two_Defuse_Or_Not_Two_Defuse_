@@ -7,6 +7,7 @@ namespace Puzzles.Minor_Interaction
 {
     public enum DoorID
     {
+        TrapDoor,
         TutorialDoor,
         SSMDoor,
         MazeDoor,

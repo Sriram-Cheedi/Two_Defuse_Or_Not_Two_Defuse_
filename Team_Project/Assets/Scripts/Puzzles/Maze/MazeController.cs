@@ -17,66 +17,40 @@ namespace Puzzles.Controllers
         {
             new int[]{
                 (int)Dir.UP, 
-                (int)Dir.UP, 
+                (int)Dir.UP,
+                (int)Dir.RIGHT,
+                (int)Dir.UP,
+                (int)Dir.RIGHT,
+                (int)Dir.UP,
                 (int)Dir.UP,
                 (int)Dir.LEFT,
                 (int)Dir.LEFT,
-                (int)Dir.UP,
-                (int)Dir.UP,
-                (int)Dir.RIGHT,
-                (int)Dir.RIGHT,
-                (int)Dir.RIGHT,
                 (int)Dir.DOWN,
-                (int)Dir.RIGHT,
-                (int)Dir.RIGHT,
-                (int)Dir.UP,
-                (int)Dir.UP,
-                (int)Dir.UP,
                 (int)Dir.LEFT,
-                (int)Dir.LEFT,
-                (int)Dir.LEFT
+                (int)Dir.UP,
+                (int)Dir.UP,
+                (int)Dir.UP,
+                (int)Dir.RIGHT,
             },
             new int[]{
                 (int)Dir.UP, 
-                (int)Dir.UP, 
-                (int)Dir.RIGHT,
                 (int)Dir.UP,
                 (int)Dir.RIGHT,
                 (int)Dir.UP,
+                (int)Dir.RIGHT,
                 (int)Dir.UP,
                 (int)Dir.UP,
+                (int)Dir.LEFT,
                 (int)Dir.LEFT,
                 (int)Dir.DOWN,
                 (int)Dir.LEFT,
-                (int)Dir.LEFT,
-                (int)Dir.LEFT,
                 (int)Dir.UP,
+                (int)Dir.UP,
+                (int)Dir.LEFT,
                 (int)Dir.UP,
                 (int)Dir.RIGHT,
-                (int)Dir.RIGHT
+                (int)Dir.RIGHT,
             },
-            new int[]{
-                (int)Dir.UP, 
-                (int)Dir.LEFT, 
-                (int)Dir.UP,
-                (int)Dir.UP,
-                (int)Dir.LEFT,
-                (int)Dir.UP,
-                (int)Dir.UP,
-                (int)Dir.RIGHT,
-                (int)Dir.RIGHT,
-                (int)Dir.DOWN,
-                (int)Dir.RIGHT,
-                (int)Dir.RIGHT,
-                (int)Dir.RIGHT,
-                (int)Dir.UP,
-                (int)Dir.UP,
-                (int)Dir.LEFT,
-                (int)Dir.LEFT,
-                (int)Dir.UP,
-                (int)Dir.LEFT,
-            },
-            
         };
         
         public enum Dir
@@ -134,7 +108,8 @@ namespace Puzzles.Controllers
             rand = new Random();
             data = new PuzzleData
             {
-                correctSequence = mazeSequences[rand.Next(mazeSequences.Length)]
+                // correctSequence = mazeSequences[rand.Next(mazeSequences.Length)]
+                correctSequence = mazeSequences[0]
             };
         }
 

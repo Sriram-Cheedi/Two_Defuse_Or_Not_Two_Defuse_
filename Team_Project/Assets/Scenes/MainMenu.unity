@@ -3406,6 +3406,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 9142198550357336973, guid: 780d65a9f204ca9478403ee3b25519d0, type: 3}
+      propertyPath: warningAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: a47ecd222b3b7594688ae0e5124b6b7c, type: 3}
+    - target: {fileID: 9142198550357336973, guid: 780d65a9f204ca9478403ee3b25519d0, type: 3}
       propertyPath: cutSceneSound
       value: 
       objectReference: {fileID: 8300000, guid: 2904686e5e288f44bab95062a9d41d71, type: 3}
