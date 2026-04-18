@@ -2,9 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using PersistantSystems.Software.GameStateMachine;
+using Puzzles;
 using UnityEngine;
 
-public class WireCut : MonoBehaviour
+public class WireCut : Puzzle
 {
     public WireMapping wireMapping;
     private Dictionary<string, VerletWire.WireColor> wireDict = new Dictionary<string, VerletWire.WireColor>();
@@ -14,6 +15,7 @@ public class WireCut : MonoBehaviour
     private string cutColor = null;
     public static event Action HasCutSoftwareWire;
     public static event Action HasCutAnyWire;
+    public static event Action<float> HasCutWireWithinTimeWindow;
     private bool hasCut = false;
 
     private void Awake()
@@ -104,6 +106,7 @@ public class WireCut : MonoBehaviour
             timeToCut -= Time.deltaTime;
             if (timeToCut <= 0f || wireCutLater != VerletWire.WireColor.None)
             {//game lost if timer hits 0 or any physical color is cut
+                TriggerFailure(PuzzleGame.WCM);
                 GameManager.Instance.EndGame();
             }
         }
@@ -113,6 +116,7 @@ public class WireCut : MonoBehaviour
             timeToCut -= Time.deltaTime;
             if (timeToCut <= 0f)
             {
+                TriggerFailure(PuzzleGame.WCM);
                 //game lost if timer hits 0
                 GameManager.Instance.EndGame();
             }
@@ -121,6 +125,8 @@ public class WireCut : MonoBehaviour
                 //if it's the same we are good
                 if (wireCutFirst == wireCutLater)
                 {
+                    HasCutWireWithinTimeWindow?.Invoke(3.0f - (float)GameManager.Instance.BombTimer);
+                    TriggerSuccess(PuzzleGame.WCM);
                     GameManager.Instance.WinGame();
                 }
             }
