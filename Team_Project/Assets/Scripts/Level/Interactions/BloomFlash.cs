@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -10,7 +11,17 @@ public class SymbolAutoFlash : MonoBehaviour
     
     private Coroutine bloomFlashCoroutine;
 
-    private void Start()
+    private void OnEnable()
+    {
+        SWT_Trigger.StopMazeSymbolFlashing += StopMazeSymbolFlashing;
+    }
+
+    private void OnDisable()
+    {
+        SWT_Trigger.StopMazeSymbolFlashing -= StopMazeSymbolFlashing;
+    }
+
+    private void Awake()
     {
         if (targetRenderer == null)
             targetRenderer = GetComponent<MeshRenderer>();
@@ -33,5 +44,10 @@ public class SymbolAutoFlash : MonoBehaviour
             targetRenderer.material = offMaterial;
             yield return new WaitForSeconds(levelData.offDuration);
         }
+    }
+
+    private void StopMazeSymbolFlashing()
+    {
+        StopCoroutine(bloomFlashCoroutine);
     }
 }
