@@ -25,6 +25,6 @@ public class WireMapping : MonoBehaviour
         else if (finalSSMColour == 3) //blue
             cutWire = "red";
 
-        Debug.Log("Expected cut wire is: " + cutWire);
+        // Debug.Log("Expected cut wire is: " + cutWire);
     }
 }

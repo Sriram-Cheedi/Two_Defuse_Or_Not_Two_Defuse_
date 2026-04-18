@@ -51,6 +51,7 @@ public class DatabaseAPI: MonoBehaviour
             if (Instance == null)
             {
                 Instance = this;
+                DontDestroyOnLoad(gameObject);
             }
             else
             {
@@ -79,6 +80,9 @@ public class DatabaseAPI: MonoBehaviour
     {
         UnsubscribeFromLeaderboard();
         UnsubscribeFromStationStatuses();
+
+        if (Instance == this)
+            Instance = null;
     }
     
     private void InitializeFirebaseAuthentication()
@@ -217,6 +221,7 @@ public class DatabaseAPI: MonoBehaviour
                 Debug.Log($"Updated station {stationId}: {teamName} / {status}");
             }
         });
+        Debug.Log($"UpdateStationStatus called: station={stationId}, team={teamName}, status={status}, referenceNull={reference == null}");
     }
     
     public void SubscribeToTopScores(int amount = 10)

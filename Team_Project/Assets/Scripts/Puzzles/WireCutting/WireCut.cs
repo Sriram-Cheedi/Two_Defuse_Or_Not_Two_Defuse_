@@ -66,8 +66,8 @@ public class WireCut : MonoBehaviour
         }
         
 
-        Debug.Log("Cut wire: " + cutColor);
-        Debug.Log("Expected wire: " + wireMapping.cutWire);
+        // Debug.Log("Cut wire: " + cutColor);
+        // Debug.Log("Expected wire: " + wireMapping.cutWire);
         if (VerletWire.CutWireColor.HasValue)
         {
             softwareWireColor = VerletWire.CutWireColor.Value;

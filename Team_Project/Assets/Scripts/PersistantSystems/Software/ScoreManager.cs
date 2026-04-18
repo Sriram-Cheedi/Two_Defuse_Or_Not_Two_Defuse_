@@ -30,17 +30,15 @@ namespace PersistantSystems.Software
             puzzleScores = 0;
 
             Debug.Log("Username entered: " + username);
+            GameManager.Instance?.SetCurrentUsername(username);
+            Debug.Log($"OnUsernameEntered station={GameplayStationConfig.StationId} user={username}");
 
             if (dbAPI != null)
             {
                 dbAPI.UpdateStationStatus(GameplayStationConfig.StationId, username, "Waiting");
             }
         }
-
-        public string GetCurrentUsername()
-        {
-            return string.IsNullOrWhiteSpace(username) ? "---" : username;
-        }
+        
         
         
         private void OnEnable()
@@ -78,13 +76,24 @@ namespace PersistantSystems.Software
         private void CompletePuzzle(PuzzleGame puzzle)
         {
             Debug.Log("Adding Score");
-            puzzleScores += 100;
+            puzzleScores += 200;
         }
         
+        public void ResetPlayerSession()
+        {
+            username = "Unknown";
+            deathCount = 0;
+            puzzleScores = 0;
+
+            if (dbAPI != null)
+            {
+                dbAPI.UpdateStationStatus(GameplayStationConfig.StationId, "---", "Waiting");
+            }
+        }
 
         private void CalculateFinalScore(double bombTime)
         {
-            var finalScore = puzzleScores + (int)bombTime + deathCount * -50;
+            var finalScore = puzzleScores + (int)bombTime + deathCount * -10;
             if (finalScore < 0) finalScore = 0;
             
             bool defused = GameManager.Instance != null &&

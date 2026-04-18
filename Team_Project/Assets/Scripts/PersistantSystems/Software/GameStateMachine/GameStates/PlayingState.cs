@@ -26,8 +26,10 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
             hasWarningFired = false;
             isPaused = false;
             previousTimeScale = 1f;
-            ScoreManager scoreManager = UnityEngine.Object.FindFirstObjectByType<ScoreManager>();
-            string currentUser = scoreManager != null ? scoreManager.GetCurrentUsername() : "---";
+
+            string currentUser = gameManager.GetCurrentUsername();
+            Debug.Log($"PlayingState.EnterState user={currentUser}");
+            Debug.Log($"DatabaseAPI.Instance is null? {DatabaseAPI.Instance == null}");
 
             DatabaseAPI.Instance?.UpdateStationStatus(GameplayStationConfig.StationId, currentUser, "Playing");
         }

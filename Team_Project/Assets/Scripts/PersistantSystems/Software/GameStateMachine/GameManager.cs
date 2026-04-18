@@ -30,6 +30,10 @@ namespace PersistantSystems.Software.GameStateMachine
         [SerializeField] private AudioClip cutSceneSound;
         [SerializeField] private AudioClip scoreBoardSound;
         
+        [Header("Audience Display 2 References")]
+        [SerializeField] private GameObject audienceMainMenuDisplay;
+        [SerializeField] private GameObject audienceCutsceneDisplay;
+        
         public static event Action<double> OnGameEnd;
 
         private void Awake()
@@ -46,11 +50,62 @@ namespace PersistantSystems.Software.GameStateMachine
             }
 
             CacheRefs();
+            ShowAudienceMainMenu();
             RegisterStates();
             GetAudioComponent();
             InitializeState(GameState.Menu);
             
         }
+
+private void ShowAudienceMainMenu()
+{
+    Debug.Log("ShowAudienceMainMenu called");
+
+    if (audienceMainMenuDisplay != null)
+    {
+        audienceMainMenuDisplay.SetActive(true);
+        Debug.Log("AudienceMainMenuDisplay ON");
+    }
+    else
+    {
+        Debug.LogWarning("audienceMainMenuDisplay is NULL");
+    }
+
+    if (audienceCutsceneDisplay != null)
+    {
+        audienceCutsceneDisplay.SetActive(false);
+        Debug.Log("AudienceCutsceneDisplay OFF");
+    }
+    else
+    {
+        Debug.LogWarning("audienceCutsceneDisplay is NULL");
+    }
+}
+
+private void ShowAudienceCutscene()
+{
+    Debug.Log("ShowAudienceCutscene called");
+
+    if (audienceMainMenuDisplay != null)
+    {
+        audienceMainMenuDisplay.SetActive(false);
+        Debug.Log("AudienceMainMenuDisplay OFF");
+    }
+    else
+    {
+        Debug.LogWarning("audienceMainMenuDisplay is NULL");
+    }
+
+    if (audienceCutsceneDisplay != null)
+    {
+        audienceCutsceneDisplay.SetActive(true);
+        Debug.Log("AudienceCutsceneDisplay ON");
+    }
+    else
+    {
+        Debug.LogWarning("audienceCutsceneDisplay is NULL");
+    }
+}
         private GameObject FindChildByName(Transform parent, string name)
         {
             foreach (Transform child in parent.GetComponentsInChildren<Transform>(true))
@@ -79,6 +134,8 @@ namespace PersistantSystems.Software.GameStateMachine
             cutsceneDisplay = null;
             menuUI = null;
             loadingPage = null;
+            audienceMainMenuDisplay = null;
+            audienceCutsceneDisplay = null;
 
             Debug.Log("---- CacheRefs START ----");
             Debug.Log("Root objects in MainMenu: " + rootObjects.Length);
@@ -98,6 +155,12 @@ namespace PersistantSystems.Software.GameStateMachine
 
                 if (loadingPage == null)
                     loadingPage = FindChildByName(root.transform, "LoadingPage");
+                
+                if (audienceMainMenuDisplay == null)
+                    audienceMainMenuDisplay = FindChildByName(root.transform, "AudienceMainMenuDisplay");
+
+                if (audienceCutsceneDisplay == null)
+                    audienceCutsceneDisplay = FindChildByName(root.transform, "AudienceCutsceneDisplay");
             }
             
             scoreManager = FindFirstObjectByType<ScoreManager>(FindObjectsInactive.Include);
@@ -107,6 +170,8 @@ namespace PersistantSystems.Software.GameStateMachine
             Debug.Log("menuUI = " + (menuUI != null ? menuUI.name : "NULL"));
             Debug.Log("loadingPage = " + (loadingPage != null ? loadingPage.name : "NULL"));
             Debug.Log("scoreManager = " + (scoreManager != null ? scoreManager.name : "NULL"));
+            Debug.Log("audienceMainMenuDisplay = " + (audienceMainMenuDisplay != null ? audienceMainMenuDisplay.name : "NULL"));
+            Debug.Log("audienceCutsceneDisplay = " + (audienceCutsceneDisplay != null ? audienceCutsceneDisplay.name : "NULL"));
             Debug.Log("---- CacheRefs END ----");
         }
         private void OnEnable()
@@ -146,6 +211,8 @@ namespace PersistantSystems.Software.GameStateMachine
             States[GameState.DashBoard] = new ScoreDashBoardState(this, audioSource, scoreBoardSound);
         }
 
+
+
         public void StartGame()
         {
             Debug.Log("StartGame called.");
@@ -167,6 +234,7 @@ namespace PersistantSystems.Software.GameStateMachine
 
             API_Provider.Instance?.ActiveAPIController?.RequestStatus("PWR");
             API_Provider.Instance?.ActiveAPIController?.SendSet("PWR", API_Provider.Instance.ActiveAPIController.GetDigital("PWR"));
+            ShowAudienceCutscene();
             QueueNextState(GameState.CutScene);
         }
         
@@ -246,7 +314,20 @@ namespace PersistantSystems.Software.GameStateMachine
             {
                 CacheRefs();
                 RegisterStates();
+                ShowAudienceMainMenu();
             }
+        }
+        
+        private string currentUsername = "---";
+
+        public void SetCurrentUsername(string username)
+        {
+            currentUsername = string.IsNullOrWhiteSpace(username) ? "---" : username;
+        }
+
+        public string GetCurrentUsername()
+        {
+            return string.IsNullOrWhiteSpace(currentUsername) ? "---" : currentUsername;
         }
 
         private void HandleWireCut()
@@ -259,8 +340,12 @@ namespace PersistantSystems.Software.GameStateMachine
             Application.Quit();
         }
 
+
         public void ReplayGame()
         {
+            scoreManager = FindFirstObjectByType<ScoreManager>(FindObjectsInactive.Include);
+            scoreManager?.ResetPlayerSession();
+            // SetCurrentUsername("---");
             QueueNextState(GameState.Menu);
             VerletWire.ResetStaticState();
             SceneManager.LoadScene("MainMenu");
