@@ -9169,7 +9169,6 @@ GameObject:
   - component: {fileID: 64586683}
   - component: {fileID: 64586682}
   - component: {fileID: 64586681}
-  - component: {fileID: 64586680}
   - component: {fileID: 64586679}
   m_Layer: 0
   m_Name: MirrorCamera_Display2
@@ -9206,23 +9205,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Game.Main::MirrorCameraFollower
   sourceCamera: {fileID: 1972428489}
---- !u!114 &64586680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 64586677}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70f81184dd711574282fa9503946ccaa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerCam
-  playerCamera: {fileID: 0}
-  sensX: 10
-  sensY: 10
-  orientation: {fileID: 27331911}
-  rollZ: 0
 --- !u!114 &64586681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10783,6 +10765,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 343858193}
+  - {fileID: 892983938}
+  - {fileID: 158868649}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -22179,6 +22163,88 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &158868648
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 158868649}
+  - component: {fileID: 158868651}
+  - component: {fileID: 158868650}
+  m_Layer: 5
+  m_Name: DeathEmojiManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &158868649
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158868648}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 74241821}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &158868650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158868648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5c2bb08f36a4b1b9fc51b6ecec0d5a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::DeathEmojiTrigger
+  emojiReactionManager: {fileID: 158868651}
+--- !u!114 &158868651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158868648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45359152a686436ba5eb1ace0c658232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Main::DeathEmojiBurst
+  spawnArea: {fileID: 892983938}
+  emojiPrefab: {fileID: 2683466105166145329, guid: 08eb766c103c08f46be149d708b66835, type: 3}
+  deathSet:
+    setName: 
+    sprites:
+    - {fileID: 21300000, guid: fa53ce20dfd5c0842b11d9f21c8342d1, type: 3}
+  puzzleSet:
+    setName: 
+    sprites: []
+  smokeSet:
+    setName: 
+    sprites: []
+  gravitySet:
+    setName: 
+    sprites: []
+  emojiCount: 13
+  lifeTime: 4
+  moveUpAmount: 200
+  sidewaysAmount: 20
+  sizeRange: {x: 60, y: 100}
 --- !u!4 &160795313 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8596636937337922462, guid: 1e4ddb46051a19e46b01c9cfea699cf5, type: 3}
@@ -144545,6 +144611,41 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &892983937
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 892983938}
+  m_Layer: 5
+  m_Name: DeathEmojiArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &892983938
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892983937}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 74241821}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.35, y: 0.8}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &893359389
 GameObject:
   m_ObjectHideFlags: 0

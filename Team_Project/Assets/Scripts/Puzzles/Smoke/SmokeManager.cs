@@ -7,6 +7,7 @@ public class SmokeManager : MonoBehaviour
     [SerializeField]private PlayerInputRelay relay;
     [SerializeField]private TrackRoom trackPlayerRoom;
     [SerializeField] private GameObject smokeAlert;
+    // [SerializeField] private EmojiReactionManager emojiReactionManager;
     private bool smokeReleased;
     private SmokeEmitter lastRoomActive;
     public bool isActive = false;
@@ -45,6 +46,7 @@ public class SmokeManager : MonoBehaviour
 
     private void OnSmokeReleased(String header, int value)
     {
+        // emojiReactionManager.PlaySmokeBurst();
         if (isActive)
         {
             mazeStatus = API_Provider.Instance.ActiveAPIController.GetMazeStatus();
