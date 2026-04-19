@@ -10,27 +10,39 @@ public class SymbolAutoFlash : MonoBehaviour
     [SerializeField] private LevelData levelData;
     
     private Coroutine bloomFlashCoroutine;
-
-    private void OnEnable()
-    {
-        SWT_Trigger.StopMazeSymbolFlashing += StopMazeSymbolFlashing;
-    }
-
-    private void OnDisable()
-    {
-        SWT_Trigger.StopMazeSymbolFlashing -= StopMazeSymbolFlashing;
-    }
-
+    
     private void Awake()
     {
         if (targetRenderer == null)
             targetRenderer = GetComponent<MeshRenderer>();
-
+    }
+    
+    private void OnEnable()
+    {
+        SWT_Trigger.StopMazeSymbolFlashing += StopMazeSymbolFlashing;
+        
         if (bloomFlashCoroutine == null)
         {
             bloomFlashCoroutine = StartCoroutine(FlashLoop());
         }
     }
+
+    private void OnDisable()
+    {
+        SWT_Trigger.StopMazeSymbolFlashing -= StopMazeSymbolFlashing;
+        if (bloomFlashCoroutine != null)
+        {
+            StopCoroutine(bloomFlashCoroutine);
+            bloomFlashCoroutine = null;
+        }
+
+        if (targetRenderer != null)
+        {
+            targetRenderer.material = offMaterial;
+        }
+    }
+
+    
 
     private IEnumerator FlashLoop()
     {
@@ -48,6 +60,15 @@ public class SymbolAutoFlash : MonoBehaviour
 
     private void StopMazeSymbolFlashing()
     {
-        StopCoroutine(bloomFlashCoroutine);
+        if (bloomFlashCoroutine != null)
+        {
+            StopCoroutine(bloomFlashCoroutine);
+            bloomFlashCoroutine = null;
+        }
+
+        if (targetRenderer != null)
+        {
+            targetRenderer.material = offMaterial;
+        }
     }
 }
