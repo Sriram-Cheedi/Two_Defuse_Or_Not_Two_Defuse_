@@ -30,7 +30,6 @@ public class API_Provider : MonoBehaviour
 
             ActiveAPIController = mockChild.AddComponent<Mock_API_Controller>();
             ActiveAPIController.InitializeSelf();
-            ActiveAPIController.InitializeHardware();
         }
 
         else
@@ -44,7 +43,6 @@ public class API_Provider : MonoBehaviour
             try
             {
                 ActiveAPIController.InitializeSelf();
-                ActiveAPIController.InitializeHardware();
             }
             // If fail default to mock hardware again
             catch (Exception e)
@@ -56,17 +54,17 @@ public class API_Provider : MonoBehaviour
 
                 ActiveAPIController = mockChild.AddComponent<Mock_API_Controller>();
                 ActiveAPIController.InitializeSelf();      
-                ActiveAPIController.InitializeHardware(); 
             }
         }
         hasAPIController = true;
     }
-
-    public void Update()
+    
+    private void OnDestroy()
     {
-        // if (useMockHardware && ActiveAPIController is Mock_API_Controller mock)
-        // {
-        //     mock.UpdateSimulation();
-        // }
+        if (Instance == this)
+        {
+            Instance = null;
+        }
     }
+    
 }

@@ -45,7 +45,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
     public void Awake()
     {
-        Debug.Log("<color=green>API Controller: Awake</color>");
+        Debug.Log("<color=green>INIT: API_Controller</color>");
         
         hardwareState = new HardwareState();
         hardwareState.componentStates = new Dictionary<string, int>();
@@ -61,8 +61,6 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     /// </summary>
     public void InitializeSelf()
     {
-        Debug.Log("<color=green>API Provider: Initializing REAL mode.</color>");
-
         hardwareState.componentStates["BTN1"] = 0;
         hardwareState.componentStates["BTN2"] = 0;
         hardwareState.componentStates["BTN3"] = 0;
@@ -127,12 +125,6 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         SendSet("PWR", 5);
         // Getting inital states of hardware
         RequestStatus("GLB");
-    }
-
-
-    public void InitializeHardware()
-    {
-        Debug.Log("<color=green>Initializing REAL Hardware...</color>");
     }
 
     void Exit()

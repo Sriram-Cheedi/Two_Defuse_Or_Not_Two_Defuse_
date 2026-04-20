@@ -18,7 +18,6 @@ public interface API_Controller_Interface
 
     // Methods
     public void InitializeSelf();
-    public void InitializeHardware();
     public void HandleMessage(string message);
     public int GetDigital(string header);
     public int GetButton(string id);
