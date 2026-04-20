@@ -182,36 +182,6 @@ public class GridManager : MonoBehaviour
                 floors[startPoint.y * gridSize + startPoint.x].hasBroken = false;
             }
         }
-
-        // while (startPoint.x < gridSize)
-        // {
-        //     if (startPoint.x + 1 < gridSize)
-        //     {
-        //         startPoint.x += 1;
-        //         floors[startPoint.y * gridSize + startPoint.x].willBreak = false;
-        //         floors[startPoint.y * gridSize + startPoint.x].hasBroken = false;
-        //     }
-        //
-        //     if (startPoint.x == gridSize - 1)
-        //     {
-        //         break;
-        //     }
-        // }
-        //
-        // while (startPoint.y < gridSize)
-        // {
-        //     if (startPoint.y + 1 < gridSize)
-        //     {
-        //         startPoint.y += 1;
-        //         floors[startPoint.y * gridSize + startPoint.x].willBreak = false;
-        //         floors[startPoint.y * gridSize + startPoint.x].hasBroken = false;
-        //     }
-        //
-        //     if (startPoint.y == gridSize - 1)
-        //     {
-        //         break;
-        //     }
-        // }
     }
 
     public void ResetPath()
