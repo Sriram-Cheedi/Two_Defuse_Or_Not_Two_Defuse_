@@ -61,7 +61,7 @@ cmd: function x y z ...
 
 | Command                            | Code                | Response             | Notes                                                                                  |
 |------------------------------------|---------------------|----------------------|----------------------------------------------------------------------------------------|
-| Get Status of power          | $PWR:status#        | $PWR:status _state_# | 0 = Not Powered, 1 = Powered                   |
+| Get Status of power          | $PWR:status#        | $PWR:status _state_# | 0 = Not Powered, 1 = Powered, 3 = Power Cycle Minigame, 4 = Disable, 5 = Enable              |
 | Set Status of power          | $PWR:set _state_#   | None                 | See above                   |
 
 ## Global Status Request
