@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,17 +10,39 @@ public class SymbolAutoFlash : MonoBehaviour
     [SerializeField] private LevelData levelData;
     
     private Coroutine bloomFlashCoroutine;
-
-    private void Start()
+    
+    private void Awake()
     {
         if (targetRenderer == null)
             targetRenderer = GetComponent<MeshRenderer>();
-
+    }
+    
+    private void OnEnable()
+    {
+        SWT_Trigger.StopMazeSymbolFlashing += StopMazeSymbolFlashing;
+        
         if (bloomFlashCoroutine == null)
         {
             bloomFlashCoroutine = StartCoroutine(FlashLoop());
         }
     }
+
+    private void OnDisable()
+    {
+        SWT_Trigger.StopMazeSymbolFlashing -= StopMazeSymbolFlashing;
+        if (bloomFlashCoroutine != null)
+        {
+            StopCoroutine(bloomFlashCoroutine);
+            bloomFlashCoroutine = null;
+        }
+
+        if (targetRenderer != null)
+        {
+            targetRenderer.material = offMaterial;
+        }
+    }
+
+    
 
     private IEnumerator FlashLoop()
     {
@@ -32,6 +55,20 @@ public class SymbolAutoFlash : MonoBehaviour
             // OFF
             targetRenderer.material = offMaterial;
             yield return new WaitForSeconds(levelData.offDuration);
+        }
+    }
+
+    private void StopMazeSymbolFlashing()
+    {
+        if (bloomFlashCoroutine != null)
+        {
+            StopCoroutine(bloomFlashCoroutine);
+            bloomFlashCoroutine = null;
+        }
+
+        if (targetRenderer != null)
+        {
+            targetRenderer.material = offMaterial;
         }
     }
 }

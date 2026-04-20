@@ -40,13 +40,14 @@ public class PuzzleManager : MonoBehaviour
         
         // Send all Puzzle info AFTER 
         API_Provider.Instance.ActiveAPIController.SendSet("MAZE", 0);
-        API_Provider.Instance.ActiveAPIController.SendMazeSeq("MAZE", "U U U L L U U R R R D R R U U U L L L");
         // API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[]{"\"Module Activated: \"", "\"SSM\""});
         API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[] { "\"Module Activated\"", "\"------SSM------\"" });
         API_Provider.Instance.ActiveAPIController.SendSetSeq("SSM", ssm_controller.data.correctSequence);
         API_Provider.Instance.ActiveAPIController.SendSetSeq("NGM", ngm_controller.data.correctSequence);
         API_Provider.Instance.ActiveAPIController.SendSet("SSM", 1);
         // API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[]{"module activated SSM"});
+        // API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[]{"\"Module Activated: \"", "\"\""});
+
         API_Provider.Instance.ActiveAPIController.SendSet("FGM", 0);
         // API_Provider.Instance.ActiveAPIController.SendSet("MAZE", 0);
         // API_Provider.Instance.ActiveAPIController.SendSet("MAZE", 1);
@@ -88,6 +89,7 @@ public class PuzzleManager : MonoBehaviour
         
         // Activate NGM Puzzle after SSM Completed
         API_Provider.Instance.ActiveAPIController.SendSet("NGM", 1);
+        API_Provider.Instance.ActiveAPIController.SendSet("PWR", 3);
     }
     
     private void H_HandleSSMVictory(string header, int value)

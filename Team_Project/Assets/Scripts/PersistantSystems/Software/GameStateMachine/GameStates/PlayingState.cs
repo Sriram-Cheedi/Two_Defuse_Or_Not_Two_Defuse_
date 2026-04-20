@@ -7,28 +7,36 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
     public class PlayingState : BaseState<GameState>, IHardwareListener
     {
         private readonly GameManager gameManager;
-        private readonly AudioSource warningAudio;
+        private readonly AudioSource audioSource;
+        private readonly AudioClip warningAudio;
         public static Action ExplosionWarning;
         private bool hasWarningFired;
         
         private bool isPaused;
         private float previousTimeScale = 1f;
-        public PlayingState(GameManager gameManager, AudioSource warningAudio) : base(GameState.Playing)
+        public PlayingState(GameManager gameManager, AudioSource audioSource, AudioClip warningAudio) : base(GameState.Playing)
         {
             this.gameManager = gameManager;
+            this.audioSource = audioSource;
             this.warningAudio = warningAudio;
         }
 
         public override void EnterState()
         {
+            hasWarningFired = false;
             isPaused = false;
             previousTimeScale = 1f;
+
+            string currentUser = gameManager.GetCurrentUsername();
+            Debug.Log($"PlayingState.EnterState user={currentUser}");
+            Debug.Log($"DatabaseAPI.Instance is null? {DatabaseAPI.Instance == null}");
+
+            DatabaseAPI.Instance?.UpdateStationStatus(GameplayStationConfig.StationId, currentUser, "Playing");
         }
 
         public override void ExitState()
         {
-            if (warningAudio != null && warningAudio.isPlaying)
-                warningAudio.Stop();
+            audioSource.Stop();
         }
 
         public override void UpdateState()
@@ -63,8 +71,7 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
             previousTimeScale = Time.timeScale;
             Time.timeScale    = 0f;
 
-            if (warningAudio != null && warningAudio.isPlaying)
-                warningAudio.Stop();
+            audioSource.Stop();
         }
 
         public void OnHardwareReconnect()
@@ -96,15 +103,17 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
                 {
                     ExplosionWarning?.Invoke();
                     hasWarningFired = true;
+                    
+                    audioSource.clip = warningAudio;
+                    audioSource.loop = true;
+                    audioSource.Play();
                 }
                 
-                if (!warningAudio.isPlaying)
-                    warningAudio.Play();
             }
             else
             {
-                if (warningAudio.isPlaying)
-                    warningAudio.Stop();
+                if (audioSource.isPlaying)
+                    audioSource.Stop();
             }
         }
 

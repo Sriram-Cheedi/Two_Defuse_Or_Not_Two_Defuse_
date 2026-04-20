@@ -17,6 +17,8 @@ namespace Puzzles
     {
         SSM,
         NGM,
+        SWT,
+        WCM,
     }
     
     public abstract class Puzzle : MonoBehaviour

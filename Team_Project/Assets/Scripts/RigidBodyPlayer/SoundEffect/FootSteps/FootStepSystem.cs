@@ -9,6 +9,7 @@ public class FootStepSystem : MonoBehaviour, IPlayerModule
     
     public AudioClip[] metalSteps;
     public AudioClip[] plasticSteps;
+    public AudioClip[] semiconductorSteps;
 
     private float stepTimer;
     private float timeInAir;
@@ -46,6 +47,9 @@ public class FootStepSystem : MonoBehaviour, IPlayerModule
                 break;
             case SurfaceType.Plastic:
                 clip = plasticSteps[Random.Range(0, plasticSteps.Length)];
+                break;
+            case SurfaceType.SemiConductor:
+                clip = semiconductorSteps[Random.Range(0, semiconductorSteps.Length)];
                 break;
             default:
                 break;

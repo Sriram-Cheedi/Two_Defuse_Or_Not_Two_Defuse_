@@ -33,6 +33,10 @@ MonoBehaviour:
   airTimeBuffer: 0.15
   sideWayMoveSpeed: 10
   slopeSpeed: 20
+  stepOffset: 0.3
+  stepSmooth: 0.1
+  groundClearance: 0.05
+  forwardProbe: 0.1
   crouchTransitionSpeed: 5
   crouchHeightMultiplier: 0.5
   rotationSpeed: 300
