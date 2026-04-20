@@ -347,7 +347,7 @@ private void ShowAudienceCutscene()
             scoreManager?.ResetPlayerSession();
             // SetCurrentUsername("---");
             QueueNextState(GameState.Menu);
-            VerletWire.ResetStaticState();
+            VerletInsulatedWire.ResetStaticState();
             SceneManager.LoadScene("MainMenu");
             ResetSession();
         }

@@ -72,11 +72,11 @@ public class VerletWire : MonoBehaviour
     public Material insulatedMat;
 
     [Header("Rope-Rope Collision")]
-    public bool ropeRopeCollision = true;
-    [Range(0, 4)] public int ropeRopePasses = 1;
+    // public bool ropeRopeCollision = true;
+    // [Range(0, 4)] public int ropeRopePasses = 1;
 
-    [Range(0f, 1f)] public float ropeRopeFriction = 0.3f;
-    [Range(0f, 0.5f)] public float ropeRopeSlop = 0.02f;
+    // [Range(0f, 1f)] public float ropeRopeFriction = 0.3f;
+    // [Range(0f, 0.5f)] public float ropeRopeSlop = 0.02f;
 
     public bool selfCollision = true;
     [Range(2, 20)] public int selfCollisionSkipNear = 6;
@@ -84,8 +84,8 @@ public class VerletWire : MonoBehaviour
 
     public bool enableCollision = true;
 
-    public float playerPushForce = 0.05f;
-    public LayerMask playerLayer;
+    // public float playerPushForce = 0.05f;
+    // public LayerMask playerLayer;
 
     [Header("Cutting")]
     public bool isCuttable = true;
@@ -120,6 +120,8 @@ public class VerletWire : MonoBehaviour
     private Vector3[] RopePoint;
     private Vector3[] RopePointOld;
     private CapsuleCollider[] segmentColliders;
+    
+    
 
     private int MyIndex => allwires.IndexOf(this);
     public int ropePointsCount()
@@ -199,7 +201,7 @@ public class VerletWire : MonoBehaviour
             SolveDistanceConstraints();
             SolveCeiling();
             SolveLeftWall();
-            SolveRopeRope();
+            // SolveRopeRope();
         }
         for (int j = 0; j < bendPasses; j++)
         {
@@ -210,10 +212,10 @@ public class VerletWire : MonoBehaviour
             SolveLeftWall();
         }
 
-        for (int k = 0; k < ropeRopePasses; k++)
-        {
-            SolveRopeRope();
-        }
+        // for (int k = 0; k < ropeRopePasses; k++)
+        // {
+        //     SolveRopeRope();
+        // }
 
         if (AllowSelfCollision())
         {
@@ -730,94 +732,94 @@ public class VerletWire : MonoBehaviour
             RopePointOld[i] = RopePoint[i] - velocity;
         }    }
 
-    private void SolveRopeRope()
-    {
-        if (!ropeRopeCollision || RopePoint == null || points < 2)
-        {
-            return;
-        }
-        float minDist = ropeRadius * 2f;
-        float minDistSq = minDist * minDist;
-        int myIdx = MyIndex;
-        foreach (VerletWire other in allwires)
-        {
-            if (other == null || other == this || other.RopePoint == null || other.points < 2)
-            {
-                continue;
-            }
+    // private void SolveRopeRope()
+    // {
+    //     if (!ropeRopeCollision || RopePoint == null || points < 2)
+    //     {
+    //         return;
+    //     }
+    //     float minDist = ropeRadius * 2f;
+    //     float minDistSq = minDist * minDist;
+    //     int myIdx = MyIndex;
+    //     foreach (VerletWire other in allwires)
+    //     {
+    //         if (other == null || other == this || other.RopePoint == null || other.points < 2)
+    //         {
+    //             continue;
+    //         }
+    //
+    //         if (other.MyIndex <= myIdx)
+    //         {
+    //             continue;
+    //         }
+    //
+    //         if (ignoreCollisionWith == other)
+    //         {
+    //             continue;
+    //         }
+    //
+    //         if (other.ignoreCollisionWith == this)
+    //         {
+    //             continue;
+    //         }
+    //         for (int i = 0; i < points - 1; i++)
+    //         {
+    //             if (CheckAnchor(i) && CheckAnchor(i + 1))
+    //             {
+    //                 continue;
+    //             }
+    //             Vector3 a0 = RopePoint[i];
+    //             Vector3 a1 = RopePoint[i + 1];
+    //             for (int j = 0; j < other.points - 1; j++)
+    //             {
+    //                 if (other.CheckAnchor(j) && other.CheckAnchor(j + 1))
+    //                 {
+    //                     continue;
+    //                 }
+    //                 Vector3 b0 = other.RopePoint[j];
+    //                 Vector3 b1 = other.RopePoint[j + 1];
+    //                 float s, t;
+    //                 Vector3 cA, cB;
+    //                 float sqr = ClosestPointSegmentSegment(a0, a1, b0, b1, out s, out t, out cA, out cB);
+    //                 if (sqr >= minDistSq)
+    //                 {
+    //                     continue;
+    //                 }
+    //                 Vector3 delta = cA - cB;
+    //                 float dist = Mathf.Sqrt(Mathf.Max(sqr, 1e-8f));
+    //                 Vector3 normal = dist > 1e-5f ? delta / dist : FallbackNormal(a1 - a0);
+    //                 float penetration = (minDist - dist) + ropeRopeSlop;
+    //                 if (penetration <= 0f)
+    //                 {
+    //                     continue;
+    //                 }
+    //                 Vector3 correction = normal * (penetration * 0.5f);
+    //                 ApplyPointCorrection(this, i, i + 1, s, correction);
+    //                 ApplyPointCorrection(other, j, j + 1, t, -correction);
+    //                 Vector3 velA = Vector3.Lerp(GetPointVelocity(this, i), GetPointVelocity(this, i + 1), s);
+    //                 Vector3 velB = Vector3.Lerp(GetPointVelocity(other, j), GetPointVelocity(other, j + 1), t);
+    //                 RemoveInwardNormalVelocity(this, i, i + 1, s, normal, velB, ropeRopeFriction);
+    //                 RemoveInwardNormalVelocity(other, j, j + 1, t, -normal, velA, other.ropeRopeFriction);
+    //                 a0 = RopePoint[i];
+    //                 a1 = RopePoint[i + 1];
+    //             }
+    //         }
+    //     }
+    // }
 
-            if (other.MyIndex <= myIdx)
-            {
-                continue;
-            }
-
-            if (ignoreCollisionWith == other)
-            {
-                continue;
-            }
-
-            if (other.ignoreCollisionWith == this)
-            {
-                continue;
-            }
-            for (int i = 0; i < points - 1; i++)
-            {
-                if (CheckAnchor(i) && CheckAnchor(i + 1))
-                {
-                    continue;
-                }
-                Vector3 a0 = RopePoint[i];
-                Vector3 a1 = RopePoint[i + 1];
-                for (int j = 0; j < other.points - 1; j++)
-                {
-                    if (other.CheckAnchor(j) && other.CheckAnchor(j + 1))
-                    {
-                        continue;
-                    }
-                    Vector3 b0 = other.RopePoint[j];
-                    Vector3 b1 = other.RopePoint[j + 1];
-                    float s, t;
-                    Vector3 cA, cB;
-                    float sqr = ClosestPointSegmentSegment(a0, a1, b0, b1, out s, out t, out cA, out cB);
-                    if (sqr >= minDistSq)
-                    {
-                        continue;
-                    }
-                    Vector3 delta = cA - cB;
-                    float dist = Mathf.Sqrt(Mathf.Max(sqr, 1e-8f));
-                    Vector3 normal = dist > 1e-5f ? delta / dist : FallbackNormal(a1 - a0);
-                    float penetration = (minDist - dist) + ropeRopeSlop;
-                    if (penetration <= 0f)
-                    {
-                        continue;
-                    }
-                    Vector3 correction = normal * (penetration * 0.5f);
-                    ApplyPointCorrection(this, i, i + 1, s, correction);
-                    ApplyPointCorrection(other, j, j + 1, t, -correction);
-                    Vector3 velA = Vector3.Lerp(GetPointVelocity(this, i), GetPointVelocity(this, i + 1), s);
-                    Vector3 velB = Vector3.Lerp(GetPointVelocity(other, j), GetPointVelocity(other, j + 1), t);
-                    RemoveInwardNormalVelocity(this, i, i + 1, s, normal, velB, ropeRopeFriction);
-                    RemoveInwardNormalVelocity(other, j, j + 1, t, -normal, velA, other.ropeRopeFriction);
-                    a0 = RopePoint[i];
-                    a1 = RopePoint[i + 1];
-                }
-            }
-        }
-    }
-
-    private static Vector3 FallbackNormal(Vector3 segDir)
-    {
-        if (segDir.sqrMagnitude < 1e-6f)
-        {
-            segDir = Vector3.right;
-        }
-        Vector3 normal = Vector3.Cross(segDir.normalized, Vector3.forward);
-        if (normal.sqrMagnitude < 1e-6f)
-        {
-            normal = Vector3.Cross(segDir.normalized, Vector3.up);
-        }
-        return normal.normalized;
-    }
+    // private static Vector3 FallbackNormal(Vector3 segDir)
+    // {
+    //     if (segDir.sqrMagnitude < 1e-6f)
+    //     {
+    //         segDir = Vector3.right;
+    //     }
+    //     Vector3 normal = Vector3.Cross(segDir.normalized, Vector3.forward);
+    //     if (normal.sqrMagnitude < 1e-6f)
+    //     {
+    //         normal = Vector3.Cross(segDir.normalized, Vector3.up);
+    //     }
+    //     return normal.normalized;
+    // }
 
     private void SolveSelfCollision()
     {
@@ -983,16 +985,16 @@ public class VerletWire : MonoBehaviour
         other.iterations = iterations;
         other.insulatedWidth = insulatedWidth;
         other.insulatedMat = insulatedMat;
-        other.ropeRopeCollision = ropeRopeCollision;
-        other.ropeRopePasses = ropeRopePasses;
-        other.ropeRopeFriction = ropeRopeFriction;
-        other.ropeRopeSlop = ropeRopeSlop;
+        // other.ropeRopeCollision = ropeRopeCollision;
+        // other.ropeRopePasses = ropeRopePasses;
+        // other.ropeRopeFriction = ropeRopeFriction;
+        // other.ropeRopeSlop = ropeRopeSlop;
         other.selfCollision = selfCollision;
         other.selfCollisionSkipNear = selfCollisionSkipNear;
         other.selfCollisionPasses = selfCollisionPasses;
         other.enableCollision = enableCollision;
-        other.playerPushForce = playerPushForce;
-        other.playerLayer = playerLayer;
+        // other.playerPushForce = playerPushForce;
+        // other.playerLayer = playerLayer;
         other.wirePiecePrefab = wirePiecePrefab;
         other.cutSnapImpulse = cutSnapImpulse;
         other.cutImpulsePoints = cutImpulsePoints;
@@ -1092,58 +1094,59 @@ public class VerletWire : MonoBehaviour
             }
         }
     }
+    
 
-    private static float ClosestPointSegmentSegment(Vector3 startPoint1, Vector3 endPoint1, Vector3 startPoint2, Vector3 endPoint2, out float segment1ClosestPoint, out float segment2ClosestPoint, out Vector3 originalSegment1ClosestPoint, out Vector3 originalSegment2ClosestPoint)
-    {
-        Vector3 segment1Direction = endPoint1 - startPoint1;
-        Vector3 segment2Direction = endPoint2 - startPoint2;
-        Vector3 r = startPoint1 - startPoint2;
-        float segment1SqDistance = Vector3.Dot(segment1Direction, segment1Direction);
-        float segment2SqDistance = Vector3.Dot(segment2Direction, segment2Direction);
-        float f = Vector3.Dot(segment2Direction, r);
-        if (segment1SqDistance <= 1e-6f && segment2SqDistance <= 1e-6f)
-        {
-            segment1ClosestPoint = segment2ClosestPoint = 0f;
-            originalSegment1ClosestPoint = startPoint1;
-            originalSegment2ClosestPoint = startPoint2;
-            return (originalSegment1ClosestPoint - originalSegment2ClosestPoint).sqrMagnitude;
-        }
-        if (segment1SqDistance <= 1e-6f)
-        {
-            segment1ClosestPoint = 0f;
-            segment2ClosestPoint = Mathf.Clamp01(f / segment2SqDistance);
-        }
-        else
-        {
-            float c = Vector3.Dot(segment1Direction, r);
-
-            if (segment2SqDistance <= 1e-6f)
-            {
-                segment2ClosestPoint = 0f;
-                segment1ClosestPoint = Mathf.Clamp01(-c / segment1SqDistance);
-            }
-            else
-            {
-                float b = Vector3.Dot(segment1Direction, segment2Direction);
-                float denom = segment1SqDistance * segment2SqDistance - b * b;
-
-                segment1ClosestPoint = denom != 0f ? Mathf.Clamp01((b * f - c * segment2SqDistance) / denom) : 0f;
-                segment2ClosestPoint = (b * segment1ClosestPoint + f) / segment2SqDistance;
-
-                if (segment2ClosestPoint < 0f)
-                {
-                    segment2ClosestPoint = 0f;
-                    segment1ClosestPoint = Mathf.Clamp01(-c / segment1SqDistance);
-                }
-                else if (segment2ClosestPoint > 1f)
-                {
-                    segment2ClosestPoint = 1f;
-                    segment1ClosestPoint = Mathf.Clamp01((b - c) / segment1SqDistance);
-                }
-            }
-        }
-        originalSegment1ClosestPoint = startPoint1 + segment1Direction * segment1ClosestPoint;
-        originalSegment2ClosestPoint = startPoint2 + segment2Direction * segment2ClosestPoint;
-        return (originalSegment1ClosestPoint - originalSegment2ClosestPoint).sqrMagnitude;
-    }
+//     private static float ClosestPointSegmentSegment(Vector3 startPoint1, Vector3 endPoint1, Vector3 startPoint2, Vector3 endPoint2, out float segment1ClosestPoint, out float segment2ClosestPoint, out Vector3 originalSegment1ClosestPoint, out Vector3 originalSegment2ClosestPoint)
+//     {
+//         Vector3 segment1Direction = endPoint1 - startPoint1;
+//         Vector3 segment2Direction = endPoint2 - startPoint2;
+//         Vector3 r = startPoint1 - startPoint2;
+//         float segment1SqDistance = Vector3.Dot(segment1Direction, segment1Direction);
+//         float segment2SqDistance = Vector3.Dot(segment2Direction, segment2Direction);
+//         float f = Vector3.Dot(segment2Direction, r);
+//         if (segment1SqDistance <= 1e-6f && segment2SqDistance <= 1e-6f)
+//         {
+//             segment1ClosestPoint = segment2ClosestPoint = 0f;
+//             originalSegment1ClosestPoint = startPoint1;
+//             originalSegment2ClosestPoint = startPoint2;
+//             return (originalSegment1ClosestPoint - originalSegment2ClosestPoint).sqrMagnitude;
+//         }
+//         if (segment1SqDistance <= 1e-6f)
+//         {
+//             segment1ClosestPoint = 0f;
+//             segment2ClosestPoint = Mathf.Clamp01(f / segment2SqDistance);
+//         }
+//         else
+//         {
+//             float c = Vector3.Dot(segment1Direction, r);
+//
+//             if (segment2SqDistance <= 1e-6f)
+//             {
+//                 segment2ClosestPoint = 0f;
+//                 segment1ClosestPoint = Mathf.Clamp01(-c / segment1SqDistance);
+//             }
+//             else
+//             {
+//                 float b = Vector3.Dot(segment1Direction, segment2Direction);
+//                 float denom = segment1SqDistance * segment2SqDistance - b * b;
+//
+//                 segment1ClosestPoint = denom != 0f ? Mathf.Clamp01((b * f - c * segment2SqDistance) / denom) : 0f;
+//                 segment2ClosestPoint = (b * segment1ClosestPoint + f) / segment2SqDistance;
+//
+//                 if (segment2ClosestPoint < 0f)
+//                 {
+//                     segment2ClosestPoint = 0f;
+//                     segment1ClosestPoint = Mathf.Clamp01(-c / segment1SqDistance);
+//                 }
+//                 else if (segment2ClosestPoint > 1f)
+//                 {
+//                     segment2ClosestPoint = 1f;
+//                     segment1ClosestPoint = Mathf.Clamp01((b - c) / segment1SqDistance);
+//                 }
+//             }
+//         }
+//         originalSegment1ClosestPoint = startPoint1 + segment1Direction * segment1ClosestPoint;
+//         originalSegment2ClosestPoint = startPoint2 + segment2Direction * segment2ClosestPoint;
+//         return (originalSegment1ClosestPoint - originalSegment2ClosestPoint).sqrMagnitude;
+//     }
 }
