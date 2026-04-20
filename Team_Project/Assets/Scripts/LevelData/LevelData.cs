@@ -16,6 +16,7 @@ public class LevelData : ScriptableObject
     [Header("Flash")] 
     public float flashDuration = 1f;
     public float offDuration = 1f;
-    public float ssmSuccessAlertDuration = 5f;
+    public float ssmSuccessAlertDuration = 8f;
+    public float surfaceIntroAlertDuration = 8f;
     public float warningFlashingDuration = 0.5f;
 }

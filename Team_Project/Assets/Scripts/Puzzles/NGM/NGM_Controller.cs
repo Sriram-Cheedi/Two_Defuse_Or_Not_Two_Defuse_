@@ -21,7 +21,15 @@ namespace Puzzles.Controllers
         [SerializeField] public Material matCorrect;
         [SerializeField] public Material matMisplaced;
         [SerializeField] public Material matDefault;
-        
+
+        private void Awake()
+        {
+            for(int i =  0; i < 4; i++)
+            {
+                ledDisplays[i].SetNumber(0);
+            }
+        }
+
         private void Start()
         {
             API_Provider.Instance.ActiveAPIController.OnNGMChanged += HandleButtonPress;

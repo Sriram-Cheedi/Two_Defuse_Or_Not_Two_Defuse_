@@ -7,6 +7,7 @@ namespace Puzzles.Minor_Interaction
 {
     public enum DoorID
     {
+        TrapDoor,
         TutorialDoor,
         SSMDoor,
         MazeDoor,
@@ -19,7 +20,7 @@ namespace Puzzles.Minor_Interaction
         Sliding,
     }
     
-    public class Minor_Interactinon_Controller : MonoBehaviour
+    public class Minor_Interactinon_Controller : Puzzle
     {
 
         enum MockButtonValues
@@ -253,6 +254,7 @@ namespace Puzzles.Minor_Interaction
             {
                 // doorAnimaton.OpenDoor(barredDoor.transform, barredDoorHinge, Vector3.up, 1f);
                 RequestOpenDoor(DoorID.MazeDoor);
+                TriggerSuccess(PuzzleGame.SWT);
             }
         }
 

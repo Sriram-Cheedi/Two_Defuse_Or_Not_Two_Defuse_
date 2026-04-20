@@ -2,18 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using PersistantSystems.Software.GameStateMachine;
+using Puzzles;
 using UnityEngine;
 
-public class WireCut : MonoBehaviour
+public class WireCut : Puzzle
 {
     public WireMapping wireMapping;
-    private Dictionary<string, VerletWire.WireColor> wireDict = new Dictionary<string, VerletWire.WireColor>();
-    VerletWire.WireColor hardwareWireColor = VerletWire.WireColor.None;
-    VerletWire.WireColor softwareWireColor = VerletWire.WireColor.None;
+    private Dictionary<string, VerletInsulatedWire.WireColour> wireDict = new Dictionary<string, VerletInsulatedWire.WireColour>();
+    VerletInsulatedWire.WireColour hardwareWireColor =  VerletInsulatedWire.WireColour.None;
+    VerletInsulatedWire.WireColour softwareWireColor =  VerletInsulatedWire.WireColour.None;
     private float timeToCut = 3f;
     private string cutColor = null;
     public static event Action HasCutSoftwareWire;
     public static event Action HasCutAnyWire;
+    public static event Action<float> HasCutWireWithinTimeWindow;
     private bool hasCut = false;
 
     private void Awake()
@@ -23,14 +25,14 @@ public class WireCut : MonoBehaviour
 
     private void InitializeWireDict()
     {
-        wireDict["WR1"] = VerletWire.WireColor.Red;
-        wireDict["WR2"] = VerletWire.WireColor.Blue;
-        wireDict["WR3"] = VerletWire.WireColor.Grey;
-        wireDict["WR4"] = VerletWire.WireColor.Brown;
-        wireDict["grey"] = VerletWire.WireColor.Grey;
-        wireDict["brown"] = VerletWire.WireColor.Brown;
-        wireDict["blue"] = VerletWire.WireColor.Blue;
-        wireDict["red"] = VerletWire.WireColor.Red;
+        wireDict["WR1"] =  VerletInsulatedWire.WireColour.Red;
+        wireDict["WR2"] =  VerletInsulatedWire.WireColour.Blue;
+        wireDict["WR3"] = VerletInsulatedWire.WireColour.Grey;
+        wireDict["WR4"] =  VerletInsulatedWire.WireColour.Brown;
+        wireDict["grey"] =  VerletInsulatedWire.WireColour.Grey;
+        wireDict["brown"] =  VerletInsulatedWire.WireColour.Brown;
+        wireDict["blue"] =  VerletInsulatedWire.WireColour.Blue;
+        wireDict["red"] =  VerletInsulatedWire.WireColour.Red;
     }
 
     private void OnEnable()
@@ -60,21 +62,21 @@ public class WireCut : MonoBehaviour
             return;
         }
 
-        if (VerletWire.CutWireColor.HasValue)
+        if ( VerletInsulatedWire.CutWireColor.HasValue)
         {
-            cutColor = VerletWire.CutWireColor.Value.ToString().ToLower();
+            cutColor = VerletInsulatedWire.CutWireColor.Value.ToString().ToLower();
         }
         
 
-        Debug.Log("Cut wire: " + cutColor);
-        Debug.Log("Expected wire: " + wireMapping.cutWire);
-        if (VerletWire.CutWireColor.HasValue)
+        // Debug.Log("Cut wire: " + cutColor);
+        // Debug.Log("Expected wire: " + wireMapping.cutWire);
+        if (VerletInsulatedWire.CutWireColor.HasValue)
         {
-            softwareWireColor = VerletWire.CutWireColor.Value;
+            softwareWireColor = VerletInsulatedWire.CutWireColor.Value;
         }
         
 
-        if (softwareWireColor != VerletWire.WireColor.None) // software wire is cut first
+        if (softwareWireColor != VerletInsulatedWire.WireColour.None) // software wire is cut first
         {
             CheckWireCutColor(softwareWireColor, hardwareWireColor);
             if (!hasCut)
@@ -84,7 +86,7 @@ public class WireCut : MonoBehaviour
                 hasCut = true;
             }
             
-        }else if (hardwareWireColor != VerletWire.WireColor.None) // hardware wire is cut first
+        }else if (hardwareWireColor != VerletInsulatedWire.WireColour.None) // hardware wire is cut first
         {
             CheckWireCutColor(hardwareWireColor, softwareWireColor);
             if (!hasCut)
@@ -93,17 +95,18 @@ public class WireCut : MonoBehaviour
                 hasCut = true;
             }
         }
-        VerletWire.CutWireColor = null;
+        VerletInsulatedWire.CutWireColor = null;
     }
 
-    private void CheckWireCutColor(VerletWire.WireColor wireCutFirst, VerletWire.WireColor wireCutLater)
+    private void CheckWireCutColor(VerletInsulatedWire.WireColour wireCutFirst, VerletInsulatedWire.WireColour wireCutLater)
     {
         if (wireCutFirst != wireDict[wireMapping.cutWire])
         {
             //starts the timer
             timeToCut -= Time.deltaTime;
-            if (timeToCut <= 0f || wireCutLater != VerletWire.WireColor.None)
+            if (timeToCut <= 0f || wireCutLater != VerletInsulatedWire.WireColour.None)
             {//game lost if timer hits 0 or any physical color is cut
+                TriggerFailure(PuzzleGame.WCM);
                 GameManager.Instance.EndGame();
             }
         }
@@ -113,6 +116,7 @@ public class WireCut : MonoBehaviour
             timeToCut -= Time.deltaTime;
             if (timeToCut <= 0f)
             {
+                TriggerFailure(PuzzleGame.WCM);
                 //game lost if timer hits 0
                 GameManager.Instance.EndGame();
             }
@@ -121,6 +125,8 @@ public class WireCut : MonoBehaviour
                 //if it's the same we are good
                 if (wireCutFirst == wireCutLater)
                 {
+                    HasCutWireWithinTimeWindow?.Invoke(3.0f - (float)GameManager.Instance.BombTimer);
+                    TriggerSuccess(PuzzleGame.WCM);
                     GameManager.Instance.WinGame();
                 }
             }
@@ -136,7 +142,7 @@ public class WireCut : MonoBehaviour
         }
         else
         {
-            if (hardwareWireColor == VerletWire.CutWireColor)
+            if (hardwareWireColor == VerletInsulatedWire.CutWireColor)
             {
                 GameManager.Instance.WinGame();
             }

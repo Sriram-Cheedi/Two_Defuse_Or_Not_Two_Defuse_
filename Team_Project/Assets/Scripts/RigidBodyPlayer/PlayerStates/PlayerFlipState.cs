@@ -6,6 +6,7 @@ public class PlayerFlipState : PlayerBaseState
 {
     private float targetRotation = 180f;
     private float remaining;
+    [SerializeField] private EmojiReactionManager emojiReactionManager;
     public PlayerFlipState(RigidBodyMovement hub) : base(hub, PlayerState.Flip)
     {
     }
@@ -15,6 +16,7 @@ public class PlayerFlipState : PlayerBaseState
         Hub.rb.linearVelocity = Vector3.zero;
         Hub.gravity.InvertGravityDirection();
         Hub.jump.canJump = false;
+        // emojiReactionManager.PlayGravityBurst();
         remaining = targetRotation;
     }
 
