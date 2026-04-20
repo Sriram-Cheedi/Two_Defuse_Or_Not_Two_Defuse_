@@ -45,10 +45,13 @@
         
         public bool ceilingCollision = true;
         public float ropeRadius = 0.25f;
-        public BoxCollider ceilingBox;
+        [SerializeField] private Collider ceilingCollider;
         
         public bool leftWallCollision = true;
-        public BoxCollider leftBox;
+        [SerializeField] private Collider leftWallCollider;
+        
+        public bool rightWallCollision = true;
+        [SerializeField] private Collider rightWallCollider;
         
         public float contactDamping = 0.85f;
         public float sleepThreshold = 0.01f;
@@ -140,6 +143,7 @@
                 CorrectWireSegments();
                 CeilingCollision();
                 LeftWallCollision();
+                RightWallCollision();
             }
             
             for (int j = 0; j < bendPasses; j++)
@@ -149,6 +153,7 @@
                 BendWire();
                 CeilingCollision();
                 LeftWallCollision();
+                RightWallCollision();
             }
             for (int i = 0; i < selfCollisionPasses; i++)
             {
@@ -468,11 +473,11 @@
         
         private void CeilingCollision()
         {
-            if (!ceilingCollision || ceilingBox == null)
+            if (!ceilingCollision || ceilingCollider == null)
             {
                 return;
             }
-            float maxY = ceilingBox.bounds.min.y - ropeRadius;
+            float maxY = ceilingCollider.bounds.min.y - ropeRadius;
             for (int i = 1; i < points; i++)
             {
                 if (currentWirePointsPosition[i].y > maxY)
@@ -485,11 +490,11 @@
 
         private void LeftWallCollision()
         {
-            if (!leftWallCollision || leftBox == null)
+            if (!leftWallCollision || leftWallCollider == null)
             {
                 return;
             }
-            float minX = leftBox.bounds.max.x + ropeRadius;
+            float minX = leftWallCollider.bounds.max.x + ropeRadius;
 
             for (int i = 1; i < points; i++)
             {
@@ -497,6 +502,25 @@
                 {
                     currentWirePointsPosition[i].x = minX;
                     ApplyContactVelocity(i, Vector3.right, clampPositiveNormal: false);
+                }
+            }
+        }
+        
+        private void RightWallCollision()
+        {
+            if (!rightWallCollision || rightWallCollider == null)
+            {
+                return;
+            }
+
+            float maxX = rightWallCollider.bounds.min.x - ropeRadius;
+
+            for (int i = 1; i < points; i++)
+            {
+                if (currentWirePointsPosition[i].x > maxX)
+                {
+                    currentWirePointsPosition[i].x = maxX;
+                    ApplyContactVelocity(i, Vector3.right, clampPositiveNormal: true);
                 }
             }
         }
