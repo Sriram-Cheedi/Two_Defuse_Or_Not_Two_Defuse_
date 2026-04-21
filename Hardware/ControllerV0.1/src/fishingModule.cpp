@@ -16,7 +16,6 @@ void fishingModule::reset(){
     lastGameUpdate = 0;
     lastFishUpdate = 0;
     lastHookUpdate = 0;
-    lastButtonUpdate = 0;
     int hasScored = fishPos[randState] & hookLED[hookPos];
     if (hasScored > 0){
         state = 1;
@@ -122,9 +121,9 @@ void fishingModule::update(){
     unsigned long milli = millis();
     if (micro - lastGameUpdate > gameInterval && state != 0){
         lastGameUpdate = micro;
-        if(milli - lastButtonUpdate > buttonInterval && enabled){
+
+        if(enabled){
             btn.update();
-            lastButtonUpdate = milli;
         }
         /*if(milli - lastHookUpdate > hookInterval && !lockout && enabled){
             hookPos--;
