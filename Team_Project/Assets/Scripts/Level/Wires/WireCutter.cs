@@ -37,9 +37,20 @@ public class WireCutter : MonoBehaviour
 
     void Update()
     {
-        if (VerletInsulatedWire.HasAnyWireBeenCut) return;
-        if (!Input.GetKeyDown(cutKey)) return;
-        if (cam == null) return;
+        if (VerletInsulatedWire.HasAnyWireBeenCut)
+        {
+            return;
+        }
+
+        if (!Input.GetKeyDown(cutKey))
+        {
+            return;
+        }
+
+        if (cam == null)
+        {
+            return;
+        }
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, cutDistance, wireLayer))
         {

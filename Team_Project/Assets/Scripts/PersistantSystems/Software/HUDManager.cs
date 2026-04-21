@@ -49,8 +49,20 @@ public class HUDManager : MonoBehaviour
         // Clear current HUDs when entering a new trigger
         foreach (var hud in currentActiveHUDs)
         {
-            if (hud != null)
+            if (hud == null)
+            {
+                continue;
+            }
+            HUDCardAnimator animator = hud.GetComponent<HUDCardAnimator>();
+            if (animator != null)
+            {
+                animator.PlayFadeOut();
+            }
+            else
+            {
                 hud.SetActive(false);
+            }
+
         }
 
         currentActiveHUDs.Clear();
@@ -93,8 +105,33 @@ private void UpdateHUDVisuals()
 
         foreach (var hud in currentActiveHUDs)
         {
-            if (hud != null)
-                hud.SetActive(!hudsHidden);
+            if (hud == null)
+            {
+                continue;
+            }
+            HUDCardAnimator animator = hud.GetComponent<HUDCardAnimator>();
+            if (hudsHidden)
+            {
+                if (animator != null)
+                {
+                    animator.PlayFadeOut();
+                }
+                else
+                {
+                    hud.SetActive(false);
+                }
+            }
+            else
+            {
+                if (animator != null)
+                {
+                    animator.PlayFadeIn();
+                }
+                else
+                {
+                    hud.SetActive(true);
+                }
+            }
         }
     }
 }

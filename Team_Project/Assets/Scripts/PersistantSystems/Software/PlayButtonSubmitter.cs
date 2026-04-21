@@ -18,7 +18,6 @@ public class PlayButtonSubmitter : MonoBehaviour
             gameManager = GameManager.Instance;
 
         string enteredName = usernameInput != null ? usernameInput.text.Trim() : "";
-
         scoreManager?.OnUsernameEntered(enteredName);
         gameManager?.StartGame();
     }

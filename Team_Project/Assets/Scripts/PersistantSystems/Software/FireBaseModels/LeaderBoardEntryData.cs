@@ -2,8 +2,7 @@ using System;
 
 namespace PersistantSystems.Software.FirebaseModels
 {
-    [Serializable]
-    public class LeaderboardEntryData
+    [Serializable] public class LeaderboardEntryData
     {
         public string username = "";
         public int score = 0;

@@ -40,6 +40,5 @@ namespace PersistantSystems.Software
         {
             fovValue.text = Mathf.RoundToInt(value).ToString();
         }
-        
     }
 }

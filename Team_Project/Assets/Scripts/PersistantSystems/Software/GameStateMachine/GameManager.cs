@@ -57,55 +57,44 @@ namespace PersistantSystems.Software.GameStateMachine
             
         }
 
-private void ShowAudienceMainMenu()
-{
-    Debug.Log("ShowAudienceMainMenu called");
+        private void ShowAudienceMainMenu()
+        {
+            Debug.Log("ShowAudienceMainMenu called");
 
-    if (audienceMainMenuDisplay != null)
-    {
-        audienceMainMenuDisplay.SetActive(true);
-        Debug.Log("AudienceMainMenuDisplay ON");
-    }
-    else
-    {
-        Debug.LogWarning("audienceMainMenuDisplay is NULL");
-    }
+            if (audienceMainMenuDisplay != null)
+            {
+                audienceMainMenuDisplay.SetActive(true);
+                Debug.Log("AudienceMainMenuDisplay ON");
+            }
+            else
+            {
+                Debug.LogWarning("audienceMainMenuDisplay is NULL");
+            }
 
-    if (audienceCutsceneDisplay != null)
-    {
-        audienceCutsceneDisplay.SetActive(false);
-        Debug.Log("AudienceCutsceneDisplay OFF");
-    }
-    else
-    {
-        Debug.LogWarning("audienceCutsceneDisplay is NULL");
-    }
-}
+            if (audienceCutsceneDisplay != null)
+            {
+                audienceCutsceneDisplay.SetActive(false);
+                Debug.Log("AudienceCutsceneDisplay OFF");
+            }
+            else
+            {
+                Debug.LogWarning("audienceCutsceneDisplay is NULL");
+            }
+        }
 
-private void ShowAudienceCutscene()
-{
-    Debug.Log("ShowAudienceCutscene called");
+        private void ShowAudienceCutscene()
+        {
+            if (audienceMainMenuDisplay != null)
+            {
+                audienceMainMenuDisplay.SetActive(false);
+            }
 
-    if (audienceMainMenuDisplay != null)
-    {
-        audienceMainMenuDisplay.SetActive(false);
-        Debug.Log("AudienceMainMenuDisplay OFF");
-    }
-    else
-    {
-        Debug.LogWarning("audienceMainMenuDisplay is NULL");
-    }
+            if (audienceCutsceneDisplay != null)
+            {
+                audienceCutsceneDisplay.SetActive(true);
+            }
+        }
 
-    if (audienceCutsceneDisplay != null)
-    {
-        audienceCutsceneDisplay.SetActive(true);
-        Debug.Log("AudienceCutsceneDisplay ON");
-    }
-    else
-    {
-        Debug.LogWarning("audienceCutsceneDisplay is NULL");
-    }
-}
         private GameObject FindChildByName(Transform parent, string name)
         {
             foreach (Transform child in parent.GetComponentsInChildren<Transform>(true))
@@ -124,7 +113,6 @@ private void ShowAudienceCutscene()
 
             if (!mainMenuScene.IsValid() || !mainMenuScene.isLoaded)
             {
-                Debug.LogWarning("MainMenu scene is not loaded, cannot cache menu references yet.");
                 return;
             }
 
@@ -136,9 +124,6 @@ private void ShowAudienceCutscene()
             loadingPage = null;
             audienceMainMenuDisplay = null;
             audienceCutsceneDisplay = null;
-
-            Debug.Log("---- CacheRefs START ----");
-            Debug.Log("Root objects in MainMenu: " + rootObjects.Length);
 
             foreach (GameObject root in rootObjects)
             {
@@ -165,14 +150,6 @@ private void ShowAudienceCutscene()
             
             scoreManager = FindFirstObjectByType<ScoreManager>(FindObjectsInactive.Include);
 
-            Debug.Log("cutscenePlayer = " + (cutscenePlayer != null ? cutscenePlayer.name : "NULL"));
-            Debug.Log("cutsceneDisplay = " + (cutsceneDisplay != null ? cutsceneDisplay.name : "NULL"));
-            Debug.Log("menuUI = " + (menuUI != null ? menuUI.name : "NULL"));
-            Debug.Log("loadingPage = " + (loadingPage != null ? loadingPage.name : "NULL"));
-            Debug.Log("scoreManager = " + (scoreManager != null ? scoreManager.name : "NULL"));
-            Debug.Log("audienceMainMenuDisplay = " + (audienceMainMenuDisplay != null ? audienceMainMenuDisplay.name : "NULL"));
-            Debug.Log("audienceCutsceneDisplay = " + (audienceCutsceneDisplay != null ? audienceCutsceneDisplay.name : "NULL"));
-            Debug.Log("---- CacheRefs END ----");
         }
         private void OnEnable()
         {
@@ -211,27 +188,14 @@ private void ShowAudienceCutscene()
             States[GameState.DashBoard] = new ScoreDashBoardState(this, audioSource, scoreBoardSound);
         }
 
-
-
         public void StartGame()
         {
-            Debug.Log("StartGame called.");
-            Debug.Log("CurrentStateKey before StartGame: " + CurrentStateKey);
-
-            Debug.Log("cutscenePlayer = " + (cutscenePlayer != null ? cutscenePlayer.name : "NULL"));
-            Debug.Log("cutsceneDisplay = " + (cutsceneDisplay != null ? cutsceneDisplay.name : "NULL"));
-            Debug.Log("menuUI = " + (menuUI != null ? menuUI.name : "NULL"));
-            Debug.Log("loadingPage = " + (loadingPage != null ? loadingPage.name : "NULL"));
-
             if (CurrentStateKey == GameState.CutScene ||
                 CurrentStateKey == GameState.ReadyUp ||
                 CurrentStateKey == GameState.Playing)
             {
-                Debug.Log("StartGame ignored because state is already in progress.");
                 return;
             }
-
-
             API_Provider.Instance?.ActiveAPIController?.RequestStatus("PWR");
             API_Provider.Instance?.ActiveAPIController?.SendSet("PWR", API_Provider.Instance.ActiveAPIController.GetDigital("PWR"));
             ShowAudienceCutscene();
@@ -319,7 +283,6 @@ private void ShowAudienceCutscene()
         }
         
         private string currentUsername = "---";
-
         public void SetCurrentUsername(string username)
         {
             currentUsername = string.IsNullOrWhiteSpace(username) ? "---" : username;
