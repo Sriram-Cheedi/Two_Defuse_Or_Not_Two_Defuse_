@@ -2,7 +2,7 @@
 
 fishingModule::fishingModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin, SerialController serialController, Buzzer& buzzer)
 : Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), buttonPin(buttonPin), state(0), serialController(serialController),
-btn("FGM1", buttonPin, serialController,[this](std::string name, int state){buttonUpdate(name, state);}), buzzer(buzzer)
+btn("FGM1", buttonPin, serialController,[this](std::string name, int state){buttonUpdate(name, state);}, 1), buzzer(buzzer)
 {
     pinMode(dataPin, OUTPUT);
     pinMode(clockPin, OUTPUT);
@@ -40,6 +40,7 @@ void fishingModule::set(std::vector<std::string> args){
 
         if(newState == 0){
             state = 0;
+            buzzer.sirenOff();
             //start writing to the shift registers
             digitalWrite(latchPin, LOW);
             shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);

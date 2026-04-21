@@ -7,10 +7,10 @@ numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, 
     pinMode(clockPin,OUTPUT);
     pinMode(latchPin,OUTPUT);
     for(size_t i = 0; i < 4; i++){
-        Button btn = Button("NGM" + std::to_string(i), buttonPins[i], serialController, [this](std::string name, int state){buttonCheck(name, state);});   
+        Button btn = Button("NGM" + std::to_string(i), buttonPins[i], serialController, [this](std::string name, int state){buttonCheck(name, state);}, 0);   
         buttons.push_back(btn);
     }
-    Button btn = Button("NGM4", buttonPins[4], serialController, [this](std::string name, int state){checkGuess(name, state);});   
+    Button btn = Button("NGM4", buttonPins[4], serialController, [this](std::string name, int state){checkGuess(name, state);}, 0);   
     buttons.push_back(btn);
     randomSeed(analogRead(A0));
 
