@@ -267,9 +267,7 @@ namespace PersistantSystems.Software
             if (dbAPI != null)
             {
                 dbAPI.SubmitScore(username, finalScoreInt);
-
                 dbAPI.SubmitLeaderboardEntry(username, finalScoreInt, defused, GameplayStationConfig.StationId);
-
                 dbAPI.UpdateStationStatus(GameplayStationConfig.StationId, username, defused ? "Defused" : "Exploded");
             }
         }

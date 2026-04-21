@@ -804,9 +804,7 @@
                 return;
             }
 
-            Quaternion spawnRot = isTopEnd
-                ? Quaternion.Euler(180f, 0f, 0f)
-                : Quaternion.Euler(0f, 0f, 0f);
+            Quaternion spawnRot = isTopEnd ? Quaternion.Euler(180f, 0f, 0f) : Quaternion.Euler(0f, 0f, 0f);
 
             Instantiate(copperTipPrefab, cutPosition, spawnRot, transform);
         }
