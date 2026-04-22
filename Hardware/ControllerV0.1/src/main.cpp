@@ -149,6 +149,15 @@ std::vector<std::string> split(const std::string& s) {
     return result;
 }
 
+void winNoise(){
+  buzzer.win();
+}
+
+void loseNoise(){
+  buzzer.rickRoll();
+}
+
+int gameEndThread = -1;
 
 void parseCommand(std::string command){
 
@@ -159,20 +168,39 @@ void parseCommand(std::string command){
   std::vector<std::string> func_args = split(command.substr(command.find(':') + 1, command.length() - (command.find(':') + 1)));
 
   if(name == "PWR" && func_args[0] == "set"){
-    if(std::stoi(func_args[1]) == 3){
+    if(std::stoi(func_args[1]) == 2){           // POWER SCRAMBLE
       powerGame();
       return;
-    }else if(std::stoi(func_args[1]) == 4){
+    }else if(std::stoi(func_args[1]) == 3){     // GAME WIN
       for(const auto& cmp : components){
         cmp->disable();
       }
+      if(gameEndThread != -1){
+        threads.kill(gameEndThread);
+      }
+      gameEndThread = threads.addThread(winNoise);
       return;
-    }else if(std::stoi(func_args[1]) == 5){
+    }else if(std::stoi(func_args[1]) == 4){     // GAME LOSE
+      for(const auto& cmp : components){
+        cmp->disable();
+      }
+      if(gameEndThread != -1){
+        threads.kill(gameEndThread);
+      }
+      gameEndThread = threads.addThread(loseNoise);
+      return;
+    }else if(std::stoi(func_args[1]) == 5){     // GAME RESET
       pwr.enable();
       pwr.update();
       powerToggle("PWR", pwr.buttonState);
 
       LCD.set({"\"\"", "\"\""});
+      buzzer.set({"1"});
+
+      if(gameEndThread != -1){
+        threads.kill(gameEndThread);
+      }
+      gameEndThread = -1;
 
       return;
     }

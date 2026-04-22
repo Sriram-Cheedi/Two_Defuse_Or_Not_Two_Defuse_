@@ -12,6 +12,8 @@ private:
 
     int state = 0;
 
+    int winThread;
+
     const unsigned long beepDelay = 10;
     unsigned long lastBeep = 0;
 
@@ -33,11 +35,15 @@ private:
     bool notificationPlay = false;
     bool scrambleNoise = false;
     bool pause = false;
+    bool winNoise = false;
+    bool loseNoise = false;
+    bool rr = false;
 
     int pitch = 50;
 
     bool rise = true;
     bool onChange = true;
+
 
 public:
 
@@ -48,6 +54,14 @@ public:
     void sirenOff();
 
     void notification();
+
+    void win();
+
+    void lose();
+
+    void rickRoll();
+
+    static void playWinNoise();
 
     void enable() override;
     void disable() override;
