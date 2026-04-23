@@ -141,6 +141,7 @@ void Buzzer::win(){
     threads.delay(400); 
     noTone(pin);
 
+    onChange = true;
 }
 
 void Buzzer::lose(){
@@ -172,6 +173,8 @@ void Buzzer::lose(){
     tone(pin, noteB2);
     threads.delay(600); 
     noTone(pin);
+
+    onChange = true;
 }
 
 
@@ -323,4 +326,6 @@ void Buzzer::rickRoll() {
     // Wait for the full rhythmic slot to finish
     while (micros() - startTime < noteDurationUs);
   }
+
+  onChange = true;
 }
