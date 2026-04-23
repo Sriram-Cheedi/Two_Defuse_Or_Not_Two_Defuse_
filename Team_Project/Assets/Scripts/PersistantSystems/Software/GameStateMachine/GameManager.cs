@@ -159,6 +159,7 @@ namespace PersistantSystems.Software.GameStateMachine
             WireCut.HasCutAnyWire += HandleWireCut;
             GameEvents.OnReplay += ReplayGame;
             GameEvents.OnQuit += QuitGame;
+            GameEvents.OnBoardingDone += HandleOnBoardingDone;
         }
 
         private void OnDisable()
@@ -169,7 +170,7 @@ namespace PersistantSystems.Software.GameStateMachine
             WireCut.HasCutAnyWire -= HandleWireCut;
             GameEvents.OnReplay -= ReplayGame;
             GameEvents.OnQuit -= QuitGame;
-            
+            GameEvents.OnBoardingDone -= HandleOnBoardingDone;
         }
 
         private void GetAudioComponent()
@@ -185,7 +186,8 @@ namespace PersistantSystems.Software.GameStateMachine
             States[GameState.Playing] = new PlayingState(this, audioSource, warningAudio);
             States[GameState.GameOver] = new GameOverState(this, audioSource, loseSound);
             States[GameState.GameWin] = new GameWinState(this, audioSource, winSound);
-            States[GameState.DashBoard] = new ScoreDashBoardState(this, audioSource, scoreBoardSound);
+            States[GameState.DashBoardWin] = new ScoreDashBoardStateWin(this, audioSource, scoreBoardSound);
+            States[GameState.DashBoardLose] = new ScoreDashBoardStateWin(this, audioSource, scoreBoardSound);
         }
 
         public void StartGame()
@@ -235,11 +237,18 @@ namespace PersistantSystems.Software.GameStateMachine
             QueueNextState(GameState.ReadyUp);
         }
 
-        public void OnLoadingScoreBoard()
+        public void OnLoadingScoreBoardWin()
         {
             // SceneManager.UnloadSceneAsync("MatScene");
-            SceneManager.LoadScene("ScoreDashBoard");
-            QueueNextState(GameState.DashBoard);
+            SceneManager.LoadScene("ScoreDashBoardWin");
+            QueueNextState(GameState.DashBoardWin);
+        }
+        
+        public void OnLoadingScoreBoardLose()
+        {
+            // SceneManager.UnloadSceneAsync("MatScene");
+            SceneManager.LoadScene("ScoreDashBoardLose");
+            QueueNextState(GameState.DashBoardLose);
         }
         
         public void ResetSession(double startingBombTimer = 300.0)
@@ -268,6 +277,14 @@ namespace PersistantSystems.Software.GameStateMachine
             if (CurrentState is IHardwareListener listener)
             {
                 listener.OnHardwareReconnect();
+            }
+        }
+
+        public void HandleOnBoardingDone()
+        {
+            if (CurrentState is IGameEventListener listener)
+            {
+                listener.HandleOnBoardingDone();
             }
         }
 

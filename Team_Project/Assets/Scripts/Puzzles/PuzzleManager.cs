@@ -89,7 +89,7 @@ public class PuzzleManager : MonoBehaviour
         
         // Activate NGM Puzzle after SSM Completed
         API_Provider.Instance.ActiveAPIController.SendSet("NGM", 1);
-        API_Provider.Instance.ActiveAPIController.SendSet("PWR", 3);
+        API_Provider.Instance.ActiveAPIController.SendSet("PWR", 2);
     }
     
     private void H_HandleSSMVictory(string header, int value)

@@ -1,36 +1,83 @@
 using System;
+using System.Collections;
 using PersistantSystems.Software.GameStateMachine.GameStates;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ActivationTip : MonoBehaviour
 {
-   public GameObject[] activationTips;
-
-   private void Awake()
+   [SerializeField] private GameObject[] activationTips;
+   [SerializeField] private GameObject[] onBoardingTips;
+   [SerializeField] private PlayerInputRelay relay;
+   private float holdDuration = 2f;
+   [SerializeField] private float fadeInDuration = 0.3f;
+   private bool hasActivated = false;
+   
+   private void Start()
    {
-      if(activationTips == null) return;
-      foreach (var tip in activationTips)
+      ShowActivationTips();
+   }
+
+   private void OnEnable()  => ReadyUpState.BombActivated += HideActivationTips;
+   private void OnDisable() => ReadyUpState.BombActivated -= HideActivationTips;
+
+   private IEnumerator RunSequence()
+   {
+      foreach (var tip in onBoardingTips)
+         yield return ShowAndHold(tip);
+         
+
+
+      GameEvents.TriggerBoardingDone();
+   }
+
+   private IEnumerator ShowAndHold(GameObject hud)
+   {
+      HUDCardAnimator animator = hud.GetComponent<HUDCardAnimator>();
+      var ringTransform = hud.transform.Find("Ring_Card");
+      var ring = ringTransform.GetComponent<Image>();
+      ring.fillAmount = 0f;
+
+      if (animator != null)
       {
-         tip.SetActive(true);
+         animator.PlayFadeIn();
+         yield return new WaitForSeconds(fadeInDuration);
+      }
+      else
+      {
+         hud.SetActive(true);
+      }
+      
+
+      float held = 0f;
+      while (held < holdDuration)
+      {
+         held = relay.IsEnterHeld ? held + Time.unscaledDeltaTime : 0f;
+         ring.fillAmount = held / holdDuration;
+         yield return null;
+      }
+      ring.fillAmount = 0f;
+
+      if (animator != null)
+      {
+         animator.PlayFadeOut();
+      }
+      else
+      {
+         hud.SetActive(false);
       }
    }
 
-   private void OnEnable()
+   private void ShowActivationTips()
    {
-      ReadyUpState.BombActivated += hideCards;
+      foreach (var tip in activationTips) tip.SetActive(true);
    }
 
-   private void OnDisable()
+   private void HideActivationTips()
    {
-      ReadyUpState.BombActivated -= hideCards;
-   }
-
-   private void hideCards()
-   {
-      if(activationTips == null) return;
-      foreach (var tip in activationTips)
-      {
-         tip.SetActive(false);
-      }
+      if (hasActivated) return;
+      foreach (var tip in activationTips) tip.SetActive(false);
+      StartCoroutine(RunSequence());
+      hasActivated = true;
    }
 }

@@ -4,12 +4,12 @@ using UnityEngine.SceneManagement;
 
 namespace PersistantSystems.Software.GameStateMachine.GameStates
 {
-    public class ScoreDashBoardState : BaseState<GameState>
+    public class ScoreDashBoardStateWin : BaseState<GameState>
     {
         private GameManager gameManager;
         private AudioSource audioSource;
         private AudioClip scoreBoardSound;
-        public ScoreDashBoardState(GameManager gameManager, AudioSource audioSource, AudioClip scoreBoardSound) : base(GameState.DashBoard)
+        public ScoreDashBoardStateWin(GameManager gameManager, AudioSource audioSource, AudioClip scoreBoardSound) : base(GameState.DashBoardWin)
         {
             this.gameManager = gameManager;
             this.audioSource = audioSource;

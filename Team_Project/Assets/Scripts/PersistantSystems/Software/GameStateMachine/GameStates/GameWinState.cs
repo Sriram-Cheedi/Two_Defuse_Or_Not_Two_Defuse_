@@ -20,7 +20,7 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
         public override void EnterState()
         {
             gameManager.FireOnGameEnd();
-            API_Provider.Instance?.ActiveAPIController?.SendSet("PWR", 4);
+            API_Provider.Instance?.ActiveAPIController?.SendSet("PWR", 3);
             gameManager.StartCoroutine(LoadGameWinScene());
         }
 
@@ -41,7 +41,7 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
             audioSource.PlayOneShot(winClip);
             SceneManager.LoadScene("GameWin");
             yield return new WaitForSeconds(2f);
-            gameManager.OnLoadingScoreBoard();
+            gameManager.OnLoadingScoreBoardWin();
         }
     }
 }

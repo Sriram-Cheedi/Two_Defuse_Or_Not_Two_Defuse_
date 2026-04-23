@@ -43,7 +43,7 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
             audioSource.PlayOneShot(loseSound);
             SceneManager.LoadScene("GameOver");
             yield return new WaitForSeconds(2f);
-            gameManager.OnLoadingScoreBoard();
+            gameManager.OnLoadingScoreBoardLose();
         }
     }
 }
