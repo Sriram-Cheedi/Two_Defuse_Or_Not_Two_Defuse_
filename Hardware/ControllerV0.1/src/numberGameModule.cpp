@@ -135,19 +135,14 @@ void numberGameModule::buttonCheck(std::string btnName, int btnState){
 }
 
 void numberGameModule::checkGuess(std::string btnName, int btnState) {
-    const unsigned long debounceDelay = 500;
-    unsigned long now = millis();
-    if(now - submitUpdate > debounceDelay){
-        if(btnState == HIGH){
-            submitting = 1;
-            status();
-            submitting = 0;
-            if(secretNumber[0] == digitsBuffer[0] && 
-                secretNumber[1] == digitsBuffer[1] && 
-                secretNumber[2] == digitsBuffer[2] && 
-                secretNumber[3] == digitsBuffer[3]) state = 2;
-            submitUpdate = now;
-        }
+    if(btnState == HIGH){
+        submitting = 1;
+        status();
+        submitting = 0;
+        if(secretNumber[0] == digitsBuffer[0] && 
+            secretNumber[1] == digitsBuffer[1] && 
+            secretNumber[2] == digitsBuffer[2] && 
+            secretNumber[3] == digitsBuffer[3]) state = 2;
     }
 }
 

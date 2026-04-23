@@ -28,8 +28,6 @@ void Buzzer::set(std::vector<std::string> args){
             notificationPlay = false;
             scrambleNoise = false;
             pause = false;
-            winNoise = false;
-            loseNoise = false;    
         }
     }
     return;
@@ -146,7 +144,34 @@ void Buzzer::win(){
 }
 
 void Buzzer::lose(){
-    loseNoise = true;
+    // Note Frequencies (Lower and more somber/dissonant)
+    int noteEb4 = 311; // Minor tone
+    int noteDb4 = 277; // Lower
+    int noteC4  = 261; // Root
+    int noteB2  = 123; // Deep, "grumbly" low note
+
+    // Note 1: Sudden realization (Minor 3rd)
+    tone(pin, noteEb4);
+    threads.delay(150);
+    noTone(pin);
+    threads.delay(50);
+
+    // Note 2: Dropping down
+    tone(pin, noteDb4);
+    threads.delay(150);
+    noTone(pin);
+    threads.delay(50);
+
+    // Note 3: Dropping further
+    tone(pin, noteC4);
+    threads.delay(150);
+    noTone(pin);
+    threads.delay(50);
+
+    // Final Note: The "Thud" (Low, long, and vibrating)
+    tone(pin, noteB2);
+    threads.delay(600); 
+    noTone(pin);
 }
 
 

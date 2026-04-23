@@ -99,9 +99,27 @@ void refreshLCD(std::string btnName, int buttonState){
   LCD.refresh();
 }
 
+int rickRollThread = -1;
+
+
+void rickRoll(){
+  buzzer.rickRoll();
+}
+
+void rickRollBtn(std::string btnName, int btnState){
+  if(btnState == 1){
+    if (rickRollThread != -1){
+      threads.kill(rickRollThread);
+    }
+    
+    rickRollThread = threads.addThread(rickRoll);
+  }
+}
+
+
 Button btn1 = Button("BTN1", 9, serialController, 50);
 Button btn2 = Button("BTN2", 10, serialController, 50);
-Button btn3 = Button("BTN3", 11, serialController, 50);
+Button btn3 = Button("BTN3", 11, serialController, rickRollBtn, 50);
 Button btn4 = Button("BTN4", 12, serialController, 50);
 
 Button wire1 = Button("WR1", 23, serialController, 200);
@@ -154,8 +172,10 @@ void winNoise(){
 }
 
 void loseNoise(){
-  buzzer.rickRoll();
+  buzzer.lose();
 }
+
+
 
 int gameEndThread = -1;
 

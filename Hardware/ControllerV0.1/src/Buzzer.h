@@ -35,9 +35,6 @@ private:
     bool notificationPlay = false;
     bool scrambleNoise = false;
     bool pause = false;
-    bool winNoise = false;
-    bool loseNoise = false;
-    bool rr = false;
 
     int pitch = 50;
 
