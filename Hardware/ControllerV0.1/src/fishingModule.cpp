@@ -2,7 +2,7 @@
 
 fishingModule::fishingModule(std::string name, int dataPin, int clockPin, int latchPin, int buttonPin, SerialController serialController, Buzzer& buzzer)
 : Component(name), dataPin(dataPin), clockPin(clockPin), latchPin(latchPin), buttonPin(buttonPin), state(0), serialController(serialController),
-btn("FGM1", buttonPin, serialController,[this](std::string name, int state){buttonUpdate(name, state);}), buzzer(buzzer)
+btn("FGM1", buttonPin, serialController,[this](std::string name, int state){buttonUpdate(name, state);}, 1), buzzer(buzzer)
 {
     pinMode(dataPin, OUTPUT);
     pinMode(clockPin, OUTPUT);
@@ -16,7 +16,6 @@ void fishingModule::reset(){
     lastGameUpdate = 0;
     lastFishUpdate = 0;
     lastHookUpdate = 0;
-    lastButtonUpdate = 0;
     int hasScored = fishPos[randState] & hookLED[hookPos];
     if (hasScored > 0){
         state = 1;
@@ -40,6 +39,7 @@ void fishingModule::set(std::vector<std::string> args){
 
         if(newState == 0){
             state = 0;
+            buzzer.sirenOff();
             //start writing to the shift registers
             digitalWrite(latchPin, LOW);
             shiftOut(dataPin, clockPin, LSBFIRST, 0b00000000);
@@ -121,15 +121,10 @@ void fishingModule::update(){
     unsigned long milli = millis();
     if (micro - lastGameUpdate > gameInterval && state != 0){
         lastGameUpdate = micro;
-        if(milli - lastButtonUpdate > buttonInterval && enabled){
+
+        if(enabled){
             btn.update();
-            lastButtonUpdate = milli;
         }
-        /*if(milli - lastHookUpdate > hookInterval && !lockout && enabled){
-            hookPos--;
-            if(hookPos < 0) hookPos = 0;
-            lastHookUpdate = milli;
-        }*/
 
         if(milli - lastFishUpdate > fishInterval){
             randState = random(0,8);

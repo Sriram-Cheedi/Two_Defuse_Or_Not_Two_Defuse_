@@ -12,6 +12,8 @@ private:
 
     int state = 0;
 
+    int winThread;
+
     const unsigned long beepDelay = 10;
     unsigned long lastBeep = 0;
 
@@ -39,6 +41,7 @@ private:
     bool rise = true;
     bool onChange = true;
 
+
 public:
 
     void scramble() override;
@@ -48,6 +51,14 @@ public:
     void sirenOff();
 
     void notification();
+
+    void win();
+
+    void lose();
+
+    void rickRoll();
+
+    static void playWinNoise();
 
     void enable() override;
     void disable() override;
