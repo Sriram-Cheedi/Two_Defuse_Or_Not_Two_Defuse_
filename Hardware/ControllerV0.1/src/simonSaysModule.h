@@ -5,7 +5,7 @@
 #include <TeensyThreads.h>
 #include <atomic>
 #include "Button.h"
-#include "WS2812Serial.h"
+#include "LightStrip.h"
 
 class SimonSaysModule : public Component {
 
@@ -19,17 +19,14 @@ private:
 
     const std::vector<int> buttonPins;
     std::vector<Button> buttons;
-    const int rgbPin;
 
     int oldState = 0;
     int threadID = -1;
 
     SerialController serialController;
 
-    byte drawingMemory[16*3];
-    byte displayMemory[16*12];
-
-    WS2812Serial strip = WS2812Serial(4, drawingMemory, displayMemory, 29, WS2812_GRB);
+    int stripFirstIndex;
+    LightStrip strip;
 
     uint32_t lastScrambleUpdate = 0;
 
@@ -71,7 +68,7 @@ private:
 
 public:
 
-    SimonSaysModule(std::string name, std::vector<int> buttonPins, int rgbPin, SerialController serialController);
+    SimonSaysModule(std::string name, std::vector<int> buttonPins, LightStrip& strip, int stripFirstIndex, SerialController serialController);
 
     void scramble() override;
     void update() override; //Called from main loop

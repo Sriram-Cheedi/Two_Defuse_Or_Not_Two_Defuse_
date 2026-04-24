@@ -1,0 +1,44 @@
+#ifndef LIGHTSTRIP_H
+#define LIGHTSTRIP_H
+
+#include <array>
+#include <stdint.h>
+#include <string>
+#include "component.h"
+#include "serialController.h"
+#include "LCDModule.h"
+#include "Button.h"
+#include "WS2812Serial.h"
+
+class LightStrip : public Component {
+
+private:
+
+    byte drawingMemory[9];
+    byte displayMemory[9 * 12];
+
+    bool changed = false;
+    int ledCount;
+
+    WS2812Serial strip;
+    std::vector<uint32_t> pixelBuffer; 
+
+public:
+
+    LightStrip(std::string name, int pin, int ledCount);
+
+    static inline uint32_t Color(uint8_t r, uint8_t g, uint8_t b) {
+        return ((uint32_t)r << 16) | ((uint32_t)g << 8) | b;
+    }
+
+    void setPixel(int index, uint32_t color);
+    void set(std::vector<std::string> args) override;
+    void status() override;
+    void disable() override;
+    void enable() override;
+    void update() override;
+    void scramble() override;
+
+};
+
+#endif

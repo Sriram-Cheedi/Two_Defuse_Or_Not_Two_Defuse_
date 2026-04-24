@@ -12,9 +12,11 @@
 #include "fishingModule.h"
 #include "mazeModule.h"
 #include "Buzzer.h"
+#include "LightStrip.h"
 
 SerialController serialController = SerialController();
 
+LightStrip lightStrip = LightStrip("LIGHTS", 29, 9);
 
 std::vector<Component*> components; 
 
@@ -136,7 +138,7 @@ Button sw3 = Button("SW3", 4, serialController, 50);
 
 numberGameModule ngm = numberGameModule("NGM",33,35,34,{36,37,38,39,40}, serialController);
 fishingModule fgm = fishingModule("FGM",16,14,15,17,serialController, buzzer);
-SimonSaysModule ssm = SimonSaysModule("SSM", {24, 25, 26, 27}, 0,  serialController);
+SimonSaysModule ssm = SimonSaysModule("SSM", {24, 25, 26, 27}, lightStrip, 5, serialController);
 
 
 
@@ -269,6 +271,12 @@ void setup() {
   components.push_back(&wire2);
   components.push_back(&wire3);
   components.push_back(&wire4);
+  components.push_back(&lightStrip);
+
+  lightStrip.setPixel(0, LightStrip::Color(255, 255, 255));
+  lightStrip.setPixel(1, LightStrip::Color(255, 255, 255));
+  lightStrip.setPixel(2, LightStrip::Color(255, 255, 255));
+  lightStrip.setPixel(3, LightStrip::Color(255, 255, 255));
 
   LCD.LCDSetup();
 
@@ -286,4 +294,5 @@ void loop() {
   for(const auto& cmp : components){
     cmp->update();
   }
+
 }
