@@ -64,21 +64,21 @@ namespace PersistantSystems.Software.GameStateMachine
             if (audienceMainMenuDisplay != null)
             {
                 audienceMainMenuDisplay.SetActive(true);
-                Debug.Log("AudienceMainMenuDisplay ON");
+                Debug.Log("AudienceMainMenuDisplay ON"); //change
             }
-            else
-            {
+            else //change
+            { 
                 Debug.LogWarning("audienceMainMenuDisplay is NULL");
             }
 
             if (audienceCutsceneDisplay != null)
             {
                 audienceCutsceneDisplay.SetActive(false);
-                Debug.Log("AudienceCutsceneDisplay OFF");
+                Debug.Log("AudienceCutsceneDisplay OFF"); //change
             }
             else
             {
-                Debug.LogWarning("audienceCutsceneDisplay is NULL");
+                Debug.LogWarning("audienceCutsceneDisplay is NULL"); //change
             }
         }
 
@@ -127,7 +127,7 @@ namespace PersistantSystems.Software.GameStateMachine
 
             foreach (GameObject root in rootObjects)
             {
-                Debug.Log("Checking root: " + root.name);
+                Debug.Log("Checking root: " + root.name); //change
 
                 if (cutscenePlayer == null)
                     cutscenePlayer = root.GetComponentInChildren<VideoPlayer>(true);
