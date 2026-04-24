@@ -125,11 +125,6 @@ void fishingModule::update(){
         if(enabled){
             btn.update();
         }
-        /*if(milli - lastHookUpdate > hookInterval && !lockout && enabled){
-            hookPos--;
-            if(hookPos < 0) hookPos = 0;
-            lastHookUpdate = milli;
-        }*/
 
         if(milli - lastFishUpdate > fishInterval){
             randState = random(0,8);
