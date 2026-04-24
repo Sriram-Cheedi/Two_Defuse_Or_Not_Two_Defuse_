@@ -7,7 +7,7 @@ public class PowerCycle_Trigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            API_Provider.Instance.ActiveAPIController.SendSet("PWR", 3);
+            API_Provider.Instance.ActiveAPIController.SendSet("PWR", 2);
         }
     }
 }

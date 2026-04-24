@@ -15,16 +15,16 @@ public class HUDTrigger : MonoBehaviour
     private Coroutine flashCoroutine;
     private bool isGamePlaying = false;
     // GameManager.GameState currentState;
-
+    
     private void OnEnable()
     {
-        ReadyUpState.BombActivated += initializeHUDs;
+        GameEvents.OnBoardingDone += initializeHUDs;
         ReadyUpState.TrapDoorOpened += UpdateGameState;
     }
     
     private void OnDisable()
     {
-        ReadyUpState.BombActivated -= initializeHUDs;
+        GameEvents.OnBoardingDone -= initializeHUDs;
         ReadyUpState.TrapDoorOpened -= UpdateGameState;
     }
 

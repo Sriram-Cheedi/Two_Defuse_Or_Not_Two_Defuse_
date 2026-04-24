@@ -395,6 +395,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScoreTile (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 8672630169887419924, guid: d0eb84de2570f4e7b9c0cc24a4362476, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1046,8 +1050,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -991, y: -478}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -198, y: -590}
+  m_SizeDelta: {x: 244.0642, y: 67.3004}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &212817998
 MonoBehaviour:
@@ -1068,7 +1072,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1078,10 +1082,10 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: 27860dcfe02b761468ff80a0cd71d37a, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: 27860dcfe02b761468ff80a0cd71d37a, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: 27860dcfe02b761468ff80a0cd71d37a, type: 3}
+    m_DisabledSprite: {fileID: 21300000, guid: f0e0e69456a518844b55702b0dba8f61, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -1113,9 +1117,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
+  m_Sprite: {fileID: 21300000, guid: f0e0e69456a518844b55702b0dba8f61, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -4411,6 +4415,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScoreTile (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8672630169887419924, guid: d0eb84de2570f4e7b9c0cc24a4362476, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4433,7 +4441,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1082074148
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5471,7 +5479,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: be707a88b967ac4458e60110949160f1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: babfc0c7a7113a244a308812120c3be6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5546,7 +5554,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Replay
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7196,6 +7204,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScoreTile (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 8672630169887419924, guid: d0eb84de2570f4e7b9c0cc24a4362476, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7293,6 +7305,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScoreTile (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8672630169887419924, guid: d0eb84de2570f4e7b9c0cc24a4362476, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7333,8 +7349,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -803, y: -161.9001}
-  m_SizeDelta: {x: 130, y: -1038.9998}
+  m_AnchoredPosition: {x: 7.8768, y: -213}
+  m_SizeDelta: {x: 163.7537, y: -976.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2091099411
 MonoBehaviour:
@@ -7761,6 +7777,10 @@ PrefabInstance:
     - target: {fileID: 8672630169887419924, guid: d0eb84de2570f4e7b9c0cc24a4362476, type: 3}
       propertyPath: m_Name
       value: ScoreTile
+      objectReference: {fileID: 0}
+    - target: {fileID: 8672630169887419924, guid: d0eb84de2570f4e7b9c0cc24a4362476, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

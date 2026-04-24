@@ -25,14 +25,14 @@ public class WireCut : Puzzle
 
     private void InitializeWireDict()
     {
-        wireDict["WR1"] = VerletInsulatedWire.WireColour.Red;
-        wireDict["WR2"] = VerletInsulatedWire.WireColour.Blue;
+        wireDict["WR1"] =  VerletInsulatedWire.WireColour.Red;
+        wireDict["WR2"] =  VerletInsulatedWire.WireColour.Blue;
         wireDict["WR3"] = VerletInsulatedWire.WireColour.Grey;
-        wireDict["WR4"] = VerletInsulatedWire.WireColour.Brown;
-        wireDict["grey"] = VerletInsulatedWire.WireColour.Grey;
-        wireDict["brown"] = VerletInsulatedWire.WireColour.Brown;
-        wireDict["blue"] = VerletInsulatedWire.WireColour.Blue;
-        wireDict["red"] = VerletInsulatedWire.WireColour.Red;
+        wireDict["WR4"] =  VerletInsulatedWire.WireColour.Brown;
+        wireDict["grey"] =  VerletInsulatedWire.WireColour.Grey;
+        wireDict["brown"] =  VerletInsulatedWire.WireColour.Brown;
+        wireDict["blue"] =  VerletInsulatedWire.WireColour.Blue;
+        wireDict["red"] =  VerletInsulatedWire.WireColour.Red;
     }
 
     private void OnEnable()
@@ -56,17 +56,25 @@ public class WireCut : Puzzle
             return;
         }
 
+        if (GameManager.Instance == null)
+        {
+            Debug.LogError("GameManager.Instance is null.");
+            return;
+        }
+
         if ( VerletInsulatedWire.CutWireColor.HasValue)
         {
             cutColor = VerletInsulatedWire.CutWireColor.Value.ToString().ToLower();
         }
         
-        // Debug.Log("Cut wire: " + cutColor);
-        // Debug.Log("Expected wire: " + wireMapping.cutWire);
+
+        Debug.Log("Cut wire: " + cutColor);
+        Debug.Log("Expected wire: " + wireMapping.cutWire);
         if (VerletInsulatedWire.CutWireColor.HasValue)
         {
             softwareWireColor = VerletInsulatedWire.CutWireColor.Value;
         }
+        
 
         if (softwareWireColor != VerletInsulatedWire.WireColour.None) // software wire is cut first
         {
@@ -78,8 +86,7 @@ public class WireCut : Puzzle
                 hasCut = true;
             }
             
-        }
-        else if (hardwareWireColor != VerletInsulatedWire.WireColour.None) // hardware wire is cut first
+        }else if (hardwareWireColor != VerletInsulatedWire.WireColour.None) // hardware wire is cut first
         {
             CheckWireCutColor(hardwareWireColor, softwareWireColor);
             if (!hasCut)
