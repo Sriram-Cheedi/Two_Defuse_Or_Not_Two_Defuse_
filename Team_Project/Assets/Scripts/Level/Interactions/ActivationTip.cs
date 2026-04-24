@@ -9,7 +9,7 @@ public class ActivationTip : MonoBehaviour
    [SerializeField] private GameObject[] activationTips;
    [SerializeField] private GameObject[] onBoardingTips;
    [SerializeField] private PlayerInputRelay relay;
-   private float holdDuration = 2f;
+   private float holdDuration = 1.0f;
    [SerializeField] private float fadeInDuration = 0.3f;
    private bool hasActivated = false;
    

@@ -15,7 +15,7 @@ public class WireMapping : MonoBehaviour
         }
 
         finalSSMColour = ssm_controller.data.correctSequence[ssm_controller.data.correctSequence.Length - 1];
-        Debug.Log("final color: "+finalSSMColour);
+        Debug.Log("final color: "+ finalSSMColour);
         if (finalSSMColour == 0)//yellow
             cutWire = "grey";
         else if (finalSSMColour == 1) //green
