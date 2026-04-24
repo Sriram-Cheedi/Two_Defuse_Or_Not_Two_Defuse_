@@ -99,21 +99,39 @@ void refreshLCD(std::string btnName, int buttonState){
   LCD.refresh();
 }
 
-Button btn1 = Button("BTN1", 9, serialController);
-Button btn2 = Button("BTN2", 10, serialController);
-Button btn3 = Button("BTN3", 11, serialController, refreshLCD);
-Button btn4 = Button("BTN4", 12, serialController);
+int rickRollThread = -1;
 
-Button wire1 = Button("WR1", 23, serialController);
-Button wire2 = Button("WR2", 22, serialController);
-Button wire3 = Button("WR3", 21, serialController);
-Button wire4 = Button("WR4", 20, serialController);
 
-Button pwr = Button("PWR", 7, serialController, powerToggle);
+void rickRoll(){
+  buzzer.rickRoll();
+}
 
-Button sw1 = Button("SW1", 6, serialController);
-Button sw2 = Button("SW2", 5, serialController);
-Button sw3 = Button("SW3", 4, serialController);
+void rickRollBtn(std::string btnName, int btnState){
+  if(btnState == 1){
+    if (rickRollThread != -1){
+      threads.kill(rickRollThread);
+    }
+    
+    rickRollThread = threads.addThread(rickRoll);
+  }
+}
+
+
+Button btn1 = Button("BTN1", 9, serialController, 50);
+Button btn2 = Button("BTN2", 10, serialController, 50);
+Button btn3 = Button("BTN3", 11, serialController, rickRollBtn, 50);
+Button btn4 = Button("BTN4", 12, serialController, 50);
+
+Button wire1 = Button("WR1", 23, serialController, 200);
+Button wire2 = Button("WR2", 22, serialController, 200);
+Button wire3 = Button("WR3", 21, serialController, 200);
+Button wire4 = Button("WR4", 20, serialController, 200);
+
+Button pwr = Button("PWR", 7, serialController, powerToggle, 50);
+
+Button sw1 = Button("SW1", 6, serialController, 50);
+Button sw2 = Button("SW2", 5, serialController, 50);
+Button sw3 = Button("SW3", 4, serialController, 50);
 
 
 numberGameModule ngm = numberGameModule("NGM",33,35,34,{36,37,38,39,40}, serialController);
@@ -149,6 +167,17 @@ std::vector<std::string> split(const std::string& s) {
     return result;
 }
 
+void winNoise(){
+  buzzer.win();
+}
+
+void loseNoise(){
+  buzzer.lose();
+}
+
+
+
+int gameEndThread = -1;
 
 void parseCommand(std::string command){
 
@@ -159,20 +188,39 @@ void parseCommand(std::string command){
   std::vector<std::string> func_args = split(command.substr(command.find(':') + 1, command.length() - (command.find(':') + 1)));
 
   if(name == "PWR" && func_args[0] == "set"){
-    if(std::stoi(func_args[1]) == 3){
+    if(std::stoi(func_args[1]) == 2){           // POWER SCRAMBLE
       powerGame();
       return;
-    }else if(std::stoi(func_args[1]) == 4){
+    }else if(std::stoi(func_args[1]) == 3){     // GAME WIN
       for(const auto& cmp : components){
         cmp->disable();
       }
+      if(gameEndThread != -1){
+        threads.kill(gameEndThread);
+      }
+      gameEndThread = threads.addThread(winNoise);
       return;
-    }else if(std::stoi(func_args[1]) == 5){
+    }else if(std::stoi(func_args[1]) == 4){     // GAME LOSE
+      for(const auto& cmp : components){
+        cmp->disable();
+      }
+      if(gameEndThread != -1){
+        threads.kill(gameEndThread);
+      }
+      gameEndThread = threads.addThread(loseNoise);
+      return;
+    }else if(std::stoi(func_args[1]) == 5){     // GAME RESET
       pwr.enable();
       pwr.update();
       powerToggle("PWR", pwr.buttonState);
 
       LCD.set({"\"\"", "\"\""});
+      buzzer.set({"1"});
+
+      if(gameEndThread != -1){
+        threads.kill(gameEndThread);
+      }
+      gameEndThread = -1;
 
       return;
     }

@@ -5,7 +5,7 @@ SimonSaysModule::SimonSaysModule(std::string name, std::vector<int> buttonPins, 
 : Component(name), buttonPins(buttonPins), rgbPin(rgbPin), serialController(serialController) {
 
     for(size_t i = 0; i < buttonPins.size(); i++){
-        Button btn = Button("SSM" + std::to_string(i), buttonPins[i], serialController, [this](std::string name, int state){buttonPressed(name, state);});   
+        Button btn = Button("SSM" + std::to_string(i), buttonPins[i], serialController, [this](std::string name, int state){buttonPressed(name, state);}, 50);   
         btn.update();
         buttons.push_back(btn);
     }

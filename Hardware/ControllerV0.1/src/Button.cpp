@@ -2,8 +2,8 @@
 #include <Arduino.h>
 
 
-Button::Button(std::string name, int pin, SerialController serialController) :
-Component(name), pin(pin), serialController(serialController) {
+Button::Button(std::string name, int pin, SerialController serialController, uint32_t debounceTime) :
+Component(name), pin(pin), serialController(serialController), debounceDelay(debounceTime){
 
     pinMode(pin, INPUT_PULLDOWN);
 
@@ -11,8 +11,8 @@ Component(name), pin(pin), serialController(serialController) {
 
 }
 
-Button::Button(std::string name, int pin, SerialController serialController, std::function<void (std::string, int)> onPressed) :
-Component(name), pin(pin), serialController(serialController), onPressed(onPressed) {
+Button::Button(std::string name, int pin, SerialController serialController, std::function<void (std::string, int)> onPressed, uint32_t debounceTime) :
+Component(name), pin(pin), serialController(serialController), onPressed(onPressed), debounceDelay(debounceTime) {
 
     pinMode(pin, INPUT_PULLDOWN);
 
