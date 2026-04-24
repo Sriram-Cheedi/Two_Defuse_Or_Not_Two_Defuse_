@@ -15,7 +15,7 @@ public class SSM_Gravity_Enable : MonoBehaviour
 
     private void Awake()
     {
-        GravityHUD.SetActive(false);
+        // GravityHUD.SetActive(false);
         floorTiles = GetComponentsInChildren<SurfaceIdentity>();
         foreach (var collider in CollidersToDisable)
         {
@@ -28,7 +28,7 @@ public class SSM_Gravity_Enable : MonoBehaviour
         }
         foreach (var tile in floorTiles)
         {
-            tile.type = SurfaceType.SemiConductor;
+            tile.type = SurfaceType.Plastic;
         }
     }
 
@@ -46,7 +46,7 @@ public class SSM_Gravity_Enable : MonoBehaviour
     {
         if (game != PuzzleGame.SSM) return;
         HandleHuds();
-        StartCoroutine(ShowGravityAlertForSeconds());
+        // StartCoroutine(ShowGravityAlertForSeconds());
         foreach (var tile in floorTiles)
         {
             tile.type = SurfaceType.Plastic;
@@ -65,16 +65,16 @@ public class SSM_Gravity_Enable : MonoBehaviour
             collider.SetActive(false);
         }
         
-        foreach (var collider in CollidersToEnable)
-        {
-            collider.SetActive(true);
-        }
+        // foreach (var collider in CollidersToEnable)
+        // {
+        //     collider.SetActive(true);
+        // }
     }
     
-    IEnumerator ShowGravityAlertForSeconds()
-    {
-        GravityHUD.SetActive(true);
-        yield return new WaitForSeconds(levelData.surfaceIntroAlertDuration);
-        GravityHUD.SetActive(false);
-    }
+    // IEnumerator ShowGravityAlertForSeconds()
+    // {
+    //     GravityHUD.SetActive(true);
+    //     yield return new WaitForSeconds(levelData.surfaceIntroAlertDuration);
+    //     GravityHUD.SetActive(false);
+    // }
 }

@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections;
 using RigidBodyPlayer.PlayerStates;
+
 
 namespace PersistantSystems.Software.GameStateMachine.GameStates
 {
-    public class ReadyUpState : BaseState<GameState>, IHardwareListener
+    public class ReadyUpState : BaseState<GameState>, IHardwareListener, IGameEventListener
     {
         private readonly GameManager gameManager;
         private bool isBombActivated;
         private bool isTrapDoorOpened;
+        private bool isHudSRead;
         public static event Action BombActivated;
         public static event Action TrapDoorOpened;
         public ReadyUpState(GameManager gameManager) : base(GameState.ReadyUp)
@@ -16,7 +19,8 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
         }
 
         public override void EnterState()
-        {
+        { 
+            isHudSRead  = false;
             isBombActivated = false;
             isTrapDoorOpened = false;
         }
@@ -45,6 +49,8 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
                 BombActivated?.Invoke();
             }
 
+            if (!isHudSRead) return;
+
             if (mod == "BTN4" && val == 1)
             {
                 isTrapDoorOpened = true;
@@ -58,6 +64,11 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
 
         public void OnHardwareReconnect()
         {
+        }
+
+        public void HandleOnBoardingDone()
+        {
+            isHudSRead = true;
         }
     }
 }

@@ -140,8 +140,8 @@ namespace Puzzles.Controllers
             rand = new Random();
             data = new PuzzleData
             {
-                // correctSequence = mazeSequences[rand.Next(mazeSequences.Length)]
-                correctSequence = mazeSequences[3]
+                correctSequence = mazeSequences[rand.Next(mazeSequences.Length)]
+                // correctSequence = mazeSequences[3]
             };
         }
 

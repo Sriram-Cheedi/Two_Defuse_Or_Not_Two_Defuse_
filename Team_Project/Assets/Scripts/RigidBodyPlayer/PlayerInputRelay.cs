@@ -27,6 +27,9 @@ public class PlayerInputRelay : MonoBehaviour
     public bool InvertGravityValue { get; private set; }
     public bool SmokeValue { get; private set; }
     public bool IsJumpHeld => jump.IsPressed();
+    public bool IsEnterHeld => enter.IsPressed();
+    private bool inputEnabled;
+    public bool IsEnterPressed => enter.IsPressed();
 
     void Awake()
     {
@@ -42,10 +45,12 @@ public class PlayerInputRelay : MonoBehaviour
         enter = input.actions["Enter"];
         smoke = input.actions["Smoke"];
         huds = input.actions["Huds"];
+        inputEnabled = false;
     }
 
     private void OnEnable()
     {
+        GameEvents.OnBoardingDone += EnableUserInput;
         click.performed += OnClick;
 
         move.performed += OnMove;
@@ -60,21 +65,22 @@ public class PlayerInputRelay : MonoBehaviour
         crouch.performed += OnCrouch;
         crouch.canceled += OnCrouch;
 
-        invertGravity.performed += OnInvertGravity;
-        invertGravity.canceled += OnInvertGravity;
+        // invertGravity.performed += OnInvertGravity;
+        // invertGravity.canceled += OnInvertGravity;
 
-        smoke.performed += OnSmokeReleased;
+        // smoke.performed += OnSmokeReleased;
 
         huds.performed += OnHudsPressed;
 
-        keypressNumbers.performed += OnNumberInput;
+        // keypressNumbers.performed += OnNumberInput;
 
-        enter.performed += OnEnter;
-        enter.canceled += OnEnter;
+        // enter.performed += OnEnter;
+        // enter.canceled += OnEnter;
     }
 
     private void OnDisable()
     {
+        GameEvents.OnBoardingDone += EnableUserInput;
         click.performed -= OnClick;
 
         move.performed -= OnMove;
@@ -89,17 +95,17 @@ public class PlayerInputRelay : MonoBehaviour
         crouch.performed -= OnCrouch;
         crouch.canceled -= OnCrouch;
 
-        invertGravity.performed -= OnInvertGravity;
-        invertGravity.canceled -= OnInvertGravity;
-
-        smoke.performed -= OnSmokeReleased;
+        // invertGravity.performed -= OnInvertGravity;
+        // invertGravity.canceled -= OnInvertGravity;
+        //
+        // smoke.performed -= OnSmokeReleased;
         
         huds.performed -= OnHudsPressed;
 
-        keypressNumbers.performed -= OnNumberInput;
-
-        enter.performed -= OnEnter;
-        enter.canceled -= OnEnter;
+        // keypressNumbers.performed -= OnNumberInput;
+        //
+        // enter.performed -= OnEnter;
+        // enter.canceled -= OnEnter;
     }
 
     private void OnClick(InputAction.CallbackContext ctx)
@@ -115,23 +121,27 @@ public class PlayerInputRelay : MonoBehaviour
 
     private void OnMove(InputAction.CallbackContext ctx)
     {
+        if (!inputEnabled) return;
         MoveValue = ctx.ReadValue<Vector2>();
         Move?.Invoke(MoveValue);
     }
 
     private void OnLook(InputAction.CallbackContext ctx)
     {
+        if (!inputEnabled) return;
         LookValue = ctx.ReadValue<Vector2>();
         Look?.Invoke(LookValue);
     }
 
     private void OnJump(InputAction.CallbackContext ctx)
     {
+        if (!inputEnabled) return;
         if (ctx.performed) JumpPressed?.Invoke();
     }
 
     private void OnCrouch(InputAction.CallbackContext ctx)
     {
+        if (!inputEnabled) return;
         CrouchValue = ctx.ReadValueAsButton();
         Crouch?.Invoke(CrouchValue);
     }
@@ -151,6 +161,7 @@ public class PlayerInputRelay : MonoBehaviour
 
     private void OnHudsPressed(InputAction.CallbackContext ctx)
     {
+        if (!inputEnabled) return;
         if (!ctx.performed) return;
         HudsPressed?.Invoke();
     }
@@ -169,7 +180,11 @@ private void OnNumberInput(InputAction.CallbackContext ctx)
     
     private void OnEnter(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed) GuessSubmitted?.Invoke();
+        // if (ctx.performed) GuessSubmitted?.Invoke();
     }
-    
+
+    private void EnableUserInput()
+    {
+        inputEnabled = true;
+    }
 }
