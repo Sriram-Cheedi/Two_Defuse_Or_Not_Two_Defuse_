@@ -42,17 +42,25 @@ void Button::update(){
 
     if(!enabled) return;
 
-    int currentState = digitalRead(pin);
+    int reading = digitalRead(pin);
 
-    if(currentState != lastState){
+    if(reading != lastState){
 
-        lastState = currentState;
+        lastDebounceTime = millis();
+    }
+
+    if((millis() - lastDebounceTime) > debounceDelay
+        && buttonState != reading){
+        
+        buttonState = reading;
 
         if(onPressed != NULL){
-            onPressed(name, currentState);
+            onPressed(name, buttonState);
         }else {
-            serialController.serialWrite(name, std::to_string(lastState));
+            serialController.serialWrite(name, std::to_string(buttonState));
         }
 
     }
+
+    lastState = reading;
 }

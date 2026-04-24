@@ -11,12 +11,17 @@ private:
     SerialController& serialController;
     std::function<void (std::string, int)> onPressed;
 
+    const uint32_t debounceDelay = 50;
+    uint32_t lastDebounceTime = 50;
+
+    int lastState = -1;
+
     bool enabled = true;
 
 
 public:
 
-    int lastState = -1;
+    int buttonState = -1;
 
     void scramble() override{
         disable();

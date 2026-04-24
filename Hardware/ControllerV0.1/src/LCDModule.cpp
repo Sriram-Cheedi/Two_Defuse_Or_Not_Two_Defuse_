@@ -42,6 +42,19 @@ void LCDModule::disable(){
   lcd.noBacklight();
 }
 
+void LCDModule::refresh(){
+  lcd.init();
+  changed = true;
+}
+
+void LCDModule::backLightOff(){
+  lcd.noBacklight();
+}
+
+void LCDModule::backLightOn(){
+  lcd.backlight();
+}
+
 void LCDModule::set(std::vector<std::string> args){
 
   std::vector<std::string> formattedArgs;
