@@ -9,16 +9,19 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
         private readonly GameManager gameManager;
         private readonly AudioSource audioSource;
         private readonly AudioClip warningAudio;
+        private readonly AudioClip soundTrack;
         public static Action ExplosionWarning;
         private bool hasWarningFired;
+        private readonly float soundTrackStartTime = 108.0f;
         
         private bool isPaused;
         private float previousTimeScale = 1f;
-        public PlayingState(GameManager gameManager, AudioSource audioSource, AudioClip warningAudio) : base(GameState.Playing)
+        public PlayingState(GameManager gameManager, AudioSource audioSource, AudioClip warningAudio, AudioClip soundTrack) : base(GameState.Playing)
         {
             this.gameManager = gameManager;
             this.audioSource = audioSource;
             this.warningAudio = warningAudio;
+            this.soundTrack = soundTrack;
         }
 
         public override void EnterState()
@@ -26,6 +29,12 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
             hasWarningFired = false;
             isPaused = false;
             previousTimeScale = 1f;
+            
+            // Soundtrack: start from defined point, play to end
+            audioSource.clip = soundTrack;
+            audioSource.loop = false;
+            audioSource.time = soundTrackStartTime;
+            audioSource.Play();
 
             string currentUser = gameManager.GetCurrentUsername();
             Debug.Log($"PlayingState.EnterState user={currentUser}");
@@ -97,7 +106,7 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
             if (warningAudio == null)
                 return;
 
-            if (gameManager.BombTimer <= 5f && gameManager.BombTimer > 0f)
+            if (gameManager.BombTimer <= 10f && gameManager.BombTimer > 0f)
             {
                 if (!hasWarningFired)
                 {

@@ -4130,13 +4130,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 9142198550357336973, guid: 780d65a9f204ca9478403ee3b25519d0, type: 3}
+      propertyPath: backgroundMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: 48563f4eb28cc574cbab7f79fb0fae01, type: 3}
+    - target: {fileID: 9142198550357336973, guid: 780d65a9f204ca9478403ee3b25519d0, type: 3}
       propertyPath: cutsceneDisplay
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 9142198550357336973, guid: 780d65a9f204ca9478403ee3b25519d0, type: 3}
       propertyPath: scoreBoardSound
       value: 
-      objectReference: {fileID: 8300000, guid: 4ea74cd5cceb69645b20b0ac5e878d05, type: 3}
+      objectReference: {fileID: 8300000, guid: a4f22029dd55c7444a84af3bc7f2fe3e, type: 3}
     - target: {fileID: 9142198550357336973, guid: 780d65a9f204ca9478403ee3b25519d0, type: 3}
       propertyPath: audienceCutsceneDisplay
       value: 
@@ -4158,6 +4162,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1512083445196673632, guid: 4ffd9b036919e674788c8771327936d7, type: 3}
+      propertyPath: m_VideoClip
+      value: 
+      objectReference: {fileID: 32900000, guid: c272087e7b208bc4191f3bbec92bb06e, type: 3}
     - target: {fileID: 1788377949013960314, guid: 4ffd9b036919e674788c8771327936d7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

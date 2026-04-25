@@ -29,6 +29,7 @@ namespace PersistantSystems.Software.GameStateMachine
         [SerializeField] private AudioClip menuSound;
         [SerializeField] private AudioClip cutSceneSound;
         [SerializeField] private AudioClip scoreBoardSound;
+        [SerializeField] private AudioClip backgroundMusic;
         
         [Header("Audience Display 2 References")]
         [SerializeField] private GameObject audienceMainMenuDisplay;
@@ -181,9 +182,9 @@ namespace PersistantSystems.Software.GameStateMachine
         private void RegisterStates()
         {
             States[GameState.Menu] = new MenuState(this, audioSource, menuSound);
-            States[GameState.CutScene] = new CutSceneState(this, cutscenePlayer, menuUI, cutsceneDisplay, loadingPage, audioSource, cutSceneSound);
-            States[GameState.ReadyUp] = new ReadyUpState(this);
-            States[GameState.Playing] = new PlayingState(this, audioSource, warningAudio);
+            States[GameState.CutScene] = new CutSceneState(this, cutscenePlayer, menuUI, cutsceneDisplay, loadingPage, audioSource, backgroundMusic);
+            States[GameState.ReadyUp] = new ReadyUpState(this, audioSource, backgroundMusic);
+            States[GameState.Playing] = new PlayingState(this, audioSource, warningAudio, backgroundMusic);
             States[GameState.GameOver] = new GameOverState(this, audioSource, loseSound);
             States[GameState.GameWin] = new GameWinState(this, audioSource, winSound);
             States[GameState.DashBoardWin] = new ScoreDashBoardStateWin(this, audioSource, scoreBoardSound);
