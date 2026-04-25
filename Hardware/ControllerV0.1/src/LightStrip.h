@@ -14,14 +14,20 @@ class LightStrip : public Component {
 
 private:
 
-    byte drawingMemory[9];
-    byte displayMemory[9 * 12];
-
-    bool changed = false;
     int ledCount;
 
+    uint32_t* drawingMemory;
+    byte* displayMemory;
+
+    bool changed = false;
+    bool scrambled = false;
+
     WS2812Serial strip;
-    std::vector<uint32_t> pixelBuffer; 
+    std::vector<uint32_t> pixelBuffer;
+
+    uint32_t lastScrambleUpdate = 0;
+
+    std::vector<uint32_t> colourMap = {Color(255, 255, 0), Color(0, 255, 0), Color(255, 0, 0), Color(0, 0, 255)};
 
 public:
 
@@ -31,6 +37,7 @@ public:
         return ((uint32_t)r << 16) | ((uint32_t)g << 8) | b;
     }
 
+    void setAll(uint32_t color);
     void setPixel(int index, uint32_t color);
     void set(std::vector<std::string> args) override;
     void status() override;

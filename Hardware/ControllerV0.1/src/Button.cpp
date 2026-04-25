@@ -18,6 +18,7 @@ Component(name), pin(pin), serialController(serialController), onPressed(onPress
 
     delay(10);
 
+    lastState = digitalRead(pin);
 }
 
 void Button::status(){
@@ -31,6 +32,11 @@ void Button::enable(){
 
     enabled = true;
 
+}
+
+void Button::reset(){
+    buttonState = -1;
+    lastState = -1;
 }
 
 void Button::disable(){

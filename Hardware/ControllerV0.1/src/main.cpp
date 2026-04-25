@@ -174,7 +174,7 @@ void winNoise(){
 }
 
 void loseNoise(){
-  buzzer.lose();
+  buzzer.lose();  
 }
 
 
@@ -193,27 +193,36 @@ void parseCommand(std::string command){
     if(std::stoi(func_args[1]) == 2){           // POWER SCRAMBLE
       powerGame();
       return;
+
     }else if(std::stoi(func_args[1]) == 3){     // GAME WIN
       for(const auto& cmp : components){
-        cmp->disable();
+        if(cmp->name != "LIGHTS"){
+          cmp->disable();
+        }
       }
+      lightStrip.setAll(LightStrip::Color(0, 255, 0));
       if(gameEndThread != -1){
         threads.kill(gameEndThread);
       }
       gameEndThread = threads.addThread(winNoise);
       return;
+
     }else if(std::stoi(func_args[1]) == 4){     // GAME LOSE
       for(const auto& cmp : components){
-        cmp->disable();
+        if(cmp->name != "LIGHTS"){
+          cmp->disable();
+        }
       }
+      lightStrip.setAll(LightStrip::Color(255, 0, 0));
       if(gameEndThread != -1){
         threads.kill(gameEndThread);
       }
       gameEndThread = threads.addThread(loseNoise);
       return;
+
     }else if(std::stoi(func_args[1]) == 5){     // GAME RESET
       pwr.enable();
-      pwr.update();
+      pwr.reset();
       powerToggle("PWR", pwr.buttonState);
 
       LCD.set({"\"\"", "\"\""});
@@ -221,8 +230,10 @@ void parseCommand(std::string command){
 
       if(gameEndThread != -1){
         threads.kill(gameEndThread);
+        gameEndThread = -1;
       }
-      gameEndThread = -1;
+
+      lightStrip.setAll(LightStrip::Color(0, 0, 0));
 
       return;
     }
@@ -272,11 +283,6 @@ void setup() {
   components.push_back(&wire3);
   components.push_back(&wire4);
   components.push_back(&lightStrip);
-
-  lightStrip.setPixel(0, LightStrip::Color(255, 255, 255));
-  lightStrip.setPixel(1, LightStrip::Color(255, 255, 255));
-  lightStrip.setPixel(2, LightStrip::Color(255, 255, 255));
-  lightStrip.setPixel(3, LightStrip::Color(255, 255, 255));
 
   LCD.LCDSetup();
 

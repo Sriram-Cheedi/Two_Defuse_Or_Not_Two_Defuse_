@@ -16,20 +16,16 @@ SimonSaysModule::SimonSaysModule(std::string name, std::vector<int> buttonPins, 
 }
 
 void SimonSaysModule::update(){
-    if(!scrambled){
+
+    if(!scrambled && enabled){
         if(pixelBufferMutex.try_lock()){
             for(int i = 0; i < 4; i++){
                 strip.setPixel(i + stripFirstIndex, pixelBuffer[i]);
             }
             pixelBufferMutex.unlock();
         }
-    }else if(state != 0 && millis() - lastScrambleUpdate > 50) {
-        lastScrambleUpdate = millis();
-        for(int i = 0; i < 4; i++){
-            int j = rand() % 4;
-            strip.setPixel(i + stripFirstIndex, colourMap[j]);
-        }
     }
+
     int newState = state.load(std::memory_order_acquire);
 
     if(newState != oldState){
@@ -107,8 +103,6 @@ void SimonSaysModule::disable(){
         threads.kill(threadID);
         threadID = -1;
     }
-
-    setPixelBuffer({Color(0, 0, 0), Color(0, 0, 0), Color(0, 0, 0), Color(0, 0, 0)});    
 
     enabled = false;
     scrambled = false;

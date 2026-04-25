@@ -23,10 +23,12 @@ private:
     int oldState = 0;
     int threadID = -1;
 
+    LightStrip& strip;
+    int stripFirstIndex;
+
     SerialController serialController;
 
-    int stripFirstIndex;
-    LightStrip strip;
+
 
     uint32_t lastScrambleUpdate = 0;
 
