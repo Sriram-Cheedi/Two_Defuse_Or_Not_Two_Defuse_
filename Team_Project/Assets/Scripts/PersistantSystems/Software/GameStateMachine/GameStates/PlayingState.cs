@@ -7,7 +7,8 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
     public class PlayingState : BaseState<GameState>, IHardwareListener
     {
         private readonly GameManager gameManager;
-        private readonly AudioSource audioSource;
+        private readonly AudioSource audioSourceSfx;
+        private readonly AudioSource audioSourceMusic;
         private readonly AudioClip warningAudio;
         private readonly AudioClip soundTrack;
         public static Action ExplosionWarning;
@@ -16,10 +17,11 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
         
         private bool isPaused;
         private float previousTimeScale = 1f;
-        public PlayingState(GameManager gameManager, AudioSource audioSource, AudioClip warningAudio, AudioClip soundTrack) : base(GameState.Playing)
+        public PlayingState(GameManager gameManager, AudioSource audioSourceSfx, AudioSource audioSourceMusic, AudioClip warningAudio, AudioClip soundTrack) : base(GameState.Playing)
         {
             this.gameManager = gameManager;
-            this.audioSource = audioSource;
+            this.audioSourceSfx = audioSourceSfx;
+            this.audioSourceMusic =  audioSourceMusic;
             this.warningAudio = warningAudio;
             this.soundTrack = soundTrack;
         }
@@ -30,22 +32,23 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
             isPaused = false;
             previousTimeScale = 1f;
             
-            // Soundtrack: start from defined point, play to end
-            audioSource.clip = soundTrack;
-            audioSource.loop = false;
-            audioSource.time = soundTrackStartTime;
-            audioSource.Play();
+    
+            if (soundTrack != null)
+                Debug.Log($"PlayingState: clip length={soundTrack.length}, seeking to {soundTrackStartTime}");
+    
+            audioSourceMusic.clip = soundTrack;
+            audioSourceMusic.loop = false;
+            audioSourceMusic.Play();
+            audioSourceMusic.timeSamples = (int)(soundTrackStartTime * soundTrack.frequency);
 
             string currentUser = gameManager.GetCurrentUsername();
-            Debug.Log($"PlayingState.EnterState user={currentUser}");
-            Debug.Log($"DatabaseAPI.Instance is null? {DatabaseAPI.Instance == null}");
-
             DatabaseAPI.Instance?.UpdateStationStatus(GameplayStationConfig.StationId, currentUser, "Playing");
         }
 
         public override void ExitState()
         {
-            audioSource.Stop();
+            audioSourceSfx.Stop();
+            audioSourceMusic.Stop();
         }
 
         public override void UpdateState()
@@ -80,7 +83,8 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
             previousTimeScale = Time.timeScale;
             Time.timeScale    = 0f;
 
-            audioSource.Stop();
+            audioSourceMusic.Stop();
+            audioSourceSfx.Stop();
         }
 
         public void OnHardwareReconnect()
@@ -113,16 +117,11 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
                     ExplosionWarning?.Invoke();
                     hasWarningFired = true;
                     
-                    audioSource.clip = warningAudio;
-                    audioSource.loop = true;
-                    audioSource.Play();
+                    audioSourceSfx.clip = warningAudio;
+                    audioSourceSfx.loop = true;
+                    audioSourceSfx.Play();
                 }
                 
-            }
-            else
-            {
-                if (audioSource.isPlaying)
-                    audioSource.Stop();
             }
         }
 
