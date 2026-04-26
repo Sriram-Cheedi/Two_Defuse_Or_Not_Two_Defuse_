@@ -79,6 +79,7 @@ void powerToggle(std::string btnName, int btnState) {
       }
     }
   }else{
+
     flickerThread = threads.addThread(flickerOn);
   }
 
@@ -223,15 +224,16 @@ void parseCommand(std::string command){
     }else if(std::stoi(func_args[1]) == 5){     // GAME RESET
       pwr.enable();
       pwr.reset();
+      pwr.update();
+      delay(50);
+      pwr.update();
+      Serial.print(pwr.buttonState);
       powerToggle("PWR", pwr.buttonState);
 
-      LCD.set({"\"\"", "\"\""});
-      buzzer.set({"1"});
-
-      if(gameEndThread != -1){
-        threads.kill(gameEndThread);
-        gameEndThread = -1;
+      for(auto& cmp : components){
+        cmp->set({"0"});
       }
+      
 
       lightStrip.setAll(LightStrip::Color(0, 0, 0));
 
@@ -283,6 +285,8 @@ void setup() {
   components.push_back(&wire3);
   components.push_back(&wire4);
   components.push_back(&lightStrip);
+
+  parseCommand("PWR:set 5");
 
   LCD.LCDSetup();
 

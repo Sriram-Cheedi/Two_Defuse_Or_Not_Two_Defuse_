@@ -7,8 +7,9 @@ Component(name), pin(pin), serialController(serialController), debounceDelay(deb
 
     pinMode(pin, INPUT_PULLDOWN);
 
-    delay(10);
+    delay(1);
 
+    lastState = digitalRead(pin);
 }
 
 Button::Button(std::string name, int pin, SerialController serialController, std::function<void (std::string, int)> onPressed, uint32_t debounceTime) :
@@ -16,7 +17,7 @@ Component(name), pin(pin), serialController(serialController), onPressed(onPress
 
     pinMode(pin, INPUT_PULLDOWN);
 
-    delay(10);
+    delay(1);
 
     lastState = digitalRead(pin);
 }
@@ -36,7 +37,7 @@ void Button::enable(){
 
 void Button::reset(){
     buttonState = -1;
-    lastState = -1;
+    lastState = digitalRead(pin);
 }
 
 void Button::disable(){
@@ -58,13 +59,20 @@ void Button::update(){
     if((millis() - lastDebounceTime) > debounceDelay
         && buttonState != reading){
         
-        buttonState = reading;
-
-        if(onPressed != NULL){
-            onPressed(name, buttonState);
-        }else {
-            serialController.serialWrite(name, std::to_string(buttonState));
+        if(buttonState == -1){
+            buttonState = reading;
+        }else{
+            buttonState = reading;
+            if(onPressed != NULL){
+                onPressed(name, buttonState);
+            }else {
+                serialController.serialWrite(name, std::to_string(buttonState));
+            }
         }
+
+
+
+        
 
     }
 
