@@ -109,8 +109,7 @@ public class LeaderboardDisplayManager : MonoBehaviour
 
     public void SetLeaderboard(List<LeaderboardEntryData> entries)
     {
-        if (entries == null)
-            entries = new List<LeaderboardEntryData>();
+        if (entries == null) entries = new List<LeaderboardEntryData>();
 
         for (int i = 0; i < spawnedRows.Count; i++)
         {

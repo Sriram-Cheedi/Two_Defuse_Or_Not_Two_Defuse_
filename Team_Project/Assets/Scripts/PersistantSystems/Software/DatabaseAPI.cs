@@ -175,7 +175,7 @@ public class DatabaseAPI: MonoBehaviour
     
     public void SubmitLeaderboardEntry(string username, int score, bool defused, string stationId)
     {
-        if (reference == null)
+        if (reference == null) //change
         {
             Debug.LogError("Cannot submit leaderboard entry because database reference is null.");
             return;
@@ -186,7 +186,7 @@ public class DatabaseAPI: MonoBehaviour
         var newEntry = new LeaderboardEntryData(username, score, defused, stationId);
         var json = JsonUtility.ToJson(newEntry);
 
-        newScoreRef.SetRawJsonValueAsync(json).ContinueWithOnMainThread(task =>
+        newScoreRef.SetRawJsonValueAsync(json).ContinueWithOnMainThread(task => //change
         {
             if (task.IsFaulted)
             {
@@ -201,7 +201,7 @@ public class DatabaseAPI: MonoBehaviour
     
     public void UpdateStationStatus(string stationId, string teamName, string status)
     {
-        if (reference == null)
+        if (reference == null) //change
         {
             Debug.LogError("Cannot update station status because database reference is null.");
             return;
@@ -233,7 +233,6 @@ public class DatabaseAPI: MonoBehaviour
         }
 
         UnsubscribeFromLeaderboard();
-
         leaderboardQuery = reference.Child("leaderboard").OrderByChild("score").LimitToLast(amount);
         leaderboardQuery.ValueChanged += HandleLeaderboardChanged;
     }

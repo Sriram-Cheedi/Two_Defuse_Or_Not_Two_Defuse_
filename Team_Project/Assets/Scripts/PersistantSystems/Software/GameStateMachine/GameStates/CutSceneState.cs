@@ -13,6 +13,7 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
         private readonly GameObject loadingPage;
         private readonly AudioSource audioSource;   
         private readonly AudioClip cutSceneSoundTrack;
+        private readonly float cutsceneSoundEndPoint = 50.0f;
 
         public CutSceneState(GameManager gameManager, VideoPlayer player, GameObject menuUI, GameObject display, GameObject loadingPage, AudioSource audioSource, AudioClip cutSceneSoundTrack)
             : base(GameState.CutScene)
@@ -28,9 +29,9 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
 
         public override void EnterState()
         {
-            audioSource.time = 0f;
             audioSource.clip = cutSceneSoundTrack;
-            audioSource.loop = true;
+            audioSource.time = 0f;
+            audioSource.loop = false;
             audioSource.Play();
             if (loadingPage != null)
                 loadingPage.SetActive(true);
@@ -70,7 +71,14 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
             audioSource.Stop();
         }
 
-        public override void UpdateState() { }
+        public override void UpdateState()
+        {
+            if (audioSource.clip == cutSceneSoundTrack && audioSource.time >= cutsceneSoundEndPoint)
+            {
+                audioSource.timeSamples = 0;
+                if (!audioSource.isPlaying) audioSource.Play();
+            }
+        }
         public override void FixedUpdateState() { }
 
         private void OnVideoPrepared(VideoPlayer vp)

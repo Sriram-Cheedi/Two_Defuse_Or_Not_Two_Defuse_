@@ -15,7 +15,7 @@ namespace PersistantSystems.Software
         
         private void Start()
         {
-            if (fovSlider == null || fovValue == null)
+            if (fovSlider == null || fovValue == null) //change
             {
                 Debug.LogWarning("FOV settings not set");
                 return;
@@ -25,6 +25,7 @@ namespace PersistantSystems.Software
             fovSlider.wholeNumbers = true;
             float savedFov = PlayerPrefs.GetFloat(fovKEY, fovDefault);
             fovSlider.SetValueWithoutNotify(savedFov);
+            // fovValue.text = Mathf.RoundToInt(savedFov).ToString(); //include this
             UpdateFovValue(savedFov);
             fovSlider.onValueChanged.AddListener(OnFovChanged);
         }

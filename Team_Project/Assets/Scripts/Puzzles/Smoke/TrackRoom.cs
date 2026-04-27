@@ -22,7 +22,10 @@ public class TrackRoom : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         SmokeEmitter emitter = other.GetComponent<SmokeEmitter>();
-        if (emitter == null) return;
+        if (emitter == null)
+        {
+            return;
+        }
 
         if (rooms.Contains(emitter))
         {

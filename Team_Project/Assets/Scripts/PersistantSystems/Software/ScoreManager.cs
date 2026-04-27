@@ -32,6 +32,11 @@ namespace PersistantSystems.Software
             Solved = solved;
         }
     }
+    public static class FinalRunResults
+    {
+        public static int yourScore;
+        public static double bombTimeRemaining;
+    }
     
     public class ScoreManager : MonoBehaviour
     {
@@ -44,6 +49,9 @@ namespace PersistantSystems.Software
         private const float SYNC_WINDOW = 3.0f;
         private const float SYNC_PERFECT_THRESHOLD = 0.5f;
         private const float LOSS_MULTIPLIER = 0.25f;
+        
+        public int yourScore { get; private set; }
+        public double bombTimeRemaining { get; private set; }
 
         private Dictionary<PuzzleGame, PuzzleResults> puzzleResultsMap = 
                 new Dictionary<PuzzleGame, PuzzleResults>()
@@ -261,6 +269,10 @@ namespace PersistantSystems.Software
             
             // bool defused = GameManager.Instance != null &&
             //                GameManager.Instance.CurrentStateKey == GameState.GameWin;
+            // yourScore = finalScoreInt;
+            // bombTimeRemaining = bombTime;
+            FinalRunResults.yourScore = finalScoreInt;
+            FinalRunResults.bombTimeRemaining = bombTime;
 
             Debug.Log($"Final Score {finalScoreInt}");
 
