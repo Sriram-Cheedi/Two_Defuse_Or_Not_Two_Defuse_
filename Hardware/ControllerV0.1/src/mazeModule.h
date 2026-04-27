@@ -1,6 +1,4 @@
-#ifndef MAZEMODULE_H
-#define MAZEMODULE_H
-
+#pragma once
 #include <array>
 #include <stdint.h>
 #include <string>
@@ -38,5 +36,3 @@ class MazeModule : public Component {
     void scramble() override;
 
 };
-
-#endif

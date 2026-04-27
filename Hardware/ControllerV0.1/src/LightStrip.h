@@ -1,6 +1,4 @@
-#ifndef LIGHTSTRIP_H
-#define LIGHTSTRIP_H
-
+#pragma once
 #include <array>
 #include <stdint.h>
 #include <string>
@@ -47,5 +45,3 @@ public:
     void scramble() override;
 
 };
-
-#endif
