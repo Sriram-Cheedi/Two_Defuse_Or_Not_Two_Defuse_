@@ -1,6 +1,4 @@
-#ifndef LCDMODULE_H
-#define LCDMODULE_H
-
+#pragma once
 #include <Arduino.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
@@ -68,5 +66,3 @@ public:
         disable();
     };
 };
-
-#endif

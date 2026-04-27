@@ -23,6 +23,8 @@ public:
 
     int buttonState = -1;
 
+    void reset();
+
     void scramble() override{
         disable();
     };
