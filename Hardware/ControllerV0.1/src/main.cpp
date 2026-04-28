@@ -12,9 +12,11 @@
 #include "fishingModule.h"
 #include "mazeModule.h"
 #include "Buzzer.h"
+#include "LightStrip.h"
 
 SerialController serialController = SerialController();
 
+LightStrip lightStrip = LightStrip("LIGHTS", 29, 9);
 
 std::vector<Component*> components; 
 
@@ -77,6 +79,7 @@ void powerToggle(std::string btnName, int btnState) {
       }
     }
   }else{
+
     flickerThread = threads.addThread(flickerOn);
   }
 
@@ -136,7 +139,7 @@ Button sw3 = Button("SW3", 4, serialController, 50);
 
 numberGameModule ngm = numberGameModule("NGM",33,35,34,{36,37,38,39,40}, serialController);
 fishingModule fgm = fishingModule("FGM",16,14,15,17,serialController, buzzer);
-SimonSaysModule ssm = SimonSaysModule("SSM", {24, 25, 26, 27}, 0,  serialController);
+SimonSaysModule ssm = SimonSaysModule("SSM", {24, 25, 26, 27}, lightStrip, 5, serialController);
 
 
 
@@ -172,7 +175,7 @@ void winNoise(){
 }
 
 void loseNoise(){
-  buzzer.lose();
+  buzzer.lose();  
 }
 
 
@@ -191,36 +194,48 @@ void parseCommand(std::string command){
     if(std::stoi(func_args[1]) == 2){           // POWER SCRAMBLE
       powerGame();
       return;
+
     }else if(std::stoi(func_args[1]) == 3){     // GAME WIN
       for(const auto& cmp : components){
-        cmp->disable();
+        if(cmp->name != "LIGHTS"){
+          cmp->disable();
+        }
       }
+      lightStrip.setAll(LightStrip::Color(0, 255, 0));
       if(gameEndThread != -1){
         threads.kill(gameEndThread);
       }
       gameEndThread = threads.addThread(winNoise);
       return;
+
     }else if(std::stoi(func_args[1]) == 4){     // GAME LOSE
       for(const auto& cmp : components){
-        cmp->disable();
+        if(cmp->name != "LIGHTS"){
+          cmp->disable();
+        }
       }
+      lightStrip.setAll(LightStrip::Color(255, 0, 0));
       if(gameEndThread != -1){
         threads.kill(gameEndThread);
       }
       gameEndThread = threads.addThread(loseNoise);
       return;
+
     }else if(std::stoi(func_args[1]) == 5){     // GAME RESET
       pwr.enable();
+      pwr.reset();
       pwr.update();
+      delay(50);
+      pwr.update();
+      Serial.print(pwr.buttonState);
       powerToggle("PWR", pwr.buttonState);
 
-      LCD.set({"\"\"", "\"\""});
-      buzzer.set({"1"});
-
-      if(gameEndThread != -1){
-        threads.kill(gameEndThread);
+      for(auto& cmp : components){
+        cmp->set({"0"});
       }
-      gameEndThread = -1;
+      
+
+      lightStrip.setAll(LightStrip::Color(0, 0, 0));
 
       return;
     }
@@ -269,6 +284,9 @@ void setup() {
   components.push_back(&wire2);
   components.push_back(&wire3);
   components.push_back(&wire4);
+  components.push_back(&lightStrip);
+
+  parseCommand("PWR:set 5");
 
   LCD.LCDSetup();
 
@@ -286,4 +304,5 @@ void loop() {
   for(const auto& cmp : components){
     cmp->update();
   }
+
 }

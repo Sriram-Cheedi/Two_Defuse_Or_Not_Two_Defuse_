@@ -23,12 +23,14 @@ namespace PersistantSystems.Software.GameStateMachine
 
         [Header("Audio")]
         [SerializeField] private AudioClip warningAudio;
-        [SerializeField] private AudioSource audioSource;
+        [SerializeField] private AudioSource audioSource_sfx;
+        [SerializeField] private AudioSource audioSource_music;
         [SerializeField] private AudioClip loseSound;
         [SerializeField] private AudioClip winSound;
         [SerializeField] private AudioClip menuSound;
         [SerializeField] private AudioClip cutSceneSound;
         [SerializeField] private AudioClip scoreBoardSound;
+        [SerializeField] private AudioClip backgroundMusic;
         
         [Header("Audience Display 2 References")]
         [SerializeField] private GameObject audienceMainMenuDisplay;
@@ -52,7 +54,7 @@ namespace PersistantSystems.Software.GameStateMachine
             CacheRefs();
             ShowAudienceMainMenu();
             RegisterStates();
-            GetAudioComponent();
+            // GetAudioComponent();
             InitializeState(GameState.Menu);
             
         }
@@ -175,19 +177,19 @@ namespace PersistantSystems.Software.GameStateMachine
 
         private void GetAudioComponent()
         {
-            audioSource =  GetComponent<AudioSource>();
+            // audioSource =  GetComponent<AudioSource>();
         }
 
         private void RegisterStates()
         {
-            States[GameState.Menu] = new MenuState(this, audioSource, menuSound);
-            States[GameState.CutScene] = new CutSceneState(this, cutscenePlayer, menuUI, cutsceneDisplay, loadingPage, audioSource, cutSceneSound);
-            States[GameState.ReadyUp] = new ReadyUpState(this);
-            States[GameState.Playing] = new PlayingState(this, audioSource, warningAudio);
-            States[GameState.GameOver] = new GameOverState(this, audioSource, loseSound);
-            States[GameState.GameWin] = new GameWinState(this, audioSource, winSound);
-            States[GameState.DashBoardWin] = new ScoreDashBoardStateWin(this, audioSource, scoreBoardSound);
-            States[GameState.DashBoardLose] = new ScoreDashBoardStateWin(this, audioSource, scoreBoardSound);
+            States[GameState.Menu] = new MenuState(this, audioSource_music, menuSound);
+            States[GameState.CutScene] = new CutSceneState(this, cutscenePlayer, menuUI, cutsceneDisplay, loadingPage, audioSource_music, backgroundMusic);
+            States[GameState.ReadyUp] = new ReadyUpState(this, audioSource_music, backgroundMusic);
+            States[GameState.Playing] = new PlayingState(this, audioSource_sfx, audioSource_music, warningAudio, backgroundMusic);
+            States[GameState.GameOver] = new GameOverState(this, audioSource_music, loseSound);
+            States[GameState.GameWin] = new GameWinState(this, audioSource_music, winSound);
+            States[GameState.DashBoardWin] = new ScoreDashBoardStateWin(this, audioSource_music, scoreBoardSound);
+            States[GameState.DashBoardLose] = new ScoreDashBoardStateWin(this, audioSource_music, scoreBoardSound);
         }
 
         public void StartGame()
@@ -312,7 +314,10 @@ namespace PersistantSystems.Software.GameStateMachine
 
         private void HandleWireCut()
         {
-            BombTimer = 3.0f;
+            if (BombTimer >= 3.0f)
+            {
+                BombTimer = 3.0f;
+            }
         }
         
         public void QuitGame()

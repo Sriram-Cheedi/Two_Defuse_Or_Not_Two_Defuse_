@@ -24,7 +24,7 @@ void Buzzer::status(){
 
 void Buzzer::set(std::vector<std::string> args){
     if(args.size() > 0){
-        if(std::stoi(args[0]) == 1){
+        if(std::stoi(args[0]) == 0){
             siren = false;
             notificationPlay = false;
             scrambleNoise = false;

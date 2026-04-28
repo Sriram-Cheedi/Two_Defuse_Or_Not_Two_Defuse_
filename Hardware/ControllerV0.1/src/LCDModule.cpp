@@ -61,6 +61,13 @@ void LCDModule::set(std::vector<std::string> args){
   std::string buffer;
   bool inQuotes = false;
 
+  if(args.size() == 1 && std::stoi(args[0]) == 0){
+    topText = "";
+    bottomText = "";
+    changed = true;
+    return;
+  }
+
   for (const std::string &arg : args) {
 
       bool startsWithQuote = arg.front() == '"';

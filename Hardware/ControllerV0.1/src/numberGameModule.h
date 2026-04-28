@@ -1,6 +1,4 @@
-#ifndef NUMBERGAMEMODULE_H
-#define NUMBERGAMEMODULE_H
-
+#pragma once
 #include <array>
 #include <stdint.h>
 #include <string>
@@ -77,5 +75,3 @@ public:
     void complete();
     void scramble() override;
 };
-
-#endif

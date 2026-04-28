@@ -7,18 +7,23 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
     public class PlayingState : BaseState<GameState>, IHardwareListener
     {
         private readonly GameManager gameManager;
-        private readonly AudioSource audioSource;
+        private readonly AudioSource audioSourceSfx;
+        private readonly AudioSource audioSourceMusic;
         private readonly AudioClip warningAudio;
+        private readonly AudioClip soundTrack;
         public static Action ExplosionWarning;
         private bool hasWarningFired;
+        private readonly float soundTrackStartTime = 108.0f;
         
         private bool isPaused;
         private float previousTimeScale = 1f;
-        public PlayingState(GameManager gameManager, AudioSource audioSource, AudioClip warningAudio) : base(GameState.Playing)
+        public PlayingState(GameManager gameManager, AudioSource audioSourceSfx, AudioSource audioSourceMusic, AudioClip warningAudio, AudioClip soundTrack) : base(GameState.Playing)
         {
             this.gameManager = gameManager;
-            this.audioSource = audioSource;
+            this.audioSourceSfx = audioSourceSfx;
+            this.audioSourceMusic =  audioSourceMusic;
             this.warningAudio = warningAudio;
+            this.soundTrack = soundTrack;
         }
 
         public override void EnterState()
@@ -26,17 +31,24 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
             hasWarningFired = false;
             isPaused = false;
             previousTimeScale = 1f;
+            
+    
+            if (soundTrack != null)
+                Debug.Log($"PlayingState: clip length={soundTrack.length}, seeking to {soundTrackStartTime}");
+    
+            audioSourceMusic.clip = soundTrack;
+            audioSourceMusic.loop = false;
+            audioSourceMusic.Play();
+            audioSourceMusic.timeSamples = (int)(soundTrackStartTime * soundTrack.frequency);
 
             string currentUser = gameManager.GetCurrentUsername();
-            Debug.Log($"PlayingState.EnterState user={currentUser}");
-            Debug.Log($"DatabaseAPI.Instance is null? {DatabaseAPI.Instance == null}");
-
             DatabaseAPI.Instance?.UpdateStationStatus(GameplayStationConfig.StationId, currentUser, "Playing");
         }
 
         public override void ExitState()
         {
-            audioSource.Stop();
+            audioSourceSfx.Stop();
+            audioSourceMusic.Stop();
         }
 
         public override void UpdateState()
@@ -71,7 +83,8 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
             previousTimeScale = Time.timeScale;
             Time.timeScale    = 0f;
 
-            audioSource.Stop();
+            audioSourceMusic.Stop();
+            audioSourceSfx.Stop();
         }
 
         public void OnHardwareReconnect()
@@ -97,23 +110,18 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
             if (warningAudio == null)
                 return;
 
-            if (gameManager.BombTimer <= 5f && gameManager.BombTimer > 0f)
+            if (gameManager.BombTimer <= 10f && gameManager.BombTimer > 0f)
             {
                 if (!hasWarningFired)
                 {
                     ExplosionWarning?.Invoke();
                     hasWarningFired = true;
                     
-                    audioSource.clip = warningAudio;
-                    audioSource.loop = true;
-                    audioSource.Play();
+                    audioSourceSfx.clip = warningAudio;
+                    audioSourceSfx.loop = true;
+                    audioSourceSfx.Play();
                 }
                 
-            }
-            else
-            {
-                if (audioSource.isPlaying)
-                    audioSource.Stop();
             }
         }
 
