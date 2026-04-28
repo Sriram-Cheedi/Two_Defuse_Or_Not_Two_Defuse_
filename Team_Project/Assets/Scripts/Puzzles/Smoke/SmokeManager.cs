@@ -45,7 +45,6 @@ public class SmokeManager : MonoBehaviour
 
     private void OnSmokeReleased(String header, int value)
     {
-        // emojiReactionManager.PlaySmokeBurst();
         if (isActive)
         {
             mazeStatus = API_Provider.Instance.ActiveAPIController.GetMazeStatus();
@@ -81,7 +80,7 @@ public class SmokeManager : MonoBehaviour
     
     void UpdateRoomSmoke()
     {
-        SmokeEmitter currentRoom = null; //changed
+        SmokeEmitter currentRoom = null;
         if (trackPlayerRoom != null)
         {
             currentRoom = trackPlayerRoom.currentSmokeEmitter;

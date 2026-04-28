@@ -14,30 +14,28 @@ public class LeaderboardDisplayManager : MonoBehaviour
     [SerializeField] private StationStatusPanelUI station1Panel;
     [SerializeField] private StationStatusPanelUI station2Panel;
 
-    private readonly List<LeaderboardRowUI> spawnedRows = new();
+    private List<LeaderboardRowUI> spawnedRows = new();
     private DatabaseAPI dbAPI;
 
     private void Start()
     {
-        BuildRows();
-
-        dbAPI = FindFirstObjectByType<DatabaseAPI>();
-
-        if (dbAPI == null)
+        if (spawnedRows.Count > 0)
         {
-            Debug.LogError("LeaderboardDisplayManager could not find DatabaseAPI.");
             return;
         }
-
+        for (int i = 0; i < maxRows; i++)
+        {
+            LeaderboardRowUI row = Instantiate(rowPrefab, rowsContainer);
+            spawnedRows.Add(row);
+        }
+        
+        dbAPI = FindFirstObjectByType<DatabaseAPI>();
         dbAPI.OnFirebaseInitialized += HandleFirebaseInitialized;
         dbAPI.OnTopLeaderboardUpdated += HandleLeaderboardUpdated;
         dbAPI.OnStationStatusUpdated += HandleStationStatusUpdated;
-
         SetEmptyBoard();
-
         if (dbAPI.IsInitialized)
         {
-            Debug.Log("DatabaseAPI already initialized, subscribing immediately.");
             HandleFirebaseInitialized();
         }
     }
@@ -51,24 +49,7 @@ public class LeaderboardDisplayManager : MonoBehaviour
             dbAPI.OnStationStatusUpdated -= HandleStationStatusUpdated;
         }
     }
-
-    private void BuildRows()
-    {
-        if (rowPrefab == null || rowsContainer == null)
-        {
-            Debug.LogError("LeaderboardDisplayManager is missing rowPrefab or rowsContainer.");
-            return;
-        }
-
-        if (spawnedRows.Count > 0)
-            return;
-
-        for (int i = 0; i < maxRows; i++)
-        {
-            LeaderboardRowUI row = Instantiate(rowPrefab, rowsContainer);
-            spawnedRows.Add(row);
-        }
-    }
+    
 
     private void HandleFirebaseInitialized()
     {
@@ -101,16 +82,22 @@ public class LeaderboardDisplayManager : MonoBehaviour
         }
 
         if (station1Panel != null)
+        {
             station1Panel.SetStatus("---", "Waiting");
+        }
 
         if (station2Panel != null)
+        {
             station2Panel.SetStatus("---", "Waiting");
+        }
     }
 
     public void SetLeaderboard(List<LeaderboardEntryData> entries)
     {
-        if (entries == null) entries = new List<LeaderboardEntryData>();
-
+        if (entries == null)
+        {
+            entries = new List<LeaderboardEntryData>();
+        }
         for (int i = 0; i < spawnedRows.Count; i++)
         {
             if (i < entries.Count)

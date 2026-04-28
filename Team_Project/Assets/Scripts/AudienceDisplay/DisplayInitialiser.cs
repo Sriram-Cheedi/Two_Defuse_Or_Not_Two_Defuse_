@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DisplayInitializer : MonoBehaviour
+public class DisplayInitialiser : MonoBehaviour
 {
     private void Awake()
     {

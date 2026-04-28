@@ -6,7 +6,7 @@ using System.IO.Ports;
 public class SerialPortController : MonoBehaviour, I_SerialPortController
 {
     // private readonly string _portID = "COM3";
-    private string _portID = "COM4";
+    private string _portID = "";
     [SerializeField] private int _baudRate = 115200;
     private SerialPort _serialPort;
     private string buffer = "";
@@ -184,7 +184,6 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
                 CheckPort.Write("$PING#");
                 System.Threading.Thread.Sleep(50);
                 string HandshakeMessage = "";
-                
                 float startTime = Time.realtimeSinceStartup;
 
                 while (Time.realtimeSinceStartup - startTime < 1.0f)
@@ -245,7 +244,9 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
     public void OnApplicationQuit()
     {
         if (_serialPort != null && _serialPort.IsOpen)
+        {
             _serialPort.Close();
+        }
     }
 }
 

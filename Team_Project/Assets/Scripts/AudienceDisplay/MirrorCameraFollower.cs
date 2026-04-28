@@ -17,7 +17,6 @@ public class MirrorCameraFollower : MonoBehaviour
 
         transform.position = sourceCamera.transform.position;
         transform.rotation = sourceCamera.transform.rotation;
-
         mirrorCamera.fieldOfView = sourceCamera.fieldOfView;
         mirrorCamera.nearClipPlane = sourceCamera.nearClipPlane;
         mirrorCamera.farClipPlane = sourceCamera.farClipPlane;

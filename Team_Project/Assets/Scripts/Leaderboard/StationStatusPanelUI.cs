@@ -15,16 +15,17 @@ public class StationStatusPanelUI : MonoBehaviour
     public void SetStatus(string teamName, string status)
     {
         if (string.IsNullOrWhiteSpace(teamName))
+        {
             teamName = "---";
+        }
 
         if (string.IsNullOrWhiteSpace(status))
+        {
             status = "WAITING";
-
+        }
         string upperStatus = status.ToUpper();
-
         teamNameValueText.text = teamName;
         statusValueText.text = upperStatus;
-
         switch (upperStatus)
         {
             case "PLAYING":

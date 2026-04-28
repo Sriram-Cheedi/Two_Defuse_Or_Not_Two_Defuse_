@@ -21,10 +21,7 @@ public class WireGravity : MonoBehaviour
 
     private void OnImuChanged(Vector3 gyro, Vector3 accel)
     {
-        if (accel.sqrMagnitude < 0.0001f)
-        {
-            return;
-        }
+
 
         Vector3 gravity = new Vector3(accel.x, accel.z, accel.y);
         Vector3 down = -gravity.normalized;
