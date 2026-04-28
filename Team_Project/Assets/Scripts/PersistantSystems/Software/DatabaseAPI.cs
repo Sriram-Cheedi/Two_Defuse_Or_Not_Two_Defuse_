@@ -175,14 +175,12 @@ public class DatabaseAPI: MonoBehaviour
     
     public void SubmitLeaderboardEntry(string username, int score, bool defused, string stationId)
     {
-        if (reference == null) //change
+        if (reference == null)
         {
-            Debug.LogError("Cannot submit leaderboard entry because database reference is null.");
             return;
         }
 
         var newScoreRef = reference.Child("leaderboard").Push();
-
         var newEntry = new LeaderboardEntryData(username, score, defused, stationId);
         var json = JsonUtility.ToJson(newEntry);
 
@@ -201,9 +199,8 @@ public class DatabaseAPI: MonoBehaviour
     
     public void UpdateStationStatus(string stationId, string teamName, string status)
     {
-        if (reference == null) //change
+        if (reference == null) 
         {
-            Debug.LogError("Cannot update station status because database reference is null.");
             return;
         }
 
@@ -221,17 +218,15 @@ public class DatabaseAPI: MonoBehaviour
                 Debug.Log($"Updated station {stationId}: {teamName} / {status}");
             }
         });
-        Debug.Log($"UpdateStationStatus called: station={stationId}, team={teamName}, status={status}, referenceNull={reference == null}");
+        // Debug.Log($"UpdateStationStatus called: station={stationId}, team={teamName}, status={status}, referenceNull={reference == null}");
     }
     
     public void SubscribeToTopScores(int amount = 10)
     {
         if (reference == null)
         {
-            Debug.LogWarning("Cannot subscribe to top scores because database reference is null.");
             return;
         }
-
         UnsubscribeFromLeaderboard();
         leaderboardQuery = reference.Child("leaderboard").OrderByChild("score").LimitToLast(amount);
         leaderboardQuery.ValueChanged += HandleLeaderboardChanged;
@@ -241,15 +236,12 @@ public class DatabaseAPI: MonoBehaviour
     {
         if (reference == null)
         {
-            Debug.LogWarning("Cannot subscribe to station statuses because database reference is null.");
             return;
         }
 
         UnsubscribeFromStationStatuses();
-
         station1Ref = reference.Child("stations").Child("station1");
         station2Ref = reference.Child("stations").Child("station2");
-
         station1Ref.ValueChanged += HandleStation1Changed;
         station2Ref.ValueChanged += HandleStation2Changed;
     }
@@ -277,97 +269,85 @@ public class DatabaseAPI: MonoBehaviour
             station2Ref = null;
         }
     }
+    
 
-        private void HandleLeaderboardChanged(object sender, ValueChangedEventArgs args)
+    private void HandleLeaderboardChanged(object sender, ValueChangedEventArgs args)
+    {
+        if (args.DatabaseError != null)
         {
-            if (args.DatabaseError != null)
-            {
-                Debug.LogError("Leaderboard update error: " + args.DatabaseError.Message);
-                return;
-            }
-
-            List<LeaderboardEntryData> entries = new();
-
-            if (args.Snapshot != null && args.Snapshot.Exists && args.Snapshot.HasChildren)
-            {
-                foreach (var childSnapshot in args.Snapshot.Children)
-                {
-                    try
-                    {
-                        string username = childSnapshot.HasChild("username")
-                            ? childSnapshot.Child("username").Value.ToString()
-                            : "---";
-
-                        int score = childSnapshot.HasChild("score")
-                            ? Convert.ToInt32(childSnapshot.Child("score").Value)
-                            : 0;
-
-                        bool defused = childSnapshot.HasChild("defused") &&
-                                       Convert.ToBoolean(childSnapshot.Child("defused").Value);
-
-                        string stationId = childSnapshot.HasChild("stationId")
-                            ? childSnapshot.Child("stationId").Value.ToString()
-                            : string.Empty;
-
-                        entries.Add(new LeaderboardEntryData(username, score, defused, stationId));
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.LogWarning("Failed to parse leaderboard entry: " + e.Message);
-                    }
-                }
-
-                entries = entries
-                    .OrderByDescending(x => x.score)
-                    .Take(10)
-                    .ToList();
-            }
-
-            OnTopLeaderboardUpdated?.Invoke(entries);
+            return;
         }
 
-        private void HandleStation1Changed(object sender, ValueChangedEventArgs args)
+        List<LeaderboardEntryData> entries = new();
+        if (args.Snapshot != null && args.Snapshot.Exists && args.Snapshot.HasChildren)
         {
-            HandleStationChanged("station1", args);
-        }
-
-        private void HandleStation2Changed(object sender, ValueChangedEventArgs args)
-        {
-            HandleStationChanged("station2", args);
-        }
-
-        private void HandleStationChanged(string stationId, ValueChangedEventArgs args)
-        {
-            if (args.DatabaseError != null)
-            {
-                Debug.LogError($"Station update error for {stationId}: " + args.DatabaseError.Message);
-                return;
-            }
-
-            StationStatusData data = new("---", "Waiting");
-
-            if (args.Snapshot != null && args.Snapshot.Exists)
+            foreach (var childSnapshot in args.Snapshot.Children)
             {
                 try
                 {
-                    if (args.Snapshot.HasChild("teamName"))
-                    {
-                        data.teamName = args.Snapshot.Child("teamName").Value?.ToString() ?? "---";
-                    }
-
-                    if (args.Snapshot.HasChild("status"))
-                    {
-                        data.status = args.Snapshot.Child("status").Value?.ToString() ?? "Waiting";
-                    }
+                    string username = childSnapshot.HasChild("username") ? childSnapshot.Child("username").Value.ToString() : "---";
+                    int score = childSnapshot.HasChild("score") ? Convert.ToInt32(childSnapshot.Child("score").Value) : 0;
+                    bool defused = childSnapshot.HasChild("defused") && Convert.ToBoolean(childSnapshot.Child("defused").Value);
+                    string stationId = childSnapshot.HasChild("stationId") ? childSnapshot.Child("stationId").Value.ToString() : string.Empty;
+                    entries.Add(new LeaderboardEntryData(username, score, defused, stationId));
                 }
                 catch (Exception e)
                 {
-                    Debug.LogWarning($"Failed to parse station status for {stationId}: " + e.Message);
+                    Debug.LogWarning("Error leaderboard entry: " + e.Message);
                 }
             }
-
-            OnStationStatusUpdated?.Invoke(stationId, data);
+            entries = entries.OrderByDescending(x => x.score).Take(10).ToList();
         }
+
+        OnTopLeaderboardUpdated?.Invoke(entries);
+    }
+
+    private void HandleStation1Changed(object sender, ValueChangedEventArgs args)
+    {
+        HandleStationChanged("station1", args);
+    }
+
+    private void HandleStation2Changed(object sender, ValueChangedEventArgs args)
+    {
+        HandleStationChanged("station2", args);
+    }
+
+    private void HandleStationChanged(string stationId, ValueChangedEventArgs args)
+    {
+        if (args.DatabaseError != null)
+        {
+            return;
+        }
+        
+        StationStatusData data = new("---", "Waiting");
+        if (args.Snapshot != null && args.Snapshot.Exists)
+        { 
+            if (args.Snapshot.HasChild("teamName")) 
+            { 
+                var teamNameValue = args.Snapshot.Child("teamName").Value;
+                if (teamNameValue != null)
+                {
+                    data.teamName = teamNameValue.ToString();
+                }
+                else
+                {
+                    data.teamName = "---";
+                }            } 
+            if (args.Snapshot.HasChild("status")) 
+            { 
+                var statusValue = args.Snapshot.Child("status").Value;
+
+                if (statusValue != null)
+                {
+                    data.status = statusValue.ToString();
+                }
+                else
+                {
+                    data.status = "Waiting";
+                }            }
+        }
+        OnStationStatusUpdated?.Invoke(stationId, data);
+    }
     // public void CheckAndUpdateUser(string userId, string username, string score) 
     // { 
     //     var userRef = reference.Child("users").Child(userId);

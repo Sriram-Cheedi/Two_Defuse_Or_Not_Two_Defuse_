@@ -58,7 +58,6 @@ public class WireCut : Puzzle
 
         if (GameManager.Instance == null)
         {
-            Debug.LogError("GameManager.Instance is null.");
             return;
         }
 
@@ -68,8 +67,8 @@ public class WireCut : Puzzle
         }
         
 
-        Debug.Log("Cut wire: " + cutColor);
-        Debug.Log("Expected wire: " + wireMapping.cutWire);
+        // Debug.Log("Cut wire: " + cutColor);
+        // Debug.Log("Expected wire: " + wireMapping.cutWire);
         if (VerletInsulatedWire.CutWireColor.HasValue)
         {
             softwareWireColor = VerletInsulatedWire.CutWireColor.Value;

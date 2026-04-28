@@ -1,19 +1,11 @@
 using UnityEngine;
 using System.Collections;
 
-public class PersistentWebcamService : MonoBehaviour
+public class WebCam : MonoBehaviour
 {
-    public static PersistentWebcamService Instance { get; private set; }
-
+    public static WebCam Instance { get; private set; }
     [SerializeField] private string preferredCameraName = "USB Camera";
-
     public WebCamTexture WebcamTexture { get; private set; }
-
-    public bool IsReady =>
-        WebcamTexture != null &&
-        WebcamTexture.isPlaying &&
-        WebcamTexture.width > 16;
-
     private bool isStarting;
 
     private void Awake()
@@ -23,48 +15,37 @@ public class PersistentWebcamService : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
     {
-        StartWebcamIfNeeded();
+        
+        StartWebcam();
     }
 
-    public void StartWebcamIfNeeded()
+    public void StartWebcam()
     {
         if (isStarting) return;
-        if (IsReady) return;
-
-        StartCoroutine(StartRoutine());
+        StartCoroutine(StartCam());
     }
 
-    private IEnumerator StartRoutine()
+    private IEnumerator StartCam()
     {
         isStarting = true;
 
         yield return new WaitForSeconds(0.5f);
-
         WebCamDevice[] devices = WebCamTexture.devices;
-        Debug.Log("Persistent webcam device count: " + devices.Length);
-
         if (devices.Length == 0)
         {
-            Debug.LogWarning("No webcam detected.");
             isStarting = false;
             yield break;
         }
-
         string selectedDevice = devices[0].name;
-
         foreach (var device in devices)
         {
-            Debug.Log("Persistent webcam device: " + device.name);
-
-            if (!string.IsNullOrWhiteSpace(preferredCameraName) &&
-                device.name.ToLower().Contains(preferredCameraName.ToLower()))
+            if (!string.IsNullOrWhiteSpace(preferredCameraName) && name.ToLower().Contains(preferredCameraName.ToLower()))
             {
                 selectedDevice = device.name;
             }
@@ -77,17 +58,10 @@ public class PersistentWebcamService : MonoBehaviour
 
         if (!WebcamTexture.isPlaying)
         {
-            Debug.Log("Starting persistent webcam: " + selectedDevice);
             WebcamTexture.Play();
         }
 
         yield return new WaitForSeconds(1.0f);
-
-        if (IsReady)
-            Debug.Log("Persistent webcam started successfully.");
-        else
-            Debug.LogWarning("Persistent webcam failed to start.");
-
         isStarting = false;
     }
 

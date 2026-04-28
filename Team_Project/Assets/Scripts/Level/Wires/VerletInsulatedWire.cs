@@ -18,28 +18,23 @@
         private bool initialiseWire = false;
         [SerializeField] private float damping = 0.02f;
         [SerializeField] private int wireSolvingIterations = 2;
+        
         public float bendStiffness = 0.18f;
-        public int bendPasses = 2;
         public float slackStiffness = 0.08f;
+        
         public bool useDynamicGravity = true;
         public bool ignoreGravity = false;
-        public Vector3 customGravity = new Vector3(0f, 9.81f, 0f);
+        public Vector3 customGravity = new Vector3(0f, -9.81f, 0f);
         public WireGravity gravitySource;
         private Vector3 lastGravityDirection = Vector3.down;
-        private int gravityFlipFramesLeft = 0;
-
-        public float gravityFlipVelocityKill = 0.92f;
-        public int gravityFlipSettleFrames = 20;
-        public float gravityFlipExtraDamping = 0.18f;
+        private int gravityFlipIterationsLeft = 0;
+        public int settleGravityFlipIterations = 20;
         
-        public float doublePinnedAlongVelocityDamping = 0.15f;
         public float doublePinnedSlackThreshold = 0.03f;
-        public float dampHangingWireVelocity = 0.85f;
         public bool retractWireOnUpwardGravity = true;
-        public float ceilingRetractionSlackThreshold = 0.02f;
-        public float ceilingRetractionAmount = 1f;
-        public float ceilingRetractionSpeed = 6f;
-        public float ceilingRestoreSpeed = 3f;
+        public float RetractionSpeed = 6f;
+        public float RestoreSpeed = 3f;
+        
         private float dynamicSegmentLength;
         private float targetSegmentLength;
         
@@ -53,9 +48,7 @@
         public bool rightWallCollision = true;
         [SerializeField] private Collider rightWallCollider;
         
-        public float contactDamping = 0.85f;
-        public float sleepThreshold = 0.01f;
-        
+
         public int selfCollisionSkipNear = 6;
         public int selfCollisionPasses = 2;
         
@@ -74,7 +67,6 @@
             // isCuttable = false;
         }
         
-        private const float EPS = 0.000001f;
 
         private int postCutFrames = 0;
 
@@ -136,25 +128,16 @@
             UpdateDynamicSegmentLength(gravity);
             MoveWirePoints();
             SettleWire();
-
-            for (int i = 0; i < wireSolvingIterations; i++)
-            {
-                FixAnchors();
-                CorrectWireSegments();
-                CeilingCollision();
-                LeftWallCollision();
-                RightWallCollision();
-            }
-            
-            for (int j = 0; j < bendPasses; j++)
-            {
-                FixAnchors();
-                CorrectSlackWire();
-                BendWire();
-                CeilingCollision();
-                LeftWallCollision();
-                RightWallCollision();
-            }
+            FixAnchors();
+            CorrectWireSegments();
+            CeilingCollision();
+            LeftWallCollision();
+            RightWallCollision();
+            CorrectSlackWire();
+            BendWire();
+            CeilingCollision();
+            LeftWallCollision();
+            RightWallCollision();
             for (int i = 0; i < selfCollisionPasses; i++)
             {
                 SelfCollision();
@@ -260,14 +243,14 @@
                 
             }
         }
-
-        private float ResolveDamping() //maybe
+        
+        private float ResolveDamping()
         {
             float effectiveDamping = damping;
-            if (gravityFlipFramesLeft > 0)
+            if (gravityFlipIterationsLeft > 0)
             {
-                effectiveDamping += gravityFlipExtraDamping;
-                gravityFlipFramesLeft--;
+                effectiveDamping += 0.18f;
+                gravityFlipIterationsLeft--;
             }
             return effectiveDamping;
         }
@@ -317,7 +300,7 @@
         {
             float slackRatio = SlackRatio();
             float stiffness = slackStiffness * Mathf.Lerp(0.15f, 0.45f, slackRatio);
-            if (stiffness <= 0f) //maybe
+            if (stiffness <= 0f)
             {
                 return;
             }
@@ -381,14 +364,14 @@
         
         private void CheckGravityFlip(Vector3 gravity)
         {
+            float dampFlippingVelocity = 0.92f;
             Vector3 newDirection = gravity.normalized;
             float dot = Vector3.Dot(lastGravityDirection, newDirection);
-
             if (dot < 0.85f)
             {
-                float killFraction = Mathf.Lerp(0.3f, gravityFlipVelocityKill, Mathf.Clamp01((0.85f - dot) / 1.85f));
+                float killFraction = Mathf.Lerp(0.3f, dampFlippingVelocity, Mathf.Clamp01((0.85f - dot) / 1.85f));
                 DampenFullVelocity(killFraction);
-                gravityFlipFramesLeft = gravityFlipSettleFrames;
+                gravityFlipIterationsLeft = settleGravityFlipIterations;
             }
 
             lastGravityDirection = newDirection;
@@ -405,19 +388,20 @@
             {
                 return;
             }
-            if (gravityFlipFramesLeft <= 0) //MAYBE
+            if (gravityFlipIterationsLeft <= 0)
             {
                 return;
             }
 
             if (SlackRatio() <= doublePinnedSlackThreshold)
             {
-                return; //MAYBE
+                return;
             }
 
             Vector3 wire = currentWirePointsPosition[points - 1] - currentWirePointsPosition[0];
             float wireSquareMagnitude = wire.sqrMagnitude;
             Vector3 wireMoveDirection = wire / Mathf.Sqrt(wireSquareMagnitude);
+            float dampVelocity = 0.85f;
             for (int i = 1; i < points - 1; i++)
             {
                 if (CheckAnchors(i))
@@ -427,8 +411,8 @@
                 Vector3 velocity = currentWirePointsPosition[i] - previousWirePointsPosition[i];
                 Vector3 velocityAlongWire = Vector3.Dot(velocity, wireMoveDirection) * wireMoveDirection;
                 Vector3 velocityPerpendicular = velocity - velocityAlongWire;
-                velocityAlongWire *= 1f - doublePinnedAlongVelocityDamping;
-                velocityPerpendicular *= 1f - dampHangingWireVelocity;
+                velocityAlongWire *= dampVelocity;
+                velocityPerpendicular *= 1f - dampVelocity;
                 Vector3 newVel = velocityAlongWire + velocityPerpendicular;
                 previousWirePointsPosition[i] = currentWirePointsPosition[i] - newVel;
             }
@@ -448,9 +432,10 @@
             float anchorDistance = Vector3.Distance(currentWirePointsPosition[0], currentWirePointsPosition[points - 1]);        float wireLength = segmentLength * (points - 1);
             float slack = wireLength - anchorDistance;
             float slackRatio = slack / wireLength;
-            if (upwardGravity && slackRatio > ceilingRetractionSlackThreshold)
+            float SlackThreshold = 0.02f;
+            if (upwardGravity && slackRatio > SlackThreshold)
             {
-                float desiredTotalLength = Mathf.Lerp(wireLength, anchorDistance, ceilingRetractionAmount);
+                float desiredTotalLength = Mathf.Lerp(wireLength, anchorDistance, 1);
                 desiredTotalLength = Mathf.Max(desiredTotalLength, anchorDistance);
                 targetSegmentLength = desiredTotalLength / (points - 1);
             }
@@ -462,11 +447,11 @@
             float speed = 0;
             if (upwardGravity)
             {
-                speed = ceilingRetractionSpeed;
+                speed = RetractionSpeed;
             }
             else
             {
-                speed = ceilingRestoreSpeed;
+                speed = RestoreSpeed;
             }
             dynamicSegmentLength = Mathf.Lerp(dynamicSegmentLength, targetSegmentLength, Time.fixedDeltaTime * speed);
         }
@@ -483,7 +468,6 @@
                 if (currentWirePointsPosition[i].y > maxY)
                 {
                     currentWirePointsPosition[i].y = maxY;
-                    ApplyContactVelocity(i, Vector3.up, clampPositiveNormal: true); //maybe
                 }
             }
         }
@@ -501,7 +485,6 @@
                 if (currentWirePointsPosition[i].x < minX)
                 {
                     currentWirePointsPosition[i].x = minX;
-                    ApplyContactVelocity(i, Vector3.right, clampPositiveNormal: false);
                 }
             }
         }
@@ -520,51 +503,12 @@
                 if (currentWirePointsPosition[i].x > maxX)
                 {
                     currentWirePointsPosition[i].x = maxX;
-                    ApplyContactVelocity(i, Vector3.right, clampPositiveNormal: true);
                 }
             }
         }
         
-        private void ApplyContactVelocity(int i, Vector3 normalAxis, bool clampPositiveNormal) //changename
-        {
-            Vector3 velocity = currentWirePointsPosition[i] - previousWirePointsPosition[i];
-            float axis = Vector3.Dot(velocity, normalAxis);
-            if (clampPositiveNormal)
-            {
-                if (axis > 0f)
-                {
-                    velocity -= normalAxis * axis;
-                }
-            }
-            else
-            {
-                if (axis < 0f)
-                {
-                    velocity -= normalAxis * axis;
-                }
-            }
-            float keep = 1f - contactDamping;
-            if (normalAxis == Vector3.up)
-            {
-                velocity.x *= keep;
-                velocity.z *= keep;
-            }
-            else
-            {
-                velocity.y *= keep;
-                velocity.z *= keep;
-            }
-            if (velocity.sqrMagnitude < sleepThreshold * sleepThreshold)
-            {
-                previousWirePointsPosition[i] = currentWirePointsPosition[i];
-            }
-            else
-            {
-                previousWirePointsPosition[i] = currentWirePointsPosition[i] - velocity;
-            }
-        }
         
-        private void SelfCollision() //maybe
+        private void SelfCollision()
         {
             float minDistance = ropeRadius * 2f;
             float minSquareDistance = minDistance * minDistance;
@@ -593,13 +537,12 @@
                     float errorDistanceHalf = (minDistance - distance) / 2;
                     currentWirePointsPosition[i] += normal * errorDistanceHalf;
                     currentWirePointsPosition[j] -= normal * errorDistanceHalf;
-                    Vector3 velI = currentWirePointsPosition[i] - previousWirePointsPosition[i];
-                    Vector3 velJ = currentWirePointsPosition[j] - previousWirePointsPosition[j];
-                    float relVel = Vector3.Dot(velI - velJ, normal);
-        
-                    if (relVel < 0f)
+                    Vector3 velocityI = currentWirePointsPosition[i] - previousWirePointsPosition[i];
+                    Vector3 velocityJ = currentWirePointsPosition[j] - previousWirePointsPosition[j];
+                    float relativeVelocity = Vector3.Dot(velocityI - velocityJ, normal);
+                    if (relativeVelocity < 0f)
                     {
-                        Vector3 impulse = normal * relVel * 0.5f;
+                        Vector3 impulse = normal * relativeVelocity * 0.5f;
                         previousWirePointsPosition[i] += impulse;
                         previousWirePointsPosition[j] -= impulse;
                     }
@@ -660,84 +603,82 @@
             return currentWirePointsPosition[i];
         }
         
-        public void CutAtWorldPosition(Vector3 worldPos)
+        public void CutPosition(Vector3 worldPosistion)
         {
-            if (!isCuttable) return;
-            if (hasBeenCut || HasAnyWireBeenCut) return;
+            if (!isCuttable)
+            {
+                return;
+            }
+
+            if (hasBeenCut || HasAnyWireBeenCut)
+            {
+                return;
+            }
             HasAnyWireBeenCut = true;
             CutWireColor = wireColour;
-            int minSeg = Mathf.Max(0, minPointsPerPiece - 2);
-            int maxSeg = Mathf.Min(points - 2, points - minPointsPerPiece);
-
-            int segIdx = Mathf.Clamp(FindClosestSegment(worldPos), minSeg, maxSeg);
-            Vector3 a = currentWirePointsPosition[segIdx];
-            Vector3 b = currentWirePointsPosition[segIdx + 1];
-            Vector3 ab = b - a;
-            float t = Vector3.Dot(worldPos - a, ab) / ab.sqrMagnitude;
-            t = Mathf.Clamp(t, 0.25f, 0.75f);
-            CreateCutPieces(segIdx, a + ab * t);
+            int minSegment = Mathf.Max(0, minPointsPerPiece - 2);
+            int maxSegment = Mathf.Min(points - 2, points - minPointsPerPiece);
+            int segementIndex = Mathf.Clamp(FindClosestSegment(worldPosistion), minSegment, maxSegment);
+            Vector3 segmentA = currentWirePointsPosition[segementIndex];
+            Vector3 segmentB = currentWirePointsPosition[segementIndex + 1];
+            Vector3 direction = segmentB - segmentA;
+            float position = Vector3.Dot(worldPosistion - segmentA, direction) / direction.sqrMagnitude;
+            CreateCutPieces(segementIndex, segmentA + direction * position);
         }
         
         private int FindClosestSegment(Vector3 worldPos)
         {
             int bestIndex = 0;
-            float bestSqr = float.MaxValue;
+            float bestDistance = float.MaxValue;
             for (int i = 0; i < points - 1; i++)
             {
                 Vector3 closest = ClosestPointOnSegment(currentWirePointsPosition[i], currentWirePointsPosition[i + 1], worldPos);
-                float sqr = (worldPos - closest).sqrMagnitude;
-                if (sqr < bestSqr)
+                float distance = (worldPos - closest).sqrMagnitude;
+                if (distance < bestDistance)
                 {
-                    bestSqr = sqr;
+                    bestDistance = distance;
                     bestIndex = i;
                 }
             }
-
             return bestIndex;
         }
         
-        private static Vector3 ClosestPointOnSegment(Vector3 a, Vector3 b, Vector3 p)
+        private static Vector3 ClosestPointOnSegment(Vector3 segmentStart, Vector3 segmentEnd, Vector3 point)
         {
-            Vector3 ab = b - a;
-            float lenSq = ab.sqrMagnitude;
-            return a + ab * Mathf.Clamp01(Vector3.Dot(p - a, ab) / lenSq);
+            Vector3 direction = segmentEnd - segmentStart;
+            return segmentStart + direction * Mathf.Clamp01(Vector3.Dot(point - segmentStart, direction) / direction.sqrMagnitude);
         }
         
-        private void CreateCutPieces(int segIdx, Vector3 cutPos)
+        private void CreateCutPieces(int segementIndex, Vector3 cutPos)
         {
             hasBeenCut = true;
-
-            Vector3 tangent = currentWirePointsPosition[segIdx + 1] - currentWirePointsPosition[segIdx];
-            tangent = tangent.sqrMagnitude < EPS ? Vector3.right : tangent.normalized;
-
+            Vector3 direction = currentWirePointsPosition[segementIndex + 1] - currentWirePointsPosition[segementIndex];
+            direction = direction.normalized;
             float gap = ropeRadius * 10.0f;
-            Vector3 leftCutPos = cutPos - tangent * gap;
-            Vector3 rightCutPos = cutPos + tangent * gap;
-
-            int leftCount = segIdx + 1;
-            int rightCount = points - segIdx - 1;
-
+            Vector3 leftCutPos = cutPos - direction * gap;
+            Vector3 rightCutPos = cutPos + direction * gap;
+            int leftCount = segementIndex + 1;
+            int rightCount = points - segementIndex - 1;
             Vector3[] leftPts = new Vector3[leftCount];
             Vector3[] leftOld = new Vector3[leftCount];
             Vector3[] rightPts = new Vector3[rightCount];
             Vector3[] rightOld = new Vector3[rightCount];
-
             for (int i = 0; i < leftCount - 1; i++)
             {
                 leftPts[i] = currentWirePointsPosition[i];
                 leftOld[i] = currentWirePointsPosition[i];
             }
-
             leftPts[leftCount - 1] = leftCutPos;
             leftOld[leftCount - 1] = leftCutPos;
-
             rightPts[0] = rightCutPos;
             rightOld[0] = rightCutPos;
 
-            for (int src = segIdx + 2, dst = 1; src < points; src++, dst++)
+            int rightIndex = 1;
+            for (int i = segementIndex + 2; i < points; i++)
             {
-                rightPts[dst] = currentWirePointsPosition[src];
-                rightOld[dst] = currentWirePointsPosition[src];
+                rightPts[rightIndex] = currentWirePointsPosition[i];
+                rightOld[rightIndex] = currentWirePointsPosition[i];
+                rightIndex++;
             }
 
             VerletInsulatedWire leftWire = SpawnCutPiece(leftPts, leftOld, true, anchor1, false, null);
@@ -752,37 +693,27 @@
             {
                 rightWire.SpawnCopperTip(rightCutPos, false);
             }
-
             Destroy(gameObject);
         }
         
-        private VerletInsulatedWire SpawnCutPiece(
-            Vector3[] pts,
-            Vector3[] oldPts,
-            bool newPinStart,
-            Transform newAnchor1,
-            bool newPinEnd,
-            Transform newAnchor2)
+        private VerletInsulatedWire SpawnCutPiece(Vector3[] points, Vector3[] oldPpoints, bool newPinStart, Transform newAnchor1, bool newPinEnd, Transform newAnchor2)
         {
             VerletInsulatedWire wire = Instantiate(wirePiecePrefab, transform.position, transform.rotation);
-            wire.InitializeCutPiece(pts, oldPts, newPinStart, newAnchor1, newPinEnd, newAnchor2);
+            wire.InitializeCutPiece(points, oldPpoints, newPinStart, newAnchor1, newPinEnd, newAnchor2);
             return wire;
         }
+        
         public void InitializeCutPiece(Vector3[] newPoints, Vector3[] newOldPoints, bool newPinStart, Transform newAnchor1, bool newPinEnd, Transform newAnchor2)
         {
             pinSartWirePoint = newPinStart;
             pinEndWirePoint = newPinEnd;
             anchor1 = newAnchor1;
             anchor2 = newAnchor2;
-
             points = Mathf.Max(newPoints.Length, 2);
-
             currentWirePointsPosition = (Vector3[])newPoints.Clone();
             previousWirePointsPosition = (Vector3[])newOldPoints.Clone();
-
             dynamicSegmentLength = segmentLength;
             targetSegmentLength = segmentLength;
-
             initialiseWire = true;
             ignoreGravity = true;
 
@@ -803,9 +734,7 @@
             {
                 return;
             }
-
             Quaternion spawnRot = isTopEnd ? Quaternion.Euler(180f, 0f, 0f) : Quaternion.Euler(0f, 0f, 0f);
-
             Instantiate(copperTipPrefab, cutPosition, spawnRot, transform);
         }
     }

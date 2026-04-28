@@ -9,7 +9,7 @@ namespace PersistantSystems.Software.FirebaseModels
         public bool defused = false;
         public string stationId = "";
 
-        public LeaderboardEntryData() { }
+        public LeaderboardEntryData() {}
 
         public LeaderboardEntryData(string username, int score, bool defused, string stationId)
         {

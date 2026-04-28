@@ -49,7 +49,7 @@ public class HUDManager : MonoBehaviour
         // Clear current HUDs when entering a new trigger
         foreach (var hud in currentActiveHUDs)
         {
-            if (hud == null) //change
+            if (hud == null) 
             {
                 continue;
             }

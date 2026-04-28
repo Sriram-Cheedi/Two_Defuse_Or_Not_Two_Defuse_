@@ -7,7 +7,7 @@ namespace PersistantSystems.Software.FirebaseModels
         public string teamName = "---";
         public string status = "Waiting";
 
-        public StationStatusData() { }
+        public StationStatusData() {}
 
         public StationStatusData(string teamName, string status)
         {

@@ -91,7 +91,6 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         GameObject child = new GameObject("Serial_Port_Controller");
         child.transform.SetParent(this.transform);
         
-        // Try init Serial Port Controller
         try
         {
             SerialPortController serialPortController = child.AddComponent<SerialPortController>();
@@ -101,10 +100,8 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
             
             ActivePortController =  serialPortController;
         }
-        // If serial fails to open
         catch (Exception e)
         {
-            // Rethrow up tree
             Destroy(child);
             throw e;
         }
@@ -193,7 +190,6 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
         string header = message.Substring(0, colonIndex);
         string commandPart = message.Substring(colonIndex + 1);
-
         int spaceIndex = commandPart.IndexOf(' ');
         if (spaceIndex == -1)
         {
@@ -202,7 +198,6 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
         
         string command = commandPart.Substring(0, spaceIndex);
         string value = commandPart.Substring(spaceIndex + 1);
-
         if (command != "set" && command != "status")
         {
             return;
@@ -220,9 +215,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
             float gx = float.Parse(parts[0]);
             float gy = float.Parse(parts[1]);
             float gz = float.Parse(parts[2]);
-
             Vector3 newGyro = new Vector3(gx, gy, gz);
-
             if (hardwareState.gyroValue == newGyro && hardwareState.hasAccelerometer == false)
             {
                 return;
@@ -256,7 +249,6 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
             Vector3 newGyro = new Vector3(gx, gy, gz);
             Vector3 newAccel = new Vector3(ax, ay, az);
-
             if (hardwareState.gyroValue == newGyro && hardwareState.accelerometerValue == newAccel && hardwareState.hasAccelerometer == true)
             {
                 return;
@@ -265,7 +257,6 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
             hardwareState.gyroValue = newGyro;
             hardwareState.accelerometerValue = newAccel;
             hardwareState.hasAccelerometer = true;
-
             OnImuChanged?.Invoke(hardwareState.gyroValue, hardwareState.accelerometerValue);
             {
                 return;

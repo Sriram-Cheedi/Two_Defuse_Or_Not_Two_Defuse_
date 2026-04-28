@@ -37868,15 +37868,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -19.641108
+      value: -21.52
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.38254595
+      value: 0.53
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -35.12254
+      value: -31.25
       objectReference: {fileID: 0}
     - target: {fileID: 6184365941757169939, guid: 778ff934022ad2a4aaf2a395cccf31a7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -192725,7 +192725,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::GameplayWebcamBinder
   webcamImage: {fileID: 524900908}
   webcamPanel: {fileID: 343858192}
-  mirrorHorizontally: 1
+  mirrorCamera: 1
 --- !u!1 &976054744 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 710dac6f8f7a800499f90402fedff886, type: 3}
@@ -711945,13 +711945,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 833155786612550754, guid: 073cf2f585b66f44c9a28f2f86a8df75, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 910931947508768128, guid: 073cf2f585b66f44c9a28f2f86a8df75, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 964822767317519488, guid: 073cf2f585b66f44c9a28f2f86a8df75, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1034175769065478440, guid: 073cf2f585b66f44c9a28f2f86a8df75, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -712000,6 +712004,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3021505880550267653, guid: 073cf2f585b66f44c9a28f2f86a8df75, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3612754750543959452, guid: 073cf2f585b66f44c9a28f2f86a8df75, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}

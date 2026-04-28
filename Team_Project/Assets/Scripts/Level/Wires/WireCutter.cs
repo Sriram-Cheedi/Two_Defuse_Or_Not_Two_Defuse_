@@ -57,7 +57,7 @@ public class WireCutter : MonoBehaviour
             VerletInsulatedWire wire = hit.collider.GetComponentInParent<VerletInsulatedWire>();
             if (wire != null)
             {
-                wire.CutAtWorldPosition(hit.point);
+                wire.CutPosition(hit.point);
             }
         }
     }
