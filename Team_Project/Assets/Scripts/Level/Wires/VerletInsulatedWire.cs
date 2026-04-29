@@ -30,8 +30,8 @@
         private int gravityFlipIterationsLeft = 0;
         public int settleGravityFlipIterations = 20;
         
-        public float doublePinnedSlackThreshold = 0.03f;
-        public bool retractWireOnUpwardGravity = true;
+        public float slackThreshold = 0.03f;
+        public bool pullWire = true;
         public float RetractionSpeed = 6f;
         public float RestoreSpeed = 3f;
         
@@ -393,7 +393,7 @@
                 return;
             }
 
-            if (SlackRatio() <= doublePinnedSlackThreshold)
+            if (SlackRatio() <= slackThreshold)
             {
                 return;
             }
@@ -420,7 +420,7 @@
 
         private void UpdateDynamicSegmentLength(Vector3 gravity)
         {
-            if (!retractWireOnUpwardGravity)
+            if (!pullWire)
             {
                 dynamicSegmentLength = segmentLength;
                 targetSegmentLength = segmentLength;

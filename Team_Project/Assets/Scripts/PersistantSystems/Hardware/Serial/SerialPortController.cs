@@ -54,7 +54,7 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
             }
             catch (Exception e)
             {
-                Debug.LogError("Serial write failed (device disconnected?): " + e.Message);
+                Debug.LogError("Serial write failed maybe hardware is diconnected: " + e.Message);
                 Disconnect();
                 return;
             }
@@ -134,12 +134,12 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
         }
         catch (Exception e)
         {
-            Debug.LogError("Serial write failed (device disconnected?): " + e.Message);
+            Debug.LogError("Serial write failed maybe hardware is diconnected: " + e.Message);
             Disconnect();
         }
     }
 
-    private void Disconnect()
+    private void Disconnect(bool notify = true)
     {
         try
         {
@@ -151,14 +151,22 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
         catch { }
         _serialPort = null;
         buffer = "";
-        if (isConnected)
+        if (notify && isConnected)
         {
             isConnected = false;
             bombDisconnected?.Invoke();
         }
+        else
+        {
+            isConnected = false;
+        }
     }
     public bool Connect()
     {
+        if (_serialPort == null || !_serialPort.IsOpen)
+        {
+            _portID = "";
+        }
         if(_serialPort != null && _serialPort.IsOpen)
         {
             if (!isConnected)
@@ -235,8 +243,10 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
         }
         catch (Exception error)
         {   
-            Disconnect();
-            throw error;
+            Disconnect(false);
+            Debug.LogError("Failed to open serial port: " + error.Message);
+            return false;
+            
         }
         
     }

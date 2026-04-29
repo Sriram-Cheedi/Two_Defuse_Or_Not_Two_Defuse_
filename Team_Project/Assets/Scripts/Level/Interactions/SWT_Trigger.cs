@@ -14,6 +14,7 @@ public class SWT_Trigger : MonoBehaviour
 
     private void Awake()
     {
+        targetRenderers = new Renderer[SWT_Symbols.Length];
         for (int i = 0; i < SWT_Symbols.Length; i++)
         {
             targetRenderers[i] = SWT_Symbols[i].GetComponent<Renderer>();

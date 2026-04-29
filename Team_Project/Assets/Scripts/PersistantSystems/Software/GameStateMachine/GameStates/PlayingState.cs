@@ -42,7 +42,10 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
             audioSourceMusic.timeSamples = (int)(soundTrackStartTime * soundTrack.frequency);
 
             string currentUser = gameManager.GetCurrentUsername();
-            DatabaseAPI.Instance?.UpdateStationStatus(GameplayStationConfig.StationId, currentUser, "Playing");
+            if (DatabaseAPI.Instance != null)
+            {
+                DatabaseAPI.Instance.UpdateStationStatus(GameplayStationConfig.StationId, currentUser, "Playing");
+            }
         }
 
         public override void ExitState()
@@ -79,31 +82,34 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
             if (isPaused)
                 return;
 
-            isPaused          = true;
+            isPaused = true;
             previousTimeScale = Time.timeScale;
-            Time.timeScale    = 0f;
-
-            audioSourceMusic.Stop();
-            audioSourceSfx.Stop();
+            Time.timeScale = 0f;
+            audioSourceMusic.Pause();
+            audioSourceSfx.Pause();
+            // audioSourceMusic.Stop();
+            // audioSourceSfx.Stop();
         }
 
         public void OnHardwareReconnect()
         {
             if (!isPaused)
+            {
                 return;
+            }
 
-            isPaused       = false;
+            isPaused = false;
             Time.timeScale = previousTimeScale > 0f ? previousTimeScale : 1f;
+            if (API_Provider.Instance != null && API_Provider.Instance.ActiveAPIController != null)
+            {
+                API_Provider.Instance.ActiveAPIController.TimerSet((int)gameManager.BombTimer);
+                API_Provider.Instance.ActiveAPIController.TimerOnOff(1);
 
-            try
-            {
-                API_Provider.Instance?.ActiveAPIController?.TimerSet((int)gameManager.BombTimer);
-                API_Provider.Instance?.ActiveAPIController?.TimerOnOff(1);
             }
-            catch (Exception e)
-            {
-                Debug.LogError($"Unable to reset bomb timer on reconnect: {e.Message}");
-            }
+            
+            audioSourceMusic.UnPause();
+            audioSourceSfx.UnPause();
+
         }
         private void HandleWarningAudio()
         {
@@ -116,7 +122,6 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
                 {
                     ExplosionWarning?.Invoke();
                     hasWarningFired = true;
-                    
                     audioSourceSfx.clip = warningAudio;
                     audioSourceSfx.loop = true;
                     audioSourceSfx.Play();
@@ -129,8 +134,10 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
         {
             if (!gameManager.IsMatSceneLoaded)
                 return;
-
-            API_Provider.Instance?.ActiveAPIController?.TimerSet((int)gameManager.BombTimer);
+            if (API_Provider.Instance != null && API_Provider.Instance.ActiveAPIController != null)
+            {
+                API_Provider.Instance.ActiveAPIController.TimerSet((int)gameManager.BombTimer);
+            }
         }
     }
 }

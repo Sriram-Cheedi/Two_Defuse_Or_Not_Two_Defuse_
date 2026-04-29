@@ -57,12 +57,17 @@ public class PlayerCam : MonoBehaviour
         Cursor.visible = false;
         if (playerCamera == null)
         {
-            playerCamera = GetComponent<Camera>() ?? GetComponentInChildren<Camera>();
+            playerCamera = GetComponent<Camera>();
+            if (playerCamera == null)
+            {
+                playerCamera = GetComponentInChildren<Camera>();
+            }
         }
 
         if (playerCamera != null)
         {
             playerCamera.fieldOfView = PlayerPrefs.GetFloat(fovKEY, fovDefault);
+            playerCamera.nearClipPlane = 0.15f;
         }
     }
 
