@@ -58,7 +58,22 @@ public class Maze_Trigger : MonoBehaviour
             SendSet();
         }
     }
+    public void SendMazeONHardwareResync()
+    {
+        if (string.IsNullOrEmpty(sequence))
+        {
+            Debug.LogError("Cannot resync MAZE: sequence is empty.");
+            return;
+        }
+        if (API_Provider.Instance == null || API_Provider.Instance.ActiveAPIController == null)
+        {
+            Debug.LogError("Cannot resync MAZE: API Controller is missing.");
+            return;
+        }
 
+        API_Provider.Instance.ActiveAPIController.SendMazeSeq("MAZE", sequence);
+        SendSet();
+    }
     private void SendSet()
     {
         

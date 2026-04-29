@@ -14,6 +14,7 @@ public class PuzzleManager : MonoBehaviour
     public Puzzles.Controllers.SSM_Controller ssm_controller;
     public Puzzles.Controllers.NGM_Controller ngm_controller;
     public Puzzles.Controllers.MazeController maze_controller;
+    [SerializeField] private Maze_Trigger maze_Trigger;
     
     public Action SSM_Completed;
     public Action NGM_Completed;
@@ -66,8 +67,9 @@ public class PuzzleManager : MonoBehaviour
     {
         Puzzle.OnSuccess += S_HandleSSMVictory;
         Puzzle.OnSuccess += HandleNGMVictory;
-
         API_Controller.OnInputChanged += H_HandleSSMVictory;
+        API_Controller.OnHardwareReconnected += H_Resync;
+
     }
 
     private void OnDisable()
@@ -75,6 +77,8 @@ public class PuzzleManager : MonoBehaviour
         Puzzle.OnSuccess -= S_HandleSSMVictory;
         Puzzle.OnSuccess -= HandleNGMVictory;
         API_Controller.OnInputChanged -= H_HandleSSMVictory;
+        API_Controller.OnHardwareReconnected -= H_Resync;
+
     }
 
     // Global Changes if correct
@@ -114,4 +118,86 @@ public class PuzzleManager : MonoBehaviour
         // Link Lighting and Alarms and stuff to this 
         NGM_Completed?.Invoke(); 
     }
+
+    public void H_Resync()
+    {
+        if (API_Provider.Instance.ActiveAPIController == null)
+        {
+            return;
+        }
+        Debug.Log("Resync Activated");
+
+        if (ssm_controller != null && ssm_controller.data != null)
+        {
+            API_Provider.Instance.ActiveAPIController.SendSetSeq("SSM", ssm_controller.data.correctSequence);
+        }
+
+        if (ngm_controller != null && ngm_controller.data != null)
+        {
+            API_Provider.Instance.ActiveAPIController.SendSetSeq("NGM", ngm_controller.data.correctSequence);
+        }
+
+        bool H_SSM_Puzzle_Finished = API_Provider.Instance.ActiveAPIController.GetSSMStatus() == 2;
+        bool S_SSM_Puzzle_Finished = ssm_controller != null && ssm_controller.data.completed;
+        bool NGM_Puzzle_Finished = ngm_controller != null && ngm_controller.data.completed;
+
+        if (!S_SSM_Puzzle_Finished)
+        {
+            if (!H_SSM_Puzzle_Finished)
+            {
+                API_Provider.Instance.ActiveAPIController.SendSetSeqSTRING("LCD", new string[] { "\"Module Activated\"", "\"------SSM------\"" } );
+                API_Provider.Instance.ActiveAPIController.SendSet("SSM", 1);
+            }
+            else
+            {
+                API_Provider.Instance.ActiveAPIController.SendSet("SSM", 2);
+            }
+            API_Provider.Instance.ActiveAPIController.SendSet("FGM", 0);
+            API_Provider.Instance.ActiveAPIController.SendSet("NGM", 0);
+        }
+        else
+        {
+            API_Provider.Instance.ActiveAPIController.SendSet("SSM", 2);
+            if (NGM_Puzzle_Finished)
+            {
+                API_Provider.Instance.ActiveAPIController.SendSet("NGM", 2);
+            }
+            else
+            {
+                API_Provider.Instance.ActiveAPIController.SendSet("NGM", 1);
+            }
+        }
+        
+        if (API_Provider.Instance.ActiveAPIController.GetMazeStatus() == 1 && maze_controller != null && maze_controller.data != null)
+        {
+            // maze_Trigger.SendMazeONHardwareResync();
+            StartCoroutine(DelayMazeResync());
+        }
+        
+
+        int FGM_Status = API_Provider.Instance.ActiveAPIController.GetDigital("FGM");
+        if (FGM_Status != 0)
+        {
+            API_Provider.Instance.ActiveAPIController.SendSet("FGM", 1);
+        }
+        
+        int PWR_Status = API_Provider.Instance.ActiveAPIController.GetDigital("PWR");
+        if (PWR_Status != 0)
+        {
+            API_Provider.Instance.ActiveAPIController.SendSet("PWR", PWR_Status);
+        }
+    }
+    private IEnumerator DelayMazeResync()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+
+        if (maze_Trigger == null)
+        {
+            Debug.LogError("Maze Trigger reference is missing in PuzzleManager.");
+            yield break;
+        }
+
+        maze_Trigger.SendMazeONHardwareResync();
+    }
+    
 }

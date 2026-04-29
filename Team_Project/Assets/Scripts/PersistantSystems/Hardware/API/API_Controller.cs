@@ -26,6 +26,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     public event Action<int[]> OnNGMSubmit;
     public event Action<int[]> OnNGMChanged;
     public event Action<int> OnFGMChanged; 
+    public static event Action OnHardwareReconnected;
     
     // Local saved hardware values
     private HardwareState hardwareState;
@@ -97,7 +98,6 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
             Debug.Log("Setting Serial Controller");
 
             serialPortController.Connect();
-            
             ActivePortController =  serialPortController;
         }
         catch (Exception e)
@@ -159,10 +159,12 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
     private void HandleReconnect()
     {
         Debug.LogWarning("Hardware reconnected");
+        RequestStatus("GLB");
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnHardwareReconnect();
         }
+        OnHardwareReconnected?.Invoke();
     }
 
     public void HandleMessage(string message)
@@ -249,7 +251,7 @@ public class API_Controller : MonoBehaviour, API_Controller_Interface
 
             Vector3 newGyro = new Vector3(gx, gy, gz);
             Vector3 newAccel = new Vector3(ax, ay, az);
-            if (hardwareState.gyroValue == newGyro && hardwareState.accelerometerValue == newAccel && hardwareState.hasAccelerometer == true)
+            if (hardwareState.gyroValue == newGyro && hardwareState.accelerometerValue == newAccel && hardwareState.hasAccelerometer)
             {
                 return;
             }

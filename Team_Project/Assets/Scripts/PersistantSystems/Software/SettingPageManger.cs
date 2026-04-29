@@ -57,6 +57,7 @@ namespace PersistantSystems.Software
             {
                 settingsPanel.SetActive(false);
             }
+
         }
     }
 }
