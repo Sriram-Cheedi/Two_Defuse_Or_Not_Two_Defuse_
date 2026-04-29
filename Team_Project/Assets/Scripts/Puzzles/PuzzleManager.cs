@@ -193,7 +193,6 @@ public class PuzzleManager : MonoBehaviour
 
         if (maze_Trigger == null)
         {
-            Debug.LogError("Maze Trigger reference is missing in PuzzleManager.");
             yield break;
         }
 
