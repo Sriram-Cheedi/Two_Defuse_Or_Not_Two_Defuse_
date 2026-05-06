@@ -6,7 +6,7 @@ public class GamplayWebCam : MonoBehaviour
 {
     [SerializeField] private RawImage webcamImage;
     [SerializeField] private GameObject webcamPanel;
-    [SerializeField] private bool mirrorCamera = true;
+    // [SerializeField] private bool mirrorCamera = true;
 
     private IEnumerator Start()
     {
@@ -19,21 +19,12 @@ public class GamplayWebCam : MonoBehaviour
         {
             yield return null;
         }
-
         WebCam.Instance.StartWebcam();
-        float timeout = 5f;
-        float timer = 0f;
-        while (timer < timeout)
-        {
-            timer += Time.deltaTime;
-            yield return null;
-        }
         webcamImage.texture = WebCam.Instance.WebcamTexture;
-        webcamImage.rectTransform.localScale = mirrorCamera ? new Vector3(-1f, 1f, 1f) : Vector3.one;
-
+        webcamImage.rectTransform.localScale = new Vector3(-1f, 1f, 1f);
         if (webcamPanel != null)
         {
-                webcamPanel.SetActive(true);
+            webcamPanel.SetActive(true);
         }
     }
 

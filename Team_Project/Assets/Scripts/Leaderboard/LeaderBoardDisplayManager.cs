@@ -9,11 +9,9 @@ public class LeaderboardDisplayManager : MonoBehaviour
     [SerializeField] private Transform rowsContainer;
     [SerializeField] private LeaderboardRowUI rowPrefab;
     [SerializeField] private int maxRows = 10;
-
     [Header("Station Panels")]
     [SerializeField] private StationStatusPanelUI station1Panel;
     [SerializeField] private StationStatusPanelUI station2Panel;
-
     private List<LeaderboardRowUI> spawnedRows = new();
     private DatabaseAPI dbAPI;
 
@@ -33,7 +31,13 @@ public class LeaderboardDisplayManager : MonoBehaviour
         dbAPI.OnFirebaseInitialized += HandleFirebaseInitialized;
         dbAPI.OnTopLeaderboardUpdated += HandleLeaderboardUpdated;
         dbAPI.OnStationStatusUpdated += HandleStationStatusUpdated;
-        SetEmptyBoard();
+        for (int i = 0; i < spawnedRows.Count; i++)
+        {
+            spawnedRows[i].SetEmpty(i + 1);
+        }
+        station1Panel.SetStatus("---", "Waiting");
+        station2Panel.SetStatus("---", "Waiting");
+        
         if (dbAPI.IsInitialized)
         {
             HandleFirebaseInitialized();
@@ -59,41 +63,6 @@ public class LeaderboardDisplayManager : MonoBehaviour
 
     private void HandleLeaderboardUpdated(List<LeaderboardEntryData> entries)
     {
-        SetLeaderboard(entries);
-    }
-
-    private void HandleStationStatusUpdated(string stationId, StationStatusData data)
-    {
-        if (stationId == "station1" && station1Panel != null)
-        {
-            station1Panel.SetStatus(data.teamName, data.status);
-        }
-        else if (stationId == "station2" && station2Panel != null)
-        {
-            station2Panel.SetStatus(data.teamName, data.status);
-        }
-    }
-
-    private void SetEmptyBoard()
-    {
-        for (int i = 0; i < spawnedRows.Count; i++)
-        {
-            spawnedRows[i].SetEmpty(i + 1);
-        }
-
-        if (station1Panel != null)
-        {
-            station1Panel.SetStatus("---", "Waiting");
-        }
-
-        if (station2Panel != null)
-        {
-            station2Panel.SetStatus("---", "Waiting");
-        }
-    }
-
-    public void SetLeaderboard(List<LeaderboardEntryData> entries)
-    {
         if (entries == null)
         {
             entries = new List<LeaderboardEntryData>();
@@ -108,6 +77,18 @@ public class LeaderboardDisplayManager : MonoBehaviour
             {
                 spawnedRows[i].SetEmpty(i + 1);
             }
+        }
+    }
+
+    private void HandleStationStatusUpdated(string stationId, StationStatusData data)
+    {
+        if (stationId == "station1" && station1Panel != null)
+        {
+            station1Panel.SetStatus(data.teamName, data.status);
+        }
+        else if (stationId == "station2" && station2Panel != null)
+        {
+            station2Panel.SetStatus(data.teamName, data.status);
         }
     }
 }

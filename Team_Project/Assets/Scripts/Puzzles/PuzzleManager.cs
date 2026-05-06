@@ -190,12 +190,10 @@ public class PuzzleManager : MonoBehaviour
     private IEnumerator DelayMazeResync()
     {
         yield return new WaitForSecondsRealtime(0.5f);
-
         if (maze_Trigger == null)
         {
             yield break;
         }
-
         maze_Trigger.SendMazeONHardwareResync();
     }
     

@@ -23,7 +23,6 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     // [SerializeField] private float targetRotation = 180f;
 
     private Vector3 gravityDir = Vector3.down;
-    private float gravityMangitude = Physics.gravity.magnitude;
     public bool invertRequested;
     private bool hasInvertRequest;
     
@@ -77,7 +76,6 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     
     private void RotateLevel(Vector3 gyro, Vector3 accelerometer)
     {
-        // Debug.Log("RotateLevel"); 
         ProcessAccelerometer(accelerometer);
     }
 
@@ -104,49 +102,35 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     {
         gravityDir = direction;
     }
-
-    private float GetRelativeVerticalVelocity()
-    {
-        return Vector3.Dot(Hub.rb.linearVelocity, gravityDir.normalized);
-    }
+    
 
     private float CalculateGravityMagnitude()
     {
-        float relativeVerticalVelocity = GetRelativeVerticalVelocity();
-        float baseGravityMagnitude = Physics.gravity.magnitude;
+        float relativeVerticalVelocity = Vector3.Dot(Hub.rb.linearVelocity, gravityDir.normalized);
 
         //faster fall
         if (!Hub.relay.IsJumpHeld && relativeVerticalVelocity > 0f)
         {
-            return baseGravityMagnitude * Hub.data.fallMultiplier;
+            return Physics.gravity.magnitude * Hub.data.fallMultiplier;
         }
         //var jump height
         if (!Hub.relay.IsJumpHeld && relativeVerticalVelocity < 0f)
         {
-            return baseGravityMagnitude * Hub.data.jumpCutMultiplier;
+            return Physics.gravity.magnitude * Hub.data.jumpCutMultiplier;
         }
         //at apex fall slightly slower
         if (!Hub.sensor.IsGrounded && Mathf.Abs(relativeVerticalVelocity)  < Hub.data.apexThreshold)
         {
-            return baseGravityMagnitude * Hub.data.apexGravityMultiplier;
+            return Physics.gravity.magnitude * Hub.data.apexGravityMultiplier;
         }
         
-        return baseGravityMagnitude * Hub.data.gravityMultiplier;
-    }
-    
-    private void OnDestroy()
-    {
-        // var relay = GetComponent<PlayerInputRelay>();
-        // if (relay != null) relay.RespawnRequested -= ResetGravity;
+        return Physics.gravity.magnitude * Hub.data.gravityMultiplier;
     }
     
     public void ProcessAccelerometer(Vector3 accelerometer)
     {
-        // Are we upside down relative to world down?
-        Debug.Log("ProcessAccelerometer" + (accelerometer.z ));
         if (accelerometer.z < -12f || accelerometer.z > 12f) 
         {
-            // harware is moving too fast! Ignore the input this frame so we don't accidentally flip.
             return; 
         }
         float a = Hub.data.gravityAlpha;
@@ -172,7 +156,6 @@ public class PlayerGravity : MonoBehaviour, IPlayerModule
     
     private void HandleGravityInverted(bool inverted)
     {
-        // Debug.Log("can Flip" + canFlipGravity);
         if (canFlipGravity)
         {
             RequestInvert(inverted);

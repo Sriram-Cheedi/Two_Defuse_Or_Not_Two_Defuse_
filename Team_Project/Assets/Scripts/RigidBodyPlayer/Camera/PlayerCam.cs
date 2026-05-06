@@ -20,10 +20,6 @@ public class PlayerCam : MonoBehaviour
     private void Awake()
     {
         relay = FindFirstObjectByType<PlayerInputRelay>();
-        if (orientation == null)
-        {
-            Debug.LogError($"No orientation found on {gameObject.name}" + "please assign them in the Inspector.", this);
-        }
     }
 
     private void OnEnable()

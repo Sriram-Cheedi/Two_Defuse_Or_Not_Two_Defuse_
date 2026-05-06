@@ -18,7 +18,6 @@ public class LeaderboardRowUI : MonoBehaviour
         rankText.text = rank.ToString();
         teamNameText.text = teamName;
         scoreText.text = score.ToString();
-
         statusBadgeImage.enabled = true;
         statusBadgeImage.sprite = defused ? defusedBadge : explodedBadge;
     }

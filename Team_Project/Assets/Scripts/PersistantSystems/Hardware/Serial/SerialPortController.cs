@@ -29,8 +29,7 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
     public void Start() { }
     public void Awake()
     {
-        Debug.Log("SerialPortController Awake on: " + gameObject.name);
-        Debug.Log("SerialPortController instance: " + gameObject.GetInstanceID());
+        Debug.Log("SerialPortController Started");
     }
 
     public void Update()
@@ -225,7 +224,7 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
         }
         try
         {
-            Debug.Log("Attempting to Open Port on: " + _portID + " and baud rate: " + _baudRate);
+            Debug.Log("Trying to Open Port on: " + _portID + " and baud rate: " + _baudRate);
             _serialPort = new SerialPort(_portID, _baudRate);
             _serialPort.ReadTimeout = 50;
             Debug.Log("Opening serial port: " + _portID + "\n" + Environment.StackTrace);

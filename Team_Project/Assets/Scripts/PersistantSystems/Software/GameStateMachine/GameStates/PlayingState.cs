@@ -31,10 +31,6 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
             hasWarningFired = false;
             isPaused = false;
             previousTimeScale = 1f;
-            
-    
-            if (soundTrack != null)
-                Debug.Log($"PlayingState: clip length={soundTrack.length}, seeking to {soundTrackStartTime}");
     
             audioSourceMusic.clip = soundTrack;
             audioSourceMusic.loop = false;

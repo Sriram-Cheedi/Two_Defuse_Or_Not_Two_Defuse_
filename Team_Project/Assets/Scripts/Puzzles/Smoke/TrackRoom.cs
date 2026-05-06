@@ -4,7 +4,7 @@ using UnityEngine;
 public class TrackRoom : MonoBehaviour
 {
     private List<SmokeEmitter> rooms = new List<SmokeEmitter>();
-    public SmokeEmitter currentSmokeEmitter { get; private set; }
+    public SmokeEmitter currentSmokeEmitter {get; private set;}
     private void OnTriggerEnter(Collider other)
     {
         SmokeEmitter emitter = other.GetComponent<SmokeEmitter>();
@@ -26,7 +26,6 @@ public class TrackRoom : MonoBehaviour
         {
             return;
         }
-
         if (rooms.Contains(emitter))
         {
             rooms.Remove(emitter);

@@ -93847,90 +93847,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1514915498}
     m_Modifications:
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: points
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: damping
-      value: 0.06
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: wireColor
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: iterations
-      value: 24
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: ropeRadius
-      value: 0.18
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: gravitySource
-      value: 
-      objectReference: {fileID: 2005978911}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: ignoreGravity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: segmentLength
-      value: 0.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutSnapImpulse
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: insulatedWidth
-      value: 0.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: ropeRopePasses
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: customGravity.y
-      value: -9.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutPieceDamping
-      value: 0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: wirePiecePrefab
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutImpulsePoints
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: useDynamicGravity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutSettleIterations
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutPieceBendStiffness
-      value: 0.04
-      objectReference: {fileID: 0}
-    - target: {fileID: 4687179442385133303, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7807770635642956764, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7807770635642956764, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -9.03
-      objectReference: {fileID: 0}
     - target: {fileID: 579312047804908788, guid: 9d01ab079e02b7946acccb837e905693, type: 3}
       propertyPath: points
       value: 10
@@ -94034,6 +93950,90 @@ PrefabInstance:
     - target: {fileID: 8084096009313041213, guid: 9d01ab079e02b7946acccb837e905693, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: points
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: damping
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: wireColor
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: iterations
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: ropeRadius
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: gravitySource
+      value: 
+      objectReference: {fileID: 2005978911}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: ignoreGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: segmentLength
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutSnapImpulse
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: insulatedWidth
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: ropeRopePasses
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: customGravity.y
+      value: -9.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutPieceDamping
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: wirePiecePrefab
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutImpulsePoints
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: useDynamicGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutSettleIterations
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutPieceBendStiffness
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687179442385133303, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7807770635642956764, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7807770635642956764, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -9.03
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -194141,7 +194141,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Main::GameplayWebcamBinder
   webcamImage: {fileID: 524900908}
   webcamPanel: {fileID: 343858192}
-  mirrorCamera: 1
 --- !u!1 &976054744 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 710dac6f8f7a800499f90402fedff886, type: 3}
@@ -210483,7 +210482,7 @@ Transform:
   m_GameObject: {fileID: 1111253592}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: -10.75, y: 674.27997, z: -14.4135}
+  m_LocalPosition: {x: -10.89, y: 674.27997, z: -14.4135}
   m_LocalScale: {x: 4.45289, y: 4.445438, z: 40}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -247672,90 +247671,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1514915498}
     m_Modifications:
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: points
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: damping
-      value: 0.06
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: wireColor
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: iterations
-      value: 24
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: ropeRadius
-      value: 0.18
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: gravitySource
-      value: 
-      objectReference: {fileID: 2005978911}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: ignoreGravity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: segmentLength
-      value: 0.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutSnapImpulse
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: insulatedWidth
-      value: 0.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: ropeRopePasses
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: customGravity.y
-      value: -9.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutPieceDamping
-      value: 0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: wirePiecePrefab
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutImpulsePoints
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: useDynamicGravity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutSettleIterations
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutPieceBendStiffness
-      value: 0.04
-      objectReference: {fileID: 0}
-    - target: {fileID: 4687179442385133303, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7807770635642956764, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7807770635642956764, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -9.03
-      objectReference: {fileID: 0}
     - target: {fileID: 579312047804908788, guid: 9d01ab079e02b7946acccb837e905693, type: 3}
       propertyPath: points
       value: 10
@@ -247859,6 +247774,90 @@ PrefabInstance:
     - target: {fileID: 8084096009313041213, guid: 9d01ab079e02b7946acccb837e905693, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: points
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: damping
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: wireColor
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: iterations
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: ropeRadius
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: gravitySource
+      value: 
+      objectReference: {fileID: 2005978911}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: ignoreGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: segmentLength
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutSnapImpulse
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: insulatedWidth
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: ropeRopePasses
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: customGravity.y
+      value: -9.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutPieceDamping
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: wirePiecePrefab
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutImpulsePoints
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: useDynamicGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutSettleIterations
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutPieceBendStiffness
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687179442385133303, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7807770635642956764, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7807770635642956764, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -9.03
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -271683,90 +271682,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1514915498}
     m_Modifications:
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: points
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: damping
-      value: 0.06
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: wireColor
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: iterations
-      value: 24
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: ropeRadius
-      value: 0.18
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: gravitySource
-      value: 
-      objectReference: {fileID: 2005978911}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: ignoreGravity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: segmentLength
-      value: 0.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutSnapImpulse
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: insulatedWidth
-      value: 0.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: ropeRopePasses
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: customGravity.y
-      value: -9.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutPieceDamping
-      value: 0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: wirePiecePrefab
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutImpulsePoints
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: useDynamicGravity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutSettleIterations
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutPieceBendStiffness
-      value: 0.04
-      objectReference: {fileID: 0}
-    - target: {fileID: 4687179442385133303, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7807770635642956764, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7807770635642956764, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -9.03
-      objectReference: {fileID: 0}
     - target: {fileID: 579312047804908788, guid: 9d01ab079e02b7946acccb837e905693, type: 3}
       propertyPath: points
       value: 10
@@ -271870,6 +271785,90 @@ PrefabInstance:
     - target: {fileID: 8084096009313041213, guid: 9d01ab079e02b7946acccb837e905693, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: points
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: damping
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: wireColor
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: iterations
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: ropeRadius
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: gravitySource
+      value: 
+      objectReference: {fileID: 2005978911}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: ignoreGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: segmentLength
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutSnapImpulse
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: insulatedWidth
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: ropeRopePasses
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: customGravity.y
+      value: -9.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutPieceDamping
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: wirePiecePrefab
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutImpulsePoints
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: useDynamicGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutSettleIterations
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutPieceBendStiffness
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687179442385133303, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7807770635642956764, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7807770635642956764, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -9.03
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -683327,7 +683326,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1662683733730322599, guid: be23368a412e8458b9ea32945cd3af5f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10.92
+      value: -10.75
       objectReference: {fileID: 0}
     - target: {fileID: 1662683733730322599, guid: be23368a412e8458b9ea32945cd3af5f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -754163,90 +754162,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1514915498}
     m_Modifications:
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: points
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: damping
-      value: 0.06
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: wireColor
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: iterations
-      value: 24
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: ropeRadius
-      value: 0.18
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: gravitySource
-      value: 
-      objectReference: {fileID: 2005978911}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: ignoreGravity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: segmentLength
-      value: 0.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutSnapImpulse
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: insulatedWidth
-      value: 0.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: ropeRopePasses
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: customGravity.y
-      value: -9.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutPieceDamping
-      value: 0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: wirePiecePrefab
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutImpulsePoints
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: useDynamicGravity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutSettleIterations
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: cutPieceBendStiffness
-      value: 0.04
-      objectReference: {fileID: 0}
-    - target: {fileID: 4687179442385133303, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7807770635642956764, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7807770635642956764, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -9.03
-      objectReference: {fileID: 0}
     - target: {fileID: 579312047804908788, guid: 9d01ab079e02b7946acccb837e905693, type: 3}
       propertyPath: points
       value: 10
@@ -754350,6 +754265,90 @@ PrefabInstance:
     - target: {fileID: 8084096009313041213, guid: 9d01ab079e02b7946acccb837e905693, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: points
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: damping
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: wireColor
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: iterations
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: ropeRadius
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: gravitySource
+      value: 
+      objectReference: {fileID: 2005978911}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: ignoreGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: segmentLength
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutSnapImpulse
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: insulatedWidth
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: ropeRopePasses
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: customGravity.y
+      value: -9.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutPieceDamping
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: wirePiecePrefab
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutImpulsePoints
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: useDynamicGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutSettleIterations
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 966558546659797782, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: cutPieceBendStiffness
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 4687179442385133303, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7807770635642956764, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7807770635642956764, guid: e66d5d34e62d2d64dacfc9e6ce08cfc3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -9.03
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

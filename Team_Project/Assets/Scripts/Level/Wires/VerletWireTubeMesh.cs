@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+//https://nothkedev.blogspot.com/2018/08/procedurally-generated-meshes-in-unity.html
+// https://discussions.unity.com/t/generating-a-procedural-cylindrical-mesh-following-a-path/251777/2
 
 public class VerletWireTubeMesh : MonoBehaviour
 {
@@ -8,7 +10,7 @@ public class VerletWireTubeMesh : MonoBehaviour
     [SerializeField] private float wireRadius = 0.04f;
     [SerializeField] private bool showEndCaps = false;
     [SerializeField] private Material wireMaterial;
-    [SerializeField] private float uv = 1; //maybe
+    // [SerializeField] private float uv = 1; 
     private VerletInsulatedWire wire;
     private Mesh wireMesh;
     private MeshFilter wireMeshFilter;
@@ -44,15 +46,13 @@ public class VerletWireTubeMesh : MonoBehaviour
         int tranlgeClosures = 0;
         if (showEndCaps)
         {
-            ringClosures = 2 * (numberOfSides + 2);
-            tranlgeClosures = 2 * numberOfSides * 3;
+            ringClosures = 2*(numberOfSides + 2);
+            tranlgeClosures = 2* numberOfSides * 3;
         }
         else
         {
-            {
-                ringClosures = 0;
-                tranlgeClosures = 0;
-            }
+            ringClosures = 0;
+            tranlgeClosures = 0;
         }
 
         int totalVertices = pointRings * ringVertices + ringClosures;
@@ -61,7 +61,7 @@ public class VerletWireTubeMesh : MonoBehaviour
             vertices = new Vector3[totalVertices];
             normals = new Vector3[totalVertices];
             uvs = new Vector2[totalVertices];
-            int totalTriangleIndices = (pointRings - 1) * numberOfSides * 6 + tranlgeClosures;
+            int totalTriangleIndices = (pointRings - 1) * numberOfSides *6 + tranlgeClosures;
             triangles = new int[totalTriangleIndices];
             lastwirePoint = wirePoints;
             lastSide = numberOfSides;
@@ -110,7 +110,6 @@ public class VerletWireTubeMesh : MonoBehaviour
                 int b = i * ringVertices + j + 1;
                 int c = (i + 1) * ringVertices + j;
                 int d = (i + 1) * ringVertices + j + 1;
-
                 triangles[triangleIndex++] = a;
                 triangles[triangleIndex++] = c;
                 triangles[triangleIndex++] = b;

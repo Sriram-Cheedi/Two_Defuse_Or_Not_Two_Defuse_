@@ -32,10 +32,10 @@ public class MovementData : ScriptableObject
     public float slopeSpeed = 10f;
     
     [Header("Step Handling")]
-    public float stepOffset = 0.3f;      // max climbable height
-    public float stepSmooth = 0.1f;      // lift per FixedUpdate tick
-    public float groundClearance = 0.05f; // ray lift above floor
-    public float forwardProbe = 0.1f;
+    public float stepOffset = 0.3f;      
+    public float stepSmooth = 0.1f;      
+    public float groundLift = 0.05f;
+    public float forwardCast = 0.1f;
 
     [Header("Visuals")]
     public float crouchTransitionSpeed = 5f;

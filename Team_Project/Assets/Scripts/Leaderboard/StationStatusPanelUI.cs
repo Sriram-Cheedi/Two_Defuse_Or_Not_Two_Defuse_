@@ -8,9 +8,9 @@ public class StationStatusPanelUI : MonoBehaviour
 
     [Header("Status Colors")]
     [SerializeField] private Color waitingColor = new Color(0.75f, 0.75f, 0.75f);
-    [SerializeField] private Color playingColor = new Color(1f, 0.78f, 0.2f);
-    [SerializeField] private Color defusedColor = new Color(0.2f, 0.85f, 0.35f);
-    [SerializeField] private Color explodedColor = new Color(0.9f, 0.2f, 0.2f);
+    [SerializeField] private Color playingColor = new Color(1f, 0.78f, 0f);
+    [SerializeField] private Color defusedColor = new Color(0f, 1f, 0f);
+    [SerializeField] private Color explodedColor = new Color(1f, 0f, 0f);
 
     public void SetStatus(string teamName, string status)
     {

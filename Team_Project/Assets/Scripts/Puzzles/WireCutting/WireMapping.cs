@@ -10,7 +10,6 @@ public class WireMapping : MonoBehaviour
     {
         if (ssm_controller == null)
         {
-            Debug.LogError("SSM Controller is not assigned.");
             return;
         }
 

@@ -6,7 +6,7 @@ namespace PersistantSystems.Software
     {
         [SerializeField] private GameObject mainMenuPanel;
         [SerializeField] private GameObject settingsPanel;
-        public static SettingPageManager Instance { get; private set; }
+        public static SettingPageManager Instance {get; private set;}
         private void Awake()
         {
             if (Instance == null)
@@ -22,42 +22,20 @@ namespace PersistantSystems.Software
         
         private void Start()
         {
-            if (mainMenuPanel != null)
-            {
-                mainMenuPanel.SetActive(true);
-            }
-
-            if (settingsPanel != null)
-            {
-                settingsPanel.SetActive(false);
-            }
+            mainMenuPanel.SetActive(true);
+            settingsPanel.SetActive(false);
         }
 
         public void OpenSettings()
         {
-            if (mainMenuPanel != null)
-            {
-                mainMenuPanel.SetActive(false);
-            }
-
-            if (settingsPanel != null)
-            {
-                settingsPanel.SetActive(true);
-            }
+            mainMenuPanel.SetActive(false);
+            settingsPanel.SetActive(true);
         }
 
         public void CloseSettings()
         {
-            if (mainMenuPanel != null)
-            {
-                mainMenuPanel.SetActive(true);
-            }
-
-            if (settingsPanel != null)
-            {
-                settingsPanel.SetActive(false);
-            }
-
+            mainMenuPanel.SetActive(true);
+            settingsPanel.SetActive(false);
         }
     }
 }
