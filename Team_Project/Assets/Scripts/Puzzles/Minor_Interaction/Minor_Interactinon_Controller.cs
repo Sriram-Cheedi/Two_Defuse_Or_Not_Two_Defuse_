@@ -1,0 +1,262 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Puzzles.Minor_Interaction
+{
+    public enum DoorID
+    {
+        TrapDoor,
+        TutorialDoor,
+        SSMDoor,
+        MazeDoor,
+        NGMDoor,
+    }
+
+    public enum DoorType
+    {
+        Hinged,
+        Sliding,
+    }
+    
+    public class Minor_Interactinon_Controller : Puzzle
+    {
+
+        enum MockButtonValues
+        {
+            BTN1 = 5,
+            BTN2 = 6,
+            SWT1 = 8,
+            SWT2 = 9,
+            SWT3 = 0,
+        }
+        [SerializeField] public PlayerInputRelay relay;
+        [SerializeField] public GameObject deathLazer;
+        [SerializeField] public GameObject spawnRoomDoor;
+
+        [SerializeField] public GameObject[] bars;
+        [SerializeField] public GameObject barredDoor;
+        [SerializeField] private LevelData levelData;
+        [SerializeField] private Transform barredDoorHinge;
+        [SerializeField] private Transform spawnDoorHinge;
+        [SerializeField] private BarredDoorAnimation doorAnimaton;
+        private bool hasDoorUnlocked;
+        public static Action DoorOpened;
+
+        private bool bar1solved = false;
+        private bool bar2solved = false;
+        private bool bar3solved = false;
+
+        public event Action<DoorID> DoorOpenRequested;
+        public event Action<DoorID> DoorCloseRequested;
+
+        private Dictionary<int, Vector3> spawnPositions = new Dictionary<int, Vector3>();
+
+        private int[] correctPostion = { 0, 0, 0 };
+
+        private Dictionary<String, int> barStates = new Dictionary<String, int>
+        {
+            { "SW1", -1 },
+            { "SW2", -1 },
+            { "SW3", -1 },
+        };
+
+        void Start()
+        {
+            // if (barStates["SW1"] == 0)
+            // {
+            //     
+            // }
+            //
+            // if (barStates["SW2"] == 0)
+            // {
+            //     doorAnimaton.MoveBar(1, Vector3.forward);
+            //     doorAnimaton.MoveBar(1, Vector3.forward);
+            //     correctPostion[1] = !correctPostion[1];
+            // }
+            // if (barStates["SW3"] == 0)
+            // {
+            //     doorAnimaton.MoveBar(2, Vector3.forward);
+            //     doorAnimaton.MoveBar(2, Vector3.forward);
+            //     correctPostion[2] = !correctPostion[2];
+            // }
+            //
+            // setup = false;
+            HandleButtonPress("SW1", API_Provider.Instance.ActiveAPIController.GetSwitch("1"));
+            HandleButtonPress("SW2", API_Provider.Instance.ActiveAPIController.GetSwitch("2"));
+            HandleButtonPress("SW3", API_Provider.Instance.ActiveAPIController.GetSwitch("3"));
+        }
+
+        void OnEnable()
+        {
+            // For Testing with Keyboard Button Presses
+            if (relay != null)
+            {
+                relay.NumberPressed += HandleMockButtonPress;
+            }
+
+            API_Controller.OnInputChanged += HandleButtonPress;
+        }
+
+        void OnDisable()
+        {
+            API_Controller.OnInputChanged -= HandleButtonPress;
+
+            if (relay != null)
+            {
+                relay.NumberPressed -= HandleMockButtonPress;
+            }
+        }
+        
+        public void RequestOpenDoor(DoorID doorId)
+        {
+            DoorOpenRequested?.Invoke(doorId);
+        }
+
+        public void RequestCloseDoor(DoorID doorId)
+        {
+            DoorCloseRequested?.Invoke(doorId);
+        }
+
+        // Handle with hardware or corresponding software button presses and activate relevent ingame effect.
+        private void HandleMockButtonPress(int digit)
+        {
+            switch (digit)
+            {
+                case (int)MockButtonValues.BTN1:
+                    Debug.Log("Controller Recieved BTN1");
+                    // doorAnimaton.OpenDoor(spawnRoomDoor.transform, spawnDoorHinge, Vector3.forward, 1f);
+                    RequestOpenDoor(DoorID.TutorialDoor);
+                    break;
+                case (int)MockButtonValues.BTN2:
+                    HandleDeathLazer();
+                    break;
+
+                case (int)MockButtonValues.SWT1:
+                    UpdateBarStatus("SW1", 0);
+
+                    break;
+                case (int)MockButtonValues.SWT2:
+                    UpdateBarStatus("SW2", 0);
+                    break;
+                case (int)MockButtonValues.SWT3:
+                    UpdateBarStatus("SW3", 0);
+                    break;
+
+            }
+        }
+
+        private void HandleButtonPress(string header, int value)
+        {
+            switch (header)
+            {
+                case "BTN1":
+                    if (value == 1)
+                    {
+                        RequestOpenDoor(DoorID.TutorialDoor);
+                    }
+                    break;
+                case "BTN2":
+                    Debug.Log("Controller Recieved BTN2");
+                    if (value == 1) HandleDeathLazer();
+                    break;
+
+                case "SW1":
+                    if (hasDoorUnlocked) return;
+                    if (barStates["SW1"] == -1)
+                    {
+                        UpdateBarStatus("SW1", value);
+                        if (value == 1) return;
+                        doorAnimaton.SnapMoveBar(0);
+                        correctPostion[0] = 1;
+                    }
+                    else
+                    {
+                        UpdateBarStatus("SW1", value);
+                        if (value == 1) doorAnimaton.MoveBar(0, value);
+                        else doorAnimaton.MoveBar(0, value);
+                    }
+
+                    break;
+                case "SW2":
+                    if (hasDoorUnlocked) return;
+                    if (barStates["SW2"] == -1)
+                    {
+                        UpdateBarStatus("SW2", value);
+                        if (value == 1) return;
+                        doorAnimaton.SnapMoveBar(1);
+                        correctPostion[1] = 1;
+                    }
+                    else
+                    {
+                        UpdateBarStatus("SW2", value);
+                        if (value == 1) doorAnimaton.MoveBar(1, value);
+                        else doorAnimaton.MoveBar(1, value);
+                    }
+
+                    // UpdateBarStatus("SW2", value);
+                    // if (setup) return;
+                    // if (value == 1) doorAnimaton.MoveBar(1, Vector3.forward);
+                    // else doorAnimaton.MoveBar(1, Vector3.back);
+                    break;
+                case "SW3":
+                    if (hasDoorUnlocked) return;
+                    if (barStates["SW3"] == -1)
+                    {
+                        UpdateBarStatus("SW3", value);
+                        if (value == 1) return;
+                        doorAnimaton.SnapMoveBar(2);
+                        correctPostion[2] = 1;
+                    }
+                    else
+                    {
+                        UpdateBarStatus("SW3", value);
+                        if (value == 1) doorAnimaton.MoveBar(2, value);
+                        else doorAnimaton.MoveBar(2, value);
+                    }
+
+
+                    // UpdateBarStatus("SW3", value);
+                    // if (setup) return;
+                    // if (value == 1) doorAnimaton.MoveBar(2, Vector3.forward);
+                    // else doorAnimaton.MoveBar(2, Vector3.back);
+                    break;
+            }
+        }
+
+        // Ingame Effects
+        private void HandleDeathLazer()
+        {
+            StartCoroutine(DisableDeathLazer());
+        }
+
+        IEnumerator DisableDeathLazer()
+        {
+            deathLazer.SetActive(false);
+            yield return new WaitForSeconds(levelData.doorDelay);
+            deathLazer.SetActive(true);
+        }
+
+
+        private void SwingDoor(GameObject door)
+        {
+            door.SetActive(false);
+        }
+
+        private void UpdateBarStatus(string header, int value)
+        {
+
+            Debug.Log("Updating bar status" + header);
+            barStates[header] = value;
+
+            if (barStates["SW1"] == correctPostion[0] && barStates["SW2"] == correctPostion[1] && barStates["SW3"] == correctPostion[2])
+            {
+                // doorAnimaton.OpenDoor(barredDoor.transform, barredDoorHinge, Vector3.up, 1f);
+                RequestOpenDoor(DoorID.MazeDoor);
+                TriggerSuccess(PuzzleGame.SWT);
+            }
+        }
+
+    }
+}

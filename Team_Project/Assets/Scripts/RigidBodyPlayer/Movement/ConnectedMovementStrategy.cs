@@ -1,0 +1,29 @@
+﻿using UnityEngine;
+
+namespace RigidBodyPlayer.Movement
+{
+    public class ConnectedMovementStrategy : IMovementStrategy
+    {
+        public void ApplyMovement(RigidBodyMovement hub)
+        {
+            if (hub.data == null) return;
+            Vector3 connectionVelocity = hub.sensor.ConnectionVelocity;
+
+            Vector3 movementDir = hub.orientation.forward * hub.relay.MoveValue.y + hub.orientation.right * hub.relay.MoveValue.x;
+            Vector3 platformVelocity = hub.sensor.OnMovingPlatform ? connectionVelocity : Vector3.zero;
+
+            Vector3 velocity = hub.rb.linearVelocity;
+            Vector3 relativeVelocity = velocity - platformVelocity;
+            float speed = hub.crouch.isCrouchPressed ? hub.data.crouchSpeed : hub.data.walkSpeed;
+            Vector3 desiredRelativeVelocity = movementDir.normalized * speed;
+            
+            float maxDelta = hub.data.groundAcceleration * Time.fixedDeltaTime;
+
+            float newX = Mathf.MoveTowards(relativeVelocity.x, desiredRelativeVelocity.x, maxDelta);
+            float newZ = Mathf.MoveTowards(relativeVelocity.z, desiredRelativeVelocity.z, maxDelta);
+
+            relativeVelocity = new Vector3(newX, relativeVelocity.y, newZ);
+            hub.rb.linearVelocity = relativeVelocity + platformVelocity;
+        }
+    }
+}

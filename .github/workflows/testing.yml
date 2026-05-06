@@ -1,0 +1,143 @@
+name: Test project
+
+on:
+  pull_request:
+    paths:
+        - 'Team_Project/**'
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: write
+  checks: write
+  pull-requests: write
+  
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+  
+jobs:
+  test:
+    name: Run Unity Tests
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Free Disk Space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo systemctl restart docker || true
+          docker system prune -af || true
+          
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Git LFS
+      - name: Create LFS file list
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+
+      - name: Restore LFS cache
+        uses: actions/cache@v3
+        id: lfs-cache
+        with:
+          path: .git/lfs
+          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+          restore-keys: |               
+            ${{ runner.os }}-lfs-
+
+      - name: Git LFS Pull
+        run: |
+          git lfs pull
+          git add .
+          git reset --hard
+
+      - name: Cache Library
+        uses: actions/cache@v3
+        with:
+          path: Team_Project/Library
+          key: Library-${{ hashFiles('Team_Project/Assets/**', 'Team_Project/Packages/**', 'Team_Project/ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      # Test
+      - name: Test
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: Team_Project
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          coverageOptions: ''
+          customParameters: '-force-glcore'
+
+      - name: Diagnostics (on failure)
+        if: failure()
+        run: |
+          set -x
+          docker --version || true
+          docker info || true
+          df -h || true
+          df -i || true
+          free -h || true
+          sudo journalctl -u docker --no-pager -n 200 || true
+          dmesg -T | tail -n 120 || true
+
+  build:
+      name: Build project
+      needs: test
+      runs-on: ubuntu-22.04
+      steps:
+        - name: Free Disk Space
+          run: |
+            sudo rm -rf /usr/share/dotnet
+            sudo rm -rf /usr/local/lib/android
+            sudo systemctl restart docker || true
+            docker system prune -af || true  
+            
+        - name: Checkout repository
+          uses: actions/checkout@v4
+  
+        # Git LFS
+        - name: Create LFS file list
+          run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+  
+        - name: Restore LFS cache
+          uses: actions/cache@v3
+          id: lfs-cache
+          with:
+            path: .git/lfs
+            key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+            restore-keys: |
+              ${{ runner.os }}-lfs-
+  
+        - name: Git LFS Pull
+          run: |
+            git lfs pull
+            git add .
+            git reset --hard
+  
+        # Cache
+        - name: Restore Library Cache
+          uses: actions/cache@v3
+          with:
+            path: Team_Project/Library
+            key: Library-${{ hashFiles('Team_Project/Assets/**', 'Team_Project/Packages/**', 'Team_Project/ProjectSettings/**') }}
+            restore-keys: |
+              Library-
+
+        - name: Build Project
+          uses: game-ci/unity-builder@v4
+          env:
+            UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+            UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+            UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          with:
+            projectPath: Team_Project
+            targetPlatform: StandaloneWindows64
+            allowDirtyBuild: true
+
+        - name: Upload Build
+          uses: actions/upload-artifact@v4
+          with:
+            name: Build
+            path: build

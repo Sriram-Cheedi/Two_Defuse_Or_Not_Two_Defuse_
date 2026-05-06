@@ -1,0 +1,190 @@
+using System;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+[RequireComponent(typeof(PlayerInput))]
+public class PlayerInputRelay : MonoBehaviour
+{
+    private PlayerInput input;
+
+    public event Action<Vector2> Move;
+    public event Action<Vector2> Look;
+    public event Action JumpPressed;
+    public event Action<bool> Crouch;
+    public event Action<bool> InvertGravity;
+    public event Action<int> NumberPressed;
+    public event Action<bool> SmokeReleased;
+    public event Action HudsPressed;
+    public event Action GuessSubmitted;
+    private InputAction move, look, jump, crouch, invertGravity, enter, click, smoke, huds;
+    private InputAction keypressNumbers;
+
+    [SerializeField] private LayerMask interactableLayer;
+
+    public Vector2 MoveValue { get; private set; }
+    public Vector2 LookValue { get; private set; }
+    public bool CrouchValue { get; private set; }
+    public bool InvertGravityValue { get; private set; }
+    public bool SmokeValue { get; private set; }
+    public bool IsJumpHeld => jump.IsPressed();
+    public bool IsEnterHeld => enter.IsPressed();
+    private bool inputEnabled;
+    public bool IsEnterPressed => enter.IsPressed();
+
+    void Awake()
+    {
+        input = GetComponent<PlayerInput>();
+
+        click = input.actions["Attack"];
+        move = input.actions["Move"];
+        look = input.actions["Look"];
+        jump = input.actions["Jump"];
+        crouch = input.actions["Crouch"];
+        invertGravity = input.actions["InvertGravity"];
+        keypressNumbers = input.actions["NumKey"];
+        enter = input.actions["Enter"];
+        smoke = input.actions["Smoke"];
+        huds = input.actions["Huds"];
+        inputEnabled = false;
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnBoardingDone += EnableUserInput;
+        click.performed += OnClick;
+
+        move.performed += OnMove;
+        move.canceled += OnMove;
+
+        look.performed += OnLook;
+        look.canceled += OnLook;
+
+        jump.performed += OnJump;
+        jump.canceled += OnJump;
+
+        crouch.performed += OnCrouch;
+        crouch.canceled += OnCrouch;
+
+        // invertGravity.performed += OnInvertGravity;
+        // invertGravity.canceled += OnInvertGravity;
+
+        // smoke.performed += OnSmokeReleased;
+
+        huds.performed += OnHudsPressed;
+
+        // keypressNumbers.performed += OnNumberInput;
+
+        // enter.performed += OnEnter;
+        // enter.canceled += OnEnter;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnBoardingDone += EnableUserInput;
+        click.performed -= OnClick;
+
+        move.performed -= OnMove;
+        move.canceled -= OnMove;
+
+        look.performed -= OnLook;
+        look.canceled -= OnLook;
+
+        jump.performed -= OnJump;
+        jump.canceled -= OnJump;
+
+        crouch.performed -= OnCrouch;
+        crouch.canceled -= OnCrouch;
+
+        // invertGravity.performed -= OnInvertGravity;
+        // invertGravity.canceled -= OnInvertGravity;
+        //
+        // smoke.performed -= OnSmokeReleased;
+        
+        huds.performed -= OnHudsPressed;
+
+        // keypressNumbers.performed -= OnNumberInput;
+        //
+        // enter.performed -= OnEnter;
+        // enter.canceled -= OnEnter;
+    }
+
+    private void OnClick(InputAction.CallbackContext ctx)
+    {
+        Vector2 screenPosition = Mouse.current.position.ReadValue();
+        Ray ray = Camera.main.ScreenPointToRay(screenPosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 10f))
+        {
+            hit.collider.GetComponent<Interactible_Interface>()?.Interact(hit);
+        }
+    }
+
+    private void OnMove(InputAction.CallbackContext ctx)
+    {
+        if (!inputEnabled) return;
+        MoveValue = ctx.ReadValue<Vector2>();
+        Move?.Invoke(MoveValue);
+    }
+
+    private void OnLook(InputAction.CallbackContext ctx)
+    {
+        if (!inputEnabled) return;
+        LookValue = ctx.ReadValue<Vector2>();
+        Look?.Invoke(LookValue);
+    }
+
+    private void OnJump(InputAction.CallbackContext ctx)
+    {
+        if (!inputEnabled) return;
+        if (ctx.performed) JumpPressed?.Invoke();
+    }
+
+    private void OnCrouch(InputAction.CallbackContext ctx)
+    {
+        if (!inputEnabled) return;
+        CrouchValue = ctx.ReadValueAsButton();
+        Crouch?.Invoke(CrouchValue);
+    }
+
+    private void OnInvertGravity(InputAction.CallbackContext ctx)
+    {
+        InvertGravityValue = ctx.ReadValueAsButton();
+        InvertGravity?.Invoke(InvertGravityValue);
+    }
+
+    private void OnSmokeReleased(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.performed) return;
+        SmokeValue = !SmokeValue;
+        SmokeReleased?.Invoke(SmokeValue);
+    }
+
+    private void OnHudsPressed(InputAction.CallbackContext ctx)
+    {
+        if (!inputEnabled) return;
+        if (!ctx.performed) return;
+        HudsPressed?.Invoke();
+    }
+
+private void OnNumberInput(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.ReadValueAsButton()) return;
+        string keyname = ctx.control.name;
+        char lastChar = keyname[keyname.Length - 1];
+        if (char.IsDigit(lastChar))
+        {
+            int digit = (int)char.GetNumericValue(lastChar);
+            NumberPressed?.Invoke(digit);
+        }
+    }
+    
+    private void OnEnter(InputAction.CallbackContext ctx)
+    {
+        // if (ctx.performed) GuessSubmitted?.Invoke();
+    }
+
+    private void EnableUserInput()
+    {
+        inputEnabled = true;
+    }
+}
