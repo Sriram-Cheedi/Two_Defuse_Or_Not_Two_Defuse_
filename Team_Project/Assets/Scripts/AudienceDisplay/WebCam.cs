@@ -1,11 +1,14 @@
 using UnityEngine;
 using System.Collections;
 
+// Took reference from his youtube video https://youtu.be/GR05cBgyuCg?si=7b9QPY1g99ChAO9a
+// The implementation was changed as per our game requirements
+
 public class WebCam : MonoBehaviour
 {
-    public static WebCam Instance { get; private set; }
+    public static WebCam Instance {get; private set;}
     [SerializeField] private string preferredCameraName = "USB Camera";
-    public WebCamTexture WebcamTexture { get; private set; }
+    public WebCamTexture WebcamTexture {get; private set;}
     private bool isStarting;
 
     private void Awake()
@@ -34,7 +37,6 @@ public class WebCam : MonoBehaviour
     private IEnumerator StartCam()
     {
         isStarting = true;
-
         yield return new WaitForSeconds(0.5f);
         WebCamDevice[] devices = WebCamTexture.devices;
         if (devices.Length == 0)
@@ -50,6 +52,8 @@ public class WebCam : MonoBehaviour
                 selectedDevice = device.name;
             }
         }
+        
+        
 
         if (WebcamTexture == null)
         {
@@ -60,16 +64,12 @@ public class WebCam : MonoBehaviour
         {
             WebcamTexture.Play();
         }
-
         yield return new WaitForSeconds(1.0f);
         isStarting = false;
     }
 
     private void OnApplicationQuit()
     {
-        if (WebcamTexture != null && WebcamTexture.isPlaying)
-        {
-            WebcamTexture.Stop();
-        }
+        WebcamTexture.Stop();
     }
 }

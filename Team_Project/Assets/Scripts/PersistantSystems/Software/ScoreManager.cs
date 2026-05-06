@@ -50,8 +50,8 @@ namespace PersistantSystems.Software
         private const float SYNC_PERFECT_THRESHOLD = 0.5f;
         private const float LOSS_MULTIPLIER = 0.25f;
         
-        public int yourScore { get; private set; }
-        public double bombTimeRemaining { get; private set; }
+        public int yourScore {get; private set;}
+        public double bombTimeRemaining {get; private set;}
 
         private Dictionary<PuzzleGame, PuzzleResults> puzzleResultsMap = 
                 new Dictionary<PuzzleGame, PuzzleResults>()

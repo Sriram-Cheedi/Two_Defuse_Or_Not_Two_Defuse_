@@ -12,13 +12,13 @@ public class AudienceMainMenuController : MonoBehaviour
 
     public void ShowMainMenu()
     {
-        if (mainMenuStaticDisplay2 != null) mainMenuStaticDisplay2.SetActive(true);
-        if (cutSceneDisplay2 != null) cutSceneDisplay2.SetActive(false);
+        mainMenuStaticDisplay2.SetActive(true);
+        cutSceneDisplay2.SetActive(false);
     }
 
     public void ShowCutscene()
     {
-        if (mainMenuStaticDisplay2 != null) mainMenuStaticDisplay2.SetActive(false);
-        if (cutSceneDisplay2 != null) cutSceneDisplay2.SetActive(true);
+        mainMenuStaticDisplay2.SetActive(false);
+        cutSceneDisplay2.SetActive(true);
     }
 }
