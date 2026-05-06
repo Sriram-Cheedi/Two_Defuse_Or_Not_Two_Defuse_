@@ -11,9 +11,7 @@ namespace RigidBodyPlayer.Movement
             Vector3 movementDir = hub.orientation.forward * hub.relay.MoveValue.y + hub.orientation.right * hub.relay.MoveValue.x;
             Vector3 velocity = hub.rb.linearVelocity;
             float speed = hub.data.walkSpeed;
-            Vector3 desiredRelativeVelocity = movementDir.sqrMagnitude > 0.0001f
-                ? movementDir.normalized * speed
-                : Vector3.zero;
+            Vector3 desiredRelativeVelocity = movementDir.normalized * speed;
 
             float maxDelta;
             if (!hub.sensor.IsGrounded && Mathf.Abs(hub.rb.linearVelocity.y)  < hub.data.apexThreshold)

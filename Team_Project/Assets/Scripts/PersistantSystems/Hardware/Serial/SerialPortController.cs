@@ -6,7 +6,7 @@ using System.IO.Ports;
 public class SerialPortController : MonoBehaviour, I_SerialPortController
 {
     // private readonly string _portID = "COM3";
-    private string _portID = "COM4";
+    private string _portID = "";
     [SerializeField] private int _baudRate = 115200;
     private SerialPort _serialPort;
     private string buffer = "";
@@ -29,8 +29,7 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
     public void Start() { }
     public void Awake()
     {
-        Debug.Log("SerialPortController Awake on: " + gameObject.name);
-        Debug.Log("SerialPortController instance: " + gameObject.GetInstanceID());
+        Debug.Log("SerialPortController Started");
     }
 
     public void Update()
@@ -54,7 +53,7 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
             }
             catch (Exception e)
             {
-                Debug.LogError("Serial write failed (device disconnected?): " + e.Message);
+                Debug.LogError("Serial write failed maybe hardware is diconnected: " + e.Message);
                 Disconnect();
                 return;
             }
@@ -134,12 +133,12 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
         }
         catch (Exception e)
         {
-            Debug.LogError("Serial write failed (device disconnected?): " + e.Message);
+            Debug.LogError("Serial write failed maybe hardware is diconnected: " + e.Message);
             Disconnect();
         }
     }
 
-    private void Disconnect()
+    private void Disconnect(bool notify = true)
     {
         try
         {
@@ -151,14 +150,22 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
         catch { }
         _serialPort = null;
         buffer = "";
-        if (isConnected)
+        if (notify && isConnected)
         {
             isConnected = false;
             bombDisconnected?.Invoke();
         }
+        else
+        {
+            isConnected = false;
+        }
     }
     public bool Connect()
     {
+        if (_serialPort == null || !_serialPort.IsOpen)
+        {
+            _portID = "";
+        }
         if(_serialPort != null && _serialPort.IsOpen)
         {
             if (!isConnected)
@@ -184,7 +191,6 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
                 CheckPort.Write("$PING#");
                 System.Threading.Thread.Sleep(50);
                 string HandshakeMessage = "";
-                
                 float startTime = Time.realtimeSinceStartup;
 
                 while (Time.realtimeSinceStartup - startTime < 1.0f)
@@ -218,7 +224,7 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
         }
         try
         {
-            Debug.Log("Attempting to Open Port on: " + _portID + " and baud rate: " + _baudRate);
+            Debug.Log("Trying to Open Port on: " + _portID + " and baud rate: " + _baudRate);
             _serialPort = new SerialPort(_portID, _baudRate);
             _serialPort.ReadTimeout = 50;
             Debug.Log("Opening serial port: " + _portID + "\n" + Environment.StackTrace);
@@ -236,8 +242,10 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
         }
         catch (Exception error)
         {   
-            Disconnect();
-            throw error;
+            Disconnect(false);
+            Debug.LogError("Failed to open serial port: " + error.Message);
+            return false;
+            
         }
         
     }
@@ -245,7 +253,9 @@ public class SerialPortController : MonoBehaviour, I_SerialPortController
     public void OnApplicationQuit()
     {
         if (_serialPort != null && _serialPort.IsOpen)
+        {
             _serialPort.Close();
+        }
     }
 }
 

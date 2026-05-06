@@ -58,7 +58,16 @@ public class Maze_Trigger : MonoBehaviour
             SendSet();
         }
     }
+    public void SendMazeONHardwareResync()
+    {
+        if (API_Provider.Instance == null || API_Provider.Instance.ActiveAPIController == null)
+        {
+            return;
+        }
 
+        API_Provider.Instance.ActiveAPIController.SendMazeSeq("MAZE", sequence);
+        SendSet();
+    }
     private void SendSet()
     {
         

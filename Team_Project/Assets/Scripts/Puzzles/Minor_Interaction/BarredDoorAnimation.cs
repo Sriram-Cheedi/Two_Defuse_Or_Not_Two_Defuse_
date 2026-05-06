@@ -25,7 +25,6 @@ public class BarredDoorAnimation : MonoBehaviour
     private void Awake()
     {
         originalPositions = new Vector3[bars.Length];
-
         for (int i = 0; i < bars.Length; i++)
         {
             originalPositions[i] = bars[i].localPosition;

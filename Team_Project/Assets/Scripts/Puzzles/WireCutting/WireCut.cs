@@ -58,7 +58,6 @@ public class WireCut : Puzzle
 
         if (GameManager.Instance == null)
         {
-            Debug.LogError("GameManager.Instance is null.");
             return;
         }
 
@@ -128,6 +127,11 @@ public class WireCut : Puzzle
                     HasCutWireWithinTimeWindow?.Invoke(3.0f - (float)GameManager.Instance.BombTimer);
                     TriggerSuccess(PuzzleGame.WCM);
                     GameManager.Instance.WinGame();
+                }else if (wireCutLater != VerletInsulatedWire.WireColour.None)
+                {
+                    TriggerFailure(PuzzleGame.WCM);
+                    //game lost if timer hits 0
+                    GameManager.Instance.EndGame();
                 }
             }
         }

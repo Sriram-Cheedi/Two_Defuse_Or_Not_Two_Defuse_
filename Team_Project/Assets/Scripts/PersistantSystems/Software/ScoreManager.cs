@@ -32,10 +32,15 @@ namespace PersistantSystems.Software
             Solved = solved;
         }
     }
+    public static class FinalRunResults
+    {
+        public static int yourScore;
+        public static double bombTimeRemaining;
+    }
     
     public class ScoreManager : MonoBehaviour
     {
-        // __CONSTANTS
+        // CONSTANTS
         private const int BASE_SCORE = 1000;
         private const int TIME_BONUS_WEIGHT = 10;
         private const int DEATH_PENALTY_BASE = 50;
@@ -57,9 +62,9 @@ namespace PersistantSystems.Software
         public static readonly IReadOnlyDictionary<PuzzleGame, PuzzleConfig> Puzzles =
             new Dictionary<PuzzleGame, PuzzleConfig>
             {
-                { PuzzleGame.SWT,    new PuzzleConfig(1.6f, 60f) },
-                { PuzzleGame.SSM,         new PuzzleConfig(1.3f, 45f) },
-                { PuzzleGame.NGM,         new PuzzleConfig(1.0f, 40f) },
+                { PuzzleGame.SWT, new PuzzleConfig(1.6f, 60f) },
+                { PuzzleGame.SSM, new PuzzleConfig(1.3f, 45f) },
+                { PuzzleGame.NGM, new PuzzleConfig(1.0f, 40f) },
                 { PuzzleGame.WCM, new PuzzleConfig(0.8f, 10f) },
             };
 
@@ -119,8 +124,7 @@ namespace PersistantSystems.Software
         {
             deathCount++;
         }
-
-        // ========== MULTIPLIERS ==========
+        
         private float GetAttemptMultiplier(PuzzleGame puzzleGame, int attempts)
         {
             if (puzzleGame == PuzzleGame.SWT)
@@ -261,15 +265,17 @@ namespace PersistantSystems.Software
             
             // bool defused = GameManager.Instance != null &&
             //                GameManager.Instance.CurrentStateKey == GameState.GameWin;
+            // yourScore = finalScoreInt;
+            // bombTimeRemaining = bombTime;
+            FinalRunResults.yourScore = finalScoreInt;
+            FinalRunResults.bombTimeRemaining = bombTime;
 
             Debug.Log($"Final Score {finalScoreInt}");
 
             if (dbAPI != null)
             {
                 dbAPI.SubmitScore(username, finalScoreInt);
-
                 dbAPI.SubmitLeaderboardEntry(username, finalScoreInt, defused, GameplayStationConfig.StationId);
-
                 dbAPI.UpdateStationStatus(GameplayStationConfig.StationId, username, defused ? "Defused" : "Exploded");
             }
         }

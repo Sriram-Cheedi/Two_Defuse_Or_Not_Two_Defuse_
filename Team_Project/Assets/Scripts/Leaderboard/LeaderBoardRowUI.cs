@@ -10,17 +10,16 @@ public class LeaderboardRowUI : MonoBehaviour
     [SerializeField] private Image statusBadgeImage;
 
     [Header("Badge Sprites")]
-    [SerializeField] private Sprite defusedBadgeSprite;
-    [SerializeField] private Sprite explodedBadgeSprite;
+    [SerializeField] private Sprite defusedBadge;
+    [SerializeField] private Sprite explodedBadge;
 
     public void SetRow(int rank, string teamName, int score, bool defused)
     {
         rankText.text = rank.ToString();
         teamNameText.text = teamName;
         scoreText.text = score.ToString();
-
         statusBadgeImage.enabled = true;
-        statusBadgeImage.sprite = defused ? defusedBadgeSprite : explodedBadgeSprite;
+        statusBadgeImage.sprite = defused ? defusedBadge : explodedBadge;
     }
 
     public void SetEmpty(int rank)

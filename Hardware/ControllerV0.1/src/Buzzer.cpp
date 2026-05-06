@@ -1,5 +1,7 @@
 #include "Buzzer.h"
 #include "Arduino.h"
+#include "TeensyThreads.h"
+#include "pitches.h"
 
 Buzzer::Buzzer(std::string name, int pin, SerialController serialController, int pitch) : 
 Component(name), pin(pin), serialController(serialController), pitch(pitch) {
@@ -21,6 +23,14 @@ void Buzzer::status(){
 }
 
 void Buzzer::set(std::vector<std::string> args){
+    if(args.size() > 0){
+        if(std::stoi(args[0]) == 0){
+            siren = false;
+            notificationPlay = false;
+            scrambleNoise = false;
+            pause = false;
+        }
+    }
     return;
 }
 
@@ -47,6 +57,75 @@ void Buzzer::notification(){
 void Buzzer::scramble(){
     scrambleNoise = true;
 }
+
+
+void Buzzer::win(){
+    
+    int noteC5 = 523;
+    int noteE5 = 659;
+    int noteG5 = 784;
+    int noteC6 = 1047;
+
+    tone(pin, noteC5);
+    threads.delay(100);
+    noTone(pin);
+    threads.delay(50);
+
+    tone(pin, noteE5);
+    threads.delay(100);
+    noTone(pin);
+    threads.delay(50);
+
+    tone(pin, noteG5);
+    threads.delay(100);
+    noTone(pin);
+    threads.delay(50);
+
+    tone(pin, noteC6);
+    threads.delay(200); 
+    noTone(pin);
+    threads.delay(100); 
+
+    tone(pin, noteG5);
+    threads.delay(100);
+    noTone(pin);
+    threads.delay(50);
+
+    tone(pin, noteC6);
+    threads.delay(400); 
+    noTone(pin);
+
+    onChange = true;
+}
+
+void Buzzer::lose(){
+    int noteEb4 = 311; 
+    int noteDb4 = 277; 
+    int noteC4  = 261; 
+    int noteB2  = 123; 
+
+    tone(pin, noteEb4);
+    threads.delay(150);
+    noTone(pin);
+    threads.delay(50);
+
+    tone(pin, noteDb4);
+    threads.delay(150);
+    noTone(pin);
+    threads.delay(50);
+
+    tone(pin, noteC4);
+    threads.delay(150);
+    noTone(pin);
+    threads.delay(50);
+
+    tone(pin, noteB2);
+    threads.delay(600); 
+    noTone(pin);
+
+    onChange = true;
+}
+
 
 void Buzzer::update(){
 
@@ -131,4 +210,42 @@ void Buzzer::update(){
         onChange = false;
     }
 }
- 
+
+#define NOTE_COUNT 35 
+
+
+const int melody[NOTE_COUNT] = {
+  NOTE_G4, NOTE_A4, NOTE_C5, NOTE_A4, NOTE_E5, REST, NOTE_E5, REST, NOTE_D5, REST,
+  NOTE_G4, NOTE_A4, NOTE_C5, NOTE_A4, NOTE_D5, REST, NOTE_D5, REST, NOTE_C5, NOTE_B4, NOTE_A4, REST,
+  NOTE_G4, NOTE_A4, NOTE_C5, NOTE_A4, NOTE_C5, NOTE_D5, NOTE_B4, NOTE_A4, NOTE_G4, REST,
+  NOTE_G4, NOTE_D5, NOTE_C5
+};
+
+
+const float timing[NOTE_COUNT] = {
+  2, 2, 2, 2, 3, 1, 3, 1, 6, 2, 
+  2, 2, 2, 2, 3, 1, 3, 1, 2, 2, 4, 2,
+  2, 2, 2, 2, 4, 2, 2, 2, 4, 2,
+  4, 4, 8
+};
+
+void Buzzer::rickRoll() {
+  const float tempo = 200.0;
+  const uint32_t sixteenthNoteUs = (60000000UL / tempo) / 4;
+
+  for (int i = 0; i < NOTE_COUNT; i++) {
+    uint32_t noteDurationUs = timing[i] * sixteenthNoteUs;
+    uint32_t startTime = micros();
+
+    if (melody[i] != REST) {
+      tone(pin, melody[i]);
+      uint32_t playTimeUs = noteDurationUs * 0.80;
+      while (micros() - startTime < playTimeUs);
+      noTone(pin);
+    }
+    
+    while (micros() - startTime < noteDurationUs);
+  }
+
+  onChange = true;
+}

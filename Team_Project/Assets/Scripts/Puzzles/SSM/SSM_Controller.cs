@@ -46,6 +46,9 @@ namespace Puzzles.Controllers
             {
                 Seq[i] = rng.Next(0 ,maxValue);
             }
+
+            //temp hardcoded color
+            Seq[3] = 2;
         
             return Seq;
         }

@@ -18,5 +18,6 @@ public class LevelData : ScriptableObject
     public float offDuration = 1f;
     public float ssmSuccessAlertDuration = 8f;
     public float surfaceIntroAlertDuration = 8f;
+    public float wirecutIntroAlertDuration = 10f;
     public float warningFlashingDuration = 0.5f;
 }

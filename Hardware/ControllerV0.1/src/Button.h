@@ -11,8 +11,8 @@ private:
     SerialController& serialController;
     std::function<void (std::string, int)> onPressed;
 
-    const uint32_t debounceDelay = 50;
-    uint32_t lastDebounceTime = 50;
+    uint32_t debounceDelay;
+    uint32_t lastDebounceTime = 0;
 
     int lastState = -1;
 
@@ -23,6 +23,8 @@ public:
 
     int buttonState = -1;
 
+    void reset();
+
     void scramble() override{
         disable();
     };
@@ -31,8 +33,8 @@ public:
     void status() override;
     void set(std::vector<std::string> args) override;
 
-    Button(std::string name, int pin, SerialController serialController);
-    Button(std::string name, int pin, SerialController serialController, std::function<void (std::string, int)> onPressed);
+    Button(std::string name, int pin, SerialController serialController, uint32_t debounceTime);
+    Button(std::string name, int pin, SerialController serialController, std::function<void (std::string, int)> onPressed, uint32_t debounceTime);
 
     void update() override;
 

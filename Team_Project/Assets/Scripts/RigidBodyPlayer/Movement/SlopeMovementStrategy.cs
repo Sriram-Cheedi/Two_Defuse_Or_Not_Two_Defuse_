@@ -11,13 +11,10 @@ namespace RigidBodyPlayer.Movement
             Vector3 slopeSideWayDir = Vector3.Cross(surfaceNormal, slopeDir).normalized;
             
             float facingDirection = Mathf.Sign(Vector3.Dot(hub.orientation.forward, slopeDir));
-
-            // 4. Multiply input by our facing direction so A and D always feel correct
+            
             Vector3 movementDir = slopeSideWayDir * (hub.relay.MoveValue.x * facingDirection);
 
-            Vector3 desiredRelativeVelocity = movementDir.sqrMagnitude > 0.0001f
-                ? movementDir.normalized * hub.data.sideWayMoveSpeed
-                : Vector3.zero;
+            Vector3 desiredRelativeVelocity = movementDir.normalized * hub.data.sideWayMoveSpeed;
 
             Vector3 slopVelocity = slopeDir * hub.data.slopeSpeed;
             hub.rb.linearVelocity = desiredRelativeVelocity + slopVelocity;

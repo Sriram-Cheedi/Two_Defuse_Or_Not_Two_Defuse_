@@ -7,10 +7,10 @@ numberGameModule::numberGameModule(std::string name, int dataPin, int clockPin, 
     pinMode(clockPin,OUTPUT);
     pinMode(latchPin,OUTPUT);
     for(size_t i = 0; i < 4; i++){
-        Button btn = Button("NGM" + std::to_string(i), buttonPins[i], serialController, [this](std::string name, int state){buttonCheck(name, state);});   
+        Button btn = Button("NGM" + std::to_string(i), buttonPins[i], serialController, [this](std::string name, int state){buttonCheck(name, state);}, 0);   
         buttons.push_back(btn);
     }
-    Button btn = Button("NGM4", buttonPins[4], serialController, [this](std::string name, int state){checkGuess(name, state);});   
+    Button btn = Button("NGM4", buttonPins[4], serialController, [this](std::string name, int state){checkGuess(name, state);}, 0);   
     buttons.push_back(btn);
     randomSeed(analogRead(A0));
 
@@ -135,19 +135,14 @@ void numberGameModule::buttonCheck(std::string btnName, int btnState){
 }
 
 void numberGameModule::checkGuess(std::string btnName, int btnState) {
-    const unsigned long debounceDelay = 500;
-    unsigned long now = millis();
-    if(now - submitUpdate > debounceDelay){
-        if(btnState == HIGH){
-            submitting = 1;
-            status();
-            submitting = 0;
-            if(secretNumber[0] == digitsBuffer[0] && 
-                secretNumber[1] == digitsBuffer[1] && 
-                secretNumber[2] == digitsBuffer[2] && 
-                secretNumber[3] == digitsBuffer[3]) state = 2;
-            submitUpdate = now;
-        }
+    if(btnState == HIGH){
+        submitting = 1;
+        status();
+        submitting = 0;
+        if(secretNumber[0] == digitsBuffer[0] && 
+            secretNumber[1] == digitsBuffer[1] && 
+            secretNumber[2] == digitsBuffer[2] && 
+            secretNumber[3] == digitsBuffer[3]) state = 2;
     }
 }
 

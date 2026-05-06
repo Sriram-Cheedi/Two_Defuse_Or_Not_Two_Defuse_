@@ -30,8 +30,6 @@ namespace PersistantSystems.Software
         {
             try
             {
-                topScores = await dbAPI.GetScoresAsync();
-            
                 int i;
                 for (i = 0; i < scoreTiles.Length; i++)
                 {

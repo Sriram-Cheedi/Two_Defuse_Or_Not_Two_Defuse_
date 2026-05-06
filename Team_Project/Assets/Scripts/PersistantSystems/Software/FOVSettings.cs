@@ -15,9 +15,8 @@ namespace PersistantSystems.Software
         
         private void Start()
         {
-            if (fovSlider == null || fovValue == null)
+            if (fovSlider == null || fovValue == null) 
             {
-                Debug.LogWarning("FOV settings not set");
                 return;
             }
             fovSlider.minValue = fovMin;
@@ -25,6 +24,7 @@ namespace PersistantSystems.Software
             fovSlider.wholeNumbers = true;
             float savedFov = PlayerPrefs.GetFloat(fovKEY, fovDefault);
             fovSlider.SetValueWithoutNotify(savedFov);
+            // fovValue.text = Mathf.RoundToInt(savedFov).ToString();
             UpdateFovValue(savedFov);
             fovSlider.onValueChanged.AddListener(OnFovChanged);
         }
@@ -40,6 +40,5 @@ namespace PersistantSystems.Software
         {
             fovValue.text = Mathf.RoundToInt(value).ToString();
         }
-        
     }
 }

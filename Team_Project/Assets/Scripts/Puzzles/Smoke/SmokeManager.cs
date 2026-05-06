@@ -7,7 +7,6 @@ public class SmokeManager : MonoBehaviour
     [SerializeField]private PlayerInputRelay relay;
     [SerializeField]private TrackRoom trackPlayerRoom;
     [SerializeField] private GameObject smokeAlert;
-    // [SerializeField] private EmojiReactionManager emojiReactionManager;
     private bool smokeReleased;
     private SmokeEmitter lastRoomActive;
     public bool isActive = false;
@@ -46,7 +45,6 @@ public class SmokeManager : MonoBehaviour
 
     private void OnSmokeReleased(String header, int value)
     {
-        // emojiReactionManager.PlaySmokeBurst();
         if (isActive)
         {
             mazeStatus = API_Provider.Instance.ActiveAPIController.GetMazeStatus();
@@ -56,7 +54,6 @@ public class SmokeManager : MonoBehaviour
                 smokeAlert.SetActive(true);
                 smokeReleased = true;
             }
-            
             else if (header == "FGM" && value == 1)
             {
                 ssmStatus = API_Provider.Instance.ActiveAPIController.GetSSMStatus();
@@ -83,7 +80,11 @@ public class SmokeManager : MonoBehaviour
     
     void UpdateRoomSmoke()
     {
-        SmokeEmitter currentRoom  = trackPlayerRoom != null ? trackPlayerRoom.currentSmokeEmitter : null;
+        SmokeEmitter currentRoom = null;
+        if (trackPlayerRoom != null)
+        {
+            currentRoom = trackPlayerRoom.currentSmokeEmitter;
+        }
 
         if (lastRoomActive != null && lastRoomActive != currentRoom)
         {
@@ -94,7 +95,6 @@ public class SmokeManager : MonoBehaviour
         {
             currentRoom.SmokeState(smokeReleased);
         }
-
         lastRoomActive = currentRoom;
     }
 }

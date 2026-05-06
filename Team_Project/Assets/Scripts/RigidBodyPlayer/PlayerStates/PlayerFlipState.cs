@@ -6,7 +6,6 @@ public class PlayerFlipState : PlayerBaseState
 {
     private float targetRotation = 180f;
     private float remaining;
-    [SerializeField] private EmojiReactionManager emojiReactionManager;
     public PlayerFlipState(RigidBodyMovement hub) : base(hub, PlayerState.Flip)
     {
     }

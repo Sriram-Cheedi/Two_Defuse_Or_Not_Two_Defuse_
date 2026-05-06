@@ -116,16 +116,13 @@ public class PlayerSensor : MonoBehaviour, IPlayerModule
     {
         CurrentSurface = SurfaceType.Default;
         PreviousSurface = SurfaceType.Default;
-    
-        // 2. Clear the ground state
+        
         IsGrounded = false;
         OnMovingPlatform = false;
         OnSlope = false;
-    
-        // 3. WIPE THE HIT DATA! (This is what was holding the old slope angle)
+        
         slopeHit = new RaycastHit(); 
-    
-        // 4. Clear any moving platform momentum
+        
         connectedBody = null;
         previousConnectedBody = null;
         ConnectionVelocity = Vector3.zero;

@@ -20,10 +20,6 @@ public class PlayerCam : MonoBehaviour
     private void Awake()
     {
         relay = FindFirstObjectByType<PlayerInputRelay>();
-        if (orientation == null)
-        {
-            Debug.LogError($"No orientation found on {gameObject.name}" + "please assign them in the Inspector.", this);
-        }
     }
 
     private void OnEnable()
@@ -57,12 +53,17 @@ public class PlayerCam : MonoBehaviour
         Cursor.visible = false;
         if (playerCamera == null)
         {
-            playerCamera = GetComponent<Camera>() ?? GetComponentInChildren<Camera>();
+            playerCamera = GetComponent<Camera>();
+            if (playerCamera == null)
+            {
+                playerCamera = GetComponentInChildren<Camera>();
+            }
         }
 
         if (playerCamera != null)
         {
             playerCamera.fieldOfView = PlayerPrefs.GetFloat(fovKEY, fovDefault);
+            playerCamera.nearClipPlane = 0.15f;
         }
     }
 

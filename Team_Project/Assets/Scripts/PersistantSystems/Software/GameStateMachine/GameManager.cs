@@ -23,12 +23,14 @@ namespace PersistantSystems.Software.GameStateMachine
 
         [Header("Audio")]
         [SerializeField] private AudioClip warningAudio;
-        [SerializeField] private AudioSource audioSource;
+        [SerializeField] private AudioSource audioSource_sfx;
+        [SerializeField] private AudioSource audioSource_music;
         [SerializeField] private AudioClip loseSound;
         [SerializeField] private AudioClip winSound;
         [SerializeField] private AudioClip menuSound;
         [SerializeField] private AudioClip cutSceneSound;
         [SerializeField] private AudioClip scoreBoardSound;
+        [SerializeField] private AudioClip backgroundMusic;
         
         [Header("Audience Display 2 References")]
         [SerializeField] private GameObject audienceMainMenuDisplay;
@@ -52,60 +54,36 @@ namespace PersistantSystems.Software.GameStateMachine
             CacheRefs();
             ShowAudienceMainMenu();
             RegisterStates();
-            GetAudioComponent();
+            // GetAudioComponent();
             InitializeState(GameState.Menu);
             
         }
 
-private void ShowAudienceMainMenu()
-{
-    Debug.Log("ShowAudienceMainMenu called");
+        private void ShowAudienceMainMenu()
+        {
+            if (audienceMainMenuDisplay != null)
+            {
+                audienceMainMenuDisplay.SetActive(true);
+            }
+            if (audienceCutsceneDisplay != null)
+            {
+                audienceCutsceneDisplay.SetActive(false);
+            }
+        }
 
-    if (audienceMainMenuDisplay != null)
-    {
-        audienceMainMenuDisplay.SetActive(true);
-        Debug.Log("AudienceMainMenuDisplay ON");
-    }
-    else
-    {
-        Debug.LogWarning("audienceMainMenuDisplay is NULL");
-    }
+        private void ShowAudienceCutscene()
+        {
+            if (audienceMainMenuDisplay != null)
+            {
+                audienceMainMenuDisplay.SetActive(false);
+            }
 
-    if (audienceCutsceneDisplay != null)
-    {
-        audienceCutsceneDisplay.SetActive(false);
-        Debug.Log("AudienceCutsceneDisplay OFF");
-    }
-    else
-    {
-        Debug.LogWarning("audienceCutsceneDisplay is NULL");
-    }
-}
+            if (audienceCutsceneDisplay != null)
+            {
+                audienceCutsceneDisplay.SetActive(true);
+            }
+        }
 
-private void ShowAudienceCutscene()
-{
-    Debug.Log("ShowAudienceCutscene called");
-
-    if (audienceMainMenuDisplay != null)
-    {
-        audienceMainMenuDisplay.SetActive(false);
-        Debug.Log("AudienceMainMenuDisplay OFF");
-    }
-    else
-    {
-        Debug.LogWarning("audienceMainMenuDisplay is NULL");
-    }
-
-    if (audienceCutsceneDisplay != null)
-    {
-        audienceCutsceneDisplay.SetActive(true);
-        Debug.Log("AudienceCutsceneDisplay ON");
-    }
-    else
-    {
-        Debug.LogWarning("audienceCutsceneDisplay is NULL");
-    }
-}
         private GameObject FindChildByName(Transform parent, string name)
         {
             foreach (Transform child in parent.GetComponentsInChildren<Transform>(true))
@@ -114,7 +92,6 @@ private void ShowAudienceCutscene()
                     return child.gameObject;
             }
 
-            Debug.LogWarning($"{name} not found under {parent.name}");
             return null;
         }
 
@@ -124,7 +101,6 @@ private void ShowAudienceCutscene()
 
             if (!mainMenuScene.IsValid() || !mainMenuScene.isLoaded)
             {
-                Debug.LogWarning("MainMenu scene is not loaded, cannot cache menu references yet.");
                 return;
             }
 
@@ -137,13 +113,8 @@ private void ShowAudienceCutscene()
             audienceMainMenuDisplay = null;
             audienceCutsceneDisplay = null;
 
-            Debug.Log("---- CacheRefs START ----");
-            Debug.Log("Root objects in MainMenu: " + rootObjects.Length);
-
             foreach (GameObject root in rootObjects)
             {
-                Debug.Log("Checking root: " + root.name);
-
                 if (cutscenePlayer == null)
                     cutscenePlayer = root.GetComponentInChildren<VideoPlayer>(true);
 
@@ -165,14 +136,6 @@ private void ShowAudienceCutscene()
             
             scoreManager = FindFirstObjectByType<ScoreManager>(FindObjectsInactive.Include);
 
-            Debug.Log("cutscenePlayer = " + (cutscenePlayer != null ? cutscenePlayer.name : "NULL"));
-            Debug.Log("cutsceneDisplay = " + (cutsceneDisplay != null ? cutsceneDisplay.name : "NULL"));
-            Debug.Log("menuUI = " + (menuUI != null ? menuUI.name : "NULL"));
-            Debug.Log("loadingPage = " + (loadingPage != null ? loadingPage.name : "NULL"));
-            Debug.Log("scoreManager = " + (scoreManager != null ? scoreManager.name : "NULL"));
-            Debug.Log("audienceMainMenuDisplay = " + (audienceMainMenuDisplay != null ? audienceMainMenuDisplay.name : "NULL"));
-            Debug.Log("audienceCutsceneDisplay = " + (audienceCutsceneDisplay != null ? audienceCutsceneDisplay.name : "NULL"));
-            Debug.Log("---- CacheRefs END ----");
         }
         private void OnEnable()
         {
@@ -182,6 +145,7 @@ private void ShowAudienceCutscene()
             WireCut.HasCutAnyWire += HandleWireCut;
             GameEvents.OnReplay += ReplayGame;
             GameEvents.OnQuit += QuitGame;
+            GameEvents.OnBoardingDone += HandleOnBoardingDone;
         }
 
         private void OnDisable()
@@ -192,46 +156,34 @@ private void ShowAudienceCutscene()
             WireCut.HasCutAnyWire -= HandleWireCut;
             GameEvents.OnReplay -= ReplayGame;
             GameEvents.OnQuit -= QuitGame;
-            
+            GameEvents.OnBoardingDone -= HandleOnBoardingDone;
         }
 
         private void GetAudioComponent()
         {
-            audioSource =  GetComponent<AudioSource>();
+            // audioSource =  GetComponent<AudioSource>();
         }
 
         private void RegisterStates()
         {
-            States[GameState.Menu] = new MenuState(this, audioSource, menuSound);
-            States[GameState.CutScene] = new CutSceneState(this, cutscenePlayer, menuUI, cutsceneDisplay, loadingPage, audioSource, cutSceneSound);
-            States[GameState.ReadyUp] = new ReadyUpState(this);
-            States[GameState.Playing] = new PlayingState(this, audioSource, warningAudio);
-            States[GameState.GameOver] = new GameOverState(this, audioSource, loseSound);
-            States[GameState.GameWin] = new GameWinState(this, audioSource, winSound);
-            States[GameState.DashBoard] = new ScoreDashBoardState(this, audioSource, scoreBoardSound);
+            States[GameState.Menu] = new MenuState(this, audioSource_music, menuSound);
+            States[GameState.CutScene] = new CutSceneState(this, cutscenePlayer, menuUI, cutsceneDisplay, loadingPage, audioSource_music, backgroundMusic);
+            States[GameState.ReadyUp] = new ReadyUpState(this, audioSource_music, backgroundMusic);
+            States[GameState.Playing] = new PlayingState(this, audioSource_sfx, audioSource_music, warningAudio, backgroundMusic);
+            States[GameState.GameOver] = new GameOverState(this, audioSource_music, loseSound);
+            States[GameState.GameWin] = new GameWinState(this, audioSource_music, winSound);
+            States[GameState.DashBoardWin] = new ScoreDashBoardStateWin(this, audioSource_music, scoreBoardSound);
+            States[GameState.DashBoardLose] = new ScoreDashBoardStateWin(this, audioSource_music, scoreBoardSound);
         }
-
-
 
         public void StartGame()
         {
-            Debug.Log("StartGame called.");
-            Debug.Log("CurrentStateKey before StartGame: " + CurrentStateKey);
-
-            Debug.Log("cutscenePlayer = " + (cutscenePlayer != null ? cutscenePlayer.name : "NULL"));
-            Debug.Log("cutsceneDisplay = " + (cutsceneDisplay != null ? cutsceneDisplay.name : "NULL"));
-            Debug.Log("menuUI = " + (menuUI != null ? menuUI.name : "NULL"));
-            Debug.Log("loadingPage = " + (loadingPage != null ? loadingPage.name : "NULL"));
-
             if (CurrentStateKey == GameState.CutScene ||
                 CurrentStateKey == GameState.ReadyUp ||
                 CurrentStateKey == GameState.Playing)
             {
-                Debug.Log("StartGame ignored because state is already in progress.");
                 return;
             }
-
-
             API_Provider.Instance?.ActiveAPIController?.RequestStatus("PWR");
             API_Provider.Instance?.ActiveAPIController?.SendSet("PWR", API_Provider.Instance.ActiveAPIController.GetDigital("PWR"));
             ShowAudienceCutscene();
@@ -271,11 +223,18 @@ private void ShowAudienceCutscene()
             QueueNextState(GameState.ReadyUp);
         }
 
-        public void OnLoadingScoreBoard()
+        public void OnLoadingScoreBoardWin()
         {
             // SceneManager.UnloadSceneAsync("MatScene");
-            SceneManager.LoadScene("ScoreDashBoard");
-            QueueNextState(GameState.DashBoard);
+            SceneManager.LoadScene("ScoreDashBoardWin");
+            QueueNextState(GameState.DashBoardWin);
+        }
+        
+        public void OnLoadingScoreBoardLose()
+        {
+            // SceneManager.UnloadSceneAsync("MatScene");
+            SceneManager.LoadScene("ScoreDashBoardLose");
+            QueueNextState(GameState.DashBoardLose);
         }
         
         public void ResetSession(double startingBombTimer = 300.0)
@@ -307,6 +266,14 @@ private void ShowAudienceCutscene()
             }
         }
 
+        public void HandleOnBoardingDone()
+        {
+            if (CurrentState is IGameEventListener listener)
+            {
+                listener.HandleOnBoardingDone();
+            }
+        }
+
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             IsMatSceneLoaded = scene.name == "MatScene";
@@ -319,7 +286,6 @@ private void ShowAudienceCutscene()
         }
         
         private string currentUsername = "---";
-
         public void SetCurrentUsername(string username)
         {
             currentUsername = string.IsNullOrWhiteSpace(username) ? "---" : username;
@@ -332,7 +298,10 @@ private void ShowAudienceCutscene()
 
         private void HandleWireCut()
         {
-            BombTimer = 3.0f;
+            if (BombTimer >= 3.0f)
+            {
+                BombTimer = 3.0f;
+            }
         }
         
         public void QuitGame()

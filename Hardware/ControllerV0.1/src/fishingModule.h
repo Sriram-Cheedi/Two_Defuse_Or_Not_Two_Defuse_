@@ -30,9 +30,6 @@ class fishingModule : public Component {
     const unsigned int hookInterval = 500;
     unsigned long lastHookUpdate = 0;
 
-    const unsigned int buttonInterval = 50;
-    unsigned long lastButtonUpdate = 0;
-
     
     uint32_t hookLED [10] = {
         0b1000000000,

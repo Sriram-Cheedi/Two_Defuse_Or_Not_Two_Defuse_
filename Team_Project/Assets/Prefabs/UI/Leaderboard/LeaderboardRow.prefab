@@ -193,8 +193,8 @@ MonoBehaviour:
   teamNameText: {fileID: 2178019633039498245}
   scoreText: {fileID: 6709594190114557934}
   statusBadgeImage: {fileID: 7870530190583717372}
-  defusedBadgeSprite: {fileID: 21300000, guid: 57cf3004e68d6fb4f8be818e2b06c5c9, type: 3}
-  explodedBadgeSprite: {fileID: 21300000, guid: 202cb5d1b1d3cc0468213bf0666adb3a, type: 3}
+  defusedBadge: {fileID: 21300000, guid: 57cf3004e68d6fb4f8be818e2b06c5c9, type: 3}
+  explodedBadge: {fileID: 21300000, guid: 202cb5d1b1d3cc0468213bf0666adb3a, type: 3}
 --- !u!1 &5851605613476161302
 GameObject:
   m_ObjectHideFlags: 0

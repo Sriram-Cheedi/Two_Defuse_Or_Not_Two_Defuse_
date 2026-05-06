@@ -12,14 +12,24 @@ public class PlayButtonSubmitter : MonoBehaviour
     public void SubmitAndPlay()
     {
         if (scoreManager == null)
+        {
             scoreManager = FindFirstObjectByType<ScoreManager>(FindObjectsInactive.Include);
+        }
 
         if (gameManager == null)
+        {
             gameManager = GameManager.Instance;
+        }
 
         string enteredName = usernameInput != null ? usernameInput.text.Trim() : "";
+        if (scoreManager != null)
+        {
+            scoreManager.OnUsernameEntered(enteredName);
+        }
 
-        scoreManager?.OnUsernameEntered(enteredName);
-        gameManager?.StartGame();
+        if (gameManager != null)
+        {
+            gameManager.StartGame();
+        }
     }
 }
