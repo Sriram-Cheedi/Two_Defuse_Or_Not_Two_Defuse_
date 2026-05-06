@@ -19,10 +19,10 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
             : base(GameState.CutScene)
         {
             this.gameManager = gameManager;
-            this.player      = player;
-            this.menuUI   = menuUI;
-            this.display     = display;
-            this.loadingPage     = loadingPage;
+            this.player = player;
+            this.menuUI = menuUI;
+            this.display = display;
+            this.loadingPage = loadingPage;
             this.audioSource = audioSource;
             this.cutSceneSoundTrack = cutSceneSoundTrack;
         }
@@ -52,7 +52,6 @@ namespace PersistantSystems.Software.GameStateMachine.GameStates
             }
             else
             {
-                Debug.LogWarning("No cutscene player assigned. Skipping to ReadyUp.");
                 gameManager.SkipCutScene();
             }
         }

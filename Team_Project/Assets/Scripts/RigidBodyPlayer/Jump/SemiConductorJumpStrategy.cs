@@ -6,8 +6,7 @@ namespace RigidBodyPlayer.Jump
     {
         public void ExecuteJump(RigidBodyMovement hub)
         {
-            if (hub.jump.readyToJump && hub.jump.CoyoteTimeCounter > 0f && hub.jump.JumpBufferCounter > 0f &&
-                hub.jump.canJump)
+            if (hub.jump.readyToJump && hub.jump.CoyoteTimeCounter > 0f && hub.jump.JumpBufferCounter > 0f && hub.jump.canJump)
             {
                 Vector3 localUp = hub.rb.transform.up;
                 Vector3 verticalVelocity = Vector3.Project(hub.rb.linearVelocity, localUp);

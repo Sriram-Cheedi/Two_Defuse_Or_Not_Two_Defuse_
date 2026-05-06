@@ -17,9 +17,5 @@ public class MirrorCameraFollower : MonoBehaviour
         transform.rotation = sourceCamera.transform.rotation;
         mirrorCamera.fieldOfView = sourceCamera.fieldOfView;
         mirrorCamera.nearClipPlane = sourceCamera.nearClipPlane;
-        // mirrorCamera.farClipPlane = sourceCamera.farClipPlane;
-        // mirrorCamera.cullingMask = sourceCamera.cullingMask;
-        // mirrorCamera.clearFlags = sourceCamera.clearFlags;
-        // mirrorCamera.backgroundColor = sourceCamera.backgroundColor;
     }
 }

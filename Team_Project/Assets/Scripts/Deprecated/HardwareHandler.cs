@@ -14,7 +14,7 @@ public class HardwareHandler : MonoBehaviour
     {
 
         // Gyro Logic 
-        float hardware_rotation = 45.123f; // This will be a current gyro rotation from hardware API 
+        float hardware_rotation = 45.123f;
 
         float delta = Mathf.DeltaAngle(last_reported_rotation, hardware_rotation);
 
