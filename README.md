@@ -5,7 +5,7 @@ This project aims to create an innovative and tense cooperative experience for p
 
 The application runs on an asymmetric two-input system: one player operates within the Unity game world created for the project, while the other operates a custom physical hardware controller to communicate and defuse the bomb.
 
-[Technical Specifications can be found here](Link_To_Your_Specs_Here) *(Add your link here!)*
+Technical report on the project can be found [here](./docs/Report_Redacted.pdf) (May require downloading due to file size)
 
 ---
 
@@ -16,7 +16,7 @@ To fully experience this project, a physical 'hardware bomb' controller is requi
 ### Prerequisites
 *   **Microcontroller:** Teensy 4.1
 *   **IDE:** Visual Studio Code with the [PlatformIO extension](https://platformio.org/)
-*   **Game Engine:** Unity *(Specify your Unity version here, e.g., 2022.3 LTS)*
+*   **Game Engine:** Unity 6.3 LTS
 
 ### 1. Hardware Setup
 1. Clone this git repository to your local machine.
