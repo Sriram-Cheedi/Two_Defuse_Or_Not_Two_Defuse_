@@ -6,6 +6,7 @@ This project aims to create an innovative and tense cooperative experience for p
 The application runs on an asymmetric two-input system: one player operates within the Unity game world created for the project, while the other operates a custom physical hardware controller to communicate and defuse the bomb.
 
 Technical report on the project can be found [here](./docs/Report_Redacted.pdf) (May require downloading due to file size)
+[![Watch the Technical Video](path/to/thumbnail.jpg)](https://github.com/felixUOB/Two_Defuse_Or_Not_Two_Defuse/blob/main/Technical_Trailer.mp4)
 
 ---
 
