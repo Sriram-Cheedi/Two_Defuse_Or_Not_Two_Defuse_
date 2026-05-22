@@ -7,7 +7,7 @@ The application runs on an asymmetric two-input system: one player operates with
 
 Technical report on the project can be found [here](./docs/Report_Redacted.pdf) (May require downloading due to file size)
 
-Watch the technical report and trailer [here]([https://youtube.com/watch?v=your-video-id])
+Watch the technical report and trailer [here](https://youtube.com/watch?v=your-video-id)
 
 ---
 
